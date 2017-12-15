@@ -1,15 +1,20 @@
 package db;
 
-import utils.Constants;
-import engine.User;
-import engine.Vendor;
-import engine.Action;
-import engine.Customer;
-import engine.Event;
-import engine.Range;
-import engine.Scenario;
+import utils.*;
+import engine.*;
 
 public class DBHandler implements IDBHandler {
+	//Constractors -----------------------------------------------------------------------------
+	//Private constructors to implement singleton DesignPattern
+	private DBHandler()
+	{
+		//Implement it!
+		connectionURL = Constants.getDatabaseConnectionURL(); 
+	}	
+	//Constractors -----------------------------------------------------------------------------
+	
+	
+	
 	String connectionURL;
 	
 	public DBHandler getInstance()
@@ -18,21 +23,25 @@ public class DBHandler implements IDBHandler {
 		return new DBHandler();
 	}
 	
+	//************ Think about having this functionality *****************
 	//the method "connectionAuthentication" gets Customer or a Vendor instance declared as User (polymorphism)
-	public boolean connectionAuthentication(User i_user)
-	{
-		//Implement it!
-		return true;
+	//public boolean connectionAuthentication(User i_user)
+	//{
+	//	//Implement it!
+	//	return true;
+	//}
+	
+	public boolean vendorConnectionAuth(Vendor i_vendor) {
+		// TODO Auto-generated method stub
+		return false;
 	}
 	
-	
-	
-	
-	//Constractors -----------------------------------------------------------------------------
-	//Private constructors to implement singleton DesignPattern
-	private DBHandler()
-	{
-		//Implement it!
-		connectionURL = Constants.getDatabaseConnectionURL(); 
-	}	
+	public boolean customerConnectionAuth(Customer i_customer) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	public static boolean isUsernameAvailable(String i_userName) {
+		// TODO Auto-generated method stub
+		return false;
 }

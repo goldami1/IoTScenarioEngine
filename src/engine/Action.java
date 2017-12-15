@@ -33,6 +33,7 @@ public class Action {
 	{
 		return this.parameter;
 	}
+	
 	public Class getType()
 	{
 		return this.parameter.getClass();

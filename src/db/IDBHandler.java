@@ -1,11 +1,13 @@
 package db;
 
-import engine.User;
+import engine.Vendor;
+import engine.Customer;
 
 public interface IDBHandler {
 
 	public IDBHandler getInstance();
-	public boolean connectionAuthentication(User i_user);
+	public boolean vendorConnectionAuth(Vendor i_vendor);
+	public boolean customerConnectionAuth(Customer i_customer);
 	
 }
 

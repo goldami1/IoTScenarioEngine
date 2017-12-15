@@ -1,7 +1,8 @@
 package engine;
 
-import java.util.ArrayList;
-import java.util.Iterator;
+import java.util.*;
+
+import db.DBHandler;
 import db.DatabaseHandler;
 
 public static class EngineLogic {
@@ -9,8 +10,8 @@ public static class EngineLogic {
 	
 	public void HandleEvent(Event evnt)
 	{
-		DatabaseHandler DB = DB.getInstance();
-		ArrayList<Scenario> scenarios = DB.getScenarios(evnt);
+		DBHandler DB = DB.getInstance();
+		LinkedList<Scenario> scenarios = DB.getScenarios(evnt);
 		for(Scenario s:scenarios)
 		{
 			Event curEvent = s.getEventById(evnt.getId());
@@ -40,3 +41,5 @@ public static class EngineLogic {
 		return true;
 	}
 }
+
+//Continue implementation!
