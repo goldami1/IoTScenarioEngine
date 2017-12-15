@@ -6,6 +6,7 @@ import java.sql.SQLException;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
+import utils.Constants;
 
 
 public class ConnectionPool {
@@ -13,7 +14,7 @@ public class ConnectionPool {
 	final int poolSize=10;
 	private static Set<Connection> connectionList= new HashSet<>();
 	
-	String url= "jdbc:mysql://localhost:8080/dbNH";
+	String url= Constants.getDatabaseConnectionURL();
 	
 	private static ConnectionPool instance= new ConnectionPool();
 	
