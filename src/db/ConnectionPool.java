@@ -10,7 +10,7 @@ import java.util.Set;
 
 public class ConnectionPool {
 	
-	int size=10;
+	final int poolSize=10;
 	private static Set<Connection> connectionList= new HashSet<>();
 	
 	String url= "jdbc:mysql://localhost:8080/dbNH";
@@ -24,7 +24,7 @@ public class ConnectionPool {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
-			for (int i = 0; i < 10; i++) {
+			for (int i = 0; i < poolSize; i++) {
 				try {
 					Connection c= DriverManager.getConnection(url);
 					connectionList.add(c);
@@ -58,7 +58,7 @@ public class ConnectionPool {
 	}
 
 	public synchronized void returnConnection(Connection c){
-		if(connectionList.size()==size){
+		if(connectionList.size()==poolSize){
 			try {
 				wait();
 			} catch (InterruptedException e) {
