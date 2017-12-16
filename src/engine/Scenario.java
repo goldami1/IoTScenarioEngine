@@ -1,52 +1,69 @@
 package engine;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
+import java.util.*;
+import java.util.Map.Entry;
+
+import db.DBHandler;
 
 
-public class Scenario {
-	private ArrayList<Event> eventsToHappen;
-	private ArrayList<Action> actionsToHandle;
+public class Scenario{
+	short id;
+	String name;
+	private Map<Short, Event> eventsToHappen;
+	private Map<Short, Action> actionsToHandle;
 	
-	public Scenario(ArrayList<Event> events, ArrayList<Action>actions)
-	{
-		this.eventsToHappen = new ArrayList(events);
-		this.actionsToHandle = new ArrayList(actions);
-	}
 	public Scenario()
 	{
-		this.actionsToHandle = new ArrayList();
-		this.eventsToHappen = new ArrayList();
+		this.eventsToHappen = new HashMap<Short, Event>();
+		this.actionsToHandle = new HashMap<Short, Action>();
+		name = null;
+	}
+	
+	public Scenario(String i_name)
+	{
+		this();
+		name = i_name;
 	}
 	
 	public void addAction(Action actionToAdd)
 	{
-		this.actionsToHandle.add(actionToAdd);
+		//this.actionsToHandle.add(actionToAdd);
+		actionsToHandle.put(actionToAdd.getId(), actionToAdd);
 	}
 	public void addEvent(Event eventToAdd)
 	{
-		this.eventsToHappen.add(eventToAdd);
+		//this.eventsToHappen.add(eventToAdd);
+		eventsToHappen.put(eventToAdd.getId(), eventToAdd);
 	}
 	
-	public Event getEventById(int id)
+	public void addScenarioToDB()
 	{
+		DBHandler db = DBHandler.getInstance();
+		db.addScenario(this);
+	}
+	
+	public Event getEventById(short id)
+	{
+		return eventsToHappen.get(id);
+		/*
 		Event res = null;
-		for(Event e:this.eventsToHappen)
+		for(Event e:eventsToHappen)
 		{
 			if(e.getId() == id)
 				res = e;
 		}
 		return res;
+		*/
 	}
 	
-	public Iterator getEvents()
+	public Iterator<Entry<Short, Event>> getEvents()
 	{
-		return this.eventsToHappen.listIterator();
+		return eventsToHappen.entrySet().iterator();
+		//return this.eventsToHappen.listIterator();
 	}
-	public Iterator getActions()
+	public Iterator<Entry<Short, Action>> getActions()
 	{
-		return this.actionsToHandle.listIterator();
+		return actionsToHandle.entrySet().iterator();
+		//return this.actionsToHandle.listIterator();
 	}
 	
-	//Continue implementation!
 }

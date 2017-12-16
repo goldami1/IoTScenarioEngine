@@ -13,7 +13,7 @@ public class Event extends Action{
 		this.triggred = value;
 	}
 	
-	public boolean getTriggered()
+	public boolean getTrigger()
 	{
 		return this.triggred;
 	}

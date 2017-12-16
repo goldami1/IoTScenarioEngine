@@ -4,7 +4,7 @@ import java.lang.reflect.Type;
 
 
 public class Action {
-	private int id;
+	private short id;
 	private String name;
 	private String type;
 	private Object parameter;
@@ -39,12 +39,12 @@ public class Action {
 		return this.parameter.getClass();
 	}
 	
-	public void setId(int id)
+	public void setId(short id)
 	{
 		this.id = id;
 	}
 	
-	public int getId()
+	public short getId()
 	{
 		return this.id;
 	}

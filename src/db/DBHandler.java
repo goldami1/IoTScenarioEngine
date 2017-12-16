@@ -8,12 +8,31 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.*;
 
 public class DBHandler implements IDBHandler 
 {
 	private ConnectionPool pool = ConnectionPool.getInstance();
+	//<begin> Basic Singleton implementation <begin>
+	private static DBHandler instance = null;
 	
-
+	protected DBHandler()
+	{
+		
+	}
+	
+	public static DBHandler getInstance()
+	{
+		if(instance == null)
+		{
+			instance = new DBHandler();
+		}
+		return instance;
+	}
+	//<end> Basic Singleton implementation <end>
+	
+	//===================================
+	//<begin> DB connection METHODS <begin>
 	public boolean userConnectionAuth(String i_Username, String i_UserPassword) throws Exception
 	{
 		Connection connection = pool.getConnection();
@@ -53,60 +72,64 @@ public class DBHandler implements IDBHandler
 
 		return flag;
 	}
+	//<end> DB connection METHODS <end>
+	//===================================
 	
-
+	//===================================
+	//<begin> ADD C.R.U.D METHODS <begin>
+	public boolean addDevice(Device i_dev)
+	{
+		// TODO Auto-generated method stub
+		return true;
+	}
 	
+	public boolean addScenario(Scenario i_Scenario)
+	{
+		// TODO Auto-generated method stub		
+		return true;
+	}
 	
+	public boolean addCustomer(String i_firstName, String i_lastName, String i_userName, String i_userPassword,
+			String i_email)
+	{
+		// TODO Auto-generated method stub
+		return true;
+	}
 	
-	public static boolean isUsernameAvailable(String i_userName) {
+	public boolean addVendor(String i_vendorName, String i_userName, String i_userPassword, String i_email,
+			String i_vendorDescription, String i_vendorLogoPic) 
+	{
+		// TODO Auto-generated method stub
+		return true;
+	}
+	//<end> ADD C.R.U.D METHODS <end>
+	//===================================
+	
+	//===================================
+	//<begin> get C.R.U.D METHODS <begin>
+	public LinkedList<Scenario> getScenariosByEvent(Event i_event)
+	{
+		// TODO Auto-generated method stub
+		return new LinkedList<Scenario>();
+	}
+	//<end> get C.R.U.D METHODS <end>
+	//===================================
+	
+	//===================================
+	//<begin> static find C.R.U.D METHODS <begin>
+	public static boolean isUsernameAvailable(String i_userName)
+	{
+		// TODO Auto-generated method stub
+		return true;
+	}
+	
+	public static boolean isUserExist(String i_Username) 
+	{
 		// TODO Auto-generated method stub
 		return false;
-		
-}
-
-
-	
-	public void addCustomer(String i_firstName, String i_lastName, String i_userName, String i_userPassword,
-			String i_email) {
-		// TODO Auto-generated method stub
-		
 	}
-
-
-	
-	public void addVendor(String i_vendorName, String i_userName, String i_userPassword, String i_email,
-			String i_vendorDescription, String i_vendorLogoPic) {
-		// TODO Auto-generated method stub
-		
-	}
-
-
-
-	public boolean customerConnectionAuthentication(String i_CustomerUsername, String i_CustomerPassword) {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-
-	
-	public boolean vendorConnectionAuthentication(String i_VendorUsername, String i_VendorPassword) {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-
-	
-	public boolean isExistVendor(String i_VendorUsername) {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-
-	
-	public boolean isExistCustomer(String i_CustomerUsername) {
-		// TODO Auto-generated method stub
-		return false;
-	}
+	//<end> static find C.R.U.D METHODS <end>
+	//===================================
 }
 
 

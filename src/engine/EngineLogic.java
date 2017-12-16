@@ -1,22 +1,22 @@
 package engine;
 
 import java.util.*;
+import java.util.Map.Entry;
 
-import db.DBHandler;
-import db.DatabaseHandler;
+import db.*;
 
-public static class EngineLogic {
+public class EngineLogic {
 	
 	
-	public void HandleEvent(Event evnt)
+	public void HandleEvent(Event i_event)
 	{
-		DBHandler DB = DB.getInstance();
-		LinkedList<Scenario> scenarios = DB.getScenarios(evnt);
+		DBHandler DB = DBHandler.getInstance();
+		LinkedList<Scenario> scenarios = DB.getScenariosByEvent(i_event);
 		for(Scenario s:scenarios)
 		{
-			Event curEvent = s.getEventById(evnt.getId());
+			Event curEvent = s.getEventById(i_event.getId());
 			curEvent.setTrigger(true);
-			if(CheckScenarioTriggers(s))
+			if(isScenarioAwaken(s))
 			{
 				activateActions(s);
 			}
@@ -24,21 +24,23 @@ public static class EngineLogic {
 		
 	}
 	
-	private void activateActions(Scenario s) {
+	private void activateActions(Scenario i_scenario) {
 		// TODO Auto-generated method stub
 		
 	}
 
-	private boolean CheckScenarioTriggers(Scenario scnrio)
+	private boolean isScenarioAwaken(Scenario i_scenario)
 	{
-		Iterator<Event> itr = scnrio.getEvents();
+		Iterator<Entry<Short, Event>> itr = i_scenario.getEvents();
+		boolean isAwakeRes = true;
+		
 		while(itr.hasNext())
 		{
-			Event curEvent = itr.next();
-			if(!curEvent.getTriggered())
-				return false;
+			isAwakeRes&=itr.next().getValue().getTrigger();
+			if(!isAwakeRes)
+				break;
 		}
-		return true;
+		return isAwakeRes;
 	}
 }
 

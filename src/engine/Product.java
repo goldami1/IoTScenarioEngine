@@ -3,17 +3,17 @@ package engine;
 import java.util.*;
 
 public class Product {
-	short vendor_id;
-	String name,picURL;
-	boolean events_stat, actions_stat;
-	LinkedList<Event> eventsList;
-	LinkedList<Event> actionsList;
+	private short id, vendor_id;
+	private String name,picURL;
+	private boolean events_stat, actions_stat;
+	private LinkedList<Event> eventsList;
+	private LinkedList<Event> actionsList;
 	
 	public Product()
 	{
 		eventsList = new LinkedList<Event>();
 		actionsList = new LinkedList<Event>();
-		vendor_id=-1;
+		id=vendor_id=-1;
 		name = picURL = null;
 		events_stat = actions_stat = false;
 	}
@@ -50,6 +50,12 @@ public class Product {
 			actions_stat = true;
 		actionsList.add(i_actionToAdd);
 		return this;
+	}
+	
+	//getters
+	public short getID()
+	{
+		return id;
 	}
 	
 }
