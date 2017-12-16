@@ -10,7 +10,7 @@
 	<link rel="stylesheet" href="style.css">
 </head>
 <body>
-		<form action="../../../IoT_Proj_ScenarioEngine/login" method="post" id="log_sign_form" class="center">
+		<form action="../../login" method="post" id="log_sign_form" class="center">
 				<header>
 					<h1>Scenario Engine</h1>
 					<p>Welcome back,<br>sign in to continue.</p>

@@ -16,10 +16,10 @@ import web.model.LoginService;
 public class LoginServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	
-	
+
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		PrintWriter writer  = response.getWriter();
-		writer.println("asdasdasda");
+		writer.println("Get ?");
 	}
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
@@ -27,7 +27,7 @@ public class LoginServlet extends HttpServlet {
 		
 		String username;
 		String password;
-		System.out.print("er");
+
 		username = request.getParameter("username");
 		password = request.getParameter("password");
 		
