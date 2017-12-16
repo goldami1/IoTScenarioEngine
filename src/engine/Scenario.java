@@ -66,4 +66,14 @@ public class Scenario{
 		//return this.actionsToHandle.listIterator();
 	}
 	
+	public short getID()
+	{
+		return id;
+	}
+	
+	public String getName()
+	{
+		return name;
+	}
+	
 }

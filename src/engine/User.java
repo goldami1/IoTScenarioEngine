@@ -50,10 +50,16 @@ public abstract class User implements IUser
 	}
 	
 	//Methods
-	public User setUserName(String i_userName) 
+	public User setUserName(String i_userName) throws Exception 
 	{
 		boolean isTaken = true;
-		isTaken = DBHandler.isUsernameAvailable(i_userName);
+		try 
+		{
+			isTaken = DBHandler.getInstance().isUsernameAvailable(i_userName);
+		} catch (Exception e)
+		{
+			throw new Exception("There's a problem with setUserName in User", e);
+		}
 
 		if (!isTaken) 
 		{
@@ -62,13 +68,20 @@ public abstract class User implements IUser
 
 		return this;
 	}
-	public User setPassword(String i_password) 
+	public User setPassword(String i_password) throws Exception
 	{
 		boolean isExists = false;
 		if (userName != null)
 		{
-			isExists = DBHandler.isUsernameAvailable(userName);
-
+			try
+			{
+			isExists = DBHandler.getInstance().isUsernameAvailable(userName);
+			}
+			catch(Exception e)
+			{
+				throw new Exception("There's a problem with setPassword in User", e);
+			}
+			
 			if (isExists) 
 			{
 				password = i_password;

@@ -19,5 +19,15 @@ public class Vendor extends User implements IUser {
 	public void addProduct(Product i_Product)
 	{
 		products.add(i_Product);
+	} 
+	
+	public String getDescription()
+	{
+		return description;
+	}
+	
+	public String getLogoURL()
+	{
+		return logoPicURL;
 	}
 }
