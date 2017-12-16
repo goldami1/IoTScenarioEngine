@@ -36,7 +36,7 @@ public class DBHandler implements IDBHandler
 	public boolean userConnectionAuth(String i_Username, String i_UserPassword) throws Exception
 	{
 		Connection connection = pool.getConnection();
-		String sql = "select user_name, user_password from CUSTOMERS, VENDORS where user_name = ? and user_password =?";
+		String sql = "SELECT user_name, user_password FROM CUSTOMERS WHERE user_name= ? and user_password= ? UNION SELECT user_name, user_password FROM VENDORS WHERE user_name= ? and user_password= ?;";
 		boolean flag = false;
 		
 		try 
@@ -44,6 +44,8 @@ public class DBHandler implements IDBHandler
 			PreparedStatement queryingStatement = connection.prepareStatement(sql);
 			queryingStatement.setString(1, i_Username);
 			queryingStatement.setString(2, i_UserPassword);
+			queryingStatement.setString(3, i_Username);
+			queryingStatement.setString(4, i_UserPassword);
 			ResultSet queryResult = queryingStatement.executeQuery();
 			if (!queryResult.next()) 
 			{
@@ -88,16 +90,14 @@ public class DBHandler implements IDBHandler
 		// TODO Auto-generated method stub		
 		return true;
 	}
-	
-	public boolean addCustomer(String i_firstName, String i_lastName, String i_userName, String i_userPassword,
-			String i_email)
+  
+	public boolean addCustomer(String i_firstName, String i_lastName, String i_userName, String i_userPassword, String i_email) 
 	{
 		// TODO Auto-generated method stub
 		return true;
 	}
 	
-	public boolean addVendor(String i_vendorName, String i_userName, String i_userPassword, String i_email,
-			String i_vendorDescription, String i_vendorLogoPic) 
+	public void addVendor(String i_vendorName, String i_userName, String i_userPassword, String i_email, String i_vendorDescription, String i_vendorLogoPic) 
 	{
 		// TODO Auto-generated method stub
 		return true;
@@ -105,25 +105,27 @@ public class DBHandler implements IDBHandler
 	//<end> ADD C.R.U.D METHODS <end>
 	//===================================
 	
+  
 	//===================================
 	//<begin> get C.R.U.D METHODS <begin>
 	public LinkedList<Scenario> getScenariosByEvent(Event i_event)
-	{
-		// TODO Auto-generated method stub
+  {
+  	// TODO Auto-generated method stub
 		return new LinkedList<Scenario>();
-	}
+  }
 	//<end> get C.R.U.D METHODS <end>
 	//===================================
 	
+  
 	//===================================
 	//<begin> static find C.R.U.D METHODS <begin>
 	public static boolean isUsernameAvailable(String i_userName)
-	{
-		// TODO Auto-generated method stub
+  {
+  	// TODO Auto-generated method stub
 		return true;
-	}
+  }
 	
-	public static boolean isUserExist(String i_Username) 
+  public static boolean isUserExist(String i_Username) 
 	{
 		// TODO Auto-generated method stub
 		return false;
