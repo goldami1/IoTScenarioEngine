@@ -15,4 +15,15 @@ public class Device {
 		DBHandler db = DBHandler.getInstance();
 		db.addDevice(this);
 	}
+	
+	//Getters&Setters
+	public short getProductID()
+	{
+		return product_id;
+	}
+	
+	public short getCustomerID()
+	{
+		return customer_id;
+	}
 }

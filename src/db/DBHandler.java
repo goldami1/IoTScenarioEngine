@@ -50,7 +50,7 @@ public class DBHandler implements IDBHandler
 			if (!queryResult.next()) 
 			{
 				throw new Exception("User info not found in DB exception!");
-		}
+			}
 			//	check if the password we got from the ResultSet equals to the password we got in this method:
 				if (queryResult.getString(2).equals(i_UserPassword)) 
 				{
@@ -61,7 +61,7 @@ public class DBHandler implements IDBHandler
 					flag= false;
 					throw new Exception("The password incorrect exception!");
 				}
-		} 
+		}
 		catch (SQLException e) 
 		{
 			// TODO Auto-generated catch block
@@ -81,7 +81,24 @@ public class DBHandler implements IDBHandler
 	//<begin> ADD C.R.U.D METHODS <begin>
 	public boolean addDevice(Device i_dev)
 	{
-		// TODO Auto-generated method stub
+		Connection connection= pool.getConnection();
+		String sql = "insert into devices(product_id, customer_id) values(?,?);";
+		try 
+		{
+			PreparedStatement queryingStatement= connection.prepareStatement(sql);
+			queryingStatement.setShort(1, i_dev.getProductID());
+			queryingStatement.setShort(2, i_dev.getCustomerID());
+			queryingStatement.executeUpdate();
+		} 
+		catch (SQLException e) 
+		{
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		finally 
+		{
+			pool.returnConnection(connection);	
+		}
 		return true;
 	}
 	
@@ -119,16 +136,35 @@ public class DBHandler implements IDBHandler
   
 	//===================================
 	//<begin> static find C.R.U.D METHODS <begin>
-	public static boolean isUsernameAvailable(String i_userName)
-  {
-  	// TODO Auto-generated method stub
-		return true;
-  }
-	
-  public static boolean isUserExist(String i_Username) 
+	public boolean isUsernameAvailable(String i_userName) throws Exception
 	{
-		// TODO Auto-generated method stub
-		return false;
+		Connection connection = pool.getConnection();
+		String sql = "SELECT user_name FROM CUSTOMERS WHERE user_name= ? UNION SELECT user_name FROM VENDORS WHERE user_name=? ;";
+		boolean flag = false;
+		
+		try 
+		{
+			PreparedStatement queryingStatement = connection.prepareStatement(sql);
+			queryingStatement.setString(1, i_userName);
+			queryingStatement.setString(2, i_userName);
+			ResultSet queryResult = queryingStatement.executeQuery();
+			if (!queryResult.next())
+			{
+				throw new Exception("User info not found in DB exception!");
+			}
+
+		} 
+		catch (SQLException e) 
+		{
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		finally 
+		{
+			pool.returnConnection(connection);
+		}
+
+		return flag;
 	}
 	//<end> static find C.R.U.D METHODS <end>
 	//===================================
