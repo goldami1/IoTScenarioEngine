@@ -4,16 +4,19 @@ import db.DBHandler;
 
 public class LoginService {
 
-	public boolean authenticate(String username, String password) {
+	public boolean authenticate(String username, String password) 
+	{
 		
 			DBHandler db = DBHandler.getInstance();
 			
 			boolean isOk = false;
 			
-			try {
+			try
+			{
 				isOk = db.userConnectionAuth(username, password);
-			} catch (Exception e) {
-
+			} 
+			catch (Exception e) 
+			{
 				e.printStackTrace();
 			}
 			

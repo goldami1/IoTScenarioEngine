@@ -36,7 +36,8 @@ public class DBHandler implements IDBHandler
 	
 	//===================================
 	//<begin> DB connection METHODS <begin>
-	public boolean userConnectionAuth(User i_User) throws Exception
+	
+	public boolean userConnectionAuth(String i_username, String i_password) throws Exception
 	{
 		Connection connection = pool.getConnection();
 		String sql = "SELECT user_name, user_password FROM CUSTOMERS WHERE user_name= ? and user_password= ? UNION SELECT user_name, user_password FROM VENDORS WHERE user_name= ? and user_password= ?;";
@@ -45,17 +46,17 @@ public class DBHandler implements IDBHandler
 		try 
 		{
 			PreparedStatement queryingStatement = connection.prepareStatement(sql);
-			queryingStatement.setString(1, i_User.getUsername());
-			queryingStatement.setString(2, i_User.getPassword());
-			queryingStatement.setString(3, i_User.getUsername());
-			queryingStatement.setString(4, i_User.getPassword());
+			queryingStatement.setString(1, i_username);
+			queryingStatement.setString(2, i_password);
+			queryingStatement.setString(3, i_username);
+			queryingStatement.setString(4, i_password);
 			ResultSet queryResult = queryingStatement.executeQuery();
 			if (!queryResult.next()) 
 			{
 				throw new Exception("User info not found in DB exception!");
 			}
 			//	check if the password we got from the ResultSet equals to the password we got in this method:
-				if (queryResult.getString(2).equals(i_User.getPassword())) 
+				if (queryResult.getString(2).equals(i_password)) 
 				{
 					flag= true;
 				}
