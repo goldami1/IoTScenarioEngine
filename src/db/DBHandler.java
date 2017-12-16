@@ -97,7 +97,7 @@ public class DBHandler implements IDBHandler
 		return true;
 	}
 	
-	public void addVendor(String i_vendorName, String i_userName, String i_userPassword, String i_email, String i_vendorDescription, String i_vendorLogoPic) 
+	public boolean addVendor(String i_vendorName, String i_userName, String i_userPassword, String i_email, String i_vendorDescription, String i_vendorLogoPic) 
 	{
 		// TODO Auto-generated method stub
 		return true;
