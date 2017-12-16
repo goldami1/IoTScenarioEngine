@@ -1,5 +1,6 @@
 package db;
 
+import engine.Action;
 import engine.Device;
 import engine.Event;
 import engine.Scenario;
@@ -109,12 +110,13 @@ public class DBHandler implements IDBHandler
 	public boolean addScenario(Scenario i_Scenario)
 	{
 		Connection connection= pool.getConnection();
-		String sql = "insert into devices(product_id, customer_id) values(?,?);";
+		String sql = "insert into SCENARIOS(customer_id, scenario_name, scenario_description) values(?,?,?);";
 		try 
 		{
 			PreparedStatement queryingStatement= connection.prepareStatement(sql);
-			queryingStatement.setShort(1, i_dev.getProductID());
-			queryingStatement.setShort(2, i_dev.getCustomerID());
+			queryingStatement.setString(1, i_Scenario.getCustomerID());
+			queryingStatement.setString(2, i_Scenario.getName());
+			queryingStatement.setString(3, i_Scenario.getDescription());
 			queryingStatement.executeUpdate();
 		} 
 		catch (SQLException e) 
@@ -131,13 +133,54 @@ public class DBHandler implements IDBHandler
   
 	public boolean addCustomer(String i_firstName, String i_lastName, String i_userName, String i_userPassword, String i_email) 
 	{
-		// TODO Auto-generated method stub
+		Connection connection= pool.getConnection();
+		String sql = "insert into CUSTOMERS(first_name, last_name, user_name, user_password, email) values(?,?,?,?,?);";
+		try 
+		{
+			PreparedStatement queryingStatement= connection.prepareStatement(sql);
+			queryingStatement.setString(1, i_firstName);
+			queryingStatement.setString(2, i_lastName);
+			queryingStatement.setString(3, i_userName);
+			queryingStatement.setString(4, i_userPassword);
+			queryingStatement.setString(5, i_email);
+			queryingStatement.executeUpdate();
+		} 
+		catch (SQLException e) 
+		{
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		finally 
+		{
+			pool.returnConnection(connection);	
+		}
 		return true;
 	}
 	
 	public boolean addVendor(String i_vendorName, String i_userName, String i_userPassword, String i_email, String i_vendorDescription, String i_vendorLogoPic) 
 	{
-		// TODO Auto-generated method stub
+		Connection connection= pool.getConnection();
+		String sql = "insert into VENDORS(vendor_name, user_name, user_password, email, vendor_description, vendor_logo_pic) values(?,?,?,?,?,?);";
+		try 
+		{
+			PreparedStatement queryingStatement= connection.prepareStatement(sql);
+			queryingStatement.setString(1, i_vendorName);
+			queryingStatement.setString(2, i_userName);
+			queryingStatement.setString(3, i_userPassword);
+			queryingStatement.setString(4, i_email);
+			queryingStatement.setString(5, i_vendorDescription);
+			queryingStatement.setString(6, i_vendorLogoPic);
+			queryingStatement.executeUpdate();
+		} 
+		catch (SQLException e) 
+		{
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		finally 
+		{
+			pool.returnConnection(connection);	
+		}
 		return true;
 	}
 	//<end> ADD C.R.U.D METHODS <end>
