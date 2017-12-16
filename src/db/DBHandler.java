@@ -1,7 +1,9 @@
 package db;
 
-import utils.*;
-import engine.*;
+import engine.Device;
+import engine.Event;
+import engine.Scenario;
+import engine.User;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -9,6 +11,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.*;
+
 
 public class DBHandler implements IDBHandler 
 {
@@ -33,7 +36,7 @@ public class DBHandler implements IDBHandler
 	
 	//===================================
 	//<begin> DB connection METHODS <begin>
-	public boolean userConnectionAuth(String i_Username, String i_UserPassword) throws Exception
+	public boolean userConnectionAuth(User i_User) throws Exception
 	{
 		Connection connection = pool.getConnection();
 		String sql = "SELECT user_name, user_password FROM CUSTOMERS WHERE user_name= ? and user_password= ? UNION SELECT user_name, user_password FROM VENDORS WHERE user_name= ? and user_password= ?;";
@@ -42,17 +45,17 @@ public class DBHandler implements IDBHandler
 		try 
 		{
 			PreparedStatement queryingStatement = connection.prepareStatement(sql);
-			queryingStatement.setString(1, i_Username);
-			queryingStatement.setString(2, i_UserPassword);
-			queryingStatement.setString(3, i_Username);
-			queryingStatement.setString(4, i_UserPassword);
+			queryingStatement.setString(1, i_User.getUsername());
+			queryingStatement.setString(2, i_User.getPassword());
+			queryingStatement.setString(3, i_User.getUsername());
+			queryingStatement.setString(4, i_User.getPassword());
 			ResultSet queryResult = queryingStatement.executeQuery();
 			if (!queryResult.next()) 
 			{
 				throw new Exception("User info not found in DB exception!");
 			}
 			//	check if the password we got from the ResultSet equals to the password we got in this method:
-				if (queryResult.getString(2).equals(i_UserPassword)) 
+				if (queryResult.getString(2).equals(i_User.getPassword())) 
 				{
 					flag= true;
 				}
@@ -104,7 +107,24 @@ public class DBHandler implements IDBHandler
 	
 	public boolean addScenario(Scenario i_Scenario)
 	{
-		// TODO Auto-generated method stub		
+		Connection connection= pool.getConnection();
+		String sql = "insert into devices(product_id, customer_id) values(?,?);";
+		try 
+		{
+			PreparedStatement queryingStatement= connection.prepareStatement(sql);
+			queryingStatement.setShort(1, i_dev.getProductID());
+			queryingStatement.setShort(2, i_dev.getCustomerID());
+			queryingStatement.executeUpdate();
+		} 
+		catch (SQLException e) 
+		{
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		finally 
+		{
+			pool.returnConnection(connection);	
+		}
 		return true;
 	}
   
@@ -168,4 +188,6 @@ public class DBHandler implements IDBHandler
 	}
 	//<end> static find C.R.U.D METHODS <end>
 	//===================================
+
+
 }
