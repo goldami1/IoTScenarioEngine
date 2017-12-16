@@ -17,7 +17,7 @@ public class DBHandler implements IDBHandler
 	public boolean userConnectionAuth(String i_Username, String i_UserPassword) throws Exception
 	{
 		Connection connection = pool.getConnection();
-		String sql = "select user_name, user_password from CUSTOMERS, VENDORS where user_name = ? and user_password =?";
+		String sql = "SELECT user_name, user_password FROM CUSTOMERS WHERE user_name= ? and user_password= ? UNION SELECT user_name, user_password FROM VENDORS WHERE user_name= ? and user_password= ?;";
 		boolean flag = false;
 		
 		try 
@@ -25,6 +25,8 @@ public class DBHandler implements IDBHandler
 			PreparedStatement queryingStatement = connection.prepareStatement(sql);
 			queryingStatement.setString(1, i_Username);
 			queryingStatement.setString(2, i_UserPassword);
+			queryingStatement.setString(3, i_Username);
+			queryingStatement.setString(4, i_UserPassword);
 			ResultSet queryResult = queryingStatement.executeQuery();
 			if (!queryResult.next()) 
 			{
