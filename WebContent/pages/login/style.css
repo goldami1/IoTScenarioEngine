@@ -201,7 +201,7 @@ svg:not(:root) {
  * 1. Change the font styles in all browsers (opinionated).
  * 2. Remove the margin in Firefox and Safari.
  */
-button,
+button, .input--file__button,
 input,
 optgroup,
 select,
@@ -219,7 +219,7 @@ textarea {
  * Show the overflow in IE.
  * 1. Show the overflow in Edge.
  */
-button,
+button, .input--file__button,
 input {
   /* 1 */
   overflow: visible; }
@@ -228,7 +228,7 @@ input {
  * Remove the inheritance of text transform in Edge, Firefox, and IE.
  * 1. Remove the inheritance of text transform in Firefox.
  */
-button,
+button, .input--file__button,
 select {
   /* 1 */
   text-transform: none; }
@@ -238,17 +238,17 @@ select {
  *    controls in Android 4.
  * 2. Correct the inability to style clickable types in iOS and Safari.
  */
-button,
+button, .input--file__button,
 html [type="button"],
 [type="reset"],
 [type="submit"] {
-  -webkit-appearance: button;
+  -webkit-appearance: none;
   /* 2 */ }
 
 /**
  * Remove the inner border and padding in Firefox.
  */
-button::-moz-focus-inner,
+button::-moz-focus-inner, .input--file__button::-moz-focus-inner,
 [type="button"]::-moz-focus-inner,
 [type="reset"]::-moz-focus-inner,
 [type="submit"]::-moz-focus-inner {
@@ -258,7 +258,7 @@ button::-moz-focus-inner,
 /**
  * Restore the focus styles unset by the previous rule.
  */
-button:-moz-focusring,
+button:-moz-focusring, .input--file__button:-moz-focusring,
 [type="button"]:-moz-focusring,
 [type="reset"]:-moz-focusring,
 [type="submit"]:-moz-focusring {
@@ -346,7 +346,7 @@ textarea {
  * 2. Change font properties to `inherit` in Safari.
  */
 ::-webkit-file-upload-button {
-  -webkit-appearance: button;
+  -webkit-appearance: none;
   /* 1 */
   font: inherit;
   /* 2 */ }
@@ -386,17 +386,21 @@ template {
 /**
  * Add the correct display in IE 10-.
  */
+* {
+  box-sizing: border-box; }
+
 [hidden] {
   display: none; }
 
 html {
   height: 100%;
   background-image: linear-gradient(to bottom right, #f7f7f7 0%, #C9D0E1 100%);
+  background-attachment: fixed;
   font-family: "Roboto", sans-serif;
   font-size: 14px;
   color: #727895; }
 
-input, button {
+input, button, .input--file__button {
   padding: 0 14px;
   line-height: 44px;
   border-radius: 4px;
@@ -412,7 +416,7 @@ input {
   input::placeholder {
     color: #C9D0E1; }
 
-button {
+button, .input--file__button {
   font-weight: bold;
   cursor: pointer;
   text-align: center;
@@ -422,14 +426,26 @@ button {
 label {
   display: inline-block; }
 
+a {
+  color: inherit;
+  font-weight: bold;
+  text-decoration: none; }
+  a:hover {
+    color: black; }
+
+h1 {
+  margin: 40px auto; }
+
 .input {
-  margin-top: 20px; }
+  margin-top: 10px; }
   .input__label {
     text-transform: uppercase;
     color: #A5ABC5;
     font-size: 12px;
     font-weight: 700;
     padding: 10px; }
+  .input--file input[type="file"] {
+    display: none; }
 
 .button--blue {
   background: #0880ff;
@@ -439,50 +455,72 @@ label {
     background: #228dff;
     border: 1px solid #0880ff; }
 
-#log_sign_form input {
+.toggle-set__input {
+  display: none; }
+  .toggle-set__input:checked + label {
+    background: #C9D0E1;
+    color: white;
+    box-shadow: none; }
+.toggle-set__label {
+  color: #727895;
+  background: #f7f7f7;
+  line-height: 44px;
+  font-weight: bold;
+  float: left;
+  margin-bottom: 30px;
+  display: inline-block;
+  box-sizing: border-box;
+  width: 50%;
+  text-align: center;
+  border-top: 1px #A5ABC5 solid;
+  border-left: 1px #A5ABC5 solid;
+  border-bottom: 1px #A5ABC5 solid; }
+  .toggle-set__label:hover {
+    cursor: pointer; }
+  .toggle-set__label:first-of-type {
+    border-radius: 4px 0 0 4px; }
+  .toggle-set__label:last-of-type {
+    border-radius: 0 4px 4px 0;
+    border-right: 1px solid #A5ABC5; }
+
+.full-width {
   width: 100%; }
 
-#log_sign_form {
+.is-hidden {
+  display: none; }
+
+.margin-auto {
+  margin: 0 auto; }
+
+.text--light {
+  color: #A5ABC5; }
+  .text--light a:hover {
+    color: #727895; }
+.text--center {
+  text-align: center; }
+
+form {
   border: 1px solid #C9D0E1;
   margin: auto;
-  width: 260px;
+  width: 360px;
   background: white;
   border-radius: 10px;
   position: relative;
   top: 80px;
   padding: 30px 50px 20px;
   box-shadow: 0 1px 20px rgba(0, 0, 0, 0.05); }
+  form input {
+    width: 100%; }
 
-#button_submit {
-  margin-right: 0 !important;
-  width: 100%; }
-
-#log_sign_form .button_submit {
-  margin-top: 20px; }
-
-#log_sign_form footer {
-  margin-top: 60px;
-  text-align: center; }
-
-#log_sign_form header h1 {
-  margin: 40px auto; }
-
-#log_sign_form a {
-  color: #A5ABC5;
-  font-weight: bold;
-  text-decoration: none; }
-  #log_sign_form a:hover {
-    color: #727895; }
-
-#log_sign_form p {
-  color: #A5ABC5; }
-
-#log_sign_form header {
+button[type="submit"], [type="submit"].input--file__button {
+  margin-top: 50px;
   margin-bottom: 60px; }
 
-#log_sign_form header p {
-  line-height: 1.4;
-  letter-spacing: 1.5px;
-  font-size: 24px; }
+header {
+  margin-bottom: 60px; }
+  header p {
+    line-height: 1.4;
+    letter-spacing: 1.5px;
+    font-size: 24px; }
 
 /*# sourceMappingURL=style.css.map */

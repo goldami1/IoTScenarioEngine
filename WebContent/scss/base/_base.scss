@@ -39,3 +39,16 @@ button{
 label{
 	display: inline-block;
 }
+
+a{
+	color: inherit;
+	font-weight: bold;
+	text-decoration: none;
+	&:hover{
+		color: black;
+	}
+}
+
+h1{
+	margin: 40px auto;
+}

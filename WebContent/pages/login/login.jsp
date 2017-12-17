@@ -10,10 +10,10 @@
 	<link rel="stylesheet" href="style.css">
 </head>
 <body>
-		<form action="../../login" method="post" id="log_sign_form" class="center">
+		<form action="../../login" method="post">
 				<header>
 					<h1>Scenario Engine</h1>
-					<p>Welcome back,<br>sign in to continue.</p>
+					<p class="text--light">Welcome back,<br>sign in to continue.</p>
 				</header>
 				<div class="input">
 					<label class="input__label">Email</label>
@@ -23,8 +23,8 @@
 					<label class="input__label">Password</label>
 					<input type="password"  placeholder="Password" name="password" >
 				</div>
-					<button type="submit"  id="button_submit" class="button--blue input">Log in</button>
-				<footer>
+					<button type="submit"  class="button--blue input full-width">Log in</button>
+				<footer class="text--light text--center">
 					<p>need an account ? <a href="signup.html" >Sign up now</a></p>
 				</footer>
 		</form>

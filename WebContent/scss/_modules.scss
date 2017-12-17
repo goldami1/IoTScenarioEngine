@@ -1,5 +1,5 @@
 .input{
-	margin-top : 20px;
+	margin-top : 10px;
 	&__label{
 		text-transform: uppercase;
 		color : $text--light;
@@ -7,7 +7,17 @@
 		font-weight : 700;
 		padding : 10px;
 	}
+
+	&--file{
+		input[type="file"] {
+			display: none;
+		}
+		&__button{
+			@extend button;			
+		}
+	}
 }
+
 
 .button{
 	&--blue{
@@ -32,6 +42,7 @@
 	}
 
 	&__label{
+		// border:1px solid $grey_2;
 		color: $text;
 		background: $grey_1;
 		line-height: 44px;
@@ -39,8 +50,13 @@
 		float: left;
 		margin-bottom: 30px;
 		display: inline-block;
+		box-sizing : border-box;
 		width: 50%;
-		text-align: center;		
+		text-align: center;
+
+		border-top : 1px $grey_4 solid ;
+		border-left : 1px $grey_4 solid ;
+		border-bottom : 1px $grey_4 solid ;
 		&:hover{
 			cursor: pointer;			
 		}
@@ -48,7 +64,8 @@
 		 	border-radius: 4px 0 0 4px;	
 		}
 		&:last-of-type{
-			border-radius: 0 4px 4px 0;			
+			border-radius: 0 4px 4px 0;
+			border-right: 1px solid $grey_4;			
 		}
 	}
 

@@ -1,16 +1,12 @@
 @import '../../scss/config';
 @import '../../scss/base/all';
 @import '../../scss/_modules';
+@import '../../scss/_modifiers';
 
 
-#log_sign_form input{
-	width: 100%;
-}
-
-
-#log_sign_form{
+form{
 	margin: auto;
-	width : 260px;
+	width : 360px;
 	background: white;
 	border-radius: 10px;
 	border: 1px solid $grey_3;
@@ -18,63 +14,24 @@
 	top: 80px;
 	padding: 30px 50px 20px;
 	box-shadow: 0 1px 20px rgba(0, 0, 0, 0.05);
-}
 
-#button_submit{
-	font-weight: bold;
-	margin-right: 0!important;
-	width: 100%;
-
-}
-
-
-
-#log_sign_form .button_submit{
-	margin-top: 20px;
-}
-
-
-#log_sign_form footer{
-	margin-top: 60px;
-	text-align: center;
-}
-
-#log_sign_form header h1{
-	margin: 40px auto;
-}
-
-#log_sign_form a{
-	color: $text--light;
-	font-weight: bold;
-	text-decoration: none;
-	&:hover{
-		color: $text;
+	input{
+		width: 100%;
 	}
 }
 
-
-
-#log_sign_form p{
-	color: $text--light;
-}
-
-#log_sign_form header {
+button[type="submit"]{
+	margin-top: 50px ;
 	margin-bottom: 60px;
 }
 
-#log_sign_form header p{
-	line-height: 1.4;
-	letter-spacing: 1.5px;
-	font-size: 24px;
-}
-
-
-#log_sign_form header {
-	margin-bottom: 20px;
-}
-
-#log_sign_form header p{
-	font-size: 18px;
+header {
+	margin-bottom: 60px;
+	p{
+		line-height: 1.4;
+		letter-spacing: 1.5px;
+		font-size: 24px;
+	}
 }
 
 
