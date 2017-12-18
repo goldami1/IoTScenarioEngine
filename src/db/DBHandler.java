@@ -1,24 +1,24 @@
 package db;
 
+import java.math.BigDecimal;
 import utils.*;
 import engine.*;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.sql.*;
 import java.util.*;
+import java.util.Map.Entry;
 
 public class DBHandler implements IDBHandler 
 {
-	private ConnectionPool pool = ConnectionPool.getInstance();
-	//<begin> Basic Singleton implementation <begin>
-	private static DBHandler instance = null;
+	private static DBHandler instance;
+	private static Connection currSession;
+	private final static String k_driver = "com.mysql.jdbc.Driver";
+	private final static String k_userConnectionAuth = "SELECT user_name, user_password FROM CUSTOMERS WHERE user_name= ? and user_password= ? UNION SELECT user_name, user_password FROM VENDORS WHERE user_name= ? and user_password= ?;";
+	private final static String k_isUsernameAvailable = "SELECT user_name FROM CUSTOMERS WHERE user_name= ? UNION SELECT user_name FROM VENDORS WHERE user_name=? ;";
 	
 	protected DBHandler()
 	{
-		
+		instance = null;
+		currSession=null;
 	}
 	
 	public static DBHandler getInstance()
@@ -29,95 +29,149 @@ public class DBHandler implements IDBHandler
 		}
 		return instance;
 	}
-	//<end> Basic Singleton implementation <end>
 	
 	//===================================
 	//<begin> DB connection METHODS <begin>
-	public boolean userConnectionAuth(String i_Username, String i_UserPassword) throws Exception
+	private static Connection openConnection() throws Exception
 	{
-		Connection connection = pool.getConnection();
-		String sql = "SELECT user_name, user_password FROM CUSTOMERS WHERE user_name= ? and user_password= ? UNION SELECT user_name, user_password FROM VENDORS WHERE user_name= ? and user_password= ?;";
-		boolean flag = false;
+		try
+		{
+			String url = Constants.getDatabaseConnectionURL();
+			String username = Constants.getDatabaseUserName();
+			String password = Constants.getDatabasePassword();	
+			Class.forName(k_driver);
+				
+			Connection conn = DriverManager.getConnection(url, username, password);
+			
+			currSession = conn;
+			return conn;
+		} catch(Exception ex){System.out.println(ex);}
+			
+		return null;
+	}
+	
+	private static void closeConnection() throws SQLException
+	{
+		if(currSession!=null)
+		{
+			currSession.close();
+		}
+	}
+	
+	public boolean userConnectionAuth(String i_userName, String i_password) throws Exception
+	{
+		String sqlQuery = k_userConnectionAuth;
+		boolean flag = true;
 		
 		try 
 		{
-			PreparedStatement queryingStatement = connection.prepareStatement(sql);
-			queryingStatement.setString(1, i_Username);
-			queryingStatement.setString(2, i_UserPassword);
-			queryingStatement.setString(3, i_Username);
-			queryingStatement.setString(4, i_UserPassword);
-			ResultSet queryResult = queryingStatement.executeQuery();
-			if (!queryResult.next()) 
+			Connection connection = openConnection();
+			java.sql.PreparedStatement connectionStat  =connection.prepareStatement(sqlQuery);
+			connectionStat.setString(1, i_userName);
+			connectionStat.setString(2, i_password);
+			connectionStat.setString(3, i_userName);
+			connectionStat.setString(4, i_password);
+			ResultSet connectionRes = connectionStat.executeQuery();
+			
+			if (!connectionRes.next()) 
 			{
 				throw new Exception("User info not found in DB exception!");
 			}
-			//	check if the password we got from the ResultSet equals to the password we got in this method:
-				if (queryResult.getString(2).equals(i_UserPassword)) 
-				{
-					flag= true;
-				}
-				else
-				{
-					flag= false;
-					throw new Exception("The password incorrect exception!");
-				}
+			if (!connectionRes.getString(2).equals(i_password)) 
+			{
+				flag= false;
+				throw new Exception("The password incorrect exception!");
+			}
 		}
-		catch (SQLException e) 
-		{
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		finally 
-		{
-			pool.returnConnection(connection);
-		}
+		catch (SQLException e) {System.out.println(e);}
 
+		closeConnection();
 		return flag;
 	}
 	//<end> DB connection METHODS <end>
 	//===================================
-	
+
 	//===================================
 	//<begin> ADD C.R.U.D METHODS <begin>
 	public boolean addDevice(Device i_dev)
 	{
-		Connection connection= pool.getConnection();
-		String sql = "insert into devices(product_id, customer_id) values(?,?);";
-		try 
-		{
-			PreparedStatement queryingStatement= connection.prepareStatement(sql);
-			queryingStatement.setShort(1, i_dev.getProductID());
-			queryingStatement.setShort(2, i_dev.getCustomerID());
-			queryingStatement.executeUpdate();
-		} 
-		catch (SQLException e) 
-		{
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		finally 
-		{
-			pool.returnConnection(connection);	
-		}
-		return true;
+		return false;
 	}
 	
-	public boolean addScenario(Scenario i_Scenario)
+	public boolean addProduct(Product i_prod)		//NOT IMPLEMENTED YET
 	{
-		// TODO Auto-generated method stub		
+		//Continue implementation!
+		addProdsEve_Act(i_prod);
+		return false;
+	}
+	private boolean addProdsEve_Act(Product i_prod)	//NOT IMPLEMENTED YET
+	{
+		//Continue implementation!
+		return false;
+	}
+	
+	public boolean addScenario(Scenario i_scenario)
+	{	
 		return true;
 	}
   
-	public boolean addCustomer(String i_firstName, String i_lastName, String i_userName, String i_userPassword, String i_email) 
+	@SuppressWarnings("finally")
+	public boolean addCustomer(String i_firstName, String i_lastName, String i_userName, String i_userPassword, String i_email) throws Exception 
 	{
-		// TODO Auto-generated method stub
-		return true;
+		final String sqlQuery =	"insert into CUSTOMERS (first_name, last_name, user_name, user_password, email)"
+								+ "values ("
+								+"'"+i_firstName+"',"
+								+"'"+i_lastName+"',"
+								+"'"+i_userName+"',"
+								+"'"+i_userPassword+"',"
+								+"'"+i_email+"'"
+								+")";
+		
+		boolean flag = false;
+		
+		try 
+		{
+			Connection connection = openConnection();
+			java.sql.PreparedStatement insertStat  = connection.prepareStatement(sqlQuery);
+			insertStat.executeUpdate();
+			flag = true;
+		}
+		catch (SQLException e) {System.out.println(e);}
+		finally
+		{
+			closeConnection();
+			return flag;
+		}
 	}
 	
-	public boolean addVendor(String i_vendorName, String i_userName, String i_userPassword, String i_email, String i_vendorDescription, String i_vendorLogoPic) 
+	@SuppressWarnings("finally")
+	public boolean addVendor(String i_vendorName, String i_userName, String i_userPassword, String i_email, String i_vendorDescription, String i_vendorLogoPic) throws SQLException 
 	{
-		// TODO Auto-generated method stub
-		return true;
+		final String sqlQuery =	"insert into CUSTOMERS (i_vendorName, i_userName, i_userPassword, i_email, i_vendorDescription, i_vendorLogoPic)"
+				+ "values ("
+				+"'"+i_vendorName+"',"
+				+"'"+i_userName+"',"
+				+"'"+i_userPassword+"',"
+				+"'"+i_email+"',"
+				+"'"+i_vendorDescription+"',"
+				+"'"+i_vendorLogoPic+"'"
+				+")";
+
+		boolean flag = false;
+
+		try 
+		{
+				Connection connection = openConnection();
+				java.sql.PreparedStatement insertStat  = connection.prepareStatement(sqlQuery);
+				insertStat.executeUpdate();
+				flag = true;
+		}
+		catch (SQLException e) {System.out.println(e);}
+		finally
+		{
+			closeConnection();
+			return flag;
+		}
 	}
 	//<end> ADD C.R.U.D METHODS <end>
 	//===================================
@@ -126,10 +180,34 @@ public class DBHandler implements IDBHandler
 	//===================================
 	//<begin> get C.R.U.D METHODS <begin>
 	public LinkedList<Scenario> getScenariosByEvent(Event i_event)
-  {
+	{
   	// TODO Auto-generated method stub
 		return new LinkedList<Scenario>();
-  }
+	}
+	
+	public LinkedList<String> selectQ(String i_selectQ) throws Exception
+	{
+		Connection connection = openConnection();
+		List<Row> table = new ArrayList<Row>();
+		LinkedList<String> res = new LinkedList<String>();
+		StringBuilder rowBuilder = new StringBuilder();
+		PreparedStatement st = connection.prepareStatement(i_selectQ);
+		ResultSet rs = st.executeQuery();
+
+		Row.formTable(rs, table);
+
+		for (Row row : table)
+		{
+		    for (Entry<Object, Class> col: row.row)
+		    {
+		        rowBuilder.append((" > " + ((col.getValue()).cast(col.getKey()))));
+		    }
+		    res.add(rowBuilder.toString());
+		    rowBuilder = new StringBuilder();
+		}
+		
+		return res;
+	}
 	//<end> get C.R.U.D METHODS <end>
 	//===================================
 	
@@ -138,13 +216,13 @@ public class DBHandler implements IDBHandler
 	//<begin> static find C.R.U.D METHODS <begin>
 	public boolean isUsernameAvailable(String i_userName) throws Exception
 	{
-		Connection connection = pool.getConnection();
-		String sql = "SELECT user_name FROM CUSTOMERS WHERE user_name= ? UNION SELECT user_name FROM VENDORS WHERE user_name=? ;";
+		Connection connection = openConnection();
+		String sqlQuery = k_isUsernameAvailable;
 		boolean flag = false;
 		
 		try 
 		{
-			PreparedStatement queryingStatement = connection.prepareStatement(sql);
+			PreparedStatement queryingStatement = connection.prepareStatement(sqlQuery);
 			queryingStatement.setString(1, i_userName);
 			queryingStatement.setString(2, i_userName);
 			ResultSet queryResult = queryingStatement.executeQuery();
@@ -152,18 +230,10 @@ public class DBHandler implements IDBHandler
 			{
 				throw new Exception("User info not found in DB exception!");
 			}
-
 		} 
-		catch (SQLException e) 
-		{
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		finally 
-		{
-			pool.returnConnection(connection);
-		}
-
+		catch (SQLException e) {System.out.println(e);}
+		
+		closeConnection();
 		return flag;
 	}
 	//<end> static find C.R.U.D METHODS <end>

@@ -9,7 +9,7 @@ public class Customer extends User implements IUser {
 	private LinkedList<Device> devices;
 	private LinkedList<Scenario> customerScenarios;
 	
-	public Customer(User i_User) 
+	public Customer(User i_User) throws Exception 
 	{
 		super(i_User.getName(), i_User.getEmail(), i_User.getUserPicURL());
 		devices = new LinkedList<Device>();

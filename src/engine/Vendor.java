@@ -1,5 +1,6 @@
 package engine;
 
+import java.sql.SQLException;
 import java.util.*;
 import db.DBHandler;
 
@@ -8,7 +9,7 @@ public class Vendor extends User implements IUser {
 	private String description, logoPicURL;
 	private LinkedList<Product> products;
 	
-	public Vendor(User i_User)
+	public Vendor(User i_User) throws SQLException
 	{
 		super(i_User.getName(), i_User.getEmail(), i_User.getUserPicURL());
 		products = new LinkedList<Product>();
