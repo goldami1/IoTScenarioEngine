@@ -10,18 +10,42 @@ public class Scenario{
 	String name;
 	private Map<Short, Event> eventsToHappen;
 	private Map<Short, Action> actionsToHandle;
+	private List<ICase> cases;
 	
 	public Scenario()
 	{
 		this.eventsToHappen = new HashMap<Short, Event>();
 		this.actionsToHandle = new HashMap<Short, Action>();
 		name = null;
+		this.cases = new ArrayList<ICase>();
 	}
 	
+	public Scenario(String i_scenario)
+	{
+		this();
+		this.id = DBHandler.getInstance().getIdForScenario();
+		parseScenario(i_scenario);
+		
+	}
+
+	public Iterator<ICase> getCases()
+	{
+		return this.cases.iterator();
+	}
+	/*
 	public Scenario(String i_name)
 	{
 		this();
 		name = i_name;
+	}
+	*/
+	
+	private void parseScenario(String i_scenario)
+	{
+		/*
+		 * function: parsing String i_scenario representing scenario to a Scenario object.
+		 * note: should parse into ICases, which each one will have Events.
+		 */
 	}
 	
 	public void addAction(Action actionToAdd)
@@ -34,6 +58,7 @@ public class Scenario{
 		//this.eventsToHappen.add(eventToAdd);
 		eventsToHappen.put(eventToAdd.getId(), eventToAdd);
 	}
+	
 	
 	public void addScenarioToDB()
 	{
@@ -64,5 +89,6 @@ public class Scenario{
 	{
 		return name;
 	}
+	
 	
 }

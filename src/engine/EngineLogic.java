@@ -31,6 +31,23 @@ public class EngineLogic {
 
 	private boolean isScenarioAwaken(Scenario i_scenario)
 	{
+		boolean isAwakeRes = true;
+		Iterator<ICase> itr = i_scenario.getCases();
+		while(itr.hasNext())
+		{
+			ICase currentCase = itr.next();
+			boolean caseResult = currentCase.calculateCase();
+			if(currentCase.getLogicOperator() == '|')
+			{
+				isAwakeRes |= caseResult;
+			}
+			else		//logicOperator = '&'
+			{
+				isAwakeRes &= caseResult;
+			}
+		}
+		return isAwakeRes;
+		/*
 		Iterator<Entry<Short, Event>> itr = i_scenario.getEvents();
 		boolean isAwakeRes = true;
 		
@@ -48,6 +65,7 @@ public class EngineLogic {
 			if(!isAwakeRes)
 				break;
 		}
+		*/
 		return isAwakeRes;
 	}
 }
