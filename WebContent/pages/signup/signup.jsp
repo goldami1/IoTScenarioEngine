@@ -9,7 +9,7 @@
 	<link rel="stylesheet" href="style.css">
 </head>
 <body>
-		<form action="../../signup" method="post">
+		<form action="../../signup" method="post" ">
 				<h1>Scenario Engine</h1>
 				<div class="input">
 					<label class="input__label">Select account type</label>
@@ -40,7 +40,7 @@
 					</div>
 					<div class="input">
 						<label class="input__label">Description</label>
-						<input type="text"  placeholder="Description" name="lastname" >
+						<input type="text"  placeholder="Description" name="description" >
 					</div>
 					<div class="input--file">
 						<label class="input__label">Logo</label>
@@ -51,10 +51,13 @@
 
 	
 
-				
+				<div class="input">
+					<label class="input__label">Username</label>
+					<input type="text"  placeholder="Username" name="username" >
+				</div>				
 				<div class="input">
 					<label class="input__label">Email</label>
-					<input type="text"  placeholder="Email" name="username" >
+					<input type="text"  placeholder="Email" name="email" >
 				</div>
 				<div class="input">
 					<label class="input__label">Password</label>

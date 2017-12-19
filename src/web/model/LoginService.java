@@ -6,7 +6,6 @@ public class LoginService {
 
 	public boolean authenticate(String username, String password) 
 	{
-		
 			DBHandler db = DBHandler.getInstance();
 			
 			boolean isOk = false;
