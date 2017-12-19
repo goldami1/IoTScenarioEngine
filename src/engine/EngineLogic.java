@@ -12,13 +12,13 @@ public class EngineLogic {
 	{
 		DBHandler DB = DBHandler.getInstance();
 		LinkedList<Scenario> scenarios = DB.getScenariosByEvent(i_event);
-		for(Scenario s:scenarios)
+		for(Scenario currentScenario:scenarios)
 		{
-			Event curEvent = s.getEventById(i_event.getId());
+			Event curEvent = currentScenario.getEventById(i_event.getId());
 			curEvent.setTrigger(true);
-			if(isScenarioAwaken(s))
+			if(isScenarioAwaken(currentScenario))
 			{
-				activateActions(s);
+				activateActions(currentScenario);
 			}
 		}
 		
@@ -36,7 +36,15 @@ public class EngineLogic {
 		
 		while(itr.hasNext())
 		{
-			isAwakeRes&=itr.next().getValue().getTrigger();
+			Event currentEvent = itr.next().getValue();
+			if(currentEvent.getLogicOperator() == '|')
+			{
+				isAwakeRes|=currentEvent.getTrigger();
+			}
+			else
+			{
+				isAwakeRes&=currentEvent.getTrigger();
+			}
 			if(!isAwakeRes)
 				break;
 		}

@@ -44,26 +44,15 @@ public class Scenario{
 	public Event getEventById(short id)
 	{
 		return eventsToHappen.get(id);
-		/*
-		Event res = null;
-		for(Event e:eventsToHappen)
-		{
-			if(e.getId() == id)
-				res = e;
-		}
-		return res;
-		*/
 	}
 	
 	public Iterator<Entry<Short, Event>> getEvents()
 	{
 		return eventsToHappen.entrySet().iterator();
-		//return this.eventsToHappen.listIterator();
 	}
 	public Iterator<Entry<Short, Action>> getActions()
 	{
 		return actionsToHandle.entrySet().iterator();
-		//return this.actionsToHandle.listIterator();
 	}
 	
 	public short getID()
