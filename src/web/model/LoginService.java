@@ -1,24 +1,27 @@
 package web.model;
 
 import db.DBHandler;
+import engine.User;
 
 public class LoginService {
 
-	public boolean authenticate(String username, String password) 
+	public User getUser(String username, String password) 
 	{
 			DBHandler db = DBHandler.getInstance();
 			
 			boolean isOk = false;
 			
+			User user = null;
+			
 			try
 			{
-				isOk = db.userConnectionAuth(username, password);
+				user = db.getUser(username, password);
 			} 
 			catch (Exception e) 
 			{
 				e.printStackTrace();
 			}
 			
-			return isOk;
+			return user;
 	}
 }

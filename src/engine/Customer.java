@@ -28,6 +28,12 @@ public class Customer extends User implements IUser {
 	{
 		customerScenarios.add(i_Scenario);
 	}
+
+	@Override
+	public boolean isEnduser() {
+		// TODO Auto-generated method stub
+		return false;
+	}
 	
 	
 	

@@ -9,6 +9,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import engine.User;
 import web.model.LoginService;
 
 
@@ -18,8 +19,7 @@ public class LoginServlet extends HttpServlet {
 	
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		PrintWriter writer  = response.getWriter();
-		writer.println("Get ?");
+//		response.sendRedirect("pages/login/login.jsp");
 	}
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
@@ -32,15 +32,21 @@ public class LoginServlet extends HttpServlet {
 		password = request.getParameter("password");
 		
 		LoginService loginService = new LoginService();
-		boolean result = loginService.authenticate(username, password);	
-		if	(result) {
-	//		response.sendRedirect("success.js");
-			writer.println("yay logged in");
+		User user = loginService.getUser(username, password);
+		
+		if	(user != null) {
+				request.getSession().setAttribute("user", user);
+			// TODO 
+			if	(user.isEnduser()) {
+				response.sendRedirect("/devices");
+			}else {
+					response.sendRedirect("/products");
+			}
 			return;
+			
 		}else {
-	//		request.getSession().setAttribute("isFailed",result);
-//			response.sendRedirect("login.jsp");
-			writer.println("fuck you");
+			request.setAttribute("error","Wrong user name or password");
+			request.getRequestDispatcher("/pages/login/login.jsp").forward(request, response);
 		}
 	}
 }

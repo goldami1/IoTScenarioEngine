@@ -10,6 +10,7 @@
 	<link rel="stylesheet" href="style.css">
 </head>
 <body>
+		<%=request.getAttribute("error")%>
 		<form action="../../login" method="post">
 				<header>
 					<h1>Scenario Engine</h1>

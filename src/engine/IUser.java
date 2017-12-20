@@ -7,4 +7,7 @@ public interface IUser {
 	public String getName();
 	public String getEmail();
 	public String getUserPicURL();
+	
+	//TODO:
+	public boolean isEnduser();
 }

@@ -1,4 +1,6 @@
-<!DOCTYPE html>
+<%@ page language="java" contentType="text/html; charset=ISO-8859-1"
+    pageEncoding="ISO-8859-1"%>
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
 	<title>Enduser</title>
@@ -61,7 +63,7 @@
 					<h3 class="form__header">Add device</h1>
 					<div class="input">
 						<label class="input__label full-width"> Vendor</label>
-						<select class="full-width">
+						<select class="full-width" name="vendor">
 							<option>Cow</option>
 							<option>Horse</option>
 							<option>Kangaroo</option>
@@ -77,7 +79,7 @@
 
 					<div class="input">
 						<label class="input__label full-width"> Product</label>
-						<select class="full-width" disabled>
+						<select class="full-width" disabled name="product">
 							<option disabled selected value> Choose vendor first</option>
 							<option>Fish</option>
 							<option>Bird</option>
@@ -87,7 +89,7 @@
 					</div>
 					<div class="input">
 						<label class="input__label full-width">Device ID </label>
-						<input type="text" align="right" class="full-width" placeholder="Device ID" name="firstname" >
+						<input type="text" align="right" class="full-width" placeholder="Device ID" name="deviceid" >
 					</div>
 					<button type="submit" class="input button--blue full-width" >Add device</button>
 				</form>	

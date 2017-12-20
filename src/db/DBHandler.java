@@ -238,4 +238,16 @@ public class DBHandler implements IDBHandler
 	}
 	//<end> static find C.R.U.D METHODS <end>
 	//===================================
+
+	@Override
+	public User getUser(String i_Username, String i_UserPassword) throws Exception {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public LinkedList<Device> getDevices(String i_Username) {
+		// TODO Auto-generated method stub
+		return null;
+	}
 }

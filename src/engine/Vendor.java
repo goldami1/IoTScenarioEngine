@@ -31,4 +31,10 @@ public class Vendor extends User implements IUser {
 	{
 		return logoPicURL;
 	}
+
+	@Override
+	public boolean isEnduser() {
+		// TODO Auto-generated method stub
+		return false;
+	}
 }
