@@ -19,7 +19,7 @@ public class LoginServlet extends HttpServlet {
 	
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-//		response.sendRedirect("pages/login/login.jsp");
+		request.getRequestDispatcher("/pages/login/login.jsp").forward(request,	 response);
 	}
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
@@ -38,9 +38,9 @@ public class LoginServlet extends HttpServlet {
 				request.getSession().setAttribute("user", user);
 			// TODO 
 			if	(user.isEnduser()) {
-				response.sendRedirect("/devices");
+				response.sendRedirect("/IoT_Proj_ScenarioEngine/devices");
 			}else {
-					response.sendRedirect("/products");
+					response.sendRedirect("/IoT_Proj_ScenarioEngine/products");
 			}
 			return;
 			

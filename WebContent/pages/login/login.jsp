@@ -7,18 +7,20 @@
 	<link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet">
 	<link href="https://fonts.googleapis.com/css?family=Karla:400,700|Montserrat:700" rel="stylesheet">
 	<link href="https://fonts.googleapis.com/css?family=Roboto:400,700" rel="stylesheet">
-	<link rel="stylesheet" href="style.css">
+	<link rel="stylesheet" type="text/css" href="pages/login/style.css">
 </head>
 <body>
-		<%=request.getAttribute("error")%>
-		<form action="../../login" method="post">
+		<%  String error = (String)request.getAttribute("error"); %>
+		
+	
+		<form action="${pageContext.request.contextPath}/login" method="post">
 				<header>
 					<h1>Scenario Engine</h1>
 					<p class="text--light">Welcome back,<br>sign in to continue.</p>
 				</header>
 				<div class="input">
-					<label class="input__label">Email</label>
-					<input type="text"  placeholder="Email" name="username" >
+					<label class="input__label">Username</label>
+					<input type="text"  placeholder="Username" name="username" >
 				</div>
 				<div class="input">
 					<label class="input__label">Password</label>
@@ -26,9 +28,12 @@
 				</div>
 					<button type="submit"  class="button--blue input full-width">Log in</button>
 				<footer class="text--light text--center">
+					<c:if test="${error != null}">
+    					<div class="message--error text--center"> ${error} </div>
+					</c:if>
 					<p>need an account ? <a href="signup.html" >Sign up now</a></p>
 				</footer>
 		</form>
-<script src="script.js"></script>
+<script src="pages/login/script.js"></script>
 </body>
 </html>

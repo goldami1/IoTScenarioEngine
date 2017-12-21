@@ -6,10 +6,10 @@
 	<link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet">
 	<link href="https://fonts.googleapis.com/css?family=Karla:400,700|Montserrat:700" rel="stylesheet">
 	<link href="https://fonts.googleapis.com/css?family=Roboto:400,700" rel="stylesheet">
-	<link rel="stylesheet" href="style.css">
+	<link rel="stylesheet" href="pages/signup/style.css">
 </head>
 <body>
-		<form action="../../signup" method="post" ">
+		<form action="${pageContext.request.contextPath}/signup" method="post" ">
 				<h1>Scenario Engine</h1>
 				<div class="input">
 					<label class="input__label">Select account type</label>
@@ -66,6 +66,9 @@
 				
 				<button type="submit" class="input button--blue full-width" >Sign up</button>
 				<footer class="text--light text--center">
+					<c:if test="${error != null}">
+    					<div class="message--error text--center"> ${error} </div>
+					</c:if>
 					<p >have an account ? <a  href="login.html" >Log in now</a></p>
 				</footer>
 		</form>

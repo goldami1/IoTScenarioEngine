@@ -522,5 +522,8 @@ header {
     line-height: 1.4;
     letter-spacing: 1.5px;
     font-size: 24px; }
-
+.message--error{
+	font-weight:bold;
+	color:red;
+}
 /*# sourceMappingURL=style.css.map */

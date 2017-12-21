@@ -25,12 +25,11 @@ public class SignupServlet extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
-		response.getWriter().append("Served at: ").append(request.getContextPath());
+		request.getRequestDispatcher("/pages/signup/signup.jsp").forward(request,	 response);
 	}
 	
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		PrintWriter writer  = response.getWriter();
+
 		
 		String username  = request.getParameter("username");
 		String password = request.getParameter("password");
@@ -46,9 +45,10 @@ public class SignupServlet extends HttpServlet {
 	    SignupService service = new SignupService();
 	    
 		if	(service.addUser(type,firstname,lastname,username,password,companyname,description,email,logo)) {
-			writer.println("yay logged in");
+			response.sendRedirect("/IoT_Proj_ScenarioEngine/login");
 		}else {
-			writer.println("fuck you");
+			request.setAttribute("error","Error");
+			request.getRequestDispatcher("/pages/signup/signup.jsp").forward(request, response);
 		}
 	   
 		
