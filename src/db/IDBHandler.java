@@ -22,6 +22,6 @@ public interface IDBHandler {
 	
 	//TODO:
 	public User getUser(String i_Username, String i_UserPassword) throws Exception;
-	public LinkedList<Device> getDevices(String i_Username);
+	public LinkedList<Device> getDevices(short i_UserID);
 	
 }

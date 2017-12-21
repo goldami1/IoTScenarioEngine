@@ -31,7 +31,7 @@
 					<c:if test="${error != null}">
     					<div class="message--error text--center"> ${error} </div>
 					</c:if>
-					<p>need an account ? <a href="signup.html" >Sign up now</a></p>
+					<p>need an account ? <a href="${pageContext.request.contextPath}/signup" >Sign up now</a></p>
 				</footer>
 		</form>
 <script src="pages/login/script.js"></script>

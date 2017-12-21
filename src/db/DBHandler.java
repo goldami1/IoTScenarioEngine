@@ -246,7 +246,7 @@ public class DBHandler implements IDBHandler
 	}
 
 	@Override
-	public LinkedList<Device> getDevices(String i_Username) {
+	public LinkedList<Device> getDevices(short i_UserID) {
 		// TODO Auto-generated method stub
 		return null;
 	}

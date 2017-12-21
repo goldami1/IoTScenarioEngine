@@ -35,12 +35,12 @@ public class LoginServlet extends HttpServlet {
 		User user = loginService.getUser(username, password);
 		
 		if	(user != null) {
-				request.getSession().setAttribute("user", user);
+				request.getSession().setAttribute("user", user.getID());
 			// TODO 
 			if	(user.isEnduser()) {
-				response.sendRedirect("/IoT_Proj_ScenarioEngine/devices");
+				response.sendRedirect(request.getContextPath()+"/devices");
 			}else {
-					response.sendRedirect("/IoT_Proj_ScenarioEngine/products");
+					response.sendRedirect(request.getContextPath()+"/products");
 			}
 			return;
 			

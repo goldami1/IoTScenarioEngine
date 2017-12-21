@@ -69,7 +69,7 @@
 					<c:if test="${error != null}">
     					<div class="message--error text--center"> ${error} </div>
 					</c:if>
-					<p >have an account ? <a  href="login.html" >Log in now</a></p>
+					<p >have an account ? <a  href="${pageContext.request.contextPath}/login" >Log in now</a></p>
 				</footer>
 		</form>
 

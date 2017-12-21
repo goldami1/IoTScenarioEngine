@@ -45,7 +45,7 @@ public class SignupServlet extends HttpServlet {
 	    SignupService service = new SignupService();
 	    
 		if	(service.addUser(type,firstname,lastname,username,password,companyname,description,email,logo)) {
-			response.sendRedirect("/IoT_Proj_ScenarioEngine/login");
+			response.sendRedirect(request.getContextPath()+"/login");
 		}else {
 			request.setAttribute("error","Error");
 			request.getRequestDispatcher("/pages/signup/signup.jsp").forward(request, response);
