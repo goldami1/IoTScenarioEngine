@@ -3,6 +3,8 @@ package db;
 import java.math.BigDecimal;
 import utils.*;
 import engine.*;
+import javafx.util.Pair;
+
 import java.sql.*;
 import java.util.*;
 import java.util.Map.Entry;
@@ -249,5 +251,35 @@ public class DBHandler implements IDBHandler
 	public LinkedList<Device> getDevices(short i_UserID) {
 		// TODO Auto-generated method stub
 		return null;
+	}
+
+	@Override
+	public LinkedList<Pair<Integer, String>> getVendors() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public LinkedList<Product> getProducts(int vendor_id) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public LinkedList<Device> getDevices(int user_id) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public boolean addDevice(int product_id, int user_id, int device_serial) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public boolean removeDevice(int device_id) {
+		// TODO Auto-generated method stub
+		return false;
 	}
 }

@@ -8,6 +8,7 @@ import db.DBHandler;
 public class Scenario{
 	short id;
 	String name;
+	
 	private Map<Short, Event> eventsToHappen;
 	private Map<Short, Action> actionsToHandle;
 	
