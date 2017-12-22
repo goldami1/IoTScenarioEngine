@@ -17,4 +17,23 @@ public class Range {
 		this.currentVal = Double.parseDouble(parsedString[2]);
 		this.type = parsedString[3];
 	}
+	
+	public String getType()
+	{
+		return this.type;
+	}
+	
+	public Object getValue()
+	{
+		Object res = new Object();
+		if(type == "int")
+		{
+			res = (int)this.currentVal;
+		}
+		else
+		{
+			res = this.currentVal;
+		}
+		return res;
+	}
 }

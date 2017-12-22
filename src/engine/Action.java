@@ -8,8 +8,10 @@ public class Action {
 	private String name;
 	private String type;
 	private Object parameter;
+	private String deviceEP;
+	private short deviceId;
 	
-	public Action(String name, String type, String param)
+	public Action(String name, String type, String param, String deviceEP, short deviceId)
 	{
 		this.name = name;
 		this.type = type;
@@ -28,15 +30,17 @@ public class Action {
 			this.parameter = Boolean.parseBoolean(param);
 			break;
 		}
+		this.setEndPoint(deviceEP);
+		this.deviceId = deviceId;
 	}
 	public Object getValue()
 	{
 		return this.parameter;
 	}
 	
-	public Class getType()
+	public String getType()
 	{
-		return this.parameter.getClass();
+		return this.type;
 	}
 	
 	public void setId(short id)
@@ -47,5 +51,23 @@ public class Action {
 	public short getId()
 	{
 		return this.id;
+	}
+	
+	public short getDeviceId()
+	{
+		return this.deviceId;
+	}
+	
+	public void setEndPoint(String ep)
+	{
+		this.deviceEP = ep;
+	}
+	
+	public String getEndPoint()
+	{
+		return this.deviceEP;
+	}
+	public String getName() {
+		return this.name;
 	}
 }

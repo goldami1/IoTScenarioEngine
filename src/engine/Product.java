@@ -8,6 +8,7 @@ public class Product {
 	private boolean events_stat, actions_stat;
 	private LinkedList<Event> eventsList;
 	private LinkedList<Event> actionsList;
+	String endPoint;
 	
 	public Product()
 	{
@@ -50,6 +51,11 @@ public class Product {
 			actions_stat = true;
 		actionsList.add(i_actionToAdd);
 		return this;
+	}
+	
+	public void setEndPoint(String ep)
+	{
+		this.endPoint = ep;
 	}
 	
 	//getters
