@@ -1,5 +1,6 @@
 package engine;
 
+import java.io.DataOutputStream;
 import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.net.URL;
@@ -70,6 +71,9 @@ public class EngineLogic {
 				con.setRequestProperty(currentAction.getName(), Boolean.toString((boolean)currentAction.getValue()));
 				break;
 			}
+			
+			con.setDoOutput(true);
+			DataOutputStream wr = new DataOutputStream(con.getOutputStream());
 		}
 	}
 
