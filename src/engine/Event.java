@@ -3,8 +3,8 @@ package engine;
 public class Event extends Action{
 
 	private boolean triggred;
-	public Event(String name, String type, String param) {
-		super(name, type, param);
+	public Event(String name, String type, String param, String deviceEP, short deviceId) {
+		super(name, type, param, deviceEP, deviceId);
 		this.triggred = false;
 	}
 	
@@ -16,5 +16,10 @@ public class Event extends Action{
 	public boolean getTrigger()
 	{
 		return this.triggred;
+	}
+	
+	public int toggleEvent() throws Exception
+	{
+		return this.toggleAction();
 	}
 }

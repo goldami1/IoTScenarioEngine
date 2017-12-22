@@ -1,12 +1,5 @@
 package engine;
 
-import java.io.DataOutputStream;
-import java.io.IOException;
-import java.net.HttpURLConnection;
-import java.net.URL;
-
-import javax.net.ssl.HttpsURLConnection;
-import java.net.MalformedURLException;
 import java.util.*;
 import java.util.Map.Entry;
 
@@ -32,48 +25,12 @@ public class EngineLogic {
 	}
 	
 	private void activateActions(Scenario i_scenario) throws Exception {
-		StringBuilder URI = new StringBuilder();
 		
 		Iterator<Entry<Short, Action>> itr = i_scenario.getActions();
 		while(itr.hasNext())
 		{
 			Action currentAction = itr.next().getValue();
-			URI.append(currentAction.getEndPoint());
-			URI.append("/");
-			URI.append(currentAction.getDeviceId());
-			URI.append("/");
-			URI.append(currentAction.getName());
-			URL ep = new URL(URI.toString());
-			HttpURLConnection con = (HttpsURLConnection)ep.openConnection();
-			
-			
-			con.setRequestMethod("POST");
-			switch(currentAction.getType())
-			{
-			case "int":
-				con.setRequestProperty(currentAction.getName(), Integer.toString((int)currentAction.getValue()));
-				break;
-			case "double":
-				con.setRequestProperty(currentAction.getName(), Double.toString((double)currentAction.getValue()));
-				break;
-			case "Range":
-				Range rng = (Range)currentAction.getValue();
-				if(rng.getType() == "int")
-				{
-					con.setRequestProperty(currentAction.getName(), Integer.toString((int)rng.getValue()));
-				}
-				else
-				{
-					con.setRequestProperty(currentAction.getName(), Double.toString((double)rng.getValue()));
-				}
-				break;
-			case "bool":
-				con.setRequestProperty(currentAction.getName(), Boolean.toString((boolean)currentAction.getValue()));
-				break;
-			}
-			
-			con.setDoOutput(true);
-			DataOutputStream wr = new DataOutputStream(con.getOutputStream());
+			currentAction.toggleAction();
 		}
 	}
 
