@@ -13,8 +13,8 @@ public class UserDevicesService {
 		return db.getDevices(id);
 	}
 
-	public boolean addDevice(short attribute) {
-		return db.addDevice(null);
+	public boolean addDevice(int user, int product, int serial) {
+		return db.addDevice(product,user,serial);
 	}
 
 }

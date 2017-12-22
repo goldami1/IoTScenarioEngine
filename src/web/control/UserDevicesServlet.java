@@ -8,6 +8,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import db.DBHandler;
+import engine.User;
 import web.model.UserDevicesService;
 
 /**
@@ -21,19 +22,24 @@ public class UserDevicesServlet extends HttpServlet {
 	
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 				
-			if	(!request.getAttribute("user").equals(null)) {
-				request.setAttribute("exercises",service.getDevices((short)request.getAttribute("user")));
+			if	(request.getAttribute("user") != null ) {		
+				User user = (User)request.getAttribute("user");
+				request.setAttribute("devices",service.getDevices(user.getID()));
 			    request.getRequestDispatcher("pages/enduser/devices.jsp").forward(request, response);				
 			}
 			response.sendRedirect(request.getContextPath()+"/login");
 		}
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
-		if (service.addDevice((short)request.getAttribute("user"))) {
+		int vendorID = Integer.parseInt(request.getParameter("vendor"));
+		int productID = Integer.parseInt(request.getParameter("product"));
+		int deviceSerial = Integer.parseInt(request.getParameter("serial"));
+		
+		User user = (User)request.getAttribute("user");
+		if	(service.addDevice(user.getID(),productID,deviceSerial)) {
 			response.sendRedirect(request.getContextPath()+"/devices");
 		}else {
-			request.setAttribute("error","Error occured device has not added");
+			request.setAttribute("error","Error");
 			request.getRequestDispatcher("/pages/enduser/devices.jsp").forward(request, response);
 		}
 	}
