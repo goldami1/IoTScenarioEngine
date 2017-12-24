@@ -1,0 +1,63 @@
+
+
+
+
+/login
+	post
+		initial login authentication 
+
+/vendor
+	get 
+		get all vendors 
+	post
+		register new vendor
+
+/vendor/{id}
+	get
+		get vendor
+
+/vendor/{id}/product
+	get
+		get all products
+	post
+		register new product
+
+/vendor/{id}/product/{id}
+	get
+		product
+
+
+/customer 
+	post
+		register new customer
+
+/customer/{id}
+	get
+		get the custumer
+
+/custer/{id}/device
+	get 
+		get all device from customrer
+	post
+		register new device
+
+/custer/{id}/device/{id}
+	get 
+		get device
+	delete
+		remove device
+
+/custer/{id}/scenario
+	get 
+		get all scenarios from customrer
+	post
+		add scenario
+
+
+/custer/{id}/scenario/{id}
+	get 
+		get scenario
+	put
+		update scenario
+	delete 
+		delete scenario
