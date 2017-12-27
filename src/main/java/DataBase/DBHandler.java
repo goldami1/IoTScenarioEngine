@@ -301,15 +301,70 @@ public class DBHandler implements IDBHandler
 		return null;
 	}
 
-	@Override
-	public void removeProduct(Product productToRemove) {
-		// TODO Auto-generated method stub
-		
-	}
 
 	@Override
 	public void updateProduct(int prod_id, Product new_product) {
 		// TODO Auto-generated method stub
 		
+	}
+
+	@Override
+	public Vendor getVendor(int vendor_id) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public void removeProduct(int productToRemove_id) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public LinkedList<Scenario> getScenarios(int cust_id) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Customer addCustomer(Customer i_User) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Customer getCustomer(String name, String password) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Customer getCustomer(int cust_id) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public void updateDevice(int origionalDevice_id, Device newDevice) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void updateScenario(int origionalScenario_id, Scenario newScenario) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void removeScenario(int scenarioToRemove_id) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public Event getEvent(int event_id) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 }

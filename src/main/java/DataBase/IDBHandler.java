@@ -42,5 +42,6 @@ public interface IDBHandler {
 	
 	
 	public LinkedList<Device> getDevices(short i_UserID);
+	void removeProduct(Product productToRemove);
 	
 }
