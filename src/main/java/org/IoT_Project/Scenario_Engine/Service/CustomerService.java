@@ -1,5 +1,7 @@
 package org.IoT_Project.Scenario_Engine.Service;
 
+import java.util.List;
+
 import org.IoT_Project.Scenario_Engine.Models.*;
 
 import DataBase.DBHandler;
@@ -34,6 +36,14 @@ public class CustomerService {
 
 	public void removeScenario(int scenarioToRemove) throws Exception{
 		DBHandler.getInstance().removeScenario(scenarioToRemove);
+	}
+
+	public List<Device> fetchDevices(short i_user) {
+		return DBHandler.getInstance().getDevices(i_user);
+	}
+
+	public List<Scenario> fetchScenarios(short i_user) {
+		return DBHandler.getInstance().getScenarios(i_user);
 	}
 	
 

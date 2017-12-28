@@ -18,6 +18,7 @@ public class Customer extends User implements IUser {
 		this.insertScenarios();
 		DBHandler db = DBHandler.getInstance();
 		db.addCustomer((Customer) i_User);
+		this.setIsCustomer(true);
 	}	
 	
 	public void addDevice(Product i_Product, short serialNumber)

@@ -7,6 +7,9 @@ import DataBase.DBHandler;
 import org.IoT_Project.Scenario_Engine.Models.Scenario;
 import org.IoT_Project.Scenario_Engine.Models.Device;
 import org.IoT_Project.Scenario_Engine.Models.User;
+
+import java.util.List;
+
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
@@ -32,9 +35,17 @@ public class Customer {
 	@POST
 	@Consumes(MediaType.MULTIPART_FORM_DATA)	//MediaType.MULTIPART_FORM_DATA)
 	@Produces(MediaType.APPLICATION_JSON)
-	public org.IoT_Project.Scenario_Engine.Models.Customer fetch(User i_user) throws Exception
+	public org.IoT_Project.Scenario_Engine.Models.User fetch(User i_user) throws Exception
 	{
 		return cs.fetch(i_user);
+	}
+	
+	@Path("/device/{user_id}")
+	@GET
+	@Produces(MediaType.APPLICATION_JSON)
+	public List<org.IoT_Project.Scenario_Engine.Models.Device> fetchDevices(@PathParam("user_id")short i_user) throws Exception
+	{
+		return cs.fetchDevices(i_user);
 	}
 	
 	@Path("/device/{id}")
@@ -83,6 +94,13 @@ public class Customer {
 			return ex.getMessage();
 		}
 		return "removed device";
+	}
+	@Path("/scenario/{user_id}")
+	@GET
+	@Produces(MediaType.APPLICATION_JSON)
+	public List<Scenario> fetchScenarios(@PathParam("user_id")short i_user)
+	{
+		return cs.fetchScenarios(i_user);
 	}
 	
 	@Path("scenario/{id}")

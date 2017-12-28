@@ -3,6 +3,9 @@ package org.IoT_Project.Scenario_Engine.WebSrevice;
 import org.IoT_Project.Scenario_Engine.Models.Product;
 import org.IoT_Project.Scenario_Engine.Models.User;
 import org.IoT_Project.Scenario_Engine.Service.VendorService;
+
+import java.util.List;
+
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
@@ -29,7 +32,7 @@ public class Vendor {
 	@POST
 	@Consumes(MediaType.MULTIPART_FORM_DATA)	//MediaType.MULTIPART_FORM_DATA)
 	@Produces(MediaType.APPLICATION_JSON)
-	public org.IoT_Project.Scenario_Engine.Models.Vendor fetchVendor(User i_user) throws Exception
+	public org.IoT_Project.Scenario_Engine.Models.User fetchVendor(User i_user) throws Exception
 	{
 		return vs.fetch(i_user);
 	}
@@ -82,5 +85,13 @@ public class Vendor {
 			return ex.getMessage();
 		}
 		return "product delted";
+	}
+	
+	@Path("/product/{user_id}")
+	@GET
+	@Produces(MediaType.APPLICATION_JSON)
+	public List<Product> fetchProducts(@PathParam("user_id")short i_userId)
+	{
+		return vs.fetchProducts(i_userId);
 	}
 }

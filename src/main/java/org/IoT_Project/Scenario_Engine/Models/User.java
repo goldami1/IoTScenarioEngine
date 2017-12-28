@@ -8,6 +8,7 @@ public abstract class User implements IUser
 	private short id;
 	private String name, userPicURL, email;
 	private String userName, password;
+	private boolean isCustomer;		//true - Customer, False - vendor
 	
 	//Constructors
 	public User(String i_name, String i_email) 
@@ -48,7 +49,14 @@ public abstract class User implements IUser
 	{
 		return userPicURL;
 	}
-	
+	public void setIsCustomer(boolean isCustomer)
+	{
+		this.isCustomer = isCustomer;
+	}
+	public boolean getIsCustomer()
+	{
+		return this.isCustomer;
+	}
 	//Methods
 	public User setUserName(String i_userName) throws Exception 
 	{

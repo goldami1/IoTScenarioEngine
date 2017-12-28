@@ -15,6 +15,7 @@ public class Vendor extends User implements IUser {
 		products = new LinkedList<Product>();
 		DBHandler db = DBHandler.getInstance();
 		db.addVendor(this.getName(), this.getUsername(), this.getPassword(), this.getEmail(), description, logoPicURL);
+		this.setIsCustomer(false);
 	}
 
 	public void addProduct(Product i_Product)

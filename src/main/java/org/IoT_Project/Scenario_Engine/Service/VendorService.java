@@ -1,5 +1,7 @@
 package org.IoT_Project.Scenario_Engine.Service;
 
+import java.util.List;
+
 import org.IoT_Project.Scenario_Engine.Models.*;
 import DataBase.DBHandler;
 
@@ -24,6 +26,10 @@ public class VendorService {
 
 	public void updateProduct(int i_id, int i_deviceToUpdateId, Product i_prod) throws Exception{
 		DBHandler.getInstance().updateProduct(i_deviceToUpdateId, i_prod);
+	}
+
+	public List<Product> fetchProducts(short i_userId) {
+		return DBHandler.getInstance().getProducts(i_userId);
 	}
 
 }
