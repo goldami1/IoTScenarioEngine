@@ -303,7 +303,8 @@ public class DBHandler implements IDBHandler
 
 
 	@Override
-	public void updateProduct(int prod_id, Product new_product) {
+	public boolean updateProduct(int prod_id, Product new_product) {
+		return false;
 		// TODO Auto-generated method stub
 		
 	}
@@ -315,9 +316,9 @@ public class DBHandler implements IDBHandler
 	}
 
 	@Override
-	public void removeProduct(int productToRemove_id) {
+	public boolean removeProduct(int productToRemove_id) {
 		// TODO Auto-generated method stub
-		
+		return false;
 	}
 
 	@Override
@@ -345,21 +346,21 @@ public class DBHandler implements IDBHandler
 	}
 
 	@Override
-	public void updateDevice(int origionalDevice_id, Device newDevice) {
+	public boolean updateDevice(int origionalDevice_id, Device newDevice) {
 		// TODO Auto-generated method stub
-		
+		return false;
 	}
 
 	@Override
-	public void updateScenario(int origionalScenario_id, Scenario newScenario) {
+	public boolean updateScenario(int origionalScenario_id, Scenario newScenario) {
 		// TODO Auto-generated method stub
-		
+		return false;
 	}
 
 	@Override
-	public void removeScenario(int scenarioToRemove_id) {
+	public boolean removeScenario(int scenarioToRemove_id) {
 		// TODO Auto-generated method stub
-		
+		return false;
 	}
 
 	@Override

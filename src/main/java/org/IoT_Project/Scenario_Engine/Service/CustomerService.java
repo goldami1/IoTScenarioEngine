@@ -17,25 +17,59 @@ public class CustomerService {
 		return DBHandler.getInstance().getCustomer(i_name, i_password);
 	}
 
-	public void addDevice(int i_CustomerId, Device newDevice) throws Exception{
-		DBHandler.getInstance().addDevice(newDevice);
+	public List<Device> addDevice(short i_CustomerId, Device newDevice) throws Exception{
+		if(DBHandler.getInstance().addDevice(newDevice))
+		{
+			return DBHandler.getInstance().getDevices(i_CustomerId);
+		}
+		else
+		{
+			//user doesnt exist.
+			throw new Exception("user doesnt exist");
+		}
 	}
 
-	public void removeDevice(int device_id) throws Exception{
-		DBHandler.getInstance().removeDevice(device_id);
+	public List<Device> removeDevice(short cust_id, short device_id) throws Exception{
+		if(DBHandler.getInstance().removeDevice(device_id))
+		{
+			return DBHandler.getInstance().getDevices(cust_id);
+		}
+		else
+			throw new Exception("no user");
+		
 	}
 
-	public void addScenario(Scenario scenarioToAdd) throws Exception{
-		DBHandler.getInstance().addScenario(scenarioToAdd);
+	public List<Scenario> addScenario(short cust_id, Scenario scenarioToAdd) throws Exception{
+		if(DBHandler.getInstance().addScenario(scenarioToAdd))
+		{
+			return DBHandler.getInstance().getScenarios(cust_id);
+		}
+		else
+		{
+			throw new Exception("no user");
+		}
+		
 	}
 
-	public void updateScenario(int origionalScenario_id, Scenario newScenario) 
+	public List<Scenario> updateScenario(short cust_id, short origionalScenario_id, Scenario newScenario) throws Exception 
 	{
-		DBHandler.getInstance().updateScenario(origionalScenario_id, newScenario);
+		if(DBHandler.getInstance().updateScenario(origionalScenario_id, newScenario))
+		{
+			return DBHandler.getInstance().getScenarios(cust_id);
+		}
+		else
+			throw new Exception("no user");
+		
 	}
 
-	public void removeScenario(int scenarioToRemove) throws Exception{
-		DBHandler.getInstance().removeScenario(scenarioToRemove);
+	public List<Scenario> removeScenario(short cust_id, int scenarioToRemove) throws Exception{
+		if(DBHandler.getInstance().removeScenario(scenarioToRemove))
+		{
+			return DBHandler.getInstance().getScenarios(cust_id);
+		}
+		else
+			throw new Exception("no user");
+		
 	}
 
 	public List<Device> fetchDevices(short i_user) {
@@ -44,6 +78,15 @@ public class CustomerService {
 
 	public List<Scenario> fetchScenarios(short i_user) {
 		return DBHandler.getInstance().getScenarios(i_user);
+	}
+
+	public List<Device> updateDevice(short cust_id, short dev_id, Device newDevice) throws Exception {
+		if(DBHandler.getInstance().updateDevice(dev_id, newDevice))
+		{
+			return DBHandler.getInstance().getDevices(cust_id);
+		}
+		else
+			throw new Exception("no user");
 	}
 	
 

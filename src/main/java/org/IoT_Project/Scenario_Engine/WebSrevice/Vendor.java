@@ -15,83 +15,82 @@ import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
+import javax.ws.rs.core.Response.Status;
 
 @Path("vendor")
-public class Vendor {
+public class Vendor extends org.IoT_Project.Scenario_Engine.WebSrevice.User{
 
 	private static VendorService vs = new VendorService();
 	
-	
-	@GET
-	@Produces(MediaType.APPLICATION_JSON)
-	public String getLoginPage()
-	{
-		return "Should return login page for vendor";
-	}
-	
-	@POST
-	@Consumes(MediaType.MULTIPART_FORM_DATA)	//MediaType.MULTIPART_FORM_DATA)
-	@Produces(MediaType.APPLICATION_JSON)
-	public org.IoT_Project.Scenario_Engine.Models.User fetchVendor(User i_user) throws Exception
-	{
-		return vs.fetch(i_user);
-	}
-	
-	@Path("/{id}")
+	@Path("/{vendor_id}")
 	@POST
 	@Consumes(MediaType.APPLICATION_JSON)
-	@Produces(MediaType.APPLICATION_JSON)
-	public String addProduct(Product i_product, @PathParam("id") int i_id)
+	//@Produces(MediaType.APPLICATION_JSON)
+	public Response addProduct(Product i_product, @PathParam("vendor_id") short vendor_id)
 	{
-		
+		Response res = null;
 		try {
-			vs.addProduct(i_id, i_product);
+			List<Product> products = vs.addProduct(vendor_id, i_product);
+			res = Response.status(Status.FOUND).entity(products).build();
 		}
 		catch(Exception ex)
 		{
-			return ex.getMessage();
+			res = this.handleError(ex);
 		}
-		return "added new product";
+		return res;
 	}
 	
-	@Path("{id}/{dev_id}")
+	@Path("{vendor_id}/{dev_id}")
 	@PUT
 	@Consumes(MediaType.APPLICATION_JSON)
-	@Produces(MediaType.APPLICATION_JSON)
-	public String updateProduct(Product i_prod, @PathParam("id") int i_id, @PathParam("dev_id") int i_deviceId)
+	//@Produces(MediaType.APPLICATION_JSON)
+	public Response updateProduct(Product i_prod, @PathParam("vendor_id") short vendor_id, @PathParam("dev_id") short i_deviceId)
 	{
-		int prodToUpdate = 1, origionalProd = 0;
+		Response res = null;
 		try {
-			vs.updateProduct(i_id, i_deviceId,  i_prod);
+			List<Product> updatedProducts = vs.updateProduct(vendor_id, i_deviceId,  i_prod);
+			res = Response.status(Status.OK).entity(updatedProducts).build();
 		}
 		catch(Exception ex)
 		{
-			return ex.getMessage();
+			res = this.handleError(ex);
 		}
-		return "updated product";
+		return res;
 	}
 	
-	@Path("{id}")
+	@Path("{vendor_id}")
 	@DELETE
 	@Consumes(MediaType.APPLICATION_JSON)
-	@Produces(MediaType.APPLICATION_JSON)
-	public String deleteProduct(Product i_prod2Remove, @PathParam("id") int i_id)
+	//@Produces(MediaType.APPLICATION_JSON)
+	public Response deleteProduct(Product i_prod2Remove, @PathParam("vendor_id") short vendor_id)
 	{
+		Response res = null;
 		try {
-			vs.removeProduct(i_id, i_prod2Remove);
+			List<Product> updatedProducts = vs.removeProduct(vendor_id, i_prod2Remove);
+			res = Response.status(Status.OK).entity(updatedProducts).build();
 		}
 		catch(Exception ex)
 		{
-			return ex.getMessage();
+			res = this.handleError(ex);
 		}
-		return "product delted";
+		return res;
 	}
 	
-	@Path("/product/{user_id}")
+	@Path("/product/{vendor_id}")
 	@GET
-	@Produces(MediaType.APPLICATION_JSON)
-	public List<Product> fetchProducts(@PathParam("user_id")short i_userId)
+	//@Produces(MediaType.APPLICATION_JSON)
+	public Response fetchProducts(@PathParam("vendor_id") short i_userId)
 	{
-		return vs.fetchProducts(i_userId);
+		Response res = null;
+		try {
+			List<Product> products = vs.fetchProducts(i_userId);
+			res = Response.status(Status.FOUND).entity(products).build();
+		}
+		catch(Exception ex)
+		{
+			res = this.handleError(ex);
+		}
+		return res;
 	}
 }

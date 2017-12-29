@@ -26,15 +26,15 @@ public interface IDBHandler {
 		public User getUser(String i_username, String i_userPassword) throws Exception;
 		public Vendor getVendor(String name, String password);
 		public Vendor getVendor(int vendor_id);
-		public void removeProduct(int productToRemove_id);
-		public void updateProduct(int prod_id, Product new_product);
+		public boolean removeProduct(int productToRemove_id);
+		public boolean updateProduct(int prod_id, Product new_product);
 		public LinkedList<Scenario> getScenarios(int cust_id);
 		public Customer addCustomer(Customer i_User);
 		public Customer getCustomer(String name, String password);
 		public Customer getCustomer(int cust_id);
-		public void updateDevice(int origionalDevice_id, Device newDevice);
-		public void updateScenario(int origionalScenario_id, Scenario newScenario);
-		public void removeScenario(int scenarioToRemove_id);
+		public boolean updateDevice(int origionalDevice_id, Device newDevice);
+		public boolean updateScenario(int origionalScenario_id, Scenario newScenario);
+		public boolean removeScenario(int scenarioToRemove_id);
 		public Event getEvent(int event_id);
 	
 	//TODO:

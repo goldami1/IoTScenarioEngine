@@ -1,5 +1,7 @@
 package org.IoT_Project.Scenario_Engine.Models;
+import java.io.BufferedReader;
 import java.io.DataOutputStream;
+import java.io.InputStreamReader;
 import java.lang.reflect.AnnotatedType;
 import java.lang.reflect.Type;
 import java.net.HttpURLConnection;
@@ -81,51 +83,53 @@ public class Action {
 	public final int toggleAction() throws Exception
 	{
 		StringBuilder URI = new StringBuilder();
-		StringBuilder parameters = new StringBuilder();
 		URI.append(this.getEndPoint());
 		URI.append("/");
 		URI.append(this.getDeviceId());
 		URI.append("/");
 		URI.append(this.getName());
-		URL ep = new URL(URI.toString());
-		HttpURLConnection con = (HttpsURLConnection)ep.openConnection();
-		
-		con.setRequestMethod("POST");
+		URI.append("/");
 		switch(this.getType())
 		{
 		case "int":
-			con.setRequestProperty(this.name, Integer.toString((int)this.parameter));
-			parameters.append(Integer.toString((int)this.parameter));
+			URI.append(Integer.toString((int)this.parameter));
 			break;
 		case "double":
-			con.setRequestProperty(this.name, Double.toString((double)this.parameter));
-			parameters.append(Double.toString((double)this.parameter));
+			URI.append(Double.toString((double)this.parameter));
+			break;
+		case "bool":
+			URI.append(Boolean.toString((boolean)this.parameter));
 			break;
 		case "Range":
-			Range rng = (Range)this.getValue();
+			Range rng = (Range)this.parameter;
 			if(rng.getType() == "int")
 			{
-				con.setRequestProperty(this.name, Integer.toString((int)rng.currentVal));
-				parameters.append(Integer.toString((int)rng.currentVal));
+				URI.append(Integer.toString((int)rng.min));
+				URI.append("/");
+				URI.append(Integer.toString((int)rng.max));
 			}
 			else
 			{
-				con.setRequestProperty(this.name, Double.toString((double)rng.currentVal));
-				parameters.append(Double.toString((double)rng.currentVal));
+				URI.append(Double.toString((double)rng.min));
+				URI.append("/");
+				URI.append(Double.toString((double)rng.max));
 			}
 			break;
-		case "bool":
-			con.setRequestProperty(this.name, Boolean.toString((boolean)this.parameter));
-			parameters.append(Boolean.toString((boolean)this.parameter));
-			break;
 		}
-		con.setDoOutput(true);
-		DataOutputStream wr = new DataOutputStream(con.getOutputStream());
-		wr.writeBytes(parameters.toString());
-		wr.flush();
-		wr.close();
+		URL ep = new URL(URI.toString());
+		HttpURLConnection con = (HttpsURLConnection)ep.openConnection();
+		con.setRequestMethod("POST");
 		
-		int responseCode = con.getResponseCode();
-		return responseCode;
+		int status = con.getResponseCode();
+		BufferedReader in = new BufferedReader(new InputStreamReader(con.getInputStream()));
+		String inputLine;
+		StringBuffer content = new StringBuffer();
+		content.append("status response - " + status + System.lineSeparator());
+		while ((inputLine = in.readLine()) != null)
+		{
+			content.append(inputLine);
+		}
+		in.close();
+		return status;
 	}
 }
