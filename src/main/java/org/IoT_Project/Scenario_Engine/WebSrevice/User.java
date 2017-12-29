@@ -3,6 +3,7 @@ package org.IoT_Project.Scenario_Engine.WebSrevice;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
+import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
@@ -13,18 +14,40 @@ import org.IoT_Project.Scenario_Engine.Service.UserService;
 public class User {
 	
 	UserService us = new UserService();
-	
+	@Path("customer")
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
-	public String getLogInPage()
+	public String getLogInPageCustomer()
 	{
 		return "Should return the login page for customer";
 	}
 	
+	@Path("customer")
 	@POST
 	@Consumes(MediaType.MULTIPART_FORM_DATA)	//MediaType.MULTIPART_FORM_DATA)
 	//@Produces(MediaType.APPLICATION_JSON)
-	public Response fetch(org.IoT_Project.Scenario_Engine.Models.User i_user) throws Exception
+	public Response fetchCustomer(org.IoT_Project.Scenario_Engine.Models.User i_user) throws Exception
+	{
+		return fetch(i_user);
+	}
+	
+	@Path("vendor")
+	@GET
+	@Produces(MediaType.APPLICATION_JSON)
+	public String getLogInPageVendor()
+	{
+		return "Should return the login page for customer";
+	}
+	
+	@Path("vendor")
+	@POST
+	@Consumes(MediaType.MULTIPART_FORM_DATA)
+	public Response fetchVendor(org.IoT_Project.Scenario_Engine.Models.User i_user) throws Exception
+	{
+		return fetch(i_user);
+	}
+	
+	private Response fetch(org.IoT_Project.Scenario_Engine.Models.User i_user)
 	{
 		try {
 			org.IoT_Project.Scenario_Engine.Models.User user = us.fetch(i_user);
