@@ -109,6 +109,11 @@ public class Action {
 	public ActionEventProto getActionDescription() {
 		return actionDescription;
 	}
+	
+	public ActionEventProto getPrototype()
+	{
+		return getActionDescription();
+	}
 
 	public void setActionDescription(ActionEventProto actionDescription) {
 		this.actionDescription = actionDescription;

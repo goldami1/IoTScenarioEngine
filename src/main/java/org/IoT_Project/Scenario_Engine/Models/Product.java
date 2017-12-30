@@ -123,5 +123,38 @@ public class Product {
 	{
 		return this.actionAndEventList;
 	}
+
+	public short getVenID() {
+		return vendor_id;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public String getPicURL() {
+		return picURL;
+	}
+	
+	public boolean[] getEAState()
+	{
+		boolean[] res = new boolean[]{false,false};
+		for(ActionEventProto aep: actionAndEventList)
+		{
+			if(!res[0]&&aep.getIsEvent())
+			{
+				res[0]=!res[0];
+			}
+			if(!res[1]&&!aep.getIsEvent())
+			{
+				res[1]=!res[1];
+			}
+			if(res[0]&&res[1])
+			{
+				break;
+			}
+		}
+		return res;
+	}
 	
 }

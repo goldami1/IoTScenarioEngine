@@ -92,6 +92,14 @@ public class Scenario{
 		
 		return result;
 	}
+
+	public short getCustomerID() {
+		return cust_id;
+	}
+
+	public String getDescription() {
+		return description;
+	}
 	
 	
 }
