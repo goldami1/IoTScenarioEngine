@@ -7,8 +7,8 @@ import DataBase.DBHandler;
 public class Device {
 	
 	private short id, serial_number, product_id, customer_id;
-	//private List<Event> events;
-	//private List<Action> actions;
+	private Product protoDevice;
+
 	
 	public Device(Customer i_Customer, short serial_number)
 	{
@@ -28,6 +28,7 @@ public class Device {
 		this.customer_id = cust_id;
 		this.id = DBHandler.getInstance().getIdForDevice();
 		this.serial_number = serial_number;
+		this.protoDevice = i_product;
 	}
 
 
@@ -61,6 +62,11 @@ public class Device {
 
 	public void setCustomer_id(short customer_id) {
 		this.customer_id = customer_id;
+	}
+	
+	public void setDeviceProto(Product i_product)
+	{
+		this.protoDevice = i_product;
 	}
 
 	/*

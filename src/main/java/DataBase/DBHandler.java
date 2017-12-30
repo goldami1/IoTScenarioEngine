@@ -399,7 +399,7 @@ public class DBHandler implements IDBHandler
 		return 0;
 	}
 
-	public boolean checkifEventUpdated(Event event) {
+	public boolean isEventUpdated(Event event) {
 		// TODO Auto-generated method stub
 		return false;
 	}

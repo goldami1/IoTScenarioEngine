@@ -6,7 +6,6 @@ public class Event extends Action{
 
 	private char logicOperator;
 	private boolean triggred;
-	private boolean updated = false;
 
 	public Event(Action protoEvent, char logicOperator) throws Exception {
 		super(protoEvent);
@@ -28,7 +27,7 @@ public class Event extends Action{
 	
 	private int toggleEvent() throws Exception
 	{
-		if(!DBHandler.getInstance().checkifEventUpdated(this))
+		if(!DBHandler.getInstance().isEventUpdated(this))
 			return this.toggleAction();
 		else
 			return 200;

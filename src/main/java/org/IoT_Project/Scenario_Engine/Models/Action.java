@@ -77,7 +77,7 @@ public class Action {
 		case "double":
 			result = Double.toString((double)this.parameter);
 			break;
-		case "range":
+		case "Range":
 			Range rng = (Range)this.parameter;
 			result = Double.toString(rng.min);
 			result += "-";
@@ -117,6 +117,11 @@ public class Action {
 		URI.append("/");
 		URI.append(this.actionDescription.getProdId());
 		URI.append("/");
+		if(this.actionDescription.getIsEvent())
+		{
+			URI.append(this.id);
+			URI.append("/");
+		}
 		URI.append(this.actionDescription.getName());
 		URI.append("/");
 		switch(this.actionDescription.getType())
