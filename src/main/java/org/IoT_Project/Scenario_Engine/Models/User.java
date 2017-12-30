@@ -17,11 +17,13 @@ public abstract class User implements IUser
 		name = i_name;
 		email = i_email;
 	}
-	public User(String i_name, String i_email, String i_userPicURL) 
+	public User(String userName, String password, String i_name, String i_email, String i_userPicURL) 
 	{
 		this(i_name, i_email);
-		id = -1;
-		userPicURL = i_userPicURL;
+		this.id = -1;
+		this.userName = userName;
+		this.password = password;
+		this.userPicURL = i_userPicURL;
 	}
 	
 	//Getters&Setters

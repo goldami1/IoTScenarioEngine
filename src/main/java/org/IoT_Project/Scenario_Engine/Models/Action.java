@@ -10,20 +10,34 @@ import java.net.URL;
 
 import javax.net.ssl.HttpsURLConnection;
 
+import DataBase.DBHandler;
+
 
 public class Action {
 	protected short id;
-	protected String name;
-	protected String type;
 	protected Object parameter;
-	protected String deviceEP;
-	protected short deviceId;
+	protected short device_serialNum;
+	protected ActionEventProto actionDescription;
 	
-	public Action(String name, String type, String param, String deviceEP, short deviceId)
+	public Action()
 	{
-		this.name = name;
-		this.type = type;
-		switch(this.type)
+		this.parameter = this.actionDescription = null;
+		this.id = this.device_serialNum = -1;
+	}
+	
+	public Action(Action i_action)
+	{
+		this();
+		this.id = i_action.getId();
+		this.parameter = i_action.getParameter();
+		this.device_serialNum = i_action.getDevice_serialNum();
+		this.actionDescription = i_action.getActionDescription();
+	}
+	
+	public Action(ActionEventProto actionDescription, String param, short device_serialNum)
+	{
+		this.actionDescription = actionDescription;
+		switch(this.actionDescription.getType())
 		{
 		case "int":
 			this.parameter = Integer.parseInt(param);
@@ -38,58 +52,74 @@ public class Action {
 			this.parameter = Boolean.parseBoolean(param);
 			break;
 		}
-		this.setEndPoint(deviceEP);
-		this.deviceId = deviceId;
-	}
-	public Object getValue()
-	{
-		return this.parameter;
+		this.device_serialNum = device_serialNum;
 	}
 	
-	public String getType()
-	{
-		return this.type;
+	public short getId() {
+		return id;
 	}
-	
-	public void setId(short id)
-	{
+
+	public void setId(short id) {
 		this.id = id;
 	}
-	
-	public short getId()
-	{
-		return this.id;
+
+	public Object getParameter() {
+		return parameter;
 	}
 	
-	public short getDeviceId()
-	{
-		return this.deviceId;
+	public String getParameterToString() {
+		String result = null;
+		switch(this.actionDescription.getType())
+		{
+		case "int":
+			result = Integer.toString((int)this.parameter);
+			break;
+		case "double":
+			result = Double.toString((double)this.parameter);
+			break;
+		case "range":
+			Range rng = (Range)this.parameter;
+			result = Double.toString(rng.min);
+			result += "-";
+			result += Double.toString(rng.max);
+			break;
+		case "bool":
+			result = Boolean.toString((boolean)this.parameter);
+			break;
+		}
+		return result;
 	}
-	
-	public void setEndPoint(String ep)
-	{
-		this.deviceEP = ep;
+
+	public void setParameter(Object parameter) {
+		this.parameter = parameter;
 	}
-	
-	public String getEndPoint()
-	{
-		return this.deviceEP;
+
+	public short getDevice_serialNum() {
+		return device_serialNum;
 	}
-	public String getName()
-	{
-		return this.name;
+
+	public void setDevice_serialNum(short device_serialNum) {
+		this.device_serialNum = device_serialNum;
 	}
-	
+
+	public ActionEventProto getActionDescription() {
+		return actionDescription;
+	}
+
+	public void setActionDescription(ActionEventProto actionDescription) {
+		this.actionDescription = actionDescription;
+	}
+
 	public final int toggleAction() throws Exception
 	{
 		StringBuilder URI = new StringBuilder();
-		URI.append(this.getEndPoint());
+		URI.append(this.actionDescription.getProductEP());
 		URI.append("/");
-		URI.append(this.getDeviceId());
+		URI.append(this.actionDescription.getProdId());
 		URI.append("/");
-		URI.append(this.getName());
+		URI.append(this.actionDescription.getName());
 		URI.append("/");
-		switch(this.getType())
+		switch(this.actionDescription.getType())
 		{
 		case "int":
 			URI.append(Integer.toString((int)this.parameter));

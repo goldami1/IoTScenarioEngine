@@ -8,14 +8,12 @@ public class Product {
 	protected short id, vendor_id;
 	protected String name,picURL;
 	protected boolean events_stat, actions_stat;
-	protected LinkedList<Event> eventsList;
-	protected LinkedList<Action> actionsList;
+	protected LinkedList<ActionEventProto> actionAndEventList;
 	protected String endPoint;
 	
 	public Product()
 	{
-		eventsList = new LinkedList<Event>();
-		actionsList = new LinkedList<Action>();
+		actionAndEventList = new LinkedList<ActionEventProto>();
 		id=vendor_id=-1;
 		name = picURL = null;
 		events_stat = actions_stat = false;
@@ -28,8 +26,17 @@ public class Product {
 		this.picURL = product.picURL;
 		this.id = DBHandler.getInstance().getIdForProduct();
 		this.vendor_id = vendor_id;
-		this.eventsList = (LinkedList<Event>) product.getSupportedEvents();
-		this.actionsList = (LinkedList<Action>) product.getSupportedActions();
+		this.actionAndEventList = (LinkedList<ActionEventProto>) product.getSupportedActionsAndEvents();
+	}
+	
+	public Product(String name, String picURL, String endPoint, List<ActionEventProto> actionsAndEvents)
+	{
+		this();
+		this.name = name;
+		this.picURL = picURL;
+		this.endPoint = endPoint;
+		this.actionAndEventList = (LinkedList<ActionEventProto>) actionsAndEvents;
+		
 	}
 	
 	public Product setVendorID(short i_vendor_id)
@@ -50,19 +57,48 @@ public class Product {
 		return this;
 	}
 	
-	public Product addEvent(Event i_eventToAdd)
-	{
-		if(events_stat == false)
-			events_stat = true;
-		eventsList.add(i_eventToAdd);
-		return this;
-	}
 	
-	public Product addAction(Event i_actionToAdd)
+	public Product addAction(ActionEventProto i_actionToAdd)
 	{
 		if(actions_stat == false)
 			actions_stat = true;
-		actionsList.add(i_actionToAdd);
+		i_actionToAdd.setIsEvent(false);
+		actionAndEventList.add(i_actionToAdd);
+		return this;
+	}
+	
+	public List<ActionEventProto> getActions()
+	{
+		List <ActionEventProto> res = new LinkedList<ActionEventProto>();
+		for(ActionEventProto aep : this.actionAndEventList)
+		{
+			if(!aep.getIsEvent())
+			{
+				res.add(aep);
+			}
+		}
+		return res;
+	}
+	
+	public List<ActionEventProto> getEvents()
+	{
+		List <ActionEventProto> res = new LinkedList<ActionEventProto>();
+		for(ActionEventProto aep : this.actionAndEventList)
+		{
+			if(aep.getIsEvent())
+			{
+				res.add(aep);
+			}
+		}
+		return res;
+	}
+	
+	public Product addEvent(ActionEventProto i_eventToAdd)
+	{
+		if(actions_stat == false)
+			actions_stat = true;
+		i_eventToAdd.setIsEvent(true);
+		actionAndEventList.add(i_eventToAdd);
 		return this;
 	}
 	
@@ -82,14 +118,10 @@ public class Product {
 		return id;
 	}
 	
-	public List<Event> getSupportedEvents()
-	{
-		return this.eventsList;
-	}
 	
-	public List<Action> getSupportedActions()
+	public List<ActionEventProto> getSupportedActionsAndEvents()
 	{
-		return this.actionsList;
+		return this.actionAndEventList;
 	}
 	
 }

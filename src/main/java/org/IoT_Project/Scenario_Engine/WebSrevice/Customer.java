@@ -136,11 +136,11 @@ public class Customer extends org.IoT_Project.Scenario_Engine.WebSrevice.User{
 		return res;
 	}
 	
-	@Path("scenario/{id}/{origion_scenario_id}")
+	@Path("scenario/{cust_id}/{origion_scenario_id}")
 	@PUT
 	@Consumes(MediaType.APPLICATION_JSON)
 	//@Produces(MediaType.APPLICATION_JSON)
-	public Response updateScenario(Scenario newScenario, @PathParam("id") short cust_id, @PathParam("origion_scenario_id")  short origionalScenario_id)
+	public Response updateScenario(Scenario newScenario, @PathParam("cust_id") short cust_id, @PathParam("origion_scenario_id")  short origionalScenario_id)
 	{
 		Response res = null;
 		try {
@@ -154,10 +154,10 @@ public class Customer extends org.IoT_Project.Scenario_Engine.WebSrevice.User{
 		return res;
 	}
 	
-	@Path("scenario/{id}/{origion_scenario_id}")
+	@Path("scenario/{cust_id}/{origion_scenario_id}")
 	@DELETE
 	//@Produces(MediaType.APPLICATION_JSON)
-	public Response removeScenario(@PathParam("id") short cust_id, @PathParam("origion_scenario_id") int scenarioToRemove)
+	public Response removeScenario(@PathParam("cust_id") short cust_id, @PathParam("origion_scenario_id") int scenarioToRemove)
 	{
 		Response res = null;
 		try {

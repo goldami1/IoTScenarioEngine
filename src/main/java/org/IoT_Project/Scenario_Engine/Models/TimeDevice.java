@@ -27,10 +27,4 @@ public class TimeDevice {
 		return instance;
 	}
 	
-	public Event addTimeEvent() throws Exception
-	{
-		//todo: create a time_event and return it.
-		return new Event("", "","", '&', "", (short) 0);
-	}
-	
 }

@@ -1,17 +1,21 @@
 package org.IoT_Project.Scenario_Engine.Models;
 
+import DataBase.DBHandler;
+
 public class Event extends Action{
 
 	private char logicOperator;
 	private boolean triggred;
+	private boolean updated = false;
 
-	public Event(String name, String type, String param, char logicOperator , String deviceEP, short deviceId) throws Exception {
-		super(name, type, param, deviceEP, deviceId);
+	public Event(Action protoEvent, char logicOperator) throws Exception {
+		super(protoEvent);
 		this.logicOperator = logicOperator;
 		this.triggred = false;
 		this.toggleEvent();
 	}
 	
+
 	public void setTrigger(boolean value)
 	{
 		this.triggred = value;
@@ -22,9 +26,12 @@ public class Event extends Action{
 		return this.triggred;
 	}
 	
-	public int toggleEvent() throws Exception
+	private int toggleEvent() throws Exception
 	{
-		return this.toggleAction();
+		if(!DBHandler.getInstance().checkifEventUpdated(this))
+			return this.toggleAction();
+		else
+			return 200;
 	}
 	
 	public char getLogicOperator()

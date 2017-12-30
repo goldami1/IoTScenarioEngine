@@ -1,57 +1,85 @@
 package org.IoT_Project.Scenario_Engine.Models;
 
+import java.util.List;
+
 import DataBase.DBHandler;
 
 public class Device {
 	
 	private short id, serial_number, product_id, customer_id;
-	private Product deviceProto;
+	//private List<Event> events;
+	//private List<Action> actions;
 	
-	public Device(Product i_Product, Customer i_Customer, short serial_number)
+	public Device(Customer i_Customer, short serial_number)
 	{
-		deviceProto = i_Product;
-		product_id = i_Product.getID();
 		customer_id = i_Customer.getID();
 		this.serial_number = serial_number;
 		DBHandler db = DBHandler.getInstance();
 		db.addDevice(this);
 	}
 	
+	public Device()
+	{
+		this.id = this.serial_number = this.customer_id = this.product_id = -1;
+	}
+	
 	public Device(Product i_product, short cust_id, short serial_num)
 	{
-		this.deviceProto = i_product;
 		this.customer_id = cust_id;
 		this.id = DBHandler.getInstance().getIdForDevice();
 		this.serial_number = serial_number;
 	}
-	
-	public Device(Device i_device, short cust_id)
-	{
-		this.id = DBHandler.getInstance().getIdForDevice();
-		this.serial_number = i_device.getSerialNumber();
-		this.product_id = i_device.getProductID();
-		this.customer_id = cust_id;
-		this.deviceProto = i_device.getProduct();
+
+
+	public short getId() {
+		return id;
 	}
-	
-	//Getters&Setters
-	public short getProductID()
-	{
-		return this.product_id;
+
+	public void setId(short id) {
+		this.id = id;
 	}
-	
-	public Product getProduct()
-	{
-		return this.deviceProto;
+
+	public short getSerial_number() {
+		return serial_number;
 	}
-	
-	public short getSerialNumber()
-	{
-		return this.serial_number;
+
+	public void setSerial_number(short serial_number) {
+		this.serial_number = serial_number;
 	}
-	
-	public short getCustomerID()
-	{
-		return this.customer_id;
+
+	public short getProduct_id() {
+		return product_id;
 	}
+
+	public void setProduct_id(short product_id) {
+		this.product_id = product_id;
+	}
+
+	public short getCustomer_id() {
+		return customer_id;
+	}
+
+	public void setCustomer_id(short customer_id) {
+		this.customer_id = customer_id;
+	}
+
+	/*
+	public List<Event> getEvents() {
+		return events;
+	}
+
+	public void setEvents(List<Event> events) {
+		this.events = events;
+	}
+
+	public List<Action> getActions() {
+		return actions;
+	}
+
+	public void setActions(List<Action> actions) {
+		this.actions = actions;
+	}
+	*/
+	
+
 }

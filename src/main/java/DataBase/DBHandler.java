@@ -388,4 +388,19 @@ public class DBHandler implements IDBHandler
 		// TODO Auto-generated method stub
 		return 0;
 	}
+
+	public short getIdForAction() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	public short getIdForActionProto() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	public boolean checkifEventUpdated(Event event) {
+		// TODO Auto-generated method stub
+		return false;
+	}
 }

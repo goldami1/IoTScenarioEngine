@@ -11,18 +11,18 @@ public class Customer extends User implements IUser {
 	
 	public Customer(User i_User) throws Exception 
 	{
-		super(i_User.getName(), i_User.getEmail(), i_User.getUserPicURL());
+		super(i_User.getUsername(), i_User.getPassword(), i_User.getName(), i_User.getEmail(), i_User.getUserPicURL());
 		devices = new LinkedList<Device>();
 		customerScenarios = new LinkedList<Scenario>();
 		DBHandler db = DBHandler.getInstance();
 		this.id = db.getIdForCustomer();
-		db.addCustomer((Customer) i_User);
 		this.setIsCustomer(true);
+		db.addCustomer((Customer) i_User);
 	}	
 	
-	public void addDevice(Product i_Product, short serialNumber)
+	public void addDevice(Product i_device, short cust_id, short serialNumber)
 	{
-		Device productInstance = new Device(i_Product, this, serialNumber);
+		Device productInstance = new Device(i_device , cust_id, serialNumber);
 		devices.add(productInstance);
 	}
 	

@@ -8,17 +8,34 @@ import DataBase.DBHandler;
 public class Scenario{
 	short id;
 	String name;
-	
+	String description;
+	short cust_id;
 	private Map<Short, Event> eventsToHappen;
 	private Map<Short, Action> actionsToHandle;
 	private List<ICase> cases;
 	
 	public Scenario()
 	{
+		this.id = DBHandler.getInstance().getIdForScenario();
 		this.eventsToHappen = new HashMap<Short, Event>();
 		this.actionsToHandle = new HashMap<Short, Action>();
 		name = null;
 		this.cases = new ArrayList<ICase>();
+	}
+	
+	public Scenario(String name, List<Event> events, List<Action> actions)
+	{
+		this();
+		this.name = name;
+		for(Event e:events)
+		{
+			this.eventsToHappen.put(e.getId(), e);
+		}
+		for(Action a:actions)
+		{
+			this.actionsToHandle.put(a.getId(), a);
+		}
+		DBHandler.getInstance().addScenario(this);
 	}
 	
 	public Scenario(String i_scenario)
@@ -33,13 +50,7 @@ public class Scenario{
 	{
 		return this.cases.iterator();
 	}
-	/*
-	public Scenario(String i_name)
-	{
-		this();
-		name = i_name;
-	}
-	*/
+
 	
 	private void parseScenario(String i_scenario)
 	{
@@ -75,7 +86,7 @@ public class Scenario{
 	
 	public Iterator<Entry<Short, Event>> getEvents()
 	{
-		return eventsToHappen.entrySet().iterator();
+		return this.eventsToHappen.entrySet().iterator();
 	}
 	public Iterator<Entry<Short, Action>> getActions()
 	{
