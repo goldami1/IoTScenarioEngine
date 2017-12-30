@@ -2,21 +2,34 @@ package org.IoT_Project.Scenario_Engine.Models;
 
 import java.util.*;
 
+import DataBase.DBHandler;
+
 public class Product {
-	private short id, vendor_id;
-	private String name,picURL;
-	private boolean events_stat, actions_stat;
-	private LinkedList<Event> eventsList;
-	private LinkedList<Event> actionsList;
-	private String endPoint;
+	protected short id, vendor_id;
+	protected String name,picURL;
+	protected boolean events_stat, actions_stat;
+	protected LinkedList<Event> eventsList;
+	protected LinkedList<Action> actionsList;
+	protected String endPoint;
 	
 	public Product()
 	{
 		eventsList = new LinkedList<Event>();
-		actionsList = new LinkedList<Event>();
+		actionsList = new LinkedList<Action>();
 		id=vendor_id=-1;
 		name = picURL = null;
 		events_stat = actions_stat = false;
+	}
+	
+	public Product(Product product, short vendor_id)
+	{
+		this.endPoint = product.getEndPoint();
+		this.name = product.name;
+		this.picURL = product.picURL;
+		this.id = DBHandler.getInstance().getIdForProduct();
+		this.vendor_id = vendor_id;
+		this.eventsList = (LinkedList<Event>) product.getSupportedEvents();
+		this.actionsList = (LinkedList<Action>) product.getSupportedActions();
 	}
 	
 	public Product setVendorID(short i_vendor_id)
@@ -67,6 +80,16 @@ public class Product {
 	public short getID()
 	{
 		return id;
+	}
+	
+	public List<Event> getSupportedEvents()
+	{
+		return this.eventsList;
+	}
+	
+	public List<Action> getSupportedActions()
+	{
+		return this.actionsList;
 	}
 	
 }

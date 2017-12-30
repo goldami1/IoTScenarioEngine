@@ -11,8 +11,9 @@ public class VendorService {
 		return DBHandler.getInstance().getVendor(i_name, i_pswd);
 	}
 
-	public  List<Product> addProduct(short vendor_id, Product i_product) throws Exception{		
-		if(DBHandler.getInstance().addProduct(i_product))
+	public  List<Product> addProduct(short vendor_id, Product i_product) throws Exception{
+		Product newProduct = new Product(i_product, vendor_id);
+		if(DBHandler.getInstance().addProduct(newProduct))
 		{
 			return DBHandler.getInstance().getProducts(vendor_id);
 		}

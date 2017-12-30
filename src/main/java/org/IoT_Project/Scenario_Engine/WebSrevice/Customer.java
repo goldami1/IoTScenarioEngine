@@ -46,16 +46,16 @@ public class Customer extends org.IoT_Project.Scenario_Engine.WebSrevice.User{
 		
 	}
 	
-	@Path("/device/{id}")
+	@Path("/device/{cust_id}")
 	@POST
 	@Consumes(MediaType.APPLICATION_JSON)
 	//@Produces(MediaType.APPLICATION_JSON)
-	public Response addProduct(Device i_product, @PathParam("id") short i_id)
+	public Response addDevice(Device i_product, @PathParam("cust_id") short cust_id)
 	{
 		List<Device> UpdatedDevices;
 		Response res = null;
 		try {
-			UpdatedDevices = cs.addDevice(i_id, i_product);
+			UpdatedDevices = cs.addDevice(cust_id, i_product);
 			res = Response.status(Status.CREATED).entity(UpdatedDevices).build();
 		}
 		catch(Exception ex)

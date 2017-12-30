@@ -368,4 +368,24 @@ public class DBHandler implements IDBHandler
 		// TODO Auto-generated method stub
 		return null;
 	}
+
+	public short getIdForCustomer() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	public short getIdForProduct() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	public short getIdForDevice() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	public short getidForVendor() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
 }

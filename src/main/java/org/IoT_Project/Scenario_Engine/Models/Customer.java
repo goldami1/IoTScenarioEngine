@@ -13,10 +13,9 @@ public class Customer extends User implements IUser {
 	{
 		super(i_User.getName(), i_User.getEmail(), i_User.getUserPicURL());
 		devices = new LinkedList<Device>();
-		this.insertDevices();
 		customerScenarios = new LinkedList<Scenario>();
-		this.insertScenarios();
 		DBHandler db = DBHandler.getInstance();
+		this.id = db.getIdForCustomer();
 		db.addCustomer((Customer) i_User);
 		this.setIsCustomer(true);
 	}	

@@ -47,6 +47,7 @@ public class Scenario{
 		 * function: parsing String i_scenario representing scenario to a Scenario object.
 		 * note: should parse into ICases, which each one will have Events.
 		 */
+		
 	}
 	
 	public void addAction(Action actionToAdd)

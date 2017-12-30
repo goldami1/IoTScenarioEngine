@@ -12,7 +12,6 @@ public class Event extends Action{
 		this.toggleEvent();
 	}
 	
-	
 	public void setTrigger(boolean value)
 	{
 		this.triggred = value;

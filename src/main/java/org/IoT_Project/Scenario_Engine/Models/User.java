@@ -5,10 +5,10 @@ import DataBase.DBHandler;
 public abstract class User implements IUser 
 {
 
-	private short id;
-	private String name, userPicURL, email;
-	private String userName, password;
-	private boolean isCustomer;		//true - Customer, False - vendor
+	protected short id;
+	protected String name, userPicURL, email;
+	protected String userName, password;
+	protected boolean isCustomer;		//true - Customer, False - vendor
 	
 	//Constructors
 	public User(String i_name, String i_email) 

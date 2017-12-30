@@ -11,6 +11,7 @@ import javax.ws.rs.core.Response.Status;
 
 import org.IoT_Project.Scenario_Engine.Service.UserService;
 
+
 public class User {
 	
 	UserService us = new UserService();
@@ -19,7 +20,7 @@ public class User {
 	@Produces(MediaType.APPLICATION_JSON)
 	public String getLogInPageCustomer()
 	{
-		return "Should return the login page for customer";
+		return "Should return the login page";
 	}
 	
 	@Path("customer")
@@ -31,20 +32,49 @@ public class User {
 		return fetch(i_user);
 	}
 	
+	@Path("customer/new")
+	@Consumes(MediaType.MULTIPART_FORM_DATA)
+	public Response addCustomer(org.IoT_Project.Scenario_Engine.Models.User i_user)
+	{
+		try {
+			org.IoT_Project.Scenario_Engine.Models.User userToAdd = us.addCustomer(i_user);
+			return Response.status(Status.CREATED).entity(userToAdd).build();
+		}
+		catch(Exception ex)
+		{
+			return handleError(ex);
+		}
+	}
+	
 	@Path("vendor")
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
 	public String getLogInPageVendor()
 	{
-		return "Should return the login page for customer";
+		return "Should return the login page";
 	}
 	
 	@Path("vendor")
 	@POST
-	@Consumes(MediaType.MULTIPART_FORM_DATA)
+	@Consumes(MediaType.MULTIPART_FORM_DATA)	//MediaType.MULTIPART_FORM_DATA)
+	//@Produces(MediaType.APPLICATION_JSON)
 	public Response fetchVendor(org.IoT_Project.Scenario_Engine.Models.User i_user) throws Exception
 	{
 		return fetch(i_user);
+	}
+	
+	@Path("vendor/new")
+	@Consumes(MediaType.MULTIPART_FORM_DATA)
+	public Response addVendor(org.IoT_Project.Scenario_Engine.Models.User i_user)
+	{
+		try {
+			org.IoT_Project.Scenario_Engine.Models.User userToAdd = us.addVendor(i_user);
+			return Response.status(Status.CREATED).entity(userToAdd).build();
+		}
+		catch(Exception ex)
+		{
+			return handleError(ex);
+		}
 	}
 	
 	private Response fetch(org.IoT_Project.Scenario_Engine.Models.User i_user)
