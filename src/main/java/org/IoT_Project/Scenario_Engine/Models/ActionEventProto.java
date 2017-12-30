@@ -19,11 +19,25 @@ public class ActionEventProto {
 	
 	public ActionEventProto(String name, String type, boolean isEvent, short prodId, String prodEP)
 	{
-		this.id = DBHandler.getInstance().getIdForActionProto();
+		this.id = DBHandler.getInstance().getEventsProtoMaxAvailableIdx();
 		this.name = name;
 		this.type = type;
 		this.prodId = prodId;
 		this.productEP = prodEP;
+		this.isEvent = isEvent;
+	}
+	
+	public ActionEventProto(short id,
+						    String name,
+						    String type,
+						    short prodId,
+						    String productEp,
+						    boolean isEvent)
+	{
+		this.id = id;
+		this.name = name;
+		this.type = type;
+		this.prodId = prodId;
 		this.isEvent = isEvent;
 	}
 

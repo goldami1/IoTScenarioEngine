@@ -183,11 +183,6 @@ public class DBHandler implements IDBHandler
   
 	//===================================
 	//<begin> get C.R.U.D METHODS <begin>
-	public LinkedList<Scenario> getScenariosByEvent(Event i_event)
-	{
-  	// TODO Auto-generated method stub
-		return new LinkedList<Scenario>();
-	}
 	
 	public LinkedList<String> selectQ(String i_selectQ) throws Exception
 	{
@@ -280,15 +275,6 @@ public class DBHandler implements IDBHandler
 		return false;
 	}
 
-
-
-	public short getIdForScenario() {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
-
-
 	@Override
 	public User getUser(String i_Username, String i_UserPassword) throws Exception {
 		// TODO Auto-generated method stub
@@ -368,39 +354,61 @@ public class DBHandler implements IDBHandler
 		// TODO Auto-generated method stub
 		return null;
 	}
-
-	public short getIdForCustomer() {
+	
+	public short getScenariosMaxAvailableIdx() {
 		// TODO Auto-generated method stub
 		return 0;
 	}
 
-	public short getIdForProduct() {
-		// TODO Auto-generated method stub
+	public short getCustomersMaxAvailableIdx() {
+		//return (short) (TABLE_maxID[EntityAndIdxValue.CUSTOMERS_TABLE.idx]+1); 
 		return 0;
 	}
 
-	public short getIdForDevice() {
-		// TODO Auto-generated method stub
+	public short getProductsMaxAvailableIdx() {
+		//return (short) (TABLE_maxID[EntityAndIdxValue.PRODUCTS_TABLE.idx]+1);
 		return 0;
 	}
 
-	public short getidForVendor() {
-		// TODO Auto-generated method stub
+	public short getDevicesMaxAvailableIdx() {
+		//return (short) (TABLE_maxID[EntityAndIdxValue.DEVICES_TABLE.idx]+1);
+		return 0;
+	}
+	
+	public short getEventsMaxAvailableIdx() {
+		//return (short) (TABLE_maxID[EntityAndIdxValue.EVENTS_TABLE.idx]+1);
 		return 0;
 	}
 
-	public short getIdForAction() {
-		// TODO Auto-generated method stub
+	public short getVendorsMaxAvailableIdx() {
+		//return (short) (TABLE_maxID[EntityAndIdxValue.VENDORS_TABLE.idx]+1);
 		return 0;
 	}
 
-	public short getIdForActionProto() {
-		// TODO Auto-generated method stub
+	public short getActionsMaxAvailableIdx() {
+		//return (short) (TABLE_maxID[EntityAndIdxValue.ACTIONS_TABLE.idx]+1);
 		return 0;
 	}
 
 	public boolean isEventUpdated(Event event) {
 		// TODO Auto-generated method stub
 		return false;
+	}
+
+	public Scenario getScenarioByEvent(Event i_event) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public short getEventsProtoMaxAvailableIdx() {
+		//return (short) (TABLE_maxID[EntityAndIdxValue.EVENTS_PROTO_TABLE.idx]+1);
+		return 0;
+	}
+
+
+	@Override
+	public void removeProduct(Product productToRemove) {
+		// TODO Auto-generated method stub
+		
 	}
 }

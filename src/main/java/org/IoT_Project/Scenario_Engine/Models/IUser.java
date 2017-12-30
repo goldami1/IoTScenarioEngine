@@ -9,5 +9,5 @@ public interface IUser {
 	public String getUserPicURL();
 	
 	//TODO:
-	public boolean isEnduser();
+	//public boolean isEnduser();
 }

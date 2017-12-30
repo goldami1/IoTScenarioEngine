@@ -16,7 +16,7 @@ public class Scenario{
 	
 	public Scenario()
 	{
-		this.id = DBHandler.getInstance().getIdForScenario();
+		this.id = DBHandler.getInstance().getScenariosMaxAvailableIdx();
 		this.eventsToHappen = new HashMap<Short, Event>();
 		this.actionsToHandle = new HashMap<Short, Action>();
 		name = null;
@@ -37,29 +37,12 @@ public class Scenario{
 		}
 		DBHandler.getInstance().addScenario(this);
 	}
-	
-	public Scenario(String i_scenario)
-	{
-		this();
-		this.id = DBHandler.getInstance().getIdForScenario();
-		parseScenario(i_scenario);
-		
-	}
 
 	public Iterator<ICase> getCases()
 	{
 		return this.cases.iterator();
 	}
 
-	
-	private void parseScenario(String i_scenario)
-	{
-		/*
-		 * function: parsing String i_scenario representing scenario to a Scenario object.
-		 * note: should parse into ICases, which each one will have Events.
-		 */
-		
-	}
 	
 	public void addAction(Action actionToAdd)
 	{
@@ -101,6 +84,13 @@ public class Scenario{
 	public String getName()
 	{
 		return name;
+	}
+	
+	public boolean isScenarioToActive()
+	{
+		boolean result = false;
+		
+		return result;
 	}
 	
 	

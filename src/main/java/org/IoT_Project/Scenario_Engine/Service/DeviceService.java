@@ -15,16 +15,30 @@ public class DeviceService {
 	private void HandleEvent(Event i_event) throws Exception
 	{
 		DBHandler DB = DBHandler.getInstance();
-		LinkedList<Scenario> scenarios = DB.getScenariosByEvent(i_event);
-		for(Scenario currentScenario:scenarios)
+		Scenario scenario = DB.getScenarioByEvent(i_event);
+		scenario.getEventById(i_event.getId()).setTrigger(true);
+		
+		boolean isAwake = true;
+		Iterator<Entry<Short, Event>> itr = scenario.getEvents();
+		while(itr.hasNext())
 		{
-			Event curEvent = currentScenario.getEventById(i_event.getId());
-			curEvent.setTrigger(true);
-			if(isScenarioAwaken(currentScenario))
-			{
-				activateActions(currentScenario);
-			}
+			Event event = itr.next().getValue();
+			if(event.getLogicOperator() == '&')
+				isAwake &= event.getTrigger();
+			else
+				isAwake |= event.getTrigger();
 		}
+		if(isAwake)
+		{
+			activateActions(scenario);
+		}
+				
+		/*		
+		*	if(isScenarioAwaken(currentScenario))
+		*	{
+		*		activateActions(currentScenario);
+		*	}
+		*/
 		
 	}
 	
@@ -38,6 +52,7 @@ public class DeviceService {
 		}
 	}
 
+	/*
 	private boolean isScenarioAwaken(Scenario i_scenario)
 	{
 		boolean isAwakeRes = true;
@@ -57,6 +72,7 @@ public class DeviceService {
 		}
 		return isAwakeRes;
 	}
+	*/
 }
 
 //Continue implementation!

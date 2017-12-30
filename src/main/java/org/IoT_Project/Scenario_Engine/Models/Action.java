@@ -53,6 +53,10 @@ public class Action {
 			break;
 		}
 		this.device_serialNum = device_serialNum;
+		if(actionDescription.getIsEvent())
+			this.id = DBHandler.getInstance().getEventsMaxAvailableIdx();
+		else
+			this.id = DBHandler.getInstance().getActionsMaxAvailableIdx();
 	}
 	
 	public short getId() {

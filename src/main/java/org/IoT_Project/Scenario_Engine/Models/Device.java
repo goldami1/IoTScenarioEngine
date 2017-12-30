@@ -26,7 +26,7 @@ public class Device {
 	public Device(Product i_product, short cust_id, short serial_num)
 	{
 		this.customer_id = cust_id;
-		this.id = DBHandler.getInstance().getIdForDevice();
+		this.id = DBHandler.getInstance().getProductsMaxAvailableIdx();
 		this.serial_number = serial_number;
 		this.protoDevice = i_product;
 	}

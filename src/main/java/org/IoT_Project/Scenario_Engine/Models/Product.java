@@ -24,7 +24,7 @@ public class Product {
 		this.endPoint = product.getEndPoint();
 		this.name = product.name;
 		this.picURL = product.picURL;
-		this.id = DBHandler.getInstance().getIdForProduct();
+		this.id = DBHandler.getInstance().getProductsMaxAvailableIdx();
 		this.vendor_id = vendor_id;
 		this.actionAndEventList = (LinkedList<ActionEventProto>) product.getSupportedActionsAndEvents();
 	}

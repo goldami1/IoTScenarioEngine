@@ -1,8 +1,7 @@
 package org.IoT_Project.Scenario_Engine.WebSrevice;
 
 import org.IoT_Project.Scenario_Engine.Service.CustomerService;
-
-import DataBase.DBHandler;
+import org.IoT_Project.Scenario_Engine.Service.UserService;
 
 import org.IoT_Project.Scenario_Engine.Models.Scenario;
 import org.IoT_Project.Scenario_Engine.Models.Device;
@@ -23,13 +22,45 @@ import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 
 @Path("customer")
-public class Customer extends org.IoT_Project.Scenario_Engine.WebSrevice.User{
+public class Customer {
 
 	CustomerService cs = new CustomerService();
+	private static UserService us = new UserService();
+	
+	@GET
+	@Produces(MediaType.APPLICATION_JSON)
+	public String getLogInPageCustomer()
+	{
+		return "Should return the login page";
+	}
+	
+	@POST
+	@Consumes(MediaType.MULTIPART_FORM_DATA)	
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response fetchCustomer(User i_user) throws Exception
+	{
+		return fetch(i_user);
+	}
+	
+	@Path("/new")
+	@POST
+	@Consumes(MediaType.MULTIPART_FORM_DATA)
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response addCustomer(User i_user)
+	{
+		try {
+			org.IoT_Project.Scenario_Engine.Models.User userToAdd = us.addCustomer(i_user);
+			return Response.status(Status.CREATED).entity(userToAdd).build();
+		}
+		catch(Exception ex)
+		{
+			return handleError(ex);
+		}
+	}
 	
 	@Path("/device/{user_id}")
 	@GET
-	//@Produces(MediaType.APPLICATION_JSON)
+	@Produces(MediaType.APPLICATION_JSON)
 	public Response fetchDevices(@PathParam("user_id")short i_user) throws Exception
 	{
 		Response res = null;
@@ -49,7 +80,7 @@ public class Customer extends org.IoT_Project.Scenario_Engine.WebSrevice.User{
 	@Path("/device/{cust_id}")
 	@POST
 	@Consumes(MediaType.APPLICATION_JSON)
-	//@Produces(MediaType.APPLICATION_JSON)
+	@Produces(MediaType.APPLICATION_JSON)
 	public Response addDevice(Device i_product, @PathParam("cust_id") short cust_id)
 	{
 		List<Device> UpdatedDevices;
@@ -68,7 +99,7 @@ public class Customer extends org.IoT_Project.Scenario_Engine.WebSrevice.User{
 	@Path("device/{user_id}/{dev_id}")
 	@PUT
 	@Consumes(MediaType.APPLICATION_JSON)
-	//@Produces(MediaType.APPLICATION_JSON)
+	@Produces(MediaType.APPLICATION_JSON)
 	public Response updateDevice(Device newDevice, @PathParam("user_id") short cust_id, @PathParam("dev_id") short origionalDevice_id)
 	{
 		Response res = null;
@@ -86,7 +117,7 @@ public class Customer extends org.IoT_Project.Scenario_Engine.WebSrevice.User{
 	
 	@Path("device/{id}/{dev_id}")
 	@DELETE
-	//@Produces(MediaType.APPLICATION_JSON)
+	@Produces(MediaType.APPLICATION_JSON)
 	public Response removeDevice(@PathParam("id") short cust_id, @PathParam("dev_id") short device_id)
 	{
 		Response res = null;
@@ -103,7 +134,7 @@ public class Customer extends org.IoT_Project.Scenario_Engine.WebSrevice.User{
 	}
 	@Path("/scenario/{user_id}")
 	@GET
-	//@Produces(MediaType.APPLICATION_JSON)
+	@Produces(MediaType.APPLICATION_JSON)
 	public Response fetchScenarios(@PathParam("user_id")short i_user)
 	{
 		Response res = null;
@@ -121,7 +152,7 @@ public class Customer extends org.IoT_Project.Scenario_Engine.WebSrevice.User{
 	@Path("scenario/{id}")
 	@POST
 	@Consumes(MediaType.APPLICATION_JSON)
-	//@Produces(MediaType.APPLICATION_JSON)
+	@Produces(MediaType.APPLICATION_JSON)
 	public Response addScenario(Scenario scenarioToAdd, @PathParam("id") short cust_id)
 	{
 		Response res = null;
@@ -139,7 +170,7 @@ public class Customer extends org.IoT_Project.Scenario_Engine.WebSrevice.User{
 	@Path("scenario/{cust_id}/{origion_scenario_id}")
 	@PUT
 	@Consumes(MediaType.APPLICATION_JSON)
-	//@Produces(MediaType.APPLICATION_JSON)
+	@Produces(MediaType.APPLICATION_JSON)
 	public Response updateScenario(Scenario newScenario, @PathParam("cust_id") short cust_id, @PathParam("origion_scenario_id")  short origionalScenario_id)
 	{
 		Response res = null;
@@ -156,7 +187,7 @@ public class Customer extends org.IoT_Project.Scenario_Engine.WebSrevice.User{
 	
 	@Path("scenario/{cust_id}/{origion_scenario_id}")
 	@DELETE
-	//@Produces(MediaType.APPLICATION_JSON)
+	@Produces(MediaType.APPLICATION_JSON)
 	public Response removeScenario(@PathParam("cust_id") short cust_id, @PathParam("origion_scenario_id") int scenarioToRemove)
 	{
 		Response res = null;
@@ -168,6 +199,27 @@ public class Customer extends org.IoT_Project.Scenario_Engine.WebSrevice.User{
 		{
 			res = handleError(ex);
 		}
+		return res;
+	}
+	
+	private Response fetch(User i_user)
+	{
+		try {
+			User user = us.fetch(i_user);
+			return Response.status(Status.FOUND).entity(user).build();
+		}
+		catch(Exception ex)
+		{
+			return handleError(ex);
+		}
+	}
+	
+	protected Response handleError(Exception ex)
+	{
+		Response res = null;
+		org.IoT_Project.Scenario_Engine.Models.Error er = new org.IoT_Project.Scenario_Engine.Models.Error();
+		er.setDescription(ex.getMessage());
+		res = Response.status(Status.NOT_FOUND).entity(er).build();
 		return res;
 	}
 }

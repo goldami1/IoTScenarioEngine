@@ -9,12 +9,19 @@ public class Vendor extends User implements IUser {
 	private String description, logoPicURL;
 	private LinkedList<Product> products;
 	
+	public Vendor()
+	{
+		super();
+		this.description = this.logoPicURL = null;
+		this.products = new LinkedList<Product>();
+	}
+	
 	public Vendor(User i_User) throws SQLException
 	{
 		super(i_User.getUsername(), i_User.getPassword(), i_User.getName(), i_User.getEmail(), i_User.getUserPicURL());
 		DBHandler db = DBHandler.getInstance();
 		this.setIsCustomer(false);
-		this.id = db.getidForVendor();
+		this.id = db.getVendorsMaxAvailableIdx();
 		db.addVendor(i_User.getUsername(), i_User.getName(), i_User.getPassword(), i_User.getEmail(), "", "");
 	}
 
@@ -31,11 +38,5 @@ public class Vendor extends User implements IUser {
 	public String getLogoURL()
 	{
 		return logoPicURL;
-	}
-
-	@Override
-	public boolean isEnduser() {
-		// TODO Auto-generated method stub
-		return false;
 	}
 }

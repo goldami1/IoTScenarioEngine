@@ -15,7 +15,7 @@ public class Customer extends User implements IUser {
 		devices = new LinkedList<Device>();
 		customerScenarios = new LinkedList<Scenario>();
 		DBHandler db = DBHandler.getInstance();
-		this.id = db.getIdForCustomer();
+		this.id = db.getCustomersMaxAvailableIdx();
 		this.setIsCustomer(true);
 		db.addCustomer((Customer) i_User);
 	}	

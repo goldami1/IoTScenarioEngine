@@ -2,7 +2,7 @@ package org.IoT_Project.Scenario_Engine.Models;
 
 import DataBase.DBHandler;
 
-public abstract class User implements IUser 
+public class User implements IUser 
 {
 
 	protected short id;
@@ -11,15 +11,17 @@ public abstract class User implements IUser
 	protected boolean isCustomer;		//true - Customer, False - vendor
 	
 	//Constructors
-	public User(String i_name, String i_email) 
+	public User()
 	{
-		id = -1;
-		name = i_name;
-		email = i_email;
+		this.id = -1;
+		this.name = this.userPicURL = this.email = this.userName = this.password = null;
+		this.isCustomer = false;
 	}
+	
 	public User(String userName, String password, String i_name, String i_email, String i_userPicURL) 
 	{
-		this(i_name, i_email);
+		this.name = i_name;
+		this.email = i_email;
 		this.id = -1;
 		this.userName = userName;
 		this.password = password;
