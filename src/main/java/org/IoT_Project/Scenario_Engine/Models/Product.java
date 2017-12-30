@@ -1,5 +1,6 @@
 package org.IoT_Project.Scenario_Engine.Models;
 
+import java.sql.SQLException;
 import java.util.*;
 
 import DataBase.DBHandler;
@@ -19,7 +20,7 @@ public class Product {
 		events_stat = actions_stat = false;
 	}
 	
-	public Product(Product product, short vendor_id)
+	public Product(Product product, short vendor_id) throws SQLException
 	{
 		this.endPoint = product.getEndPoint();
 		this.name = product.name;
@@ -122,6 +123,39 @@ public class Product {
 	public List<ActionEventProto> getSupportedActionsAndEvents()
 	{
 		return this.actionAndEventList;
+	}
+
+	public short getVenID() {
+		return vendor_id;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public String getPicURL() {
+		return picURL;
+	}
+	
+	public boolean[] getEAState()
+	{
+		boolean[] res = new boolean[]{false,false};
+		for(ActionEventProto aep: actionAndEventList)
+		{
+			if(!res[0]&&aep.getIsEvent())
+			{
+				res[0]=!res[0];
+			}
+			if(!res[1]&&!aep.getIsEvent())
+			{
+				res[1]=!res[1];
+			}
+			if(res[0]&&res[1])
+			{
+				break;
+			}
+		}
+		return res;
 	}
 	
 }

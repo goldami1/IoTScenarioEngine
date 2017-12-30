@@ -49,15 +49,29 @@
             <artifactId>jersey-hk2</artifactId>
         </dependency>
         <dependency>
+<<<<<<< HEAD
     			<groupId>mysql</groupId>
     			<artifactId>mysql-connector-java</artifactId>
     			<version>5.1.45</version>
     		</dependency>
+=======
+    		<groupId>mysql</groupId>
+    		<artifactId>mysql-connector-java</artifactId>
+    		<version>5.1.45</version>
+		</dependency>
+>>>>>>> 9c1b789b192224712d3b93430df172c204c381cd
         <!-- this is JSON support -->
         <dependency>
             <groupId>org.glassfish.jersey.media</groupId>
             <artifactId>jersey-media-json-binding</artifactId>
         </dependency>
+        <dependency>
+    <groupId>javax.servlet</groupId>
+    <artifactId>servlet-api</artifactId>
+    <version>2.5</version>
+    <scope>provided</scope>
+</dependency>
+        
         <!-- ===================== -->
     </dependencies>
     

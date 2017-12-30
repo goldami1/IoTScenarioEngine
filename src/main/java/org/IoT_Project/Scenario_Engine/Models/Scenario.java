@@ -1,4 +1,5 @@
 package org.IoT_Project.Scenario_Engine.Models;
+import java.sql.SQLException;
 import java.util.*;
 import java.util.Map.Entry;
 
@@ -14,7 +15,7 @@ public class Scenario{
 	private Map<Short, Action> actionsToHandle;
 	private List<ICase> cases;
 	
-	public Scenario()
+	public Scenario() throws SQLException
 	{
 		this.cust_id = -1;
 		this.id = DBHandler.getInstance().getScenariosMaxAvailableIdx();
@@ -24,7 +25,7 @@ public class Scenario{
 		this.cases = new ArrayList<ICase>();
 	}
 	
-	public Scenario(String name, String description, short cust_id, List<Event> events, List<Action> actions)
+	public Scenario(String name, String description, short cust_id, List<Event> events, List<Action> actions) throws SQLException, Exception
 	{
 		this();
 		this.cust_id = cust_id;
@@ -59,7 +60,7 @@ public class Scenario{
 	}
 	
 	
-	public void addScenarioToDB()
+	public void addScenarioToDB() throws Exception
 	{
 		DBHandler db = DBHandler.getInstance();
 		db.addScenario(this);
@@ -89,16 +90,20 @@ public class Scenario{
 		return name;
 	}
 	
-	public String getDescription()
-	{
-		return this.description;
-	}
 	
 	public boolean isScenarioToActive()
 	{
 		boolean result = false;
 		
 		return result;
+	}
+
+	public short getCustomerID() {
+		return cust_id;
+	}
+
+	public String getDescription() {
+		return description;
 	}
 	
 	

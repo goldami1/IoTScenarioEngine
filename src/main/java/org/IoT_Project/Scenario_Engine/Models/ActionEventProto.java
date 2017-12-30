@@ -1,5 +1,7 @@
 package org.IoT_Project.Scenario_Engine.Models;
 
+import java.sql.SQLException;
+
 import DataBase.DBHandler;
 
 public class ActionEventProto {
@@ -17,7 +19,7 @@ public class ActionEventProto {
 		this.name = this.type = this.productEP = null;
 	}
 	
-	public ActionEventProto(String name, String type, boolean isEvent, short prodId, String prodEP)
+	public ActionEventProto(String name, String type, boolean isEvent, short prodId, String prodEP) throws SQLException
 	{
 		this.id = DBHandler.getInstance().getEventsProtoMaxAvailableIdx();
 		this.name = name;

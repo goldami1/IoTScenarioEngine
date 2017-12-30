@@ -15,7 +15,7 @@ public class DeviceService {
 	private void HandleEvent(Event i_event) throws Exception
 	{
 		DBHandler DB = DBHandler.getInstance();
-		Scenario scenario = DB.getScenarioByEvent(i_event);
+		Scenario scenario = DB.getScenariosByEvent(i_event).getFirst();
 		scenario.getEventById(i_event.getId()).setTrigger(true);
 		
 		boolean isAwake = true;
