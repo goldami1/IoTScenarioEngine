@@ -1,5 +1,6 @@
 package org.IoT_Project.Scenario_Engine.Service;
 
+import java.sql.SQLException;
 import java.util.List;
 
 import org.IoT_Project.Scenario_Engine.Models.*;
@@ -72,8 +73,15 @@ public class CustomerService {
 		
 	}
 
-	public List<Device> fetchDevices(short i_user) {
-		return DBHandler.getInstance().getDevices(i_user);
+	public List<Device> fetchDevices(short i_user) throws ClassNotFoundException {
+		try {
+			return DBHandler.getInstance().getDevices(i_user);
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+			return null;
+		
 	}
 
 	public List<Scenario> fetchScenarios(short i_user) {

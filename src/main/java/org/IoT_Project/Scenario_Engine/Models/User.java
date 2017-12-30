@@ -10,22 +10,22 @@ public class User implements IUser
 	protected String userName, password;
 	protected boolean isCustomer;		//true - Customer, False - vendor
 	
+	public User(String userName, String password, String i_name, String i_email, String i_userPicURL) 
+	{
+		this.userName = userName;
+		this.password = password;
+		this.name = i_name;
+		this.email = i_email;
+		this.userPicURL = i_userPicURL;
+		this.id = -1;
+	}
+	
 	//Constructors
 	public User()
 	{
 		this.id = -1;
 		this.name = this.userPicURL = this.email = this.userName = this.password = null;
 		this.isCustomer = false;
-	}
-	
-	public User(String userName, String password, String i_name, String i_email, String i_userPicURL) 
-	{
-		this.name = i_name;
-		this.email = i_email;
-		this.id = -1;
-		this.userName = userName;
-		this.password = password;
-		this.userPicURL = i_userPicURL;
 	}
 	
 	//Getters&Setters

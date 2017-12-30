@@ -35,7 +35,7 @@ public class Customer {
 	}
 	
 	@POST
-	@Consumes(MediaType.MULTIPART_FORM_DATA)	
+	@Consumes(MediaType.APPLICATION_JSON)	
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response fetchCustomer(User i_user) throws Exception
 	{
@@ -44,7 +44,7 @@ public class Customer {
 	
 	@Path("/new")
 	@POST
-	@Consumes(MediaType.MULTIPART_FORM_DATA)
+	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response addCustomer(User i_user)
 	{

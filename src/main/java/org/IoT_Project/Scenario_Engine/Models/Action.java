@@ -7,6 +7,7 @@ import java.lang.reflect.Type;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.sql.SQLException;
 
 import javax.net.ssl.HttpsURLConnection;
 
@@ -34,7 +35,7 @@ public class Action {
 		this.actionDescription = i_action.getActionDescription();
 	}
 	
-	public Action(ActionEventProto actionDescription, String param, short device_serialNum)
+	public Action(ActionEventProto actionDescription, String param, short device_serialNum) throws SQLException
 	{
 		this.actionDescription = actionDescription;
 		switch(this.actionDescription.getType())

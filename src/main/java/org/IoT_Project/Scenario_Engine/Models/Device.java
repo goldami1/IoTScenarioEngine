@@ -1,5 +1,6 @@
 package org.IoT_Project.Scenario_Engine.Models;
 
+import java.sql.SQLException;
 import java.util.List;
 
 import DataBase.DBHandler;
@@ -10,7 +11,7 @@ public class Device {
 	private Product protoDevice;
 
 	
-	public Device(Customer i_Customer, short serial_number)
+	public Device(Customer i_Customer, short serial_number) throws SQLException
 	{
 		customer_id = i_Customer.getID();
 		this.serial_number = serial_number;
@@ -23,12 +24,12 @@ public class Device {
 		this.id = this.serial_number = this.customer_id = this.product_id = -1;
 	}
 	
-	public Device(Product i_product, short cust_id, short serial_num)
+	public Device(Product i_product, short i_cust_id, short i_serial_num) throws SQLException
 	{
-		this.customer_id = cust_id;
-		this.id = DBHandler.getInstance().getProductsMaxAvailableIdx();
-		this.serial_number = serial_number;
-		this.protoDevice = i_product;
+		customer_id = i_cust_id;
+		id = DBHandler.getInstance().getProductsMaxAvailableIdx();
+		serial_number = i_serial_num;
+		protoDevice = i_product;
 	}
 
 

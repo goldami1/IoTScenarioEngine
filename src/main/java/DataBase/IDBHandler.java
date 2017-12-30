@@ -18,7 +18,6 @@ public interface IDBHandler {
 	public boolean addProduct(Product i_product) throws SQLException;
 	public LinkedList<Pair<Short,String>> getVendors(); //pair(id,name)
 	public LinkedList <Product> getProducts(int vendor_id);
-	public LinkedList <Device> getDevices(int user_id);
 	public boolean addDevice(int product_id,int customer_id,int device_serial) throws SQLException ;
 	public boolean removeDevice(int device_id);
 	public IUser getUser(String i_username, String i_userPassword) throws SQLException;
@@ -39,7 +38,7 @@ public interface IDBHandler {
 	//2. Make Exception classes for login/signin/
 	
 	
-	public LinkedList<Device> getDevices(short i_UserID);
+	public LinkedList<Device> getDevices(short i_UserID) throws SQLException;
 	void removeProduct(Product productToRemove);
 	
 }

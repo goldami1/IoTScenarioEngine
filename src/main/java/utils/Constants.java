@@ -3,9 +3,9 @@ package utils;
 public final class Constants {
 	//Datamembers
 	
-	private static final String k_DatabaseConnectionURL = "jdbc:mysql://db4free.net:3306/scengine";  
+	private static final String k_DatabaseConnectionURL = "jdbc:mysql://mtatest.ctssrz2bfct5.us-east-2.rds.amazonaws.com:3306/scenario_engine";  
 	private static final String k_UserName= "scengine";
-	private static final String k_Password= "Aa123456";
+	private static final String k_Password= "mtaAmiRomaGalGil";
 	
 	//Methods
 	@SuppressWarnings("unused")

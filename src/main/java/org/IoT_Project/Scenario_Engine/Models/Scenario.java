@@ -1,4 +1,5 @@
 package org.IoT_Project.Scenario_Engine.Models;
+import java.sql.SQLException;
 import java.util.*;
 import java.util.Map.Entry;
 
@@ -14,7 +15,7 @@ public class Scenario{
 	private Map<Short, Action> actionsToHandle;
 	private List<ICase> cases;
 	
-	public Scenario()
+	public Scenario() throws SQLException
 	{
 		this.id = DBHandler.getInstance().getScenariosMaxAvailableIdx();
 		this.eventsToHappen = new HashMap<Short, Event>();
@@ -23,7 +24,7 @@ public class Scenario{
 		this.cases = new ArrayList<ICase>();
 	}
 	
-	public Scenario(String name, List<Event> events, List<Action> actions)
+	public Scenario(String name, List<Event> events, List<Action> actions) throws Exception
 	{
 		this();
 		this.name = name;
@@ -56,7 +57,7 @@ public class Scenario{
 	}
 	
 	
-	public void addScenarioToDB()
+	public void addScenarioToDB() throws Exception
 	{
 		DBHandler db = DBHandler.getInstance();
 		db.addScenario(this);

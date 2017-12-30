@@ -1,4 +1,5 @@
 package org.IoT_Project.Scenario_Engine.Models;
+import java.sql.SQLException;
 import java.util.*;
 import DataBase.DBHandler;
 
@@ -8,7 +9,7 @@ public class TimeDevice {
 	private Map<Short, Short> timeEvents;
 	private TimeZone clock;
 	
-	protected TimeDevice()
+	protected TimeDevice() throws SQLException
 	{
 		instance = null;
 		DBHandler db = DBHandler.getInstance();
@@ -18,7 +19,7 @@ public class TimeDevice {
 		//timeEvents = db.getTimeEvents();
 	}
 	
-	public static TimeDevice getInstance()
+	public static TimeDevice getInstance() throws SQLException
 	{
 		if(instance==null)
 		{

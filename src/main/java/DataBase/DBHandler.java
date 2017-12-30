@@ -1,15 +1,28 @@
 package DataBase;
 
-import java.math.BigDecimal;
-import utils.*;
-import org.IoT_Project.Scenario_Engine.Models.*;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map.Entry;
 
+import org.IoT_Project.Scenario_Engine.Models.Action;
+import org.IoT_Project.Scenario_Engine.Models.ActionEventProto;
+import org.IoT_Project.Scenario_Engine.Models.Customer;
+import org.IoT_Project.Scenario_Engine.Models.Device;
+import org.IoT_Project.Scenario_Engine.Models.Event;
+import org.IoT_Project.Scenario_Engine.Models.IUser;
+import org.IoT_Project.Scenario_Engine.Models.Product;
+import org.IoT_Project.Scenario_Engine.Models.Scenario;
+import org.IoT_Project.Scenario_Engine.Models.Vendor;
 
 import javafx.util.Pair;
-
-import java.sql.*;
-import java.util.*;
-import java.util.Map.Entry;
+import utils.Constants;
 
 public class DBHandler implements IDBHandler 
 {	
@@ -74,6 +87,7 @@ public class DBHandler implements IDBHandler
 	@SuppressWarnings("finally")
 	private static Connection openConnection() throws SQLException
 	{
+		Connection conn = null;
 		try
 		{
 			String url = Constants.getDatabaseConnectionURL();
@@ -81,14 +95,15 @@ public class DBHandler implements IDBHandler
 			String password = Constants.getDatabasePassword();	
 			Class.forName(k_driver);
 				
-			Connection conn = DriverManager.getConnection(url, username, password);
+			conn = DriverManager.getConnection(url, username, password);
 			
 			currSession = conn;
-			return conn;
+		} catch (ClassNotFoundException e) {
+			System.out.println("Class Loader Exception!");
 		}
 		finally
 		{
-			throw new SQLException("Connection couldn't be established");
+			return conn;
 		}
 	}
 	
@@ -423,9 +438,55 @@ public class DBHandler implements IDBHandler
 		return null;
 	}
 
-	public LinkedList<Device> getDevices(int user_id) {
-		// TODO Auto-generated method stub
-		return null;
+	@SuppressWarnings("finally")
+	public LinkedList<Device> getDevices(short user_id) throws SQLException {
+		int dev_id=-1, cust_id=-1, prod_id=-1; 
+		short serial_num=-1;
+		Product prod= null;
+		
+		
+		LinkedList<Device> res = null;
+		
+		try
+		{
+			Connection connection = openConnection();
+			PreparedStatement queryingStatement;
+			ResultSet queryResult;
+			
+			queryingStatement  =connection.prepareStatement("select * from DEVICES where customer_id=?;");
+			queryingStatement.setString(1, Integer.toString(user_id));
+			queryResult = queryingStatement.executeQuery();
+					
+			if (queryResult.next())
+			{
+				res = new LinkedList<Device>();
+				dev_id = Short.parseShort(queryResult.getString(1));
+				prod_id = Short.parseShort(queryResult.getString(2));
+				cust_id = Short.parseShort(queryResult.getString(3));
+				serial_num = Short.parseShort(queryResult.getString(4));
+			} 
+			
+			queryingStatement  =connection.prepareStatement("select * from PRODUCTS where product_id=?;");
+			queryingStatement.setString(1, Integer.toString(prod_id));
+			queryResult = queryingStatement.executeQuery();
+			
+			
+			if (queryResult.next())
+			{
+				short vendor_id = Short.parseShort(queryResult.getString(2));
+				String product_name = queryResult.getString(3);
+				String product_pic = queryResult.getString(4);
+				prod = new Product(product_name, product_pic, null, null);
+				prod = new Product(prod, vendor_id);
+			}
+			
+			res.add(new Device(prod, (short)cust_id, serial_num));
+		}
+		finally
+		{
+			closeConnection();
+			return res;
+		}
 	}
 
 	
@@ -590,11 +651,6 @@ public class DBHandler implements IDBHandler
 		}
 	}
 
-	public LinkedList<Device> getDevices(short i_UserID) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
 	public void removeProduct(Product productToRemove)
 	{
 		
@@ -635,14 +691,13 @@ public class DBHandler implements IDBHandler
 	private void initializeAllMaxIds() throws SQLException
 	{
 		Connection connection = openConnection();
-		PreparedStatement queryingStatement;
-		ResultSet queryResult;
+		PreparedStatement queryingStatement=null;
+		ResultSet queryResult=null;
 		
 		for(EntityAndIdxValue ev:EntityAndIdxValue.values())
 		{
-			queryingStatement = connection.prepareStatement(
-								String.format(k_selectMaxID, ev.idxValColumn, ev.Entity));
-				
+			queryingStatement = connection.prepareStatement(String.format(k_selectMaxID, ev.idxValColumn, ev.Entity));
+			
 			queryResult = queryingStatement.executeQuery();
 				
 			if (!queryResult.next())

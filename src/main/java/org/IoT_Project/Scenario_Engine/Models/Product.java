@@ -1,5 +1,6 @@
 package org.IoT_Project.Scenario_Engine.Models;
 
+import java.sql.SQLException;
 import java.util.*;
 
 import DataBase.DBHandler;
@@ -19,7 +20,7 @@ public class Product {
 		events_stat = actions_stat = false;
 	}
 	
-	public Product(Product product, short vendor_id)
+	public Product(Product product, short vendor_id) throws SQLException
 	{
 		this.endPoint = product.getEndPoint();
 		this.name = product.name;
