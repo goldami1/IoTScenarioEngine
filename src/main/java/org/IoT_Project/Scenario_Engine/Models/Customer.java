@@ -48,14 +48,4 @@ public class Customer extends User implements IUser {
 			this.devices.add(d);
 		}
 	}
-	
-	@Override
-	public boolean isEnduser() {
-		// TODO Auto-generated method stub
-		return false;
-	}
-	
-	
-	
-	
 }

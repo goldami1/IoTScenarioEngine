@@ -115,10 +115,10 @@ public class Customer {
 		return res;
 	}
 	
-	@Path("device/{id}/{dev_id}")
+	@Path("device/{cust_id}/{dev_id}")
 	@DELETE
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response removeDevice(@PathParam("id") short cust_id, @PathParam("dev_id") short device_id)
+	public Response removeDevice(@PathParam("cust_id") short cust_id, @PathParam("dev_id") short device_id)
 	{
 		Response res = null;
 		List<Device> updatedDeviceList;

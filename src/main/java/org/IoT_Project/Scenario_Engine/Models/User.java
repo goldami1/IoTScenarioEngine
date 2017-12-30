@@ -18,6 +18,13 @@ public class User implements IUser
 		this.isCustomer = false;
 	}
 	
+	public User(String uName, String password)
+	{
+		this();
+		this.userName = uName;
+		this.password = password;
+	}
+	
 	public User(String userName, String password, String i_name, String i_email, String i_userPicURL) 
 	{
 		this.name = i_name;

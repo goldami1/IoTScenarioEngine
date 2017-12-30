@@ -16,17 +16,20 @@ public class Scenario{
 	
 	public Scenario()
 	{
+		this.cust_id = -1;
 		this.id = DBHandler.getInstance().getScenariosMaxAvailableIdx();
 		this.eventsToHappen = new HashMap<Short, Event>();
 		this.actionsToHandle = new HashMap<Short, Action>();
-		name = null;
+		this.name = this.description = null;
 		this.cases = new ArrayList<ICase>();
 	}
 	
-	public Scenario(String name, List<Event> events, List<Action> actions)
+	public Scenario(String name, String description, short cust_id, List<Event> events, List<Action> actions)
 	{
 		this();
+		this.cust_id = cust_id;
 		this.name = name;
+		this.description = description;
 		for(Event e:events)
 		{
 			this.eventsToHappen.put(e.getId(), e);
@@ -84,6 +87,11 @@ public class Scenario{
 	public String getName()
 	{
 		return name;
+	}
+	
+	public String getDescription()
+	{
+		return this.description;
 	}
 	
 	public boolean isScenarioToActive()
