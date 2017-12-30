@@ -49,7 +49,7 @@ public class Customer extends User implements IUser {
 		}
 	}
 	
-	@Override
+	
 	public boolean isEnduser() {
 		// TODO Auto-generated method stub
 		return false;

@@ -604,7 +604,8 @@ public class DBHandler implements IDBHandler
 		return getScenariosMaxAvailableIdx();
 	}
 
-	public void addProduct(Product i_product) throws SQLException
+	@SuppressWarnings("finally")
+	public boolean addProduct(Product i_product) throws SQLException
 	{
 		final String sqlQuery =	"insert into PRODUCTS (vendor_id, product_name, product_pic, events_state, actions_state)"
 				+ "values ("
@@ -614,16 +615,20 @@ public class DBHandler implements IDBHandler
 				+"'"+i_product.getEAState()[0]+"'"
 				+"'"+i_product.getEAState()[1]+"'"
 				+")";
+		
+		boolean flag = false;
 
 		try 
 		{
 				Connection connection = openConnection();
 				java.sql.PreparedStatement insertStat  = connection.prepareStatement(sqlQuery);
 				insertStat.executeUpdate();
+				flag = true;
 		}
 		finally
 		{
 			closeConnection();
+			return flag;
 		}
 	}
 	
@@ -715,5 +720,10 @@ public class DBHandler implements IDBHandler
 	public LinkedList<Scenario> getScenariosByEvent(Event i_event) {
 		// TODO Auto-generated method stub
 		return null;
+	}
+
+	public boolean isEventUpdated(Event event) {
+		// TODO Auto-generated method stub
+		return false;
 	}
 }
