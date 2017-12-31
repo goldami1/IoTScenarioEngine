@@ -428,20 +428,22 @@ public class DBHandler implements IDBHandler
 		}
 	}
 
-	public LinkedList<Pair<Short, String>> getVendors() {
+	public LinkedList<Pair<Short, String>> getVendors() 
+	{
 		// TODO Auto-generated method stub
 		return null;
 	}
 
-	public LinkedList<Product> getProducts(int vendor_id) {
+	public LinkedList<Product> getProducts(int vendor_id)
+	{
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@SuppressWarnings("finally")
-	public LinkedList<Device> getDevices(short user_id) throws SQLException {
-		int dev_id=-1, cust_id=-1, prod_id=-1; 
-		short serial_num=-1;
+	public LinkedList<Device> getDevices(short user_id) throws SQLException	//final&complete IMPL
+	{
+		short serial_num=-1, dev_id=-1, prod_id=-1, cust_id=-1;
 		Product prod= null;
 		
 		
@@ -450,38 +452,43 @@ public class DBHandler implements IDBHandler
 		try
 		{
 			Connection connection = openConnection();
-			PreparedStatement queryingStatement;
-			ResultSet queryResult;
+			PreparedStatement devQStatement, prodQStatement;
+			ResultSet devsQResult, prodsQResult;
 			
-			queryingStatement  =connection.prepareStatement("select * from DEVICES where customer_id=?;");
-			queryingStatement.setString(1, Integer.toString(user_id));
-			queryResult = queryingStatement.executeQuery();
+			devQStatement  =connection.prepareStatement("select * from DEVICES where customer_id=?;");
+			devQStatement.setString(1, Integer.toString(user_id));
+			devsQResult = devQStatement.executeQuery();
+				
+			while (devsQResult.next())
+			{
+				if(res==null)
+					res = new LinkedList<Device>();
+				
+				dev_id = Short.parseShort(devsQResult.getString(1));
+				prod_id = Short.parseShort(devsQResult.getString(2));
+				cust_id = Short.parseShort(devsQResult.getString(3));
+				serial_num = Short.parseShort(devsQResult.getString(4));
+				
+				prodQStatement  =connection.prepareStatement("select * from PRODUCTS where product_id=?;");
+				prodQStatement.setString(1, Integer.toString(prod_id));
+				prodsQResult = prodQStatement.executeQuery();
 					
-			if (queryResult.next())
-			{
-				res = new LinkedList<Device>();
-				dev_id = Short.parseShort(queryResult.getString(1));
-				prod_id = Short.parseShort(queryResult.getString(2));
-				cust_id = Short.parseShort(queryResult.getString(3));
-				serial_num = Short.parseShort(queryResult.getString(4));
-			} 
-			
-			queryingStatement  =connection.prepareStatement("select * from PRODUCTS where product_id=?;");
-			queryingStatement.setString(1, Integer.toString(prod_id));
-			queryResult = queryingStatement.executeQuery();
-			
-			
-			if (queryResult.next())
-			{
-				short vendor_id = Short.parseShort(queryResult.getString(2));
-				String product_name = queryResult.getString(3);
-				String product_pic = queryResult.getString(4);
-				prod = new Product(product_name, product_pic, null, null);
-				prod = new Product(prod, vendor_id);
+					
+				if (prodsQResult.next())
+				{
+					short vendor_id = Short.parseShort(prodsQResult.getString(2));
+					String product_name = prodsQResult.getString(3);
+					String product_pic = prodsQResult.getString(4);
+					prod = new Product(product_name, product_pic, null, null);
+					prod = new Product(prod, vendor_id, prod_id);
+				}
+				else
+					throw new SQLException("relevant product for device couldn't be found! DB isn't normalized!");
+					
+				Device devToAdd =new Device(prod, cust_id, serial_num, prod_id, dev_id);
+				res.add(devToAdd);
 			}
-			
-			res.add(new Device(prod, (short)cust_id, serial_num));
-		}
+		}	
 		finally
 		{
 			closeConnection();
@@ -489,9 +496,9 @@ public class DBHandler implements IDBHandler
 		}
 	}
 
-	
 	@SuppressWarnings("finally")
-	public boolean addDevice(int product_id, int customer_id, int device_serial) throws SQLException {
+	public boolean addDevice(int product_id, int customer_id, int device_serial) throws SQLException //final&complete IMPL
+	{ 
 		final String sqlQuery =	"insert into DEVICES (product_id, customer_id , serial_num)"
 				+ "values ("
 				+"'"+product_id+"',"
@@ -516,37 +523,45 @@ public class DBHandler implements IDBHandler
 		}
 	}
 
-	public boolean removeDevice(int device_id) {
+	public boolean removeDevice(int device_id)
+	{
 		// TODO Auto-generated method stub
 		return false;
 	}
 
-	public IUser getUser(String i_username, String i_userPassword) throws SQLException {
+	public IUser getUser(String i_username, String i_userPassword) throws SQLException
+	{
 		IUser a = new Vendor(null);
+		// TODO
 		return a;
 	}
 
-	public Vendor getVendor(String name, String password) {
+	public Vendor getVendor(String name, String password)
+	{
 		// TODO Auto-generated method stub
 		return null;
 	}
 
-	public Vendor getVendor(int vendor_id) {
+	public Vendor getVendor(int vendor_id) 
+	{
 		// TODO Auto-generated method stub
 		return null;
 	}
 
-	public boolean removeProduct(int productToRemove_id) {
+	public boolean removeProduct(int productToRemove_id) 
+	{
 		// TODO Auto-generated method stub
 		return false;
 	}
 
-	public boolean updateProduct(int prod_id, Product new_product) {
+	public boolean updateProduct(int prod_id, Product new_product) 
+	{
 		// TODO Auto-generated method stub
 		return false;
 	}
 
-	public LinkedList<Scenario> getScenarios(int cust_id) {
+	public LinkedList<Scenario> getScenarios(int cust_id) 
+	{
 		// TODO Auto-generated method stub
 		return null;
 	}
@@ -563,12 +578,14 @@ public class DBHandler implements IDBHandler
 		return null;
 	}
 
-	public Customer getCustomer(String i_username, String i_password) {
+	public Customer getCustomer(String i_username, String i_password) 
+	{
 		// TODO Auto-generated method stub
 		return null;
 	}
 
-	public Customer getCustomer(int cust_id) {
+	public Customer getCustomer(int cust_id) 
+	{
 		// TODO Auto-generated method stub
 		return null;
 	}
@@ -656,7 +673,8 @@ public class DBHandler implements IDBHandler
 		
 	}
 
-	public short getIdForScenario() {
+	public short getIdForScenario() 
+	{
 		return getScenariosMaxAvailableIdx();
 	}
 
@@ -771,13 +789,14 @@ public class DBHandler implements IDBHandler
 		return (short) (TABLE_maxID[EntityAndIdxValue.DEVICES_TABLE.idx]+1);
 	}
 
-	@Override
-	public LinkedList<Scenario> getScenariosByEvent(Event i_event) {
+	public LinkedList<Scenario> getScenariosByEvent(Event i_event)
+	{
 		// TODO Auto-generated method stub
 		return null;
 	}
 
-	public boolean isEventUpdated(Event event) {
+	public boolean isEventUpdated(Event event) 
+	{
 		// TODO Auto-generated method stub
 		return false;
 	}

@@ -31,6 +31,13 @@ public class Device {
 		serial_number = i_serial_num;
 		protoDevice = i_product;
 	}
+	
+	public Device(Product i_product, short i_cust_id, short i_serial_num, short i_prod_id, short i_dev_id) throws SQLException
+	{
+		this(i_product, i_cust_id, i_serial_num);
+		product_id = i_prod_id;
+		id = i_dev_id;
+	}
 
 
 	public short getId() {

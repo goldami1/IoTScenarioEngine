@@ -30,6 +30,12 @@ public class Product {
 		this.actionAndEventList = (LinkedList<ActionEventProto>) product.getSupportedActionsAndEvents();
 	}
 	
+	public Product(Product product, short i_vendor_id, short i_prod_id) throws SQLException
+	{
+		this(product, i_vendor_id);
+		this.id = i_prod_id;
+	}
+	
 	public Product(String name, String picURL, String endPoint, List<ActionEventProto> actionsAndEvents)
 	{
 		this();
