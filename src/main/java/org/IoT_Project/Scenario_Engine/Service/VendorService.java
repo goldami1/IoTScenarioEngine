@@ -1,5 +1,6 @@
 package org.IoT_Project.Scenario_Engine.Service;
 
+import java.sql.SQLException;
 import java.util.List;
 
 import org.IoT_Project.Scenario_Engine.Models.*;
@@ -47,7 +48,7 @@ public class VendorService {
 		
 	}
 
-	public List<Product> fetchProducts(short i_userId) {
+	public List<Product> fetchProducts(short i_userId) throws SQLException {
 		return DBHandler.getInstance().getProducts(i_userId);
 	}
 

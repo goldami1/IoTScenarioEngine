@@ -13,7 +13,7 @@ public class CustomerService {
 		return DBHandler.getInstance().getCustomer(i_user.getID());
 	}
 	
-	public Customer fetch(String i_name, String i_password)
+	public Customer fetch(String i_name, String i_password) throws SQLException
 	{
 		return DBHandler.getInstance().getCustomer(i_name, i_password);
 	}
@@ -84,7 +84,7 @@ public class CustomerService {
 		
 	}
 
-	public List<Scenario> fetchScenarios(short i_user) {
+	public List<Scenario> fetchScenarios(short i_user) throws SQLException {
 		return DBHandler.getInstance().getScenarios(i_user);
 	}
 
