@@ -540,7 +540,7 @@ public class DBHandler implements IDBHandler
 			queryStatement.setString(2, i_userPassword);
 			queryResult = queryStatement.executeQuery();
 			
-			if(!queryResult.next())
+			if(queryResult.next())
 			{
 				String user_email=null, user_PicURL=null;
 				String cust_fname=null, cust_lname=null;
@@ -563,7 +563,7 @@ public class DBHandler implements IDBHandler
 				queryStatement.setString(2, i_userPassword);
 				queryResult = queryStatement.executeQuery();
 				
-				if(!queryResult.next())
+				if(queryResult.next())
 				{
 					String user_email=null;
 					String ven_name=null, ven_desc=null, ven_logo_pic=null;
@@ -583,14 +583,14 @@ public class DBHandler implements IDBHandler
 					res = curVend;
 				}
 			}
-			
-			if(res==null)
-				throw new SQLException("No user found for provided credantials!");
 		}	
 		finally
 		{
 			closeConnection();
-			return res;
+			if(res==null)
+				throw new SQLException("No user found for provided credantials!");
+			else
+				return res;
 		}
 	}
 

@@ -5,13 +5,16 @@ import org.IoT_Project.Scenario_Engine.Service.UserService;
 
 import org.IoT_Project.Scenario_Engine.Models.Scenario;
 import org.IoT_Project.Scenario_Engine.Models.Device;
+import org.IoT_Project.Scenario_Engine.Models.IUser;
 import org.IoT_Project.Scenario_Engine.Models.User;
 
+import java.sql.SQLException;
 import java.util.List;
 
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
+import javax.ws.rs.OPTIONS;
 import javax.ws.rs.POST;
 import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
@@ -21,9 +24,21 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 
+
 @Path("customer")
 public class Customer {
 
+	@OPTIONS
+	public Response options() {
+	    return Response.ok("")
+	            .header("Access-Control-Allow-Origin", "*")
+	            .header("Access-Control-Allow-Headers", "origin, content-type, accept, authorization")
+	            .header("Access-Control-Allow-Credentials", "true")
+	            .header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS, HEAD")
+	            .header("Access-Control-Max-Age", "1209600")
+	            .build();
+	}
+	
 	CustomerService cs = new CustomerService();
 	private static UserService us = new UserService();
 	
@@ -202,24 +217,43 @@ public class Customer {
 		return res;
 	}
 	
-	private Response fetch(User i_user)
+	private Response fetch(User i_user) throws Exception
 	{
 		try {
-			User user = us.fetch(i_user);
-			return Response.status(Status.OK).entity(user).build();
+			IUser user = us.fetch(i_user);
+//			return Response.status(Status.OK).entity(user).build();
+		    return Response
+		    	      .status(200)
+		    	      .header("Access-Control-Allow-Origin", "*")
+		    	      .header("Access-Control-Allow-Credentials", "true")
+		    	      .header("Access-Control-Allow-Headers",
+		    	        "origin, content-type, accept, authorization")
+		    	      .header("Access-Control-Allow-Methods", 
+		    	        "GET, POST, PUT, DELETE, OPTIONS, HEAD")
+		    	      .entity(user)
+		    	      .build();
 		}
 		catch(Exception ex)
 		{
 			return handleError(ex);
 		}
+		
 	}
 	
+	@Produces(MediaType.APPLICATION_JSON)
 	protected Response handleError(Exception ex)
 	{
 		Response res = null;
 		org.IoT_Project.Scenario_Engine.Models.Error er = new org.IoT_Project.Scenario_Engine.Models.Error();
 		er.setDescription(ex.getMessage());
-		res = Response.status(Status.NOT_FOUND).entity(er).build();
+		res = Response.status(Status.UNAUTHORIZED).header("Access-Control-Allow-Origin", "*")
+			      .header("Access-Control-Allow-Credentials", "true")
+			      .header("Access-Control-Allow-Headers",
+			        "origin, content-type, accept, authorization")
+			      .header("Access-Control-Allow-Methods", 
+			        "GET, POST, PUT, DELETE, OPTIONS, HEAD").entity(er).build();
+		
+
 		return res;
 	}
 }
