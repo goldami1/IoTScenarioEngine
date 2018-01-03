@@ -1,5 +1,7 @@
 package org.IoT_Project.Scenario_Engine.Models;
 
+import java.sql.SQLException;
+
 import DataBase.DBHandler;
 
 public class User implements IUser 
@@ -26,6 +28,18 @@ public class User implements IUser
 		this.id = -1;
 		this.name = this.userPicURL = this.email = this.userName = this.password = null;
 		this.isCustomer = false;
+	}
+	
+	public User(String i_uname, String i_password) throws SQLException
+	{
+		 User usr = (User)DBHandler.getInstance().getUser(i_uname, i_password);
+		 this.userName = usr.getUsername();
+		 this.name = usr.getName();
+		 this.password = usr.getPassword();
+		 this.id = usr.getID();
+		 this.email = usr.getEmail();
+		 this.userPicURL = usr.getUserPicURL();
+		 
 	}
 	
 	public User(User i_user) {

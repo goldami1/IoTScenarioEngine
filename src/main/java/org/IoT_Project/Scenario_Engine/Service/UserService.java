@@ -9,7 +9,7 @@ import org.IoT_Project.Scenario_Engine.Models.Vendor;
 import DataBase.DBHandler;
 
 public class UserService {
-	public Customer fetch(User i_user) throws Exception{
+	public User fetch(User i_user) throws Exception{
 		return DBHandler.getInstance().getCustomer(i_user.getID());
 	}
 
