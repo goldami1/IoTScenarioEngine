@@ -1,7 +1,6 @@
 import registerServiceWorker from './registerServiceWorker';
 import React from 'react';
 import ReactDOM from 'react-dom';
-import App from './components/app/app';
 import {BrowserRouter} from 'react-router-dom';
 import { createStore, applyMiddleware, compose } from "redux";
 import { Provider} from 'react-redux';
@@ -10,10 +9,8 @@ import ReduxPromise from "redux-promise";
 import ReduxThunk from "redux-thunk";
 import { setCurrentUser } from './actions/auth_actions';
 import setAuthorizationToken from './utilities/set_auth_token';
-// import '@atlaskit/css-reset';
-// import 'bootstrap/dist/css/bootstrap.min.css';
-// import 'bootstrap/dist/css/b3.css';
-// const createStoreWithMiddleware = applyMiddleware(ReduxPromise,ReduxThunk)(createStore);
+import MainRouter from './modules/MainRouter';
+import 'bootstrap/dist/css/bootstrap.min.css';
 
 const store = createStore(
 	rootReducer,
@@ -33,7 +30,7 @@ ReactDOM.render(
 
 	<Provider store={store}>
 		<BrowserRouter exact path='/' >
-			<App />
+			<MainRouter />
 		</BrowserRouter>
 	</Provider>
 

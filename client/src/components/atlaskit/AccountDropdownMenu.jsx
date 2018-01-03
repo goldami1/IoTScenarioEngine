@@ -3,7 +3,7 @@ import AkDropdownMenu from '@atlaskit/dropdown-menu';
 import { AkGlobalItem } from '@atlaskit/navigation';
 import AkAvatar from '@atlaskit/avatar';
 
-export default class AccountDropdownMenu  (
+export default   (
   <AkDropdownMenu
     appearance="tall"
     position="right bottom"

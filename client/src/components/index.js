@@ -1,5 +1,5 @@
-import React from 'react'
-import { Route, Switch , Redirect} from 'react-router-dom'
+import React from 'react';
+import { Route, Switch , Redirect} from 'react-router-dom';
 import LoginPage from './login/login_page';
 import RegisterPage from './register/register_page';
 

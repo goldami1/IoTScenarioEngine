@@ -3,11 +3,11 @@ import React, { PureComponent } from 'react';
 import Flag, { FlagGroup } from '@atlaskit/flag';
 import Modal from '@atlaskit/modal-dialog';
 import Page from '@atlaskit/page';
-import '@atlaskit/css-reset';
 
 import StarterNavigation from '../components/atlaskit/StarterNavigation';
 
 export default class App extends PureComponent {
+ 
   state = {
     flags: [],
     isModalOpen: false,
