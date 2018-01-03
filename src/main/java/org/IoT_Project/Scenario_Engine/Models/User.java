@@ -30,10 +30,11 @@ public class User implements IUser
 		this.isCustomer = false;
 	}
 	
+
 	public User(String i_uname, String i_password) throws SQLException
 	{
 		 User usr = (User)DBHandler.getInstance().getUser(i_uname, i_password);
-		 this.userName = usr.getUsername();
+		 this.userName = usr.getUserName();
 		 this.name = usr.getName();
 		 this.password = usr.getPassword();
 		 this.id = usr.getID();
@@ -46,44 +47,12 @@ public class User implements IUser
 		this.id = i_user.getID();
 		this.name = i_user.getName();
 		this.userPicURL = i_user.getUserPicURL();
-		this.userName = i_user.getUsername();
+		this.userName = i_user.getUserName();
 		this.password = i_user.getPassword();
 	}
 
-	//Getters&Setters
-	public short getID()
-	{
-		return id;
-	}
-	public String getName()
-	{
-		return name;
-	}
-	public String getUsername()
-	{
-		return userName;
-	}
-	public String getPassword()
-	{
-		return password;
-	}
-	public String getEmail()
-	{
-		return email;
-	}
-	public String getUserPicURL()
-	{
-		return userPicURL;
-	}
-	public void setIsCustomer(boolean isCustomer)
-	{
-		this.isCustomer = isCustomer;
-	}
-	public boolean getIsCustomer()
-	{
-		return this.isCustomer;
-	}
-	//Methods
+	
+
 	public User setUserName(String i_userName) throws Exception 
 	{
 		boolean isTaken = true;
@@ -122,6 +91,59 @@ public class User implements IUser
 			}
 		}
 		return this;
+	}
+	
+	public short getId() {
+		return id;
+	}
+
+	public void setId(short id) {
+		this.id = id;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public String getUserPicURL() {
+		return userPicURL;
+	}
+
+	public void setUserPicURL(String userPicURL) {
+		this.userPicURL = userPicURL;
+	}
+
+	public String getEmail() {
+		return email;
+	}
+
+	public void setEmail(String email) {
+		this.email = email;
+	}
+
+	public boolean isCustomer() {
+		return isCustomer;
+	}
+
+	public void setCustomer(boolean isCustomer) {
+		this.isCustomer = isCustomer;
+	}
+
+	public String getUserName() {
+		return userName;
+	}
+
+	public String getPassword() {
+		return password;
+	}
+
+	@Override
+	public short getID() {
+		return this.getId();
 	}
 
 }
