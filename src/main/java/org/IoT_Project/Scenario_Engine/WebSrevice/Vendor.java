@@ -1,11 +1,13 @@
 package org.IoT_Project.Scenario_Engine.WebSrevice;
 
+import org.IoT_Project.Scenario_Engine.Models.ActionEventProto;
 import org.IoT_Project.Scenario_Engine.Models.Product;
 import org.IoT_Project.Scenario_Engine.Models.User;
 import org.IoT_Project.Scenario_Engine.Service.UserService;
 import org.IoT_Project.Scenario_Engine.Service.VendorService;
 
 import java.sql.SQLException;
+import java.util.LinkedList;
 import java.util.List;
 
 import javax.ws.rs.Consumes;
@@ -48,6 +50,7 @@ public class Vendor{
 		return fetch(i_user);
 	}
 	
+	
 	@Path("/new")
 	@POST
 	@Consumes(MediaType.APPLICATION_JSON)
@@ -73,7 +76,7 @@ public class Vendor{
 		Response res = null;
 		try {
 			List<Product> products = vs.addProduct(vendor_id, i_product);
-			res = Response.status(Status.FOUND).entity(products).build();
+			res = Response.status(Status.OK).entity(products).build();
 		}
 		catch(Exception ex)
 		{
@@ -126,7 +129,7 @@ public class Vendor{
 		Response res = null;
 		try {
 			List<Product> products = vs.fetchProducts(i_userId);
-			res = Response.status(Status.FOUND).entity(products).build();
+			res = Response.status(Status.OK).entity(products).build();
 		}
 		catch(Exception ex)
 		{
@@ -139,7 +142,7 @@ public class Vendor{
 	{
 		try {
 			User user = us.fetch(i_user);
-			return Response.status(Status.FOUND).entity(user).build();
+			return Response.status(Status.OK).entity(user).build();
 		}
 		catch(Exception ex)
 		{

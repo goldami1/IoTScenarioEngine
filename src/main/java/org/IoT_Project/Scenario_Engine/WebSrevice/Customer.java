@@ -206,7 +206,7 @@ public class Customer {
 	{
 		try {
 			User user = us.fetch(i_user);
-			return Response.status(Status.FOUND).entity(user).build();
+			return Response.status(Status.OK).entity(user).build();
 		}
 		catch(Exception ex)
 		{

@@ -28,6 +28,14 @@ public class User implements IUser
 		this.isCustomer = false;
 	}
 	
+	public User(User i_user) {
+		this.id = i_user.getID();
+		this.name = i_user.getName();
+		this.userPicURL = i_user.getUserPicURL();
+		this.userName = i_user.getUsername();
+		this.password = i_user.getPassword();
+	}
+
 	//Getters&Setters
 	public short getID()
 	{
@@ -100,12 +108,6 @@ public class User implements IUser
 			}
 		}
 		return this;
-	}
-
-	@Override
-	public void setUserID(short i_id) {
-		this.id = i_id;
-		
 	}
 
 }

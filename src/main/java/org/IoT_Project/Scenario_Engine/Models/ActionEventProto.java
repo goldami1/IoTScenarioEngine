@@ -7,7 +7,6 @@ import DataBase.DBHandler;
 public class ActionEventProto {
 	private short id;
 	private String name;
-	private String description;
 	private String type;
 	private short prodId;
 	protected String productEP;
@@ -43,20 +42,6 @@ public class ActionEventProto {
 		this.prodId = prodId;
 		this.isEvent = isEvent;
 	}
-	
-	public ActionEventProto(short id,
-		    String name,
-		    String description,
-		    String type,
-		    short prodId,
-		    String productEp,
-		    boolean isEvent)
-	{
-		this(id,name,type,prodId, productEp, isEvent);
-		this.description = description;
-	}
-	
-	
 
 	public short getId() {
 		return id;

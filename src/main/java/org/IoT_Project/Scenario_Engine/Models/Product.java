@@ -20,33 +20,20 @@ public class Product {
 		events_stat = actions_stat = false;
 	}
 	
-	public Product(Product i_product) throws SQLException
+	public Product(Product product, short vendor_id) throws SQLException
 	{
-		this.endPoint = i_product.getEndPoint();
-		this.name = i_product.name;
-		this.picURL = i_product.picURL;
+		this.endPoint = product.getEndPoint();
+		this.name = product.name;
+		this.picURL = product.picURL;
 		this.id = DBHandler.getInstance().getProductsMaxAvailableIdx();
-		this.actionAndEventList = (LinkedList<ActionEventProto>) i_product.getSupportedActionsAndEvents();
+		this.vendor_id = vendor_id;
+		this.actionAndEventList = (LinkedList<ActionEventProto>) product.getSupportedActionsAndEvents();
 	}
 	
-	public Product(Product i_product, short i_vendor_id) throws SQLException
+	public Product(Product product, short i_vendor_id, short i_prod_id) throws SQLException
 	{
-		this(i_product);
-		this.vendor_id = i_vendor_id;
-	}
-	
-	public Product(Product i_product, short i_vendor_id, short i_prod_id) throws SQLException
-	{
-		this(i_product);
+		this(product, i_vendor_id);
 		this.id = i_prod_id;
-		this.vendor_id = i_vendor_id;
-	}
-	
-	public Product(Product i_product, boolean i_eve_stat, boolean i_act_stat) throws SQLException
-	{
-		this(i_product);
-		this.events_stat = i_eve_stat;
-		this.actions_stat = i_act_stat;
 	}
 	
 	public Product(String name, String picURL, String endPoint, List<ActionEventProto> actionsAndEvents)

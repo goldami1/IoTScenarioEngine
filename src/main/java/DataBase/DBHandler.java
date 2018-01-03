@@ -16,8 +16,6 @@ import org.IoT_Project.Scenario_Engine.Models.ActionEventProto;
 import org.IoT_Project.Scenario_Engine.Models.Customer;
 import org.IoT_Project.Scenario_Engine.Models.Device;
 import org.IoT_Project.Scenario_Engine.Models.Event;
-import org.IoT_Project.Scenario_Engine.Models.Event.ElogicOperand;
-import org.eclipse.persistence.queries.QueryResultsCachePolicy;
 import org.IoT_Project.Scenario_Engine.Models.IUser;
 import org.IoT_Project.Scenario_Engine.Models.Product;
 import org.IoT_Project.Scenario_Engine.Models.Scenario;
@@ -264,7 +262,7 @@ public class DBHandler implements IDBHandler
 	}
 
 	@SuppressWarnings("finally")
-	public boolean addScenario(Scenario i_Scenario) throws SQLException 
+	public boolean addScenario(Scenario i_Scenario) throws Exception 
 	{
 		if(!doesCustVendExist(i_Scenario.getCustomerID(), null, k_doesCustomerExistByID))
 		{
@@ -328,7 +326,7 @@ public class DBHandler implements IDBHandler
 		}
 	}
 
-	private void addActions(Scenario i_Scenario) throws SQLException 
+	private void addActions(Scenario i_Scenario) throws Exception 
 	{
 		Iterator<Entry<Short, Action>> itr = i_Scenario.getActions();
 		try
@@ -338,7 +336,7 @@ public class DBHandler implements IDBHandler
 			{
 				Action currentAction = itr.next().getValue();
 				if(currentAction.getDevice_serialNum()<0 || currentAction.getPrototype().getProdId()<0)
-					throw new SQLException("Incorrect Action object - no matching Product, or no Action instance available!");
+					throw new Exception("Incorrect Action object - no matching Product, or no Action instance available!");
 			
 			
 				final String sqlQuery = "insert into ACTIONS (device_id, actionproto_id, param_val)"
@@ -363,7 +361,7 @@ public class DBHandler implements IDBHandler
 	}
 	
 	
-	private void addEvents(Scenario i_Scenario) throws SQLException 
+	private void addEvents(Scenario i_Scenario) throws Exception 
 	{
 		Iterator<Entry<Short, Event>> itr = i_Scenario.getEvents();
 		try
@@ -373,7 +371,7 @@ public class DBHandler implements IDBHandler
 			{
 				Event currentEvent = itr.next().getValue();
 				if(currentEvent.getDevice_serialNum()<0 || currentEvent.getPrototype().getProdId()<0)
-					throw new SQLException("Incorrect Event object - no matching Product, or no Event instance available!");
+					throw new Exception("Incorrect Event object - no matching Product, or no Event instance available!");
 			
 			
 				final String sqlQuery = "insert into EVENTS (device_id, eventproto_id, param_val, logicOper)"
@@ -400,10 +398,10 @@ public class DBHandler implements IDBHandler
 	
 
 	@SuppressWarnings("finally")
-	private boolean doesCustVendExist(short i_custVendID, String i_userName, String i_CustVendQuery) throws SQLException
+	private boolean doesCustVendExist(short i_custVendID, String i_userName, String i_CustVendQuery) throws Exception
 	{
 		if(i_userName!=null && i_custVendID>0)
-			throw new SQLException("wrong use of method doesCustVendExist - choose either username, either userID");
+			throw new Exception("wrong use of method doesCustVendExist - choose either username, either userID");
 		
 		Connection connection=null;
 		try
@@ -430,132 +428,16 @@ public class DBHandler implements IDBHandler
 		}
 	}
 
-	@SuppressWarnings("finally")
-	public LinkedList<Pair<Short, String>> getVendors() throws SQLException //final&complete IMPL
+	public LinkedList<Pair<Short, String>> getVendors() 
 	{
-		short ven_id;
-		String ven_name;
-	
-		LinkedList<Pair<Short, String>> res = null;
-		
-		try
-		{
-			Connection connection = openConnection();
-			PreparedStatement queryStatement;
-			ResultSet queryResult;
-			
-			queryStatement  =connection.prepareStatement("select * from VENDORS;");
-			queryResult= queryStatement.executeQuery();
-				
-			while (queryResult.next())
-			{
-				if(res==null)
-					res = new LinkedList<Pair<Short,String>>();
-				
-				ven_id = Short.parseShort(queryResult.getString(1));
-				ven_name = queryResult.getString(2);
-				
-				res.add(new Pair<Short, String>(ven_id, ven_name));
-			}
-			if(res==null)
-				throw new SQLException("No vendors found!");
-		}	
-		finally
-		{
-			closeConnection();
-			return res;
-		}
+		// TODO Auto-generated method stub
+		return null;
 	}
 
-	@SuppressWarnings("finally")
-	public LinkedList<Product> getProducts(int i_vendor_id) throws SQLException	//final&complete IMPL
+	public LinkedList<Product> getProducts(int vendor_id)
 	{
-		short product_id=-1, vendor_id=-1;
-		String product_name=null, product_pic=null;
-		boolean events_state=false, actions_state=false;
-		
-		LinkedList<Product> res = null;
-		LinkedList<ActionEventProto> EAprotos_list = null;
-		
-		try
-		{
-			Connection connection = openConnection();
-			PreparedStatement prodQStatement, eveQStatement, actQStatement;
-			ResultSet prodsQResult, evesQResult, actsQResult;
-			
-			prodQStatement  =connection.prepareStatement("select * from PRODUCTS where customer_id=?;");
-			prodQStatement.setString(1, Integer.toString(i_vendor_id));
-			prodsQResult = prodQStatement.executeQuery();
-				
-			while (prodsQResult.next())
-			{
-				if(res==null)
-					res = new LinkedList<Product>();
-				
-				product_id = Short.parseShort(prodsQResult.getString(1));
-				vendor_id = Short.parseShort(prodsQResult.getString(2));
-				product_name = prodsQResult.getString(3);
-				product_pic = prodsQResult.getString(4);
-				events_state = Boolean.parseBoolean(prodsQResult.getString(5));
-				actions_state = Boolean.parseBoolean(prodsQResult.getString(6));
-				
-				
-				
-				short eventproto_id=-1, actionproto_id=-1;
-				String event_name=null, event_description=null, param_type=null, action_name=null,action_description=null;
-				if(events_state==true) //get all event prototypes related to the product
-				{					
-					eveQStatement  =connection.prepareStatement("select * from EVENTS_PROTO where product_id=?;");
-					eveQStatement.setString(1, Integer.toString(product_id));
-					evesQResult = eveQStatement.executeQuery();
-					
-					while (evesQResult.next())
-					{
-						if(EAprotos_list==null)
-							EAprotos_list = new LinkedList<ActionEventProto>();
-						
-						eventproto_id = Short.parseShort(prodsQResult.getString(1));
-						event_name = prodsQResult.getString(3);
-						event_description = prodsQResult.getString(4);
-						param_type = prodsQResult.getString(5);
-						
-						events_state = true;
-						EAprotos_list.add(new ActionEventProto(eventproto_id, event_name, event_description, param_type, product_id, null, true));
-					}
-						
-				}
-				if(actions_state == true) //get all action prototypes related to the product
-				{
-					actQStatement  =connection.prepareStatement("select * from ACTIONS_PROTO where product_id=?;");
-					actQStatement.setString(1, Integer.toString(product_id));
-					actsQResult = actQStatement.executeQuery();
-					
-					while (actsQResult.next())
-					{
-						if(EAprotos_list==null)
-							EAprotos_list = new LinkedList<ActionEventProto>();
-						
-						actionproto_id = Short.parseShort(prodsQResult.getString(1));
-						action_name = prodsQResult.getString(3);
-						action_description = prodsQResult.getString(4);
-						param_type = prodsQResult.getString(5);
-						
-						EAprotos_list.add(new ActionEventProto(actionproto_id, action_name, action_description, param_type, product_id, null, false));
-						actions_state = true;
-					}
-				}
-				
-				Product prod=  new Product(product_name, product_pic, null, EAprotos_list);
-				prod = new Product(prod, vendor_id, product_id);
-				prod = new Product(prod, events_state, actions_state);
-				res.add(prod);
-			}
-		}	
-		finally
-		{
-			closeConnection();
-			return res;
-		}
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 	@SuppressWarnings("finally")
@@ -641,239 +523,10 @@ public class DBHandler implements IDBHandler
 		}
 	}
 
-	@SuppressWarnings("finally")
-	public LinkedList<Scenario> getScenarios(int i_cust_id) throws SQLException 
-	{
-		LinkedList<Scenario> res = null;
-		Pair<Short, Scenario> currentScen = getScenario((short)i_cust_id, -1);
-		LinkedList<Short> scenario_ids= null;
-		
-		try
-		{
-			Connection connection = openConnection();
-			PreparedStatement queryStatement;
-			ResultSet queryResult;
-			
-			queryStatement  =connection.prepareStatement("select DISTINCT(SCENARIOS.scenario_id), SCENARIOS.customer_id, SCENARIOS.scenario_name, SCENARIOS.scenario_description, SCENARIOS_EVENTS.event_id from SCENARIOS INNER JOIN SCENARIOS_EVENTS ON SCENARIOS.scenario_id=SCENARIOS_EVENTS.scenario_id where SCENARIOS.customer_id=? ORDER BY SCENARIOS.scenario_id;");
-			queryStatement.setString(1, Integer.toString(i_cust_id));
-			queryResult = queryStatement.executeQuery();
-			
-			if(!queryResult.next())
-				throw new SQLException("No Scenarios Found in DB!");
-			
-			while(queryResult.next())
-			{
-				if(scenario_ids == null)
-					scenario_ids = new LinkedList<Short>();
-				scenario_ids.add(Short.parseShort(queryResult.getString(1)));
-			}
-			
-			if(currentScen.getKey()!=-1 && currentScen.getValue()!=null)
-			{
-				res = new LinkedList<Scenario>();
-				res.add(currentScen.getValue());
-				scenario_ids.removeFirst();
-				
-				while(!scenario_ids.isEmpty())
-				{
-					currentScen = getScenario((short)i_cust_id, scenario_ids.removeFirst());
-					if(currentScen.getKey()!=-1 && currentScen.getValue()!=null)
-						res.add(currentScen.getValue());
-				}
-			}
-		}
-		finally
-		{
-			closeConnection();
-			return res;
-		}
-		
-	}
-	
-	public LinkedList<Scenario> getScenariosByEvent(Event i_event)
+	public boolean removeDevice(int device_id)
 	{
 		// TODO Auto-generated method stub
-		return null;
-	}
-	
-	private Pair<Short, Scenario> getScenario(short i_cust_id, int i_scenario_id)
-	{
-		short scenario_id=-1, event_id=-1, action_id=-1;
-		char logic_oper = '\0';
-		String scenario_name=null, scenario_description=null; 
-		
-		Scenario res = null;
-		LinkedList<Action> acts = null;
-		LinkedList<Event> eves = null;
-		
-		try
-		{
-			Connection connection = openConnection();
-			PreparedStatement scen_actQStatement, scen_eveQStatement, logexprQStatement;
-			ResultSet scen_actsQResult, scen_evesQResult, logexprsQResult;
-			boolean isRelevantIter= true;
-			
-			scen_eveQStatement  =connection.prepareStatement("select SCENARIOS.scenario_id, SCENARIOS.customer_id, SCENARIOS.scenario_name, SCENARIOS.scenario_description, SCENARIOS_EVENTS.event_id from SCENARIOS INNER JOIN SCENARIOS_EVENTS ON SCENARIOS.scenario_id=SCENARIOS_EVENTS.scenario_id where SCENARIOS.customer_id=? ORDER BY SCENARIOS.scenario_id;");
-			scen_eveQStatement.setString(1, Integer.toString(i_cust_id));
-			scen_evesQResult = scen_eveQStatement.executeQuery();
-			while (scen_evesQResult.next())
-			{
-				if(i_scenario_id == -1)
-				{
-					if(scenario_id==-1)
-						scenario_id = Short.parseShort(scen_evesQResult.getString(1));
-					
-					if(scenario_id!=-1 && scenario_id<Short.parseShort(scen_evesQResult.getString(1)))
-						break;
-					else if(scenario_id!=-1 && scenario_id>Short.parseShort(scen_evesQResult.getString(1)))
-						isRelevantIter = false;
-					else
-						isRelevantIter = true;
-				}
-				else
-				{
-					if(i_scenario_id<Short.parseShort(scen_evesQResult.getString(1)))
-					{
-						break;
-					}
-					else if(i_scenario_id>Short.parseShort(scen_evesQResult.getString(1)))
-					{
-						isRelevantIter = false;
-					}
-					else if(i_scenario_id==Short.parseShort(scen_evesQResult.getString(1)))
-					{
-						isRelevantIter = true;
-						scenario_id = Short.parseShort(scen_evesQResult.getString(1));
-					}
-				}
-				
-				if(isRelevantIter)
-				{
-					if(eves==null)
-					{
-						eves = new LinkedList<Event>();
-					}
-					
-					scenario_id = Short.parseShort(scen_evesQResult.getString(1));
-					scenario_name= scen_evesQResult.getString(3);
-					scenario_description= scen_evesQResult.getString(4);
-					event_id=Short.parseShort(scen_evesQResult.getString(5));
-					
-					Event current_eve = getEvent(event_id);
-					connection = openConnection();
-					logexprQStatement = connection.prepareStatement("select * from LOGEXPRS where scenario_id=? and event_id=?;");
-					logexprQStatement.setString(1, Short.toString(scenario_id));
-					logexprQStatement.setString(2, Short.toString(event_id));
-					logexprsQResult = logexprQStatement.executeQuery();
-					
-					if(!logexprsQResult.next())
-						throw new SQLException("Wrong representation in DB, scenario, event, and logic expression tables aren't normalized!");
-					else
-					{
-						logic_oper = logexprsQResult.getString(4).charAt(0);
-					}
-					
-					current_eve.setLogicOper(ElogicOperand.setLogicOperFromChar(logic_oper));
-					eves.add(current_eve);
-				}
-			}
-			
-			
-			isRelevantIter = true;
-			scen_actQStatement  =connection.prepareStatement("select SCENARIOS.scenario_id, SCENARIOS.customer_id, SCENARIOS.scenario_name, SCENARIOS.scenario_description, SCENARIOS_ACTIONS.action_id from SCENARIOS INNER JOIN SCENARIOS_ACTIONS ON SCENARIOS.scenario_id=SCENARIOS_ACTIONS.scenario_id where SCENARIOS.customer_id=? ORDER BY SCENARIOS.scenario_id;");
-			scen_actQStatement.setString(1, Integer.toString(i_cust_id));
-			scen_actsQResult = scen_actQStatement.executeQuery();
-			while (scen_evesQResult.next())
-			{	
-				if(i_scenario_id==-1)
-				{
-					if(scenario_id!=-1 && scenario_id<Short.parseShort(scen_actsQResult.getString(1)))
-						break;
-					else if(scenario_id!=-1 && scenario_id>Short.parseShort(scen_actsQResult.getString(1)))
-						isRelevantIter = false;
-					else
-						isRelevantIter = true;
-				}
-				else
-				{
-					if(i_scenario_id<Short.parseShort(scen_evesQResult.getString(1)))
-					{
-						break;
-					}
-					else if(i_scenario_id>Short.parseShort(scen_evesQResult.getString(1)))
-					{
-						isRelevantIter = false;
-					}
-					else if(i_scenario_id==Short.parseShort(scen_evesQResult.getString(1)))
-					{
-						isRelevantIter = true;
-						scenario_id = Short.parseShort(scen_evesQResult.getString(1));
-					}
-				}
-				
-				
-				if(isRelevantIter)
-				{
-					if(acts==null)
-					{
-						acts = new LinkedList<Action>();
-					}
-
-					action_id=Short.parseShort(scen_actsQResult.getString(5));
-					
-					Action current_act = getAction(action_id);
-					connection = openConnection();
-					
-					acts.add(current_act);
-				}
-			}
-			
-			res = new Scenario(scenario_id, scenario_name, scenario_description, (short)i_cust_id, eves, acts);
-			
-		}	
-		finally
-		{
-			closeConnection();
-			return new Pair<Short, Scenario>(scenario_id, res);
-		}
-	}
-	
-	/*																	WHY DO WE NEED IT WHILE WE GOT GETSCENARIO(EVENT)???
-	public Scenario getScenario(short i_event_id)
-	{
-		// TODO Auto-generated method stub
-		return null;
-	}*/
-
-	@SuppressWarnings("finally")
-	public Customer addCustomer(Customer i_User) throws SQLException
-	{
-		short cust_id = DBHandler.getInstance().getCustomersMaxAvailableIdx();
-		final String sqlQuery =	"insert into CUSTOMERS (customer_id, first_name, last_name, user_name, user_password, email)"
-				+ "values ("
-				+"'"+cust_id+"',"
-				+"'"+i_User.getName()+"',"
-				+"'"+i_User.getName()+"',"
-				+"'"+i_User.getUsername()+"'"
-				+"'"+i_User.getPassword()+"'"
-				+"'"+i_User.getEmail()+"'"
-				+")";
-		
-		boolean flag = false;
-
-		try 
-		{
-				Connection connection = openConnection();
-				java.sql.PreparedStatement insertStat  = connection.prepareStatement(sqlQuery);
-				insertStat.executeUpdate();
-				flag = true;
-		}
-		finally
-		{
-			closeConnection();
-			i_User.setUserID(cust_id);
-			return i_User;
-		}
+		return false;
 	}
 
 	public IUser getUser(String i_username, String i_userPassword) throws SQLException
@@ -882,19 +535,7 @@ public class DBHandler implements IDBHandler
 		// TODO
 		return a;
 	}
-	
-	public Customer getCustomer(String i_username, String i_password) 
-	{
-		// TODO Auto-generated method stub
-		return null;
-	}
 
-	public Customer getCustomer(int cust_id) 
-	{
-		// TODO Auto-generated method stub
-		return null;
-	}
-	
 	public Vendor getVendor(String name, String password)
 	{
 		// TODO Auto-generated method stub
@@ -902,6 +543,48 @@ public class DBHandler implements IDBHandler
 	}
 
 	public Vendor getVendor(int vendor_id) 
+	{
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public boolean removeProduct(int productToRemove_id) 
+	{
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	public boolean updateProduct(int prod_id, Product new_product) 
+	{
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	public LinkedList<Scenario> getScenarios(int cust_id) 
+	{
+		// TODO Auto-generated method stub
+		return null;
+	}
+	
+	public Scenario getScenario(short i_event_id)
+	{
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public Customer addCustomer(Customer i_User)
+	{
+		// TODO
+		return null;
+	}
+
+	public Customer getCustomer(String i_username, String i_password) 
+	{
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public Customer getCustomer(int cust_id) 
 	{
 		// TODO Auto-generated method stub
 		return null;
@@ -924,38 +607,9 @@ public class DBHandler implements IDBHandler
 		// TODO Auto-generated method stub
 		return false;
 	}
-	
-	public boolean removeProduct(int productToRemove_id) 
-	{
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	public boolean updateProduct(int prod_id, Product new_product) 
-	{
-		// TODO Auto-generated method stub
-		return false;
-	}
-	
-	public void removeProduct(Product productToRemove)
-	{
-		//TODO
-	}
-	
-	public boolean removeDevice(int device_id)
-	{
-		// TODO Auto-generated method stub
-		return false;
-	}
-	
-	public boolean isEventUpdated(Event event) 
-	{
-		// TODO Auto-generated method stub
-		return false;
-	}
 
 	@SuppressWarnings("finally")
-	public Event getEvent(int event_id) throws SQLException
+	public Event getEvent(int event_id) throws Exception
 	{
 		Event res = null;
 
@@ -1004,14 +658,19 @@ public class DBHandler implements IDBHandler
 			ActionEventProto eve_prototype = new ActionEventProto(eve_name, eve_type, true, eve_prod_id, eve_deviceEP);
 			Action eveWithParamAndDevID = new Action(eve_prototype, eve_param, eve_deviceId);
 			Event completeEvent = new Event(eveWithParamAndDevID, eve_logicOperator);
-			completeEvent.setId(eve_id);
 			res = completeEvent;
+			//res = new Event(eve_name, eve_type, eve_param, eve_logicOperator, eve_deviceEP, eve_deviceId);
 		}
 		finally
 		{
 			closeConnection();
 			return res;
 		}
+	}
+
+	public void removeProduct(Product productToRemove)
+	{
+		
 	}
 
 	public short getIdForScenario() 
@@ -1047,7 +706,7 @@ public class DBHandler implements IDBHandler
 		}
 	}
 	
-	private void initializeAllMaxIds() throws SQLException	//complete&final IMPL
+	private void initializeAllMaxIds() throws SQLException
 	{
 		Connection connection = openConnection();
 		PreparedStatement queryingStatement=null;
@@ -1128,5 +787,17 @@ public class DBHandler implements IDBHandler
 	public short getDevicesMaxAvailableIdx()
 	{
 		return (short) (TABLE_maxID[EntityAndIdxValue.DEVICES_TABLE.idx]+1);
+	}
+
+	public LinkedList<Scenario> getScenariosByEvent(Event i_event)
+	{
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public boolean isEventUpdated(Event event) 
+	{
+		// TODO Auto-generated method stub
+		return false;
 	}
 }
