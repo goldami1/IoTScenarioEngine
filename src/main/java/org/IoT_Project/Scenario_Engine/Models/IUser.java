@@ -7,6 +7,9 @@ public interface IUser {
 	public String getName();
 	public String getEmail();
 	public String getUserPicURL();
+	public String getUserName();
+	public String getPassword();
+	public void setIsCustomer(boolean i_isCustomer);
 	
 	//TODO:
 	//public boolean isEnduser();

@@ -19,6 +19,7 @@ import org.IoT_Project.Scenario_Engine.Models.Event;
 import org.IoT_Project.Scenario_Engine.Models.IUser;
 import org.IoT_Project.Scenario_Engine.Models.Product;
 import org.IoT_Project.Scenario_Engine.Models.Scenario;
+import org.IoT_Project.Scenario_Engine.Models.User;
 import org.IoT_Project.Scenario_Engine.Models.Vendor;
 
 import javafx.util.Pair;
@@ -430,7 +431,7 @@ public class DBHandler implements IDBHandler
 
 	public LinkedList<Pair<Short, String>> getVendors() 
 	{
-		// TODO Auto-generated method stub
+		//TODO
 		return null;
 	}
 
@@ -523,17 +524,74 @@ public class DBHandler implements IDBHandler
 		}
 	}
 
-	public boolean removeDevice(int device_id)
-	{
-		// TODO Auto-generated method stub
-		return false;
-	}
-
+	@SuppressWarnings("finally")
 	public IUser getUser(String i_username, String i_userPassword) throws SQLException
 	{
-		IUser a = new Vendor(null);
-		// TODO
-		return a;
+		IUser res=null;
+		
+		try
+		{
+			Connection connection = openConnection();
+			PreparedStatement queryStatement;
+			ResultSet queryResult;
+			
+			queryStatement  =connection.prepareStatement("select * from CUSTOMERS where user_name=? and user_password=?;");
+			queryStatement.setString(1, i_username);
+			queryStatement.setString(2, i_userPassword);
+			queryResult = queryStatement.executeQuery();
+			
+			if(!queryResult.next())
+			{
+				String user_email=null, user_PicURL=null;
+				String cust_fname=null, cust_lname=null;
+				short cust_id=-1;
+				
+				cust_id = Short.parseShort(queryResult.getString(1));
+				cust_fname = queryResult.getString(2);
+				cust_lname = queryResult.getString(3);
+				user_email = queryResult.getString(6);
+				
+				User curUser = new User(i_username, i_userPassword, cust_fname + cust_lname, user_email, user_PicURL);
+				curUser.setCustomer(true);
+				curUser.setId(cust_id);
+				res = new Customer(curUser);
+			}
+			else
+			{
+				queryStatement  =connection.prepareStatement("select * from VENDORS where user_name=? and user_password=?;");
+				queryStatement.setString(1, i_username);
+				queryStatement.setString(2, i_userPassword);
+				queryResult = queryStatement.executeQuery();
+				
+				if(!queryResult.next())
+				{
+					String user_email=null;
+					String ven_name=null, ven_desc=null, ven_logo_pic=null;
+					short ven_id=-1;
+					
+					ven_id = Short.parseShort(queryResult.getString(1));
+					ven_name = queryResult.getString(2);
+					user_email = queryResult.getString(5);
+					ven_desc = queryResult.getString(6);
+					ven_logo_pic = queryResult.getString(7);
+					
+					User curUser = new User(i_username, i_userPassword, ven_name, user_email, ven_logo_pic);
+					curUser.setCustomer(false);
+					curUser.setId(ven_id);
+					Vendor curVend = new Vendor(curUser);
+					curVend.setDescription(ven_desc);
+					res = curVend;
+				}
+			}
+			
+			if(res==null)
+				throw new SQLException("No user found for provided credantials!");
+		}	
+		finally
+		{
+			closeConnection();
+			return res;
+		}
 	}
 
 	public Vendor getVendor(String name, String password)
@@ -548,6 +606,12 @@ public class DBHandler implements IDBHandler
 		return null;
 	}
 
+	public boolean removeDevice(int device_id)
+	{
+		// TODO Auto-generated method stub
+		return false;
+	}
+	
 	public boolean removeProduct(int productToRemove_id) 
 	{
 		// TODO Auto-generated method stub

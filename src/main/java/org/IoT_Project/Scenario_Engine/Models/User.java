@@ -145,5 +145,10 @@ public class User implements IUser
 	public short getID() {
 		return this.getId();
 	}
+	@Override
+	public void setIsCustomer(boolean i_isCustomer) {
+		this.isCustomer = i_isCustomer;
+		
+	}
 
 }

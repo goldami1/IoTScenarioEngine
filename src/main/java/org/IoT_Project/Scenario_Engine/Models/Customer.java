@@ -12,7 +12,7 @@ public class Customer extends User implements IUser {
 	
 	public Customer(User i_User) throws Exception 
 	{
-		super(i_User.getUsername(), i_User.getPassword(), i_User.getName(), i_User.getEmail(), i_User.getUserPicURL());
+		super(i_User.getUserName(), i_User.getPassword(), i_User.getName(), i_User.getEmail(), i_User.getUserPicURL());
 		devices = new LinkedList<Device>();
 		customerScenarios = new LinkedList<Scenario>();
 		DBHandler db = DBHandler.getInstance();
