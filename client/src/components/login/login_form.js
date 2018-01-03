@@ -34,12 +34,12 @@ class LoginForm extends Component {
 			error: '',
 			isLoading: true 
 		});
-		this.props.login((({username,password}) =>({username,password}))(this.state))
+		this.props.login({"UserName":this.state.username, "Password":this.state.password})
 			.then(
 				(res) => this.props.history.push("/"),
 				(err) => {
 					this.setState({
-						error: err.response.data.error,
+						// error: err.response.data.Description,
 						isLoading: false
 					});
 				}

@@ -3,7 +3,7 @@ import React from 'react';
 import { Link , withRouter } from 'react-router-dom';
 import { logout } from '../../actions/auth_actions';
 import { connect } from 'react-redux';
-import Nav, {
+import Navigation, {
 	AkContainerTitle,
 	AkCreateDrawer,
 	AkNavigationItem,
@@ -15,14 +15,11 @@ import SearchIcon from '@atlaskit/icon/glyph/search';
 import CreateIcon from '@atlaskit/icon/glyph/add';
 
 import CreateDrawer from './CreateDrawer';
-import HelpDropdownMenu from './HelpDropdownMenu';
-
-
 import AtlassianIcon from '@atlaskit/icon/glyph/atlassian';
 import ArrowleftIcon from '@atlaskit/icon/glyph/arrow-left';
 
 import nucleusImage from '../../images/nucleus.png';
-import AccountDropdownMenu from './AccountDropdownMenu';
+import UserDropdown  from './AccountDropdownMenu';
 import '@atlaskit/css-reset';
 class StarterNavigation extends React.Component {
 	constructor(props){
@@ -57,7 +54,7 @@ class StarterNavigation extends React.Component {
 					['/products', 'Products', DashboardIcon]
 				]
 			);
-			case "vendor":  return (
+			case "enduser":  return (
 				[
 					['/devices', 'Devices', DashboardIcon],
 					['/scenarios', 'Scenarios', DashboardIcon],
@@ -65,23 +62,19 @@ class StarterNavigation extends React.Component {
 			);
 			default: return (
 				[
-					['/NOTHING', 'NOTHING ', DashboardIcon],
+					['/login', 'Login ', DashboardIcon],
+					['/signup', 'Singup ', GearIcon],
 				]
 			);
 		}
 	}
-
-	getLinks = () => {
-		this.setState({navLinks: this.links(this.props.auth.user.type)});
-	}
+	
 
 	render() {
-
-		// this.getLinks();
 		const backIcon = <ArrowleftIcon label="Back icon" size="medium" />;
 		const globalPrimaryIcon = <h1>:)</h1>;
 		return (
-			<Nav
+			<Navigation
 				isOpen={this.context.navOpenState.isOpen}
 				width={this.context.navOpenState.width}
 				onResize={this.props.onNavResize}
@@ -111,13 +104,13 @@ class StarterNavigation extends React.Component {
 						/>
 					</AkCreateDrawer>
 				]}
-				globalAccountItem={AccountDropdownMenu}
 				globalCreateIcon={<CreateIcon label="Create icon" />}
-				globalHelpItem={HelpDropdownMenu}
+				globalSecondaryActions={[<UserDropdown onLogout={this.props.logout}/>]}
 				onCreateDrawerOpen={() => this.openDrawer('create')}
 			>
 				{
-					this.state.navLinks.map(link => {
+
+					this.links(this.props.auth.user.type).map(link => {
 						const [url, title, Icon] = link;
 						return (
 							<Link key={url} to={url}>
@@ -130,7 +123,7 @@ class StarterNavigation extends React.Component {
 						);
 					}, this)
 				}
-			</Nav>
+			</Navigation>
 
 		);
 	}

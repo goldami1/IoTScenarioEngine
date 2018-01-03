@@ -4,8 +4,9 @@ import setAuthorizationToken from '../utilities/set_auth_token';
 
 import { SET_CURRENT_USER } from './types';
 
-const URL_ROOT = 'http://demo6475105.mockable.io/';
-const LOGIN_URL = URL_ROOT + 'login';
+const URL_ROOT = 'http://localhost:9085/Scenario_Engine/webapi/customer';
+const LOGIN_URL = URL_ROOT + 'customer';
+const SIGN_URL = URL_ROOT + '/add';
 const POST_RET = 'https://httpbin.org/post';
 
 
@@ -26,19 +27,20 @@ export function logout() {
 
 export function login(data) {
 	return dispatch => {
-		return axios.post(LOGIN_URL, data).then(
+		return axios.post(URL_ROOT, data).then(
 			res => {
-				const user = {
-					username 	:res.data.username,
-					password 	:res.data.password,
-					id 			:res.data.id,
-					type 		:res.data.type
+				console.log(res);
+				// const user = {
+				// 	username 	:res.data.username,
+				// 	password 	:res.data.password,
+				// 	id 			:res.data.id,
+				// 	type 		:res.data.type
 
-				};
+				// };
 
-				localStorage.setItem('user', JSON.stringify(user));
-				setAuthorizationToken(user);
-				dispatch(setCurrentUser(user));
+				// localStorage.setItem('user', JSON.stringify(user));
+				// setAuthorizationToken(user);
+				// dispatch(setCurrentUser(user));
 
 		  	}
 		);

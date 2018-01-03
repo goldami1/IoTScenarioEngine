@@ -43,12 +43,29 @@ class RegisterForm extends Component {
 		});
 
 		console.log(this.props);
-		this.props.userSignupRequest(this.state)
+
+		var user;
+		if (this.state.is_vendor) {
+			user = {
+				UserName:this.state.username,
+				Name: this.state.company_name,
+				Password: this.state.password,
+				Email: this.state.email,
+			}
+		}else{
+			user = {
+				UserName:this.state.username,
+				Name: this.state.firstname,
+				Password: this.state.password,
+				Email: this.state.email
+			}			
+		}
+		this.props.userSignupRequest(user)
 			.then(
 				(res) => this.props.history.push("/login"),
 				(err) => {
 					this.setState({
-						error: err.response.data.error,
+						// error: err.response.data.error,
 						isLoading: false
 					});
 				}
