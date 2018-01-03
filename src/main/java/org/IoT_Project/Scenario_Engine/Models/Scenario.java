@@ -24,7 +24,16 @@ public class Scenario{
 		this.cases = new ArrayList<ICase>();
 	}
 	
-	public Scenario(String name, List<Event> events, List<Action> actions) throws Exception
+	public Scenario(short i_id, String i_name, String i_description, short i_cust_id, List<Event> i_events, List<Action> i_actions) throws SQLException
+	{
+		this(i_name, i_events, i_actions);
+		this.id = i_id;
+		this.description = i_description;
+		this.cust_id = i_cust_id;
+		
+	}
+	
+	public Scenario(String name, List<Event> events, List<Action> actions) throws SQLException
 	{
 		this();
 		this.name = name;

@@ -102,4 +102,10 @@ public class User implements IUser
 		return this;
 	}
 
+	@Override
+	public void setUserID(short i_id) {
+		this.id = i_id;
+		
+	}
+
 }
