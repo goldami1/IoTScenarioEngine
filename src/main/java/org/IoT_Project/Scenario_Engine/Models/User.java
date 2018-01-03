@@ -10,6 +10,7 @@ public class User implements IUser
 	protected short id;
 	protected String name, userPicURL, email;
 	protected String userName, password;
+
 	protected boolean isCustomer;		//true - Customer, False - vendor
 	
 	public User(String userName, String password, String i_name, String i_email, String i_userPicURL) 
@@ -52,8 +53,15 @@ public class User implements IUser
 	}
 
 	
+	public void setUserName(String userName) throws Exception {
+		setUsrName(userName);
+	}
 
-	public User setUserName(String i_userName) throws Exception 
+	public void setPassword(String password) throws Exception {
+		setPasswrd(password);
+	}
+	
+	public User setUsrName(String i_userName) throws Exception 
 	{
 		boolean isTaken = true;
 		try 
@@ -71,7 +79,7 @@ public class User implements IUser
 
 		return this;
 	}
-	public User setPassword(String i_password) throws Exception
+	public User setPasswrd(String i_password) throws Exception
 	{
 		boolean isExists = false;
 		if (userName != null)
@@ -85,7 +93,7 @@ public class User implements IUser
 				throw new Exception("There's a problem with setPassword in User", e);
 			}
 			
-			if (isExists) 
+			if (!isExists) 
 			{
 				password = i_password;
 			}
