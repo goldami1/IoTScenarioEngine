@@ -4,6 +4,8 @@
   "private": true,
   "dependencies": {
     "@atlaskit/avatar": "^8.3.11",
+    "@atlaskit/badge": "^6.1.8",
+    "@atlaskit/banner": "^4.0.7",
     "@atlaskit/button": "^6.2.0",
     "@atlaskit/css-reset": "^1.1.7",
     "@atlaskit/dropdown-menu": "^3.11.4",
@@ -13,6 +15,7 @@
     "@atlaskit/modal-dialog": "^3.2.6",
     "@atlaskit/navigation": "^27.0.4",
     "@atlaskit/page": "^5.0.5",
+    "@atlaskit/tooltip": "^8.0.12",
     "@atlaskit/util-shared-styles": "^2.10.6",
     "axios": "^0.17.1",
     "bootstrap": "^4.0.0-beta.2",

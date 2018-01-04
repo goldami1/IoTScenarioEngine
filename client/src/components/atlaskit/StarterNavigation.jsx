@@ -9,24 +9,27 @@ import Navigation, {
 	AkNavigationItem,
 } from '@atlaskit/navigation';
 import DashboardIcon from '@atlaskit/icon/glyph/dashboard';
+import LoginIcon from '@atlaskit/icon/glyph/sign-in';
+import SignupIcon from '@atlaskit/icon/glyph/invite-team';
 import PullRequestsIcon from '@atlaskit/icon/glyph/bitbucket/pullrequests';
 import GearIcon from '@atlaskit/icon/glyph/settings';
 import SearchIcon from '@atlaskit/icon/glyph/search';
 import CreateIcon from '@atlaskit/icon/glyph/add';
-
+import WarningIcon from '@atlaskit/icon/glyph/warning';
 import CreateDrawer from './CreateDrawer';
 import AtlassianIcon from '@atlaskit/icon/glyph/atlassian';
 import ArrowleftIcon from '@atlaskit/icon/glyph/arrow-left';
 
 import nucleusImage from '../../images/nucleus.png';
 import UserDropdown  from './AccountDropdownMenu';
-import '@atlaskit/css-reset';
+import Banner from '@atlaskit/banner';
+
 class StarterNavigation extends React.Component {
 	constructor(props){
 		super(props);
 		this.state = {
 			navLinks: [
-				['/login', 'Home', DashboardIcon],
+				['/login', 'Home', LoginIcon],
 				['/pull-requests', 'Pull requests', PullRequestsIcon],
 				['/settings', 'Settings', GearIcon],
 			]
@@ -62,8 +65,8 @@ class StarterNavigation extends React.Component {
 			);
 			default: return (
 				[
-					['/login', 'Login ', DashboardIcon],
-					['/signup', 'Singup ', GearIcon],
+					['/login', 'Login ', LoginIcon],
+					['/signup', 'Singup ', SignupIcon],
 				]
 			);
 		}
@@ -71,8 +74,10 @@ class StarterNavigation extends React.Component {
 	
 
 	render() {
+
 		const backIcon = <ArrowleftIcon label="Back icon" size="medium" />;
-		const globalPrimaryIcon = <h1>:)</h1>;
+		const globalPrimaryIcon = <GearIcon />;
+		console.log(this.props.onNavResize);
 		return (
 			<Navigation
 				isOpen={this.context.navOpenState.isOpen}
@@ -108,6 +113,7 @@ class StarterNavigation extends React.Component {
 				globalSecondaryActions={[<UserDropdown onLogout={this.props.logout}/>]}
 				onCreateDrawerOpen={() => this.openDrawer('create')}
 			>
+			
 				{
 
 					this.links(this.props.auth.user.type).map(link => {

@@ -54,11 +54,12 @@ export default class App extends PureComponent {
   }
 
   render() {
+
     return (
       <div>
         <Page
           navigationWidth={this.context.navOpenState.width}
-          navigation={<StarterNavigation />}
+          navigation={<StarterNavigation  onNavResize={this.props.onNavResize}/>}
         >
           {this.props.children}
         </Page>

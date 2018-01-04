@@ -1,10 +1,13 @@
 import React, {Component} from 'react';
+import { Link } from 'react-router-dom';
 import DropdownMenu ,{DropdownItem}from '@atlaskit/dropdown-menu';
 import { connect } from 'react-redux';
 import { logout } from '../../actions/auth_actions';
 import { AkGlobalItem } from '@atlaskit/navigation';
 import Avatar from '@atlaskit/avatar';
-
+import LogoutIcon from '@atlaskit/icon/glyph/sign-out';
+import Tooltip from '@atlaskit/tooltip';
+import {isEmpty} from 'lodash';
 
 class UserDropdown extends Component {
 
@@ -13,9 +16,33 @@ class UserDropdown extends Component {
 		this.logout = this.logout.bind(this);
 
 	}
+
 	logout(event) {
 		event.preventDefault();
 		this.props.logout();
+	}
+
+	items(type){
+		switch(type) {
+			case "vendor":
+			case "enduser": return (
+					[{
+						heading: this.props.auth.user.name,
+						items: [
+							{ content: <div onClick={this.props.onLogout}><LogoutIcon size="small"/>Logout</div> },
+						],
+					}]
+				);
+			default: return (
+					[{
+						heading: "guest",
+						items: [
+							{ content: <Link to="/login">Login</Link> },
+							{ content: <Link to="/signup">Signup</Link> },
+						],
+					}]
+			);
+		}
 	}
 
 	render(){
@@ -23,19 +50,13 @@ class UserDropdown extends Component {
 		<DropdownMenu
 			appearance="tall"
 			position="right bottom"
-			items={[
-				{
-					heading: 'Joshua Nelson',
-					items: [
-						{ content: <div onClick={this.props.onLogout}>Logout</div> },
-					],
-				},
-			]}
+			items={this.items(this.props.auth.user.type)}
 		>
 
-			
 			<AkGlobalItem>
-				<Avatar size="small" />
+				<Tooltip content="User menu">
+					<Avatar size="small" />
+				</Tooltip>
 			</AkGlobalItem>
 		</DropdownMenu>
 		);
