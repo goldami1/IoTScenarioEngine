@@ -19,7 +19,7 @@ import WarningIcon from '@atlaskit/icon/glyph/warning';
 import CreateDrawer from './create_drawer';
 import AtlassianIcon from '@atlaskit/icon/glyph/atlassian';
 import ArrowleftIcon from '@atlaskit/icon/glyph/arrow-left';
-
+import Tooltip from '@atlaskit/tooltip'
 import nucleusImage from '../../images/nucleus.png';
 import UserDropdown  from './account_dropdown';
 import Banner from '@atlaskit/banner';
@@ -118,14 +118,17 @@ class StarterNavigation extends React.Component {
 
 					this.links(this.props.auth.user.type).map(link => {
 						const [url, title, Icon] = link;
+						console.log(this.props);
 						return (
-							<Link key={url} to={url}>
-								<AkNavigationItem
-									icon={<Icon label={title} size="medium" />}
-									text={title }
-									isSelected={this.props.location.pathname==url}
-								/>
-							</Link>
+							<Tooltip content={(!this.context.navOpenState.isOpen)?title:''} position='right'>
+								<Link key={url} to={url}>
+									<AkNavigationItem
+										icon={<Icon label={title} size="medium" />}
+										text={title }
+										isSelected={this.props.location.pathname==url}
+									/>
+								</Link>
+							</Tooltip>
 						);
 					}, this)
 				}
