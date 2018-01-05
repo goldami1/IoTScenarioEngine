@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from "react-redux";
-import { addDevice , fetchVendors, fetchProducts } from "../../actions/devices_actions";
+import { addDevice , fetchVendors, fetchProducts } from "../../../actions/devices_actions";
 import { Link } from 'react-router-dom';
 import { withRouter } from "react-router-dom";
 

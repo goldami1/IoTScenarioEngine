@@ -9,7 +9,7 @@ import ReduxPromise from "redux-promise";
 import ReduxThunk from "redux-thunk";
 import { setCurrentUser } from './actions/auth_actions';
 import setAuthorizationToken from './utilities/set_auth_token';
-import MainRouter from './modules/MainRouter';
+import MainRouter from './components/';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 const store = createStore(

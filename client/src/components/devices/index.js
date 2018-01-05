@@ -3,7 +3,7 @@ import { connect } from "react-redux";
 import DeviceList from './device_list';
 import DeviceDetail from './device_detail';
 import { fetchDevices, deleteDevice } from '../../actions/devices_actions';
-import DeviceForm from './device_form';
+import DeviceForm from './add/';
 import { Link } from "react-router-dom";
 
 

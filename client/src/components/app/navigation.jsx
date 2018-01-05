@@ -16,12 +16,12 @@ import GearIcon from '@atlaskit/icon/glyph/settings';
 import SearchIcon from '@atlaskit/icon/glyph/search';
 import CreateIcon from '@atlaskit/icon/glyph/add';
 import WarningIcon from '@atlaskit/icon/glyph/warning';
-import CreateDrawer from './CreateDrawer';
+import CreateDrawer from './create_drawer';
 import AtlassianIcon from '@atlaskit/icon/glyph/atlassian';
 import ArrowleftIcon from '@atlaskit/icon/glyph/arrow-left';
 
 import nucleusImage from '../../images/nucleus.png';
-import UserDropdown  from './AccountDropdownMenu';
+import UserDropdown  from './account_dropdown';
 import Banner from '@atlaskit/banner';
 
 class StarterNavigation extends React.Component {

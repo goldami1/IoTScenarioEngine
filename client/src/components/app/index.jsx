@@ -4,7 +4,7 @@ import Flag, { FlagGroup } from '@atlaskit/flag';
 import Modal from '@atlaskit/modal-dialog';
 import Page from '@atlaskit/page';
 
-import StarterNavigation from '../components/atlaskit/StarterNavigation';
+import Navigation from './navigation';
 
 export default class App extends PureComponent {
  
@@ -59,7 +59,7 @@ export default class App extends PureComponent {
       <div>
         <Page
           navigationWidth={this.context.navOpenState.width}
-          navigation={<StarterNavigation  onNavResize={this.props.onNavResize}/>}
+          navigation={<Navigation  onNavResize={this.props.onNavResize}/>}
         >
           {this.props.children}
         </Page>

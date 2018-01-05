@@ -1,13 +1,10 @@
 import React, { Component } from 'react';
 import { connect } from "react-redux";
-import { addScenario } from "../../actions/scenario_actions";
+import { addScenario } from "../../../actions/scenario_actions";
 import { Link } from 'react-router-dom';
 import { withRouter } from "react-router-dom";
-import {flatten , unflatten} from '../../utilities/flat';
-import { fetchDevices } from '../../actions/devices_actions';
-
-
-
+import {flatten , unflatten} from '../../../utilities/flat';
+import { fetchDevices } from '../../../actions/devices_actions';
 
 
 class ScenarioForm extends Component {

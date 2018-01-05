@@ -1,17 +1,17 @@
 import PropTypes from 'prop-types';
 import React, { PureComponent } from 'react';
 import { Route, Switch } from 'react-router-dom';
-import App from './App.jsx';
-import LoginPage from '../components/login/login_page';
-import RegisterPage from '../components/register/register_page';
+import App from './app/';
+import LoginPage from './login/';
+import RegisterPage from './register/';
 import { Link , withRouter } from 'react-router-dom';
-import DevicesPage from '../components/devices/devices_page';
-import DeviceForm from '../components/devices/device_form';
-import ScenarioForm from '../components/scenarios/scenario_form';
-import ScenariosPage from '../components/scenarios/scenarios_page';
-import ProductsPage from '../components/products/products_page';
+import DevicesPage from './devices/';
+import DeviceForm from './devices/add/';
+import ScenarioForm from './scenarios/add/';
+import ScenariosPage from './scenarios/';
+import ProductsPage from './products/';
 
-import NoMatch from '../components/app/nomatch';
+import NoMatch from './nomatch/';
 import requireAuth from '../utilities/require_auth';
 
 class MainRouter extends PureComponent {
