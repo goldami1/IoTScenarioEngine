@@ -77,7 +77,6 @@ class StarterNavigation extends React.Component {
 
 		const backIcon = <ArrowleftIcon label="Back icon" size="medium" />;
 		const globalPrimaryIcon = <GearIcon />;
-		console.log(this.props.onNavResize);
 		return (
 			<Navigation
 				isOpen={this.context.navOpenState.isOpen}
@@ -118,7 +117,6 @@ class StarterNavigation extends React.Component {
 
 					this.links(this.props.auth.user.type).map(link => {
 						const [url, title, Icon] = link;
-						console.log(this.props);
 						return (
 							<Tooltip content={(!this.context.navOpenState.isOpen)?title:''} position='right'>
 								<Link key={url} to={url}>

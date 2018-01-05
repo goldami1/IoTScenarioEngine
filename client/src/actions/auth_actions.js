@@ -35,13 +35,11 @@ export function login(data) {
 				// 	password 	:res.data.password,
 				// 	id 			:res.data.id,
 				// 	type 		:res.data.type
-
 				// };
 
 				// localStorage.setItem('user', JSON.stringify(user));
 				// setAuthorizationToken(user);
 				// dispatch(setCurrentUser(user));
-
 		  	}
 		);
 	}
