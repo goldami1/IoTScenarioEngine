@@ -19,16 +19,6 @@ public class ActionEventProto {
 		this.name = this.type = this.productEP = null;
 	}
 	
-	public ActionEventProto(String name, String type, boolean isEvent, short prodId, String prodEP) throws SQLException
-	{
-		this.id = DBHandler.getInstance().getEventsProtoMaxAvailableIdx();
-		this.name = name;
-		this.type = type;
-		this.prodId = prodId;
-		this.productEP = prodEP;
-		this.isEvent = isEvent;
-	}
-	
 	public ActionEventProto(short id,
 						    String name,
 						    String type,

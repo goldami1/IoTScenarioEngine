@@ -16,7 +16,6 @@ import org.IoT_Project.Scenario_Engine.Models.ActionEventProto;
 import org.IoT_Project.Scenario_Engine.Models.Customer;
 import org.IoT_Project.Scenario_Engine.Models.Device;
 import org.IoT_Project.Scenario_Engine.Models.Event;
-import org.IoT_Project.Scenario_Engine.Models.IUser;
 import org.IoT_Project.Scenario_Engine.Models.Product;
 import org.IoT_Project.Scenario_Engine.Models.Scenario;
 import org.IoT_Project.Scenario_Engine.Models.User;
@@ -259,7 +258,7 @@ public class DBHandler implements IDBHandler
 	//===================================
 
 	public boolean addDevice(Device i_dev) throws SQLException {
-		return addDevice(i_dev.getProduct_id(), i_dev.getCustomer_id(), i_dev.getSerial_number());
+		return addDevice(i_dev.getProtoDevice().getId(), i_dev.getCustomer_id(), i_dev.getSerial_number());
 	}
 
 	@SuppressWarnings("finally")
@@ -336,14 +335,14 @@ public class DBHandler implements IDBHandler
 			while(itr.hasNext())
 			{
 				Action currentAction = itr.next().getValue();
-				if(currentAction.getDevice_serialNum()<0 || currentAction.getPrototype().getProdId()<0)
+				if(currentAction.getDevice_serialNum()<0 || currentAction.getActionDescription().getProdId()<0)
 					throw new Exception("Incorrect Action object - no matching Product, or no Action instance available!");
 			
 			
 				final String sqlQuery = "insert into ACTIONS (device_id, actionproto_id, param_val)"
 						+ "values ("
 						+"'"+currentAction.getDevice_serialNum()+"',"
-						+"'"+currentAction.getPrototype().getProdId()+"',"
+						+"'"+currentAction.getActionDescription().getProdId()+"',"
 						+"'"+currentAction.getParameterToString()+"',"
 						+")";
 
@@ -371,14 +370,14 @@ public class DBHandler implements IDBHandler
 			while(itr.hasNext())
 			{
 				Event currentEvent = itr.next().getValue();
-				if(currentEvent.getDevice_serialNum()<0 || currentEvent.getPrototype().getProdId()<0)
+				if(currentEvent.getDevice_serialNum()<0 || currentEvent.getActionDescription().getProdId()<0)
 					throw new Exception("Incorrect Event object - no matching Product, or no Event instance available!");
 			
 			
 				final String sqlQuery = "insert into EVENTS (device_id, eventproto_id, param_val, logicOper)"
 						+ "values ("
 						+"'"+currentEvent.getDevice_serialNum()+"',"
-						+"'"+currentEvent.getPrototype().getId()+"',"
+						+"'"+currentEvent.getActionDescription().getId()+"',"
 						+"'"+currentEvent.getParameterToString()+"',"
 						+"'"+currentEvent.getLogicOperator()+"',"
 						+")";
@@ -441,6 +440,7 @@ public class DBHandler implements IDBHandler
 		return null;
 	}
 
+	//****************	CHANGED UNCERTAIN	*********************\\
 	@SuppressWarnings("finally")
 	public LinkedList<Device> getDevices(short user_id) throws SQLException	//final&complete IMPL
 	{
@@ -480,13 +480,23 @@ public class DBHandler implements IDBHandler
 					short vendor_id = Short.parseShort(prodsQResult.getString(2));
 					String product_name = prodsQResult.getString(3);
 					String product_pic = prodsQResult.getString(4);
-					prod = new Product(product_name, product_pic, null, null);
-					prod = new Product(prod, vendor_id, prod_id);
+					//prod = new Product(product_name, product_pic, null, null);
+					//prod = new Product(prod, vendor_id, prod_id);
+					String prod_description = null;
+					/*
+					 * need to add product_description for each product
+					 */
+					prod = new Product(prod_id, vendor_id, product_name, prod_description, product_pic, null, null);
+					/*
+					 * NOTES:
+					 * 1. added description for product.
+					 * 2. the nulls in the c'tor(line 489) are the endpoint(for the device) and the supported Action/Event list.
+					 */
 				}
 				else
 					throw new SQLException("relevant product for device couldn't be found! DB isn't normalized!");
 					
-				Device devToAdd =new Device(prod, cust_id, serial_num, prod_id, dev_id);
+				Device devToAdd =new Device(dev_id, serial_num, cust_id, prod);
 				res.add(devToAdd);
 			}
 		}	
@@ -524,10 +534,11 @@ public class DBHandler implements IDBHandler
 		}
 	}
 
+	//****************** CHANGED UNCERTAIN (added notes where needed) *********************\\
 	@SuppressWarnings("finally")
-	public IUser getUser(String i_username, String i_userPassword) throws SQLException
+	public User getUser(String i_username, String i_userPassword) throws SQLException
 	{
-		IUser res=null;
+		User res=null;
 		
 		try
 		{
@@ -545,16 +556,24 @@ public class DBHandler implements IDBHandler
 				String user_email=null, user_PicURL=null;
 				String cust_fname=null, cust_lname=null;
 				short cust_id=-1;
+				//need to add isCustomer
+				boolean isCustomer = true;
 				
 				cust_id = Short.parseShort(queryResult.getString(1));
 				cust_fname = queryResult.getString(2);
 				cust_lname = queryResult.getString(3);
 				user_email = queryResult.getString(6);
 				
-				User curUser = new User(i_username, i_userPassword, cust_fname + cust_lname, user_email, user_PicURL);
-				curUser.setCustomer(true);
-				curUser.setId(cust_id);
-				res = new Customer(curUser);
+				Customer curUser = new Customer(cust_id, i_username, i_userPassword, cust_fname + cust_lname, user_email, user_PicURL, isCustomer, null, null);
+				//curUser.setCustomer(true);
+				//curUser.setId(cust_id);
+				//res = new Customer(curUser);
+				res = curUser;
+				
+				/*
+				 * NOTES:
+				 * the 2 nulls in the c'tor are the scenarios list and the event list of the customer.
+				 */
 			}
 			else
 			{
@@ -574,13 +593,20 @@ public class DBHandler implements IDBHandler
 					user_email = queryResult.getString(5);
 					ven_desc = queryResult.getString(6);
 					ven_logo_pic = queryResult.getString(7);
+					boolean isCustomer = false;
 					
-					User curUser = new User(i_username, i_userPassword, ven_name, user_email, ven_logo_pic);
-					curUser.setCustomer(false);
-					curUser.setId(ven_id);
-					Vendor curVend = new Vendor(curUser);
-					curVend.setDescription(ven_desc);
+					Vendor curVend = new Vendor(ven_id, i_username, i_userPassword, ven_name, user_email, null, isCustomer, ven_desc, ven_logo_pic, null);
+					//curUser.setCustomer(false);
+					//curUser.setId(ven_id);
+					//Vendor curVend = new Vendor(curUser);
+					//curVend.setDescription(ven_desc);
 					res = curVend;
+					
+					/*
+					 * NOTES:
+					 * first null in c'tor = User_PicURL
+					 * second null in c'tor = Vendor_ListOfProducts
+					 */
 				}
 			}
 		}	
@@ -671,7 +697,8 @@ public class DBHandler implements IDBHandler
 		// TODO Auto-generated method stub
 		return false;
 	}
-
+	
+	//**************** CHANGE UNCERTAIN(included notes) ******************\\
 	@SuppressWarnings("finally")
 	public Event getEvent(int event_id) throws Exception
 	{
@@ -719,11 +746,21 @@ public class DBHandler implements IDBHandler
 				eve_type = queryResult.getString(5);
 			} 
 			
-			ActionEventProto eve_prototype = new ActionEventProto(eve_name, eve_type, true, eve_prod_id, eve_deviceEP);
-			Action eveWithParamAndDevID = new Action(eve_prototype, eve_param, eve_deviceId);
-			Event completeEvent = new Event(eveWithParamAndDevID, eve_logicOperator);
+			boolean isTriggered = false;
+			boolean isEvent = true;
+			
+			ActionEventProto eve_prototype = new ActionEventProto(eve_proto, eve_name, eve_type, eve_prod_id, eve_deviceEP, isEvent);
+			//Action eveWithParamAndDevID = new Action(eve_id, eve_deviceId, eve_param, eve_prototype);
+			Event completeEvent = new Event(eve_id, eve_deviceId, eve_param, eve_prototype, eve_logicOperator, isTriggered);
 			res = completeEvent;
 			//res = new Event(eve_name, eve_type, eve_param, eve_logicOperator, eve_deviceEP, eve_deviceId);
+			/*
+			 * NOTES:
+			 * 1. no need to create action and then deliver it to event.
+			 * 2. need to fetch isTriggered from DB in case that the event has already happened.
+			 * 3. need to fetch isEvent from DB to place in isEvent.
+			 * watch booleans isTriggered, and boolean isEvent in c'tors lines 747, 749.
+			 */
 		}
 		finally
 		{
@@ -747,7 +784,7 @@ public class DBHandler implements IDBHandler
 	{
 		final String sqlQuery =	"insert into PRODUCTS (vendor_id, product_name, product_pic, events_state, actions_state)"
 				+ "values ("
-				+"'"+i_product.getVenID()+"',"
+				+"'"+i_product.getVendor_id()+"',"
 				+"'"+i_product.getName()+"',"
 				+"'"+i_product.getPicURL()+"'"
 				+"'"+i_product.getEAState()[0]+"'"

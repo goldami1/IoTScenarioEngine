@@ -5,26 +5,47 @@ import DataBase.DBHandler;
 public class Event extends Action{
 
 	private char logicOperator;
-	private boolean triggred;
+	private boolean triggered;
 
-	public Event(Action protoEvent, char logicOperator) throws Exception {
-		super(protoEvent);
+	public Event()
+	{
+		super();
+		this.logicOperator = 0;
+		this.triggered = false;
+	}
+	
+	public Event(short Action_id,
+				 short Action_deviceSerialNum,
+				 Object Action_parameter,
+				 ActionEventProto Action_descriptor,
+				 char Event_logicOperator,
+				 boolean Event_triggered)
+	{
+		super(Action_id, Action_deviceSerialNum, Action_parameter, Action_descriptor);
+		this.logicOperator = Event_logicOperator;
+		this.triggered = Event_triggered;
+	}
+
+	public char getLogicOperator() {
+		return logicOperator;
+	}
+
+	public void setLogicOperator(char logicOperator) {
 		this.logicOperator = logicOperator;
-		this.triggred = false;
-		this.toggleEvent();
+	}
+
+	public boolean isTriggered() {
+		return triggered;
+	}
+
+	public void setTriggered(boolean triggered) {
+		this.triggered = triggered;
 	}
 	
 
-	public void setTrigger(boolean value)
-	{
-		this.triggred = value;
-	}
 	
-	public boolean getTrigger()
-	{
-		return this.triggred;
-	}
-	
+	/*
+	 * Need to think where to trigger event!!***
 	private int toggleEvent() throws Exception
 	{
 		if(!DBHandler.getInstance().isEventUpdated(this))
@@ -32,9 +53,5 @@ public class Event extends Action{
 		else
 			return 200;
 	}
-	
-	public char getLogicOperator()
-	{
-		return this.logicOperator;
-	}
+	*/
 }

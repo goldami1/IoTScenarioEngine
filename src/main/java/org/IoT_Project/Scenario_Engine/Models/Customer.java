@@ -5,58 +5,57 @@ import java.util.*;
 
 import DataBase.DBHandler;
 
-public class Customer extends User implements IUser {
+public class Customer extends User {
 	
 	private LinkedList<Device> devices;
 	private LinkedList<Scenario> customerScenarios;
 	
-	public Customer(User i_User) throws Exception 
+	public Customer()
 	{
-		super(i_User.getUserName(), i_User.getPassword(), i_User.getName(), i_User.getEmail(), i_User.getUserPicURL());
-		devices = new LinkedList<Device>();
-		customerScenarios = new LinkedList<Scenario>();
-		DBHandler db = DBHandler.getInstance();
-		this.id = db.getCustomersMaxAvailableIdx();
-		this.setIsCustomer(true);
-		db.addCustomer((Customer) i_User);
-	}	
-	
-	public void addDevice(Product i_device, short cust_id, short serialNumber) throws SQLException
-	{
-		Device productInstance = new Device(i_device , cust_id, serialNumber);
-		devices.add(productInstance);
+		super();
+		this.devices = null;
+		this.customerScenarios = null;
 	}
 	
-	public void addScenario(Scenario i_Scenario)
+	public Customer(short User_id,
+				  String User_userName,
+				  String User_password,
+				  String User_name,
+				  String User_picURL,
+				  String User_email,
+				  boolean User_isCustomer,
+				  LinkedList<Device> Customer_devices,
+				  LinkedList<Scenario> Customer_scenarios)
 	{
-		customerScenarios.add(i_Scenario);
+		super(User_id, User_userName, User_password, User_name, User_email, User_picURL, User_isCustomer);
+		this.devices = Customer_devices;
+		this.customerScenarios = Customer_scenarios;
 	}
 	
-	public void insertScenarios() throws SQLException
+	/************   ONLY FOR CUSTOMER NEW CREATION IN DB  *************/
+	public Customer(User i_user) throws Exception
 	{
-		List<Scenario> scenariosToAdd = DBHandler.getInstance().getScenarios(this.getID());
-		for(Scenario s : scenariosToAdd)
-		{
-			this.customerScenarios.add(s);
-		}
+		super(i_user);
+		this.devices = null;
+		this.customerScenarios = null;
+		DBHandler.getInstance().addCustomer(this);
+	}
+	/******************************************************************/
+	
+	
+	public LinkedList<Device> getDevices() {
+		return devices;
 	}
 
-	private void insertDevices() throws SQLException
-	{
-		List<Device> devicesToAdd = DBHandler.getInstance().getDevices(this.getID());
-		for(Device d : devicesToAdd)
-		{
-			this.devices.add(d);
-		}
+	public void setDevices(LinkedList<Device> devices) {
+		this.devices = devices;
 	}
-	
-	
-	public boolean isEnduser() {
-		// TODO Auto-generated method stub
-		return false;
+
+	public LinkedList<Scenario> getCustomerScenarios() {
+		return customerScenarios;
 	}
-	
-	
-	
-	
+
+	public void setCustomerScenarios(LinkedList<Scenario> customerScenarios) {
+		this.customerScenarios = customerScenarios;
+	}
 }

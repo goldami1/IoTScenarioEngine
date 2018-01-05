@@ -26,40 +26,17 @@ public class Action {
 		this.id = this.device_serialNum = -1;
 	}
 	
-	public Action(Action i_action)
+	public Action(short Action_id,
+				  short Action_deviceSerialNum,
+				  Object Action_parameter,
+				  ActionEventProto Action_descriptor)
 	{
-		this();
-		this.id = i_action.getId();
-		this.parameter = i_action.getParameter();
-		this.device_serialNum = i_action.getDevice_serialNum();
-		this.actionDescription = i_action.getActionDescription();
+		this.id = Action_id;
+		this.device_serialNum = Action_deviceSerialNum;
+		this.parameter = Action_parameter;
+		this.actionDescription = Action_descriptor;
 	}
-	
-	public Action(ActionEventProto actionDescription, String param, short device_serialNum) throws SQLException
-	{
-		this.actionDescription = actionDescription;
-		switch(this.actionDescription.getType())
-		{
-		case "int":
-			this.parameter = Integer.parseInt(param);
-			break;
-		case "double":
-			this.parameter = Double.parseDouble(param);
-			break;
-		case "range":
-			this.parameter = new Range(param);
-			break;
-		case "bool":
-			this.parameter = Boolean.parseBoolean(param);
-			break;
-		}
-		this.device_serialNum = device_serialNum;
-		if(actionDescription.getIsEvent())
-			this.id = DBHandler.getInstance().getEventsMaxAvailableIdx();
-		else
-			this.id = DBHandler.getInstance().getActionsMaxAvailableIdx();
-	}
-	
+
 	public short getId() {
 		return id;
 	}
@@ -70,6 +47,40 @@ public class Action {
 
 	public Object getParameter() {
 		return parameter;
+	}
+
+	public void setParameter(String parameter) {
+		switch(this.actionDescription.getType())
+		{
+		case "int":
+			this.parameter = Integer.parseInt(parameter);
+			break;
+		case "double":
+			this.parameter = Double.parseDouble(parameter);
+			break;
+		case "range":	//!!***need to think about fixes***!!
+			this.parameter = new Range(parameter);
+			break;
+		case "bool":
+			this.parameter = Boolean.parseBoolean(parameter);
+			break;
+		}
+	}
+
+	public short getDevice_serialNum() {
+		return device_serialNum;
+	}
+
+	public void setDevice_serialNum(short device_serialNum) {
+		this.device_serialNum = device_serialNum;
+	}
+
+	public ActionEventProto getActionDescription() {
+		return actionDescription;
+	}
+
+	public void setActionDescription(ActionEventProto actionDescription) {
+		this.actionDescription = actionDescription;
 	}
 	
 	public String getParameterToString() {
@@ -94,44 +105,29 @@ public class Action {
 		}
 		return result;
 	}
-
-	public void setParameter(Object parameter) {
-		this.parameter = parameter;
-	}
-
-	public short getDevice_serialNum() {
-		return device_serialNum;
-	}
-
-	public void setDevice_serialNum(short device_serialNum) {
-		this.device_serialNum = device_serialNum;
-	}
-
-	public ActionEventProto getActionDescription() {
-		return actionDescription;
-	}
 	
-	public ActionEventProto getPrototype()
-	{
-		return getActionDescription();
-	}
-
-	public void setActionDescription(ActionEventProto actionDescription) {
-		this.actionDescription = actionDescription;
-	}
-
 	public final int toggleAction() throws Exception
 	{
 		StringBuilder URI = new StringBuilder();
+		
+		/*
+		 * creating the URI:
+		 * (server-url)/product_endpoint/device_serialNum/{if this is an event => event_id}/name of Action_Event/parameter.
+		 */
 		URI.append(this.actionDescription.getProductEP());
 		URI.append("/");
-		URI.append(this.actionDescription.getProdId());
-		URI.append("/");
+		URI.append(this.device_serialNum);
+		
+		/*
+		 * checks if event => giving event_id for the device
+		 * (so when invoked a refrence to the event will be achieved).
+		 */
 		if(this.actionDescription.getIsEvent())
 		{
 			URI.append(this.id);
 			URI.append("/");
 		}
+		
 		URI.append(this.actionDescription.getName());
 		URI.append("/");
 		switch(this.actionDescription.getType())

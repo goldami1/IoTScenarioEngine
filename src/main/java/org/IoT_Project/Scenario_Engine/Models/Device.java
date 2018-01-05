@@ -1,27 +1,81 @@
 package org.IoT_Project.Scenario_Engine.Models;
 
 import java.sql.SQLException;
+import java.util.LinkedList;
 import java.util.List;
 
 import DataBase.DBHandler;
 
 public class Device {
 	
-	private short id, serial_number, product_id, customer_id;
+	private short id, serial_number, customer_id;
 	private Product protoDevice;
 
+	public Device()
+	{
+		this.id = this.serial_number = this.customer_id = -1;
+		this.protoDevice = null;
+	}
 	
+	public Device(short Device_id,
+			   	  short Device_serialNum,
+			   	  short Device_customer_id,
+			   	  Product Device_prototype)
+	{
+		this.id = Device_id;
+		this.serial_number = Device_serialNum;
+		this.customer_id = Device_customer_id;
+		this.protoDevice = Device_prototype;
+	}
+	
+	/************   ONLY FOR CUSTOMER NEW CREATION IN DB  *************/
+	public Device(Device i_device) throws Exception
+	{
+		DBHandler db = DBHandler.getInstance();
+		this.id = db.getDevicesMaxAvailableIdx();
+	}
+	/*******************************************************************/
+	
+	public short getId() {
+		return id;
+	}
+
+	public void setId(short id) {
+		this.id = id;
+	}
+
+	public short getSerial_number() {
+		return serial_number;
+	}
+
+	public void setSerial_number(short serial_number) {
+		this.serial_number = serial_number;
+	}
+
+	public short getCustomer_id() {
+		return customer_id;
+	}
+
+	public void setCustomer_id(short customer_id) {
+		this.customer_id = customer_id;
+	}
+
+	public Product getProtoDevice() {
+		return protoDevice;
+	}
+
+	public void setProtoDevice(Product protoDevice) {
+		this.protoDevice = protoDevice;
+	}
+	
+	
+	/*
 	public Device(Customer i_Customer, short serial_number) throws SQLException
 	{
 		customer_id = i_Customer.getID();
 		this.serial_number = serial_number;
 		DBHandler db = DBHandler.getInstance();
 		db.addDevice(this);
-	}
-	
-	public Device()
-	{
-		this.id = this.serial_number = this.customer_id = this.product_id = -1;
 	}
 	
 	public Device(Product i_product, short i_cust_id, short i_serial_num) throws SQLException
@@ -39,45 +93,6 @@ public class Device {
 		id = i_dev_id;
 	}
 
-
-	public short getId() {
-		return id;
-	}
-
-	public void setId(short id) {
-		this.id = id;
-	}
-
-	public short getSerial_number() {
-		return serial_number;
-	}
-
-	public void setSerial_number(short serial_number) {
-		this.serial_number = serial_number;
-	}
-
-	public short getProduct_id() {
-		return product_id;
-	}
-
-	public void setProduct_id(short product_id) {
-		this.product_id = product_id;
-	}
-
-	public short getCustomer_id() {
-		return customer_id;
-	}
-
-	public void setCustomer_id(short customer_id) {
-		this.customer_id = customer_id;
-	}
-	
-	public void setDeviceProto(Product i_product)
-	{
-		this.protoDevice = i_product;
-	}
-
-	/*
 	public List<Event> getEvents() {
 		return events;
 	}

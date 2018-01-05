@@ -7,161 +7,151 @@ import DataBase.DBHandler;
 
 public class Product {
 	protected short id, vendor_id;
-	protected String name,picURL;
-	protected boolean events_stat, actions_stat;
+	protected String name, picURL, description;
 	protected LinkedList<ActionEventProto> actionAndEventList;
 	protected String endPoint;
+	protected boolean actionState, eventState;
 	
 	public Product()
 	{
-		actionAndEventList = new LinkedList<ActionEventProto>();
-		id=vendor_id=-1;
-		name = picURL = null;
-		events_stat = actions_stat = false;
+		this.actionAndEventList = new LinkedList<ActionEventProto>();
+		this.id=this.vendor_id=-1;
+		this.name = this.picURL = null;
+		this.actionState = this.eventState = false;
 	}
 	
-	public Product(Product product, short vendor_id) throws SQLException
+	public Product(short Product_id,
+				   short Vendor_id,
+				   String Product_name,
+				   String Product_description,
+				   String Product_picURL,
+				   String Product_endpoint,
+				   LinkedList<ActionEventProto> Product_actionsAndEvents)
 	{
-		this.endPoint = product.getEndPoint();
-		this.name = product.name;
-		this.picURL = product.picURL;
-		this.id = DBHandler.getInstance().getProductsMaxAvailableIdx();
-		this.vendor_id = vendor_id;
-		this.actionAndEventList = (LinkedList<ActionEventProto>) product.getSupportedActionsAndEvents();
+		this.id = Product_id;
+		this.vendor_id = Vendor_id;
+		this.name = Product_name;
+		this.description = Product_description;
+		this.picURL = Product_picURL;
+		this.endPoint = Product_endpoint;
+		this.actionAndEventList = Product_actionsAndEvents;
+		this.setStates();
 	}
 	
-	public Product(Product product, short i_vendor_id, short i_prod_id) throws SQLException
+	/************   ONLY FOR PRODUCT NEW CREATION IN DB   *************/
+	public Product(Product i_product) throws Exception
 	{
-		this(product, i_vendor_id);
-		this.id = i_prod_id;
-	}
-	
-	public Product(String name, String picURL, String endPoint, List<ActionEventProto> actionsAndEvents)
-	{
-		this();
-		this.name = name;
-		this.picURL = picURL;
-		this.endPoint = endPoint;
-		this.actionAndEventList = (LinkedList<ActionEventProto>) actionsAndEvents;
-		
-	}
-	
-	public Product setVendorID(short i_vendor_id)
-	{
-		vendor_id = i_vendor_id;
-		return this;
-	}
-	
-	public Product setName(String i_name)
-	{
-		name = i_name;
-		return this;
-	}
-	
-	public Product setPicURL(String i_picURL)
-	{
-		picURL = i_picURL;
-		return this;
-	}
-	
-	
-	public Product addAction(ActionEventProto i_actionToAdd)
-	{
-		if(actions_stat == false)
-			actions_stat = true;
-		i_actionToAdd.setIsEvent(false);
-		actionAndEventList.add(i_actionToAdd);
-		return this;
-	}
-	
-	public List<ActionEventProto> getActions()
-	{
-		List <ActionEventProto> res = new LinkedList<ActionEventProto>();
-		for(ActionEventProto aep : this.actionAndEventList)
+		DBHandler db = DBHandler.getInstance();
+		this.id = db.getProductsMaxAvailableIdx();
+		for(ActionEventProto Current_aep : this.actionAndEventList)
 		{
-			if(!aep.getIsEvent())
-			{
-				res.add(aep);
-			}
+			Current_aep.setId(db.getActionsProtoMaxAvailableIdx());
+			if(Current_aep.getIsEvent())
+				this.eventState = true;
+			else
+				this.actionState = true;
 		}
-		return res;
+		db.addProduct(i_product);
 	}
-	
-	public List<ActionEventProto> getEvents()
-	{
-		List <ActionEventProto> res = new LinkedList<ActionEventProto>();
-		for(ActionEventProto aep : this.actionAndEventList)
-		{
-			if(aep.getIsEvent())
-			{
-				res.add(aep);
-			}
-		}
-		return res;
-	}
-	
-	public Product addEvent(ActionEventProto i_eventToAdd)
-	{
-		if(actions_stat == false)
-			actions_stat = true;
-		i_eventToAdd.setIsEvent(true);
-		actionAndEventList.add(i_eventToAdd);
-		return this;
-	}
-	
-	public void setEndPoint(String ep)
-	{
-		this.endPoint = ep;
-	}
-	
-	public String getEndPoint()
-	{
-		return this.endPoint;
-	}
-	
-	//getters
-	public short getID()
-	{
+	/*****************************************************************/
+
+	public short getId() {
 		return id;
 	}
-	
-	
-	public List<ActionEventProto> getSupportedActionsAndEvents()
-	{
-		return this.actionAndEventList;
+
+	public void setId(short id) {
+		this.id = id;
 	}
 
-	public short getVenID() {
+	public short getVendor_id() {
 		return vendor_id;
+	}
+
+	public void setVendor_id(short vendor_id) {
+		this.vendor_id = vendor_id;
 	}
 
 	public String getName() {
 		return name;
 	}
 
+	public void setName(String name) {
+		this.name = name;
+	}
+
 	public String getPicURL() {
 		return picURL;
+	}
+
+	public void setPicURL(String picURL) {
+		this.picURL = picURL;
+	}
+
+	public String getDescription() {
+		return description;
+	}
+
+	public void setDescription(String description) {
+		this.description = description;
+	}
+
+	public LinkedList<ActionEventProto> getActionAndEventList() {
+		return actionAndEventList;
+	}
+
+	public void setActionAndEventList(LinkedList<ActionEventProto> actionAndEventList) {
+		this.actionAndEventList = actionAndEventList;
+	}
+
+	public String getEndPoint() {
+		return endPoint;
+	}
+
+	public void setEndPoint(String endPoint) {
+		this.endPoint = endPoint;
+	}
+	
+	public LinkedList<ActionEventProto> getSupportedActions()
+	{
+		LinkedList<ActionEventProto> res = null;
+		res = this.getObjectsFromAEList(false);
+		return res;
+	}
+	public LinkedList<ActionEventProto> getSupportedEvents()
+	{
+		LinkedList<ActionEventProto> res = null;
+		res = this.getObjectsFromAEList(true);
+		return res;
 	}
 	
 	public boolean[] getEAState()
 	{
-		boolean[] res = new boolean[]{false,false};
-		for(ActionEventProto aep: actionAndEventList)
+		boolean res[] = {this.actionState, this.eventState};
+		return res;
+	}
+	
+	private LinkedList<ActionEventProto> getObjectsFromAEList(boolean isEventRequired)
+	{
+		LinkedList<ActionEventProto> res = new LinkedList<ActionEventProto>();
+		for(ActionEventProto Current_aep : this.actionAndEventList)
 		{
-			if(!res[0]&&aep.getIsEvent())
+			if(Current_aep.getIsEvent() == isEventRequired)
 			{
-				res[0]=!res[0];
-			}
-			if(!res[1]&&!aep.getIsEvent())
-			{
-				res[1]=!res[1];
-			}
-			if(res[0]&&res[1])
-			{
-				break;
+				res.add(Current_aep);
 			}
 		}
 		return res;
 	}
 	
+	private void setStates() {
+		for(ActionEventProto Current_aep : this.actionAndEventList)
+		{
+			if(this.actionState && this.eventState)
+				break;
+			if(Current_aep.getIsEvent())
+				this.eventState = true;
+			else
+				this.actionState = true;
+		}
+	}
 }

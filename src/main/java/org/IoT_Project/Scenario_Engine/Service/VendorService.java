@@ -3,34 +3,68 @@ package org.IoT_Project.Scenario_Engine.Service;
 import java.sql.SQLException;
 import java.util.List;
 
+import javax.ws.rs.core.Response.Status;
+
 import org.IoT_Project.Scenario_Engine.Models.*;
 import DataBase.DBHandler;
 
 public class VendorService {
 
 	public org.IoT_Project.Scenario_Engine.Models.Vendor fetch(String i_name, String i_pswd) throws Exception{
-		return DBHandler.getInstance().getVendor(i_name, i_pswd);
+		try {
+			return DBHandler.getInstance().getVendor(i_name, i_pswd);
+		}
+		catch(SQLException ex)
+		{
+			ErrorException eex = new ErrorException(ex.getMessage());
+			eex.setStatus(Status.INTERNAL_SERVER_ERROR);
+			throw eex;
+		}
 	}
 
-	public  List<Product> addProduct(short vendor_id, Product i_product) throws Exception{
-		Product newProduct = new Product(i_product, vendor_id);
+	public  List<Product> addProduct(Product i_product) throws Exception{
+		Product newProduct = new Product(i_product);
 		if(DBHandler.getInstance().addProduct(newProduct))
 		{
-			return DBHandler.getInstance().getProducts(vendor_id);
+			try {
+				return DBHandler.getInstance().getProducts(newProduct.getVendor_id());
+			}
+			catch(SQLException ex)
+			{
+				ErrorException eex = new ErrorException(ex.getMessage());
+				eex.setStatus(Status.INTERNAL_SERVER_ERROR);
+				throw eex;
+			
+			}
 		}
 		else
-			throw new Exception("no user");
+		{
+			ErrorException ex = new ErrorException("no user");
+			ex.setStatus(Status.NOT_FOUND);
+			throw ex;
+		}
 	}
 
 
 	public  List<Product> removeProduct(int vendor_id, Product i_prod2Remove) throws Exception{
-		if(DBHandler.getInstance().removeProduct(i_prod2Remove.getID()))
+		if(DBHandler.getInstance().removeProduct(i_prod2Remove.getId()))
 		{
-			return DBHandler.getInstance().getProducts(vendor_id);
+			try {
+				return DBHandler.getInstance().getProducts(vendor_id);
+			}
+			catch(SQLException ex)
+			{
+				ErrorException eex = new ErrorException(ex.getMessage());
+				eex.setStatus(Status.INTERNAL_SERVER_ERROR);
+				throw eex;
+			
+			}
 		}
 		else
 		{
-			throw new Exception("no user");
+			ErrorException ex = new ErrorException("no user");
+			ex.setStatus(Status.NOT_FOUND);
+			throw ex;
 		}
 	}
 
@@ -41,15 +75,26 @@ public class VendorService {
 	public List<Product> updateProduct(short i_id, short i_deviceToUpdateId, Product i_prod) throws Exception{
 		if(DBHandler.getInstance().updateProduct(i_deviceToUpdateId, i_prod))
 		{
-			return DBHandler.getInstance().getProducts(i_id);
+			try {
+				return DBHandler.getInstance().getProducts(i_id);
+			}
+			catch(SQLException ex)
+			{
+				ErrorException eex = new ErrorException(ex.getMessage());
+				eex.setStatus(Status.INTERNAL_SERVER_ERROR);
+				throw eex;
+			}
 		}
 		else
-			throw new Exception("no user");
+		{
+			ErrorException ex = new ErrorException("no user");
+			ex.setStatus(Status.NOT_FOUND);
+			throw ex;
+		}
 		
 	}
 
 	public List<Product> fetchProducts(short i_userId) throws SQLException {
 		return DBHandler.getInstance().getProducts(i_userId);
 	}
-
 }

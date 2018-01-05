@@ -20,7 +20,7 @@ public interface IDBHandler {
 	public LinkedList <Product> getProducts(int vendor_id);
 	public boolean addDevice(int product_id,int customer_id,int device_serial) throws SQLException ;
 	public boolean removeDevice(int device_id);
-	public IUser getUser(String i_username, String i_userPassword) throws SQLException;
+	public User getUser(String i_username, String i_userPassword) throws SQLException;
 	public Vendor getVendor(String i_username, String i_password);
 	public Vendor getVendor(int vendor_id);
 	public boolean removeProduct(int productToRemove_id);

@@ -33,11 +33,11 @@ public class Case implements ICase {
 			Event currentEvent = itr.next();
 			if(currentEvent.getLogicOperator() == '|')
 			{
-				isTrue |= currentEvent.getTrigger();
+				isTrue |= currentEvent.isTriggered();
 			}
 			else			//logicOperator = '&'
 			{
-				isTrue &= currentEvent.getTrigger();
+				isTrue &= currentEvent.isTriggered();
 			}
 		}
 		return isTrue;

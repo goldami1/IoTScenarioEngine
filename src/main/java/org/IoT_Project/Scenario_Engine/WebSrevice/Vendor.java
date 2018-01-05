@@ -1,6 +1,7 @@
 package org.IoT_Project.Scenario_Engine.WebSrevice;
 
 import org.IoT_Project.Scenario_Engine.Models.ActionEventProto;
+import org.IoT_Project.Scenario_Engine.Models.Event;
 import org.IoT_Project.Scenario_Engine.Models.Product;
 import org.IoT_Project.Scenario_Engine.Models.User;
 import org.IoT_Project.Scenario_Engine.Service.UserService;
@@ -32,14 +33,8 @@ public class Vendor{
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response getLogInPageVendor() 
 	{
-		//return "Should return the login page";
-		try {
-			return Response.status(Status.OK).entity((User)new org.IoT_Project.Scenario_Engine.Models.Vendor(new User("gal", "open613", "gal rotenberg", "gal@walla.com", ""))).build();
-		}
-		catch(Exception ex)
-		{
-			return Response.status(Status.NOT_ACCEPTABLE).entity(ex.getMessage()).build();
-		}
+		//return Response.status(Status.OK).entity("Should return the login page").build();
+		return Response.status(Status.OK).entity(new Event()).build();
 	}
 	
 	@POST
@@ -71,11 +66,11 @@ public class Vendor{
 	@POST
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response addProduct(Product i_product, @PathParam("vendor_id") short vendor_id)
+	public Response addProduct(Product i_product)
 	{
 		Response res = null;
 		try {
-			List<Product> products = vs.addProduct(vendor_id, i_product);
+			List<Product> products = vs.addProduct(i_product);
 			res = Response.status(Status.OK).entity(products).build();
 		}
 		catch(Exception ex)

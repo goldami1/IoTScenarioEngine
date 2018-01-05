@@ -16,7 +16,7 @@ public class DeviceService {
 	{
 		DBHandler DB = DBHandler.getInstance();
 		Scenario scenario = DB.getScenariosByEvent(i_event).getFirst();
-		scenario.getEventById(i_event.getId()).setTrigger(true);
+		scenario.getEventById(i_event.getId()).setTriggered(true);
 		
 		boolean isAwake = true;
 		Iterator<Entry<Short, Event>> itr = scenario.getEvents();
@@ -24,9 +24,9 @@ public class DeviceService {
 		{
 			Event event = itr.next().getValue();
 			if(event.getLogicOperator() == '&')
-				isAwake &= event.getTrigger();
+				isAwake &= event.isTriggered();
 			else
-				isAwake |= event.getTrigger();
+				isAwake |= event.isTriggered();
 		}
 		if(isAwake)
 		{

@@ -3,6 +3,8 @@ package org.IoT_Project.Scenario_Engine.Service;
 import java.sql.SQLException;
 import java.util.List;
 
+import javax.ws.rs.core.Response.Status;
+
 import org.IoT_Project.Scenario_Engine.Models.*;
 
 import DataBase.DBHandler;
@@ -19,25 +21,21 @@ public class CustomerService {
 	}
 
 	public List<Device> addDevice(short i_CustomerId, Device newDevice) throws Exception{
-		if(DBHandler.getInstance().addDevice(newDevice))
+		Device deviceToAdd = new Device(newDevice);
+		if(DBHandler.getInstance().addDevice(deviceToAdd))
 		{
 			return DBHandler.getInstance().getDevices(i_CustomerId);
 		}
 		else
 		{
-			//user doesnt exist.
-			throw new Exception("user doesnt exist");
+			ErrorException ex = new ErrorException("user doesnt exist");
+			ex.setStatus(Status.NOT_FOUND);
+			throw ex;
 		}
 	}
 
 	public List<Device> removeDevice(short cust_id, short device_id) throws Exception{
-		if(DBHandler.getInstance().removeDevice(device_id))
-		{
 			return DBHandler.getInstance().getDevices(cust_id);
-		}
-		else
-			throw new Exception("no user");
-		
 	}
 
 	public List<Scenario> addScenario(short cust_id, Scenario scenarioToAdd) throws Exception{
@@ -73,15 +71,16 @@ public class CustomerService {
 		
 	}
 
-	public List<Device> fetchDevices(short i_user) throws ClassNotFoundException {
+	public List<Device> fetchDevices(short i_user) throws Exception {
 		try {
+			
 			return DBHandler.getInstance().getDevices(i_user);
+			
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-			return null;
-		
+			ErrorException eex = new ErrorException(e.getMessage());
+			eex.setStatus(Status.INTERNAL_SERVER_ERROR);
+			throw eex;
+		}	
 	}
 
 	public List<Scenario> fetchScenarios(short i_user) throws SQLException {
@@ -89,12 +88,7 @@ public class CustomerService {
 	}
 
 	public List<Device> updateDevice(short cust_id, short dev_id, Device newDevice) throws Exception {
-		if(DBHandler.getInstance().updateDevice(dev_id, newDevice))
-		{
 			return DBHandler.getInstance().getDevices(cust_id);
-		}
-		else
-			throw new Exception("no user");
 	}
 	
 
