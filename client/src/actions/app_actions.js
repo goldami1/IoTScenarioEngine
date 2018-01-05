@@ -16,7 +16,7 @@ export function unsetBanner() {
   };
 }
 
-export function addBanner(appearance,content) {
+export function addBanner(content,appearance='warning') {
 	return dispatch => {
 		dispatch(setBanner({
 			isOpen:true, 

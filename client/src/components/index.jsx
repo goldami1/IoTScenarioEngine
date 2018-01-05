@@ -11,8 +11,9 @@ import ScenarioForm from './scenarios/add/';
 import ScenariosPage from './scenarios/';
 import ProductsPage from './products/';
 
-import NoMatch from './nomatch/';
+
 import requireAuth from '../utilities/require_auth';
+import noMatch from './nomatch/';
 
 class MainRouter extends PureComponent {
 	constructor(props) {
@@ -49,7 +50,7 @@ class MainRouter extends PureComponent {
 					<Route exact path ="/scenarios/add" component={requireAuth(ScenarioForm)} />
 					<Route exact path="/devices" component={requireAuth(DevicesPage)} />
 					<Route path="/products" component={requireAuth(ProductsPage)}  />
-					<Route component={NoMatch}/>
+					<Route component={noMatch}/>
 				</Switch>
 			</App>
 		);

@@ -2,6 +2,8 @@ import PropTypes from 'prop-types';
 import React, { PureComponent } from 'react';
 import Flag, { FlagGroup } from '@atlaskit/flag';
 import Modal from '@atlaskit/modal-dialog';
+import WarningIcon from '@atlaskit/icon/glyph/warning';
+import ErrorIcon from '@atlaskit/icon/glyph/error';
 import Page from '@atlaskit/page';
 import Banner from '@atlaskit/banner';
 import { removeBanner } from "../../actions/app_actions";
@@ -56,7 +58,12 @@ class App extends PureComponent {
 	}
 
 	
+	// 
+
 	render() {
+		const bannerErrorIcon = <ErrorIcon label="Error icon" secondaryColor="inherit" />;
+		const bannerWarningIcon = <WarningIcon label="Warning icon" secondaryColor="inherit" />;
+
 		console.log(this.props.banner);
 		return (
 			<div>
@@ -64,7 +71,10 @@ class App extends PureComponent {
 					navigationWidth={this.context.navOpenState.width}
 					navigation={<Navigation  onNavResize={this.props.onNavResize}/>}
 				>
-					<Banner appearance={this.props.banner.appearance} isOpen={this.props.banner.isOpen}>
+					<Banner
+						icon ={this.props.banner.appearance=='warning'?bannerWarningIcon:bannerErrorIcon} 
+						appearance={this.props.banner.appearance} 
+						isOpen={this.props.banner.isOpen}>
 						{this.props.banner.content}
 					</Banner>
 					{this.props.children}
