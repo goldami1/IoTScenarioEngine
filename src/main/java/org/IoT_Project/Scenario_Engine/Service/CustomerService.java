@@ -12,7 +12,7 @@ import DataBase.DBHandler;
 public class CustomerService {
 
 	public Customer fetch(User i_user) throws Exception{
-		return DBHandler.getInstance().getCustomer(i_user.getID());
+		return DBHandler.getInstance().getCustomer(i_user.getId());
 	}
 	
 	public Customer fetch(String i_name, String i_password) throws SQLException
@@ -23,6 +23,7 @@ public class CustomerService {
 
 	public List<Device> addDevice(short i_CustomerId, Device newDevice) throws Exception{
 		Device deviceToAdd = new Device(newDevice);
+		deviceToAdd.setCustomer_id(i_CustomerId);
 		if(DBHandler.getInstance().addDevice(deviceToAdd))
 		{
 			return DBHandler.getInstance().getDevices(i_CustomerId);

@@ -124,16 +124,14 @@ public class Vendor{
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response fetchProducts(@PathParam("vendor_id") short i_userId)
 	{
-		Response res = null;
 		try {
 			List<Product> products = vs.fetchProducts(i_userId);
-			res = Response.status(Status.OK).entity(products).build();
+			return Response.status(Status.OK).entity(products).build();
 		}
 		catch(Exception ex)
 		{
-			res = this.handleError(ex);
+			return this.handleError(ex);
 		}
-		return res;
 	}
 	
 	private Response fetch(User i_user)

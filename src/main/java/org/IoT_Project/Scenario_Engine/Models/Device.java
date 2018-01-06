@@ -32,7 +32,15 @@ public class Device {
 	public Device(Device i_device) throws Exception
 	{
 		DBHandler db = DBHandler.getInstance();
-		this.id = db.getDevicesMaxAvailableIdx();
+		boolean isUpdated = i_device.getId() > -1;
+		if(!isUpdated)
+		{
+			this.id = db.getDevicesMaxAvailableIdx();
+		}
+		else
+			this.id = i_device.getId();
+		this.serial_number = i_device.getSerial_number();
+		this.protoDevice = i_device.getProtoDevice();
 	}
 	/*******************************************************************/
 	

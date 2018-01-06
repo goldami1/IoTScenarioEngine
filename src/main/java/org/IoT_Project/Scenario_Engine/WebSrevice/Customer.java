@@ -4,6 +4,7 @@ import org.IoT_Project.Scenario_Engine.Service.CustomerService;
 import org.IoT_Project.Scenario_Engine.Service.UserService;
 
 import DataBase.DBHandler;
+import javafx.util.Pair;
 
 import org.IoT_Project.Scenario_Engine.Models.Scenario;
 import org.IoT_Project.Scenario_Engine.Models.Device;
@@ -11,6 +12,7 @@ import org.IoT_Project.Scenario_Engine.Models.ErrorException;
 import org.IoT_Project.Scenario_Engine.Models.User;
 
 import java.sql.SQLException;
+import java.util.LinkedList;
 import java.util.List;
 
 import javax.ws.rs.Consumes;
@@ -38,7 +40,7 @@ public class Customer {
 	public Response getLogInPageCustomer()
 	{
 		//return "Should return the login page";
-		return Response.status(Status.OK).entity(new org.IoT_Project.Scenario_Engine.Models.Customer()).build();
+		return Response.status(Status.OK).entity(new org.IoT_Project.Scenario_Engine.Models.Device()).build();
 	}
 	
 	@POST
@@ -63,6 +65,21 @@ public class Customer {
 		catch(Exception ex)
 		{
 			return handleError(ex);
+		}
+	}
+	
+	@Path("/vendors")
+	@GET
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response fetchVendors() 
+	{
+		try {
+			LinkedList<Pair<Short, String>> vendors_lst = DBHandler.getInstance().getVendors();
+		 	return Response.status(Status.OK).entity(vendors_lst).build();
+		}
+		catch(Exception ex)
+		{
+			return Response.status(Status.NOT_FOUND).entity(new org.IoT_Project.Scenario_Engine.Models.Error("server error")).build();
 		}
 	}
 	

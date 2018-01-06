@@ -35,24 +35,47 @@ public class Product {
 		this.picURL = Product_picURL;
 		this.endPoint = Product_endpoint;
 		this.actionAndEventList = Product_actionsAndEvents;
-		this.setStates();
+		this.handleStates();
 	}
 	
 	/************   ONLY FOR PRODUCT NEW CREATION IN DB   *************/
 	public Product(Product i_product) throws Exception
 	{
 		DBHandler db = DBHandler.getInstance();
-		this.id = db.getProductsMaxAvailableIdx();
+		boolean isUpdated = i_product.getId() > 0;
+		if(!isUpdated)
+			this.id = db.getProductsMaxAvailableIdx();
+		else
+			this.id = i_product.getId();
+		
 		for(ActionEventProto Current_aep : this.actionAndEventList)
 		{
-			Current_aep.setId(db.getActionsProtoMaxAvailableIdx());
+			boolean isAEPUpdated = Current_aep.getId() > 0;
+			if(!isAEPUpdated)
+			{
+				Current_aep.setId(db.getActionsProtoMaxAvailableIdx());
+			}
+			if(Current_aep.getIsEvent())
+				this.eventState = true;
+			else
+				this.actionState = true;
+			
+		}
+		
+	}
+	/*****************************************************************/
+
+	private void handleStates() {
+		for(ActionEventProto Current_aep : this.actionAndEventList)
+		{
+			if(this.actionState && this.eventState)
+				break;
 			if(Current_aep.getIsEvent())
 				this.eventState = true;
 			else
 				this.actionState = true;
 		}
 	}
-	/*****************************************************************/
 
 	public short getId() {
 		return id;
@@ -109,48 +132,22 @@ public class Product {
 	public void setEndPoint(String endPoint) {
 		this.endPoint = endPoint;
 	}
-	
-	public LinkedList<ActionEventProto> getSupportedActions()
-	{
-		LinkedList<ActionEventProto> res = null;
-		res = this.getObjectsFromAEList(false);
-		return res;
+
+	public boolean isActionState() {
+		return actionState;
 	}
-	public LinkedList<ActionEventProto> getSupportedEvents()
-	{
-		LinkedList<ActionEventProto> res = null;
-		res = this.getObjectsFromAEList(true);
-		return res;
+
+	public void setActionState(boolean actionState) {
+		this.actionState = actionState;
 	}
-	
-	public boolean[] getEAState()
-	{
-		boolean res[] = {this.actionState, this.eventState};
-		return res;
+
+	public boolean isEventState() {
+		return eventState;
+	}
+
+	public void setEventState(boolean ventState) {
+		this.eventState = eventState;
 	}
 	
-	private LinkedList<ActionEventProto> getObjectsFromAEList(boolean isEventRequired)
-	{
-		LinkedList<ActionEventProto> res = new LinkedList<ActionEventProto>();
-		for(ActionEventProto Current_aep : this.actionAndEventList)
-		{
-			if(Current_aep.getIsEvent() == isEventRequired)
-			{
-				res.add(Current_aep);
-			}
-		}
-		return res;
-	}
 	
-	private void setStates() {
-		for(ActionEventProto Current_aep : this.actionAndEventList)
-		{
-			if(this.actionState && this.eventState)
-				break;
-			if(Current_aep.getIsEvent())
-				this.eventState = true;
-			else
-				this.actionState = true;
-		}
-	}
 }
