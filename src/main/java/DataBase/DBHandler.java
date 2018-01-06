@@ -856,9 +856,200 @@ public class DBHandler implements IDBHandler
 		}
 	}
 
-	public LinkedList<Scenario> getScenarios(int cust_id) 
+	@SuppressWarnings("finally")
+	public LinkedList<Scenario> getScenarios(int i_cust_id) throws SQLException 
 	{
-		// TODO Auto-generated method stub
+		LinkedList<Scenario> res = null;
+		Pair<Short, Scenario> currentScen = getScenario((short)i_cust_id, -1);
+		LinkedList<Short> scenario_ids= null;
+		
+		try
+		{
+			Connection connection = openConnection();
+			PreparedStatement queryStatement;
+			ResultSet queryResult;
+			
+			queryStatement  =connection.prepareStatement("select DISTINCT(SCENARIOS.scenario_id), SCENARIOS.customer_id, SCENARIOS.scenario_name, SCENARIOS.scenario_description, SCENARIOS_EVENTS.event_id from SCENARIOS INNER JOIN SCENARIOS_EVENTS ON SCENARIOS.scenario_id=SCENARIOS_EVENTS.scenario_id where SCENARIOS.customer_id=? ORDER BY SCENARIOS.scenario_id;");
+			queryStatement.setString(1, Integer.toString(i_cust_id));
+			queryResult = queryStatement.executeQuery();			
+			while(queryResult.next())
+			{
+				if(scenario_ids == null)
+					scenario_ids = new LinkedList<Short>();
+				scenario_ids.add(Short.parseShort(queryResult.getString(1)));
+			}
+			
+			
+			if(currentScen.getKey()!=-1 && currentScen.getValue()!=null)
+			{
+				res = new LinkedList<Scenario>();
+				res.add(currentScen.getValue());
+				scenario_ids.removeFirst();
+				
+				while(!scenario_ids.isEmpty())
+				{
+					currentScen = getScenario((short)i_cust_id, scenario_ids.removeFirst());
+					if(currentScen.getKey()!=-1 && currentScen.getValue()!=null)
+						res.add(currentScen.getValue());
+				}
+			}
+		}
+		finally
+		{
+			closeConnection();
+			if(scenario_ids==null)
+				throw new SQLException("No Scenarios Found in DB!");
+			return res;
+		}
+		
+	}
+	
+	private Pair<Short, Scenario> getScenario(short i_cust_id, int i_scenario_id)
+	{
+		short scenario_id=-1, event_id=-1, action_id=-1;
+		char logic_oper = '\0';
+		String scenario_name=null, scenario_description=null; 
+		
+		Scenario res = null;
+		LinkedList<Action> acts = null;
+		LinkedList<Event> eves = null;
+		
+		try
+		{
+			Connection connection = openConnection();
+			PreparedStatement scen_actQStatement, scen_eveQStatement, logexprQStatement;
+			ResultSet scen_actsQResult, scen_evesQResult, logexprsQResult;
+			boolean isRelevantIter= true;
+			
+			scen_eveQStatement  =connection.prepareStatement("select SCENARIOS.scenario_id, SCENARIOS.customer_id, SCENARIOS.scenario_name, SCENARIOS.scenario_description, SCENARIOS_EVENTS.event_id from SCENARIOS INNER JOIN SCENARIOS_EVENTS ON SCENARIOS.scenario_id=SCENARIOS_EVENTS.scenario_id where SCENARIOS.customer_id=? ORDER BY SCENARIOS.scenario_id;");
+			scen_eveQStatement.setString(1, Integer.toString(i_cust_id));
+			scen_evesQResult = scen_eveQStatement.executeQuery();
+			while (scen_evesQResult.next())
+			{
+				if(i_scenario_id == -1)
+				{
+					if(scenario_id==-1)
+						scenario_id = Short.parseShort(scen_evesQResult.getString(1));
+					
+					if(scenario_id!=-1 && scenario_id<Short.parseShort(scen_evesQResult.getString(1)))
+						break;
+					else if(scenario_id!=-1 && scenario_id>Short.parseShort(scen_evesQResult.getString(1)))
+						isRelevantIter = false;
+					else
+						isRelevantIter = true;
+				}
+				else
+				{
+					if(i_scenario_id<Short.parseShort(scen_evesQResult.getString(1)))
+					{
+						break;
+					}
+					else if(i_scenario_id>Short.parseShort(scen_evesQResult.getString(1)))
+					{
+						isRelevantIter = false;
+					}
+					else if(i_scenario_id==Short.parseShort(scen_evesQResult.getString(1)))
+					{
+						isRelevantIter = true;
+						scenario_id = Short.parseShort(scen_evesQResult.getString(1));
+					}
+				}
+				
+				if(isRelevantIter)
+				{
+					if(eves==null)
+					{
+						eves = new LinkedList<Event>();
+					}
+					
+					scenario_id = Short.parseShort(scen_evesQResult.getString(1));
+					scenario_name= scen_evesQResult.getString(3);
+					scenario_description= scen_evesQResult.getString(4);
+					event_id=Short.parseShort(scen_evesQResult.getString(5));
+					
+					Event current_eve = getEvent(event_id);
+					connection = openConnection();
+					logexprQStatement = connection.prepareStatement("select * from LOGEXPRS where scenario_id=? and event_id=?;");
+					logexprQStatement.setString(1, Short.toString(scenario_id));
+					logexprQStatement.setString(2, Short.toString(event_id));
+					logexprsQResult = logexprQStatement.executeQuery();
+					
+					if(!logexprsQResult.next())
+						throw new SQLException("Wrong representation in DB, scenario, event, and logic expression tables aren't normalized!");
+					else
+					{
+						logic_oper = logexprsQResult.getString(4).charAt(0);
+					}
+					
+					
+					current_eve.setLogicOper(ElogicOperand.setLogicOperFromChar(logic_oper));
+					eves.add(current_eve);
+				}
+			}
+			
+			
+			isRelevantIter = true;
+			scen_actQStatement  =connection.prepareStatement("select SCENARIOS.scenario_id, SCENARIOS.customer_id, SCENARIOS.scenario_name, SCENARIOS.scenario_description, SCENARIOS_ACTIONS.action_id from SCENARIOS INNER JOIN SCENARIOS_ACTIONS ON SCENARIOS.scenario_id=SCENARIOS_ACTIONS.scenario_id where SCENARIOS.customer_id=? ORDER BY SCENARIOS.scenario_id;");
+			scen_actQStatement.setString(1, Integer.toString(i_cust_id));
+			scen_actsQResult = scen_actQStatement.executeQuery();
+			while (scen_evesQResult.next())
+			{	
+				if(i_scenario_id==-1)
+				{
+					if(scenario_id!=-1 && scenario_id<Short.parseShort(scen_actsQResult.getString(1)))
+						break;
+					else if(scenario_id!=-1 && scenario_id>Short.parseShort(scen_actsQResult.getString(1)))
+						isRelevantIter = false;
+					else
+						isRelevantIter = true;
+				}
+				else
+				{
+					if(i_scenario_id<Short.parseShort(scen_evesQResult.getString(1)))
+					{
+						break;
+					}
+					else if(i_scenario_id>Short.parseShort(scen_evesQResult.getString(1)))
+					{
+						isRelevantIter = false;
+					}
+					else if(i_scenario_id==Short.parseShort(scen_evesQResult.getString(1)))
+					{
+						isRelevantIter = true;
+						scenario_id = Short.parseShort(scen_evesQResult.getString(1));
+					}
+				}
+				
+				
+				if(isRelevantIter)
+				{
+					if(acts==null)
+					{
+						acts = new LinkedList<Action>();
+					}
+
+					action_id=Short.parseShort(scen_actsQResult.getString(5));
+					
+					Action current_act = getAction(action_id);
+					connection = openConnection();
+					
+					acts.add(current_act);
+				}
+			}
+			
+			res = new Scenario(scenario_id, scenario_name, scenario_description, (short)i_cust_id, eves, acts);
+			
+		}	
+		finally
+		{
+			closeConnection();
+			return new Pair<Short, Scenario>(scenario_id, res);
+		}
+	}
+	
+	private Action getAction(short i_action_id)
+	{
+		//TODO
 		return null;
 	}
 	

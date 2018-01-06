@@ -25,7 +25,7 @@ public interface IDBHandler {
 	public Vendor getVendor(int vendor_id) throws SQLException;
 	public boolean removeProduct(int productToRemove_id);
 	public boolean updateProduct(int prod_id, Product new_product);
-	public LinkedList<Scenario> getScenarios(int cust_id);
+	public LinkedList<Scenario> getScenarios(int cust_id) throws SQLException;
 	public Customer addCustomer(Customer i_User) throws SQLException;
 	public Customer getCustomer(String i_username, String i_password) throws SQLException;
 	public Customer getCustomer(int cust_id) throws SQLException;
