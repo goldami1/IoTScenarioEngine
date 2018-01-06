@@ -642,6 +642,7 @@ public class DBHandler implements IDBHandler
 		try
 		{
 			res = getCustomer(i_username, i_userPassword);
+			
 			if(res==null)
 			{
 				isCustomer = false;
@@ -690,11 +691,20 @@ public class DBHandler implements IDBHandler
 	@SuppressWarnings("finally")
 	public Customer addCustomer(Customer i_User) throws SQLException //final&complete IMPL
 	{
+		String fName=null, lName=null;
+		if(i_User.getName().contains(" "))
+		{
+			fName = i_User.getName().split(" ")[0];
+			lName = i_User.getName().split(" ")[1];
+		}
+		else
+			fName = lName = i_User.getName();
+		
 		final String sqlQuery =	"insert into CUSTOMERS (customer_id, first_name , last_name, user_name, user_password, email) "
 				+ "values ("
 				+"'"+i_User.getId()+"',"
-				+"'"+i_User.getName().split(" ")[0]+"',"
-				+"'"+i_User.getName().split(" ")[1]+"',"
+				+"'"+fName+"',"
+				+"'"+lName+"',"
 				+"'"+i_User.getUserName()+"',"
 				+"'"+i_User.getPassword()+"',"
 				+"'"+i_User.getEmail()+"'"
@@ -748,7 +758,7 @@ public class DBHandler implements IDBHandler
 				cust_lname = queryResult.getString(3);
 				user_email = queryResult.getString(6);
 				
-				res = new Customer(cust_id, i_username, i_password, cust_fname + cust_lname, user_email, user_PicURL, isCustomer, null, null);
+				res = new Customer(cust_id, i_username, i_password, cust_fname + " " + cust_lname, user_email, user_PicURL, isCustomer, null, null);
 			}
 		}	
 		finally

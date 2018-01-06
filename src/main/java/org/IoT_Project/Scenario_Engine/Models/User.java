@@ -48,17 +48,17 @@ public class User
 			{
 				if(i_user.isCustomer)
 				{
-					i_user.setId(db.getCustomersMaxAvailableIdx());
+					this.id = db.getCustomersMaxAvailableIdx();
 				}
 				else
 				{
-					i_user.setId(db.getVendorsMaxAvailableIdx());
+					this.id = db.getVendorsMaxAvailableIdx();
 				}
 			}
 		}
 		else
 		{
-			this.id = i_user.getID();
+			this.id = i_user.getId();
 		}
 		this.userName = i_user.getUserName();
 		this.password = i_user.getPassword();
@@ -69,14 +69,7 @@ public class User
 	}
 	
 	
-	public void setUserName(String userName) throws Exception {
-		this.userName = userName;
-	}
 
-	public void setPassword(String password) throws Exception {
-		this.password = password;
-	}
-	
 	public short getId() {
 		return id;
 	}
@@ -109,6 +102,22 @@ public class User
 		this.email = email;
 	}
 
+	public String getUserName() {
+		return userName;
+	}
+
+	public void setUserName(String userName) {
+		this.userName = userName;
+	}
+
+	public String getPassword() {
+		return password;
+	}
+
+	public void setPassword(String password) {
+		this.password = password;
+	}
+
 	public boolean isCustomer() {
 		return isCustomer;
 	}
@@ -117,19 +126,8 @@ public class User
 		this.isCustomer = isCustomer;
 	}
 
-	public String getUserName() {
-		return userName;
-	}
-
-	public String getPassword() {
-		return password;
-	}
-	public short getID() {
-		return this.getId();
-	}
 	public void setIsCustomer(boolean i_isCustomer) {
-		this.isCustomer = i_isCustomer;
-		
+		this.isCustomer = i_isCustomer;	
 	}
 
 }

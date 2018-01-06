@@ -1,0 +1,25 @@
+.full-width{
+	width: 100%;
+}
+
+.is-hidden{
+	display : none; 
+}
+
+.margin-auto{
+	margin: 0 auto;
+}
+
+.text{
+	&--light{
+		color: $text--light;
+		a{
+			&:hover{
+				color : $text;
+			}
+		}
+	}
+	&--center{
+		text-align:center;
+	}
+}
