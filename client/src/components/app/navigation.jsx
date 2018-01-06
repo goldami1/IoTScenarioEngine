@@ -52,12 +52,12 @@ class StarterNavigation extends React.Component {
 
 	links(type){
 		switch(type) {
-			case "vendor": return (
+			case false: return (
 				[
 					['/products', 'Products', DashboardIcon]
 				]
 			);
-			case "enduser":  return (
+			case true:  return (
 				[
 					['/devices', 'Devices', DashboardIcon],
 					['/scenarios', 'Scenarios', DashboardIcon],
@@ -115,7 +115,7 @@ class StarterNavigation extends React.Component {
 			
 				{
 
-					this.links(this.props.auth.user.type).map(link => {
+					this.links(this.props.auth.user.isCustomer).map(link => {
 						const [url, title, Icon] = link;
 						return (
 							<Tooltip content={(!this.context.navOpenState.isOpen)?title:''} position='right'>

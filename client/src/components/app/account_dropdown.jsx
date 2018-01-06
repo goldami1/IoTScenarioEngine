@@ -24,8 +24,8 @@ class UserDropdown extends Component {
 
 	items(type){
 		switch(type) {
-			case "vendor":
-			case "enduser": return (
+			case false:
+			case true: return (
 					[{
 						heading: this.props.auth.user.name,
 						items: [
@@ -50,7 +50,7 @@ class UserDropdown extends Component {
 		<DropdownMenu
 			appearance="tall"
 			position="right bottom"
-			items={this.items(this.props.auth.user.type)}
+			items={this.items(this.props.auth.user.isCustomer)}
 		>
 
 			<AkGlobalItem>

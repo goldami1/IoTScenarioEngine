@@ -71,7 +71,7 @@ class App extends PureComponent {
 					navigationWidth={this.context.navOpenState.width}
 					navigation={<Navigation  onNavResize={this.props.onNavResize}/>}
 				>
-					<Banner
+					<Banner 
 						icon ={this.props.banner.appearance=='warning'?bannerWarningIcon:bannerErrorIcon} 
 						appearance={this.props.banner.appearance} 
 						isOpen={this.props.banner.isOpen}>

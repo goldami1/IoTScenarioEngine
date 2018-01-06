@@ -22,6 +22,8 @@ class DeviceForm extends Component {
 	}
 
 	onChange( event ){
+		console.log('change');
+		console.log(event);
 		this.setState({
 			[event.target.name] : event.target.value
 		}) 
@@ -42,7 +44,11 @@ class DeviceForm extends Component {
 			error: '',
 			isLoading: true 
 		});
-		this.props.addDevice(this.state)
+		this.props.addDevice({
+			Customer_id:this.props.customer,
+			Serial_number:this.state.serial,
+			ProtoDevice:this.props.products[this.state.product]
+		})
 			.then(
 				(res) => {
 					this.props.history.goBack();
@@ -73,17 +79,22 @@ class DeviceForm extends Component {
  	// 	// TODO :: make reusable funtion
 		const vendorOptions = this.props.vendors.map(vendor => {
 			return (
-				<option value={vendor.id}>
-					{vendor.name}
+				<option value={vendor.Key}>
+					{vendor.Value}
 				</option>
 				);
 			}
 		);
 
 		const productOptions = this.props.products.map(product => {
+			var index =0;
 			return (
-				<option value={product.id}>
-					{product.name}
+
+				<option value={index++}>
+					{
+						console.log('index '+ index)
+					}
+					{product.Name}
 				</option>
 				);
 			}
@@ -106,13 +117,15 @@ class DeviceForm extends Component {
 				</div>
 
 				<div className="form-group">
-					<label >Vendor</label>
+					<label >Product</label>
 					<select 
 						onChange={this.onChange}
 						className="custom-select w-100" 
-						value={this.state.product}
 						name="product" 
+						value={this.state.product}
+						
 						>
+						<option></option>
 						{productOptions}
 					</select>
 				</div>
@@ -146,8 +159,9 @@ class DeviceForm extends Component {
 	}
 }
 
-function mapStateToProps({devices}) {
+function mapStateToProps({devices,auth}) {
 	return {
+		customer: auth.user.id,
 		vendors: devices.vendors,
 		products: devices.products,
 	}

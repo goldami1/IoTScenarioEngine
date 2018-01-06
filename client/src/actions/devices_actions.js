@@ -14,8 +14,10 @@ import {
 const test_url = 'http://demo6475105.mockable.io/devices';
 const error_url  = 'http://demo6475105.mockable.io/error';
 const delete_ulr  = 'https://httpbin.org/delete';
-
-const vendors_url = 'http://demo6475105.mockable.io/vendors';
+const URL_ROOT = 'http://localhost:9090/Scenario_Engine/webapi/customer';
+const vendors_url = 'http://localhost:9090/Scenario_Engine/webapi/customer/vendors';
+const products_url = 'http://localhost:9090/Scenario_Engine/webapi/vendor/product/';
+const device_url = 'http://localhost:9090/Scenario_Engine/webapi/customer/device/';
 
 export function errorOccured(error) {
   return {
@@ -74,10 +76,13 @@ export function deleteDevice(device) {
 
 
 export function addDevice(device) {
+	console.log('add device');
+	console.log(device);
 	return (dispatch,getState) => {
 		const {auth} = getState();
+		console.log('add device');
 		console.log(auth);
-		return axios.post(delete_ulr).then(
+		return axios.post(device_url+auth.user.id,device).then(
 			res => {
 				dispatch(fetchDevices(device.customer_id))
 			},
@@ -88,9 +93,17 @@ export function addDevice(device) {
 
 export function fetchProducts(vendor) {
 	return dispatch => {
-		return axios.get(vendors_url).then(
-			res => dispatch(receiveProducts(res.data)),
-		  	err => dispatch(errorOccured(err.response.data.error))
+
+		return axios.get(products_url+vendor).then(
+			res => {
+				console.log('products get');
+				console.log(res.data);
+				dispatch(receiveProducts(res.data))
+			},
+		  	err => {
+				console.log('products err');
+				console.log(err.response.data);		  		
+		  		dispatch(errorOccured(err.response.data.error))}
 		);
 	}
 }
@@ -99,8 +112,17 @@ export function fetchProducts(vendor) {
 export function fetchVendors() {
 	return dispatch => {
 		return axios.get(vendors_url).then(
-			res => dispatch(receiveVendors(res.data)),
-		  	err => dispatch(errorOccured(err.response.data.error))
+			res => {
+				console.log('vendors');
+				console.log(res.data);
+				dispatch(receiveVendors(res.data));
+			}
+				,
+		  	err => {
+		  		console.log('vendors err');
+				console.log(err.response.data);
+		  		dispatch(errorOccured(err.response.data.error))
+		  	}
 		);
 	}
 }

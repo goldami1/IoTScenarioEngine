@@ -7,7 +7,7 @@ export default function(ComposedComponent) {
   class Authenticate extends React.Component {
     componentWillMount() {
       if (!this.props.isAuthenticated) {
-        this.props.addBanner('The page you asked is autthorized please log in');
+        this.props.addBanner('The page you asked for require authentication . Please log in');
         this.props.history.push("/login");
         setTimeout( () => { this.props.removeBanner() }, 5000);
       }

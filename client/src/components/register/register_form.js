@@ -54,12 +54,15 @@ class RegisterForm extends Component {
 			}
 		}else{
 			user = {
+				isCustomer:true,
 				UserName:this.state.username,
 				Name: this.state.firstname,
 				Password: this.state.password,
 				Email: this.state.email
 			}			
 		}
+		console.log("signup");
+		console.log(user);
 		this.props.userSignupRequest(user)
 			.then(
 				(res) => this.props.history.push("/login"),
