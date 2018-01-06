@@ -428,16 +428,112 @@ public class DBHandler implements IDBHandler
 		}
 	}
 
-	public LinkedList<Pair<Short, String>> getVendors() 
+	@SuppressWarnings("finally")
+	public LinkedList<Pair<Short, String>> getVendors() throws SQLException //final&complete IMPL
 	{
-		//TODO
-		return null;
+		LinkedList<Pair<Short,String>> res = null;
+		String vendor_name=null;
+		short vendor_id=-1;
+		
+		try
+		{
+			Connection connection = openConnection();
+			PreparedStatement queryStatement;
+			ResultSet queryResult;
+			
+			queryStatement  =connection.prepareStatement("select * from VENDORS;");
+			queryResult = queryStatement.executeQuery();
+				
+			while (queryResult.next())
+			{
+				if(res==null)
+					res = new LinkedList<Pair<Short,String>>();
+				
+				vendor_id = Short.parseShort(queryResult.getString(1));
+				vendor_name = queryResult.getString(2);
+				
+				res.add(new Pair(vendor_id, vendor_name));
+			}
+		}	
+		finally
+		{
+			closeConnection();
+			if(res==null)
+				throw new SQLException("No registered vendors found!");
+			return res;
+		}
 	}
 
-	public LinkedList<Product> getProducts(int vendor_id)
+	@SuppressWarnings("finally")
+	public LinkedList<Product> getProducts(int vendor_id) throws SQLException//final&complete IMPL
 	{
-		// TODO Auto-generated method stub
-		return null;
+		String prod_name=null, prod_pic=null;
+		short prod_id=-1;
+		LinkedList<Product> res = null;
+		Product currProd=null;
+		LinkedList<ActionEventProto> currProd_aep_list=null;
+		
+		try
+		{
+			Connection connection = openConnection();
+			PreparedStatement queryStatement, eapQstatement;
+			ResultSet queryResult, eapsQResult;
+			
+			queryStatement  =connection.prepareStatement("select * from PRODUCTS where vendor_id=?;");
+			queryStatement.setString(1, Integer.toString(vendor_id));
+			queryResult = queryStatement.executeQuery();
+				
+			while (queryResult.next())
+			{
+				if(res==null)
+					res = new LinkedList<Product>();
+				
+				prod_id = Short.parseShort(queryResult.getString(1));
+				prod_name = queryResult.getString(3);
+				prod_pic = queryResult.getString(4);
+				
+				
+				eapQstatement  =connection.prepareStatement("select * from EVENTS_PROTO where product_id=?;");
+				eapQstatement.setString(1, Integer.toString(prod_id));
+				eapsQResult = eapQstatement.executeQuery();
+				while(eapsQResult.next())
+				{
+					if(currProd_aep_list==null)
+						currProd_aep_list = new LinkedList<ActionEventProto>();
+					
+					currProd_aep_list.add(new ActionEventProto(Short.parseShort(eapsQResult.getString(1)),
+							eapsQResult.getString(3),
+							eapsQResult.getString(5), prod_id, null, true));
+				}
+				
+				
+				eapQstatement  =connection.prepareStatement("select * from ACTIONS_PROTO where product_id=?;");
+				eapQstatement.setString(1, Integer.toString(prod_id));
+				eapsQResult = eapQstatement.executeQuery();
+				while(eapsQResult.next())
+				{
+					if(currProd_aep_list==null)
+						currProd_aep_list = new LinkedList<ActionEventProto>();
+					
+					currProd_aep_list.add(new ActionEventProto(Short.parseShort(eapsQResult.getString(1)),
+							eapsQResult.getString(3),
+							eapsQResult.getString(5), prod_id, null, false));
+				}
+				
+				
+				currProd = new Product(prod_id, (short)vendor_id, prod_name, prod_name, prod_pic, null, currProd_aep_list);
+					
+				
+				res.add(currProd);
+			}
+		}	
+		finally
+		{
+			closeConnection();
+			if(res==null)
+				throw new SQLException("No products added to provided vendor id");
+			return res;
+		}
 	}
 
 	//****************	CHANGED UNCERTAIN	*********************\\
@@ -535,10 +631,69 @@ public class DBHandler implements IDBHandler
 	}
 
 	//****************** CHANGED UNCERTAIN (added notes where needed) *********************\\
+	
 	@SuppressWarnings("finally")
-	public User getUser(String i_username, String i_userPassword) throws SQLException
+	public User getUser(String i_username, String i_userPassword) throws SQLException //final&complete IMPL
 	{
 		User res=null;
+		boolean isCustomer = true;
+		
+		try
+		{
+			res = getCustomer(i_username, i_userPassword);
+			if(res==null)
+			{
+				isCustomer = false;
+				res = getVendor(i_username, i_userPassword);
+			}
+		}
+		finally
+		{
+			if(res==null)
+				throw new SQLException("User not found!");
+			res.setIsCustomer(isCustomer);
+			return res;
+		}
+	}
+
+	@SuppressWarnings("finally")
+	public Customer addCustomer(Customer i_User) throws SQLException //final&complete IMPL
+	{
+		final String sqlQuery =	"insert into CUSTOMERS (customer_id, first_name , last_name, user_name, user_password, email)"
+				+ "values ("
+				+"'"+i_User.getId()+"',"
+				+"'"+i_User.getName().split(" ")[0]+"',"
+				+"'"+i_User.getName().split(" ")[1]+"'"
+				+"'"+i_User.getUserName()+"'"
+				+"'"+i_User.getPassword()+"'"
+				+"'"+i_User.getEmail()+"'"
+				+")";
+
+		boolean flag = false;
+
+		try 
+		{
+				Connection connection = openConnection();
+				java.sql.PreparedStatement insertStat  = connection.prepareStatement(sqlQuery);
+				insertStat.executeUpdate();
+				flag = true;
+				incrementMaxIdxValue(EntityAndIdxValue.CUSTOMERS_TABLE);
+		}
+		finally
+		{
+			closeConnection();
+			if(!flag)
+				throw new SQLException("New Customer couldn't be added!");
+			return i_User;
+		}		
+	}
+	
+	//Returns just a customer, without additionals
+	//Returns just a customer, without additionals
+	@SuppressWarnings("finally")
+	public Customer getCustomer(String i_username, String i_password) throws SQLException //final&complete IMPL
+	{
+		Customer res=null;
 		
 		try
 		{
@@ -548,7 +703,7 @@ public class DBHandler implements IDBHandler
 			
 			queryStatement  =connection.prepareStatement("select * from CUSTOMERS where user_name=? and user_password=?;");
 			queryStatement.setString(1, i_username);
-			queryStatement.setString(2, i_userPassword);
+			queryStatement.setString(2, i_password);
 			queryResult = queryStatement.executeQuery();
 			
 			if(queryResult.next())
@@ -556,7 +711,6 @@ public class DBHandler implements IDBHandler
 				String user_email=null, user_PicURL=null;
 				String cust_fname=null, cust_lname=null;
 				short cust_id=-1;
-				//need to add isCustomer
 				boolean isCustomer = true;
 				
 				cust_id = Short.parseShort(queryResult.getString(1));
@@ -564,74 +718,162 @@ public class DBHandler implements IDBHandler
 				cust_lname = queryResult.getString(3);
 				user_email = queryResult.getString(6);
 				
-				Customer curUser = new Customer(cust_id, i_username, i_userPassword, cust_fname + cust_lname, user_email, user_PicURL, isCustomer, null, null);
-				//curUser.setCustomer(true);
-				//curUser.setId(cust_id);
-				//res = new Customer(curUser);
-				res = curUser;
-				
-				/*
-				 * NOTES:
-				 * the 2 nulls in the c'tor are the scenarios list and the event list of the customer.
-				 */
-			}
-			else
-			{
-				queryStatement  =connection.prepareStatement("select * from VENDORS where user_name=? and user_password=?;");
-				queryStatement.setString(1, i_username);
-				queryStatement.setString(2, i_userPassword);
-				queryResult = queryStatement.executeQuery();
-				
-				if(queryResult.next())
-				{
-					String user_email=null;
-					String ven_name=null, ven_desc=null, ven_logo_pic=null;
-					short ven_id=-1;
-					
-					ven_id = Short.parseShort(queryResult.getString(1));
-					ven_name = queryResult.getString(2);
-					user_email = queryResult.getString(5);
-					ven_desc = queryResult.getString(6);
-					ven_logo_pic = queryResult.getString(7);
-					boolean isCustomer = false;
-					
-					Vendor curVend = new Vendor(ven_id, i_username, i_userPassword, ven_name, user_email, null, isCustomer, ven_desc, ven_logo_pic, null);
-					//curUser.setCustomer(false);
-					//curUser.setId(ven_id);
-					//Vendor curVend = new Vendor(curUser);
-					//curVend.setDescription(ven_desc);
-					res = curVend;
-					
-					/*
-					 * NOTES:
-					 * first null in c'tor = User_PicURL
-					 * second null in c'tor = Vendor_ListOfProducts
-					 */
-				}
+				res = new Customer(cust_id, i_username, i_password, cust_fname + cust_lname, user_email, user_PicURL, isCustomer, null, null);
 			}
 		}	
 		finally
 		{
 			closeConnection();
 			if(res==null)
-				throw new SQLException("No user found for provided credantials!");
+				throw new SQLException("No customer user found for provided credantials!");
 			else
 				return res;
 		}
 	}
 
-	public Vendor getVendor(String name, String password)
+	//Returns just a customer, without additionals
+	//Returns just a customer, without additionals
+	@SuppressWarnings("finally")
+	public Customer getCustomer(int cust_id) throws SQLException //final&complete IMPL
+	{
+		Customer res=null;
+		
+		try
+		{
+			Connection connection = openConnection();
+			PreparedStatement queryStatement;
+			ResultSet queryResult;
+			
+			queryStatement  =connection.prepareStatement("select * from CUSTOMERS where customer_id=?;");
+			queryStatement.setString(1, Integer.toString(cust_id));
+			queryResult = queryStatement.executeQuery();
+			
+			if(queryResult.next())
+			{
+				String cust_username=null, cust_password=null, user_email=null, user_PicURL=null;
+				String cust_fname=null, cust_lname=null;
+				boolean isCustomer = true;
+				
+				cust_fname = queryResult.getString(2);
+				cust_lname = queryResult.getString(3);
+				cust_username = queryResult.getString(4);
+				cust_password = queryResult.getString(5);
+				user_email = queryResult.getString(6);
+				
+				res = new Customer((short)cust_id, cust_username, cust_password, cust_fname + cust_lname, user_email, user_PicURL, isCustomer, null, null);
+			}
+		}	
+		finally
+		{
+			closeConnection();
+			if(res==null)
+				throw new SQLException("No customer user found for provided credantials!");
+			else
+				return res;
+		}
+	}
+	
+	//Returns just a vendor, without additionals
+	@SuppressWarnings("finally")
+	public Vendor getVendor(String i_username, String i_password) throws SQLException //final&complete IMPL
+	{
+		Vendor res=null;
+		
+		try
+		{
+			Connection connection = openConnection();
+			PreparedStatement queryStatement;
+			ResultSet queryResult;
+			
+			queryStatement  =connection.prepareStatement("select * from VENDORS where user_name=? and user_password=?;");
+			queryStatement.setString(1, i_username);
+			queryStatement.setString(2, i_password);
+			queryResult = queryStatement.executeQuery();
+			
+			if(queryResult.next())
+			{
+				String user_email=null;
+				String vend_name=null, vend_desc=null, vend_logo_pic=null;
+				short vend_id=-1;
+				
+				vend_id = Short.parseShort(queryResult.getString(1));
+				vend_name = queryResult.getString(2);
+				user_email = queryResult.getString(5);
+				vend_desc = queryResult.getString(6);
+				vend_logo_pic = queryResult.getString(7);
+				
+				res = new Vendor(vend_id, i_username, i_password, vend_name, vend_logo_pic, user_email, false, vend_desc, vend_logo_pic, getProducts(vend_id));
+			}
+		}	
+		finally
+		{
+			closeConnection();
+			if(res==null)
+				throw new SQLException("No vendor user found for provided credantials!");
+			else
+				return res;
+		}
+	}
+
+	//Returns just a vendor, without additionals
+	@SuppressWarnings("finally")
+	public Vendor getVendor(int vendor_id) throws SQLException //final&complete IMPL
+	{
+		Vendor res=null;
+		
+		try
+		{
+			Connection connection = openConnection();
+			PreparedStatement queryStatement;
+			ResultSet queryResult;
+			
+			queryStatement  =connection.prepareStatement("select * from VENDORS where vendor_id=?;");
+			queryStatement.setString(1, Integer.toString(vendor_id));
+			queryResult = queryStatement.executeQuery();
+			
+			if(queryResult.next())
+			{
+				String user_email=null, vend_username=null, vend_password=null;
+				String vend_name=null, vend_desc=null, vend_logo_pic=null;
+				
+				vend_name = queryResult.getString(2);
+				vend_username = queryResult.getString(3);
+				vend_password = queryResult.getString(4);
+				user_email = queryResult.getString(5);
+				vend_desc = queryResult.getString(6);
+				vend_logo_pic = queryResult.getString(7);
+				
+				res = new Vendor((short)vendor_id, vend_username, vend_password, vend_name, vend_logo_pic, user_email, false, vend_desc, vend_logo_pic, getProducts(vendor_id));
+			}
+		}	
+		finally
+		{
+			closeConnection();
+			if(res==null)
+				throw new SQLException("No vendor user found for provided credantials!");
+			else
+				return res;
+		}
+	}
+
+	public LinkedList<Scenario> getScenarios(int cust_id) 
 	{
 		// TODO Auto-generated method stub
 		return null;
 	}
-
-	public Vendor getVendor(int vendor_id) 
+	
+	public Scenario getScenario(short i_event_id)
 	{
 		// TODO Auto-generated method stub
 		return null;
 	}
-
+	
+	public LinkedList<Scenario> getScenariosByEvent(Event i_event)
+	{
+		// TODO Auto-generated method stub
+		return null;
+	}
+	
 	public boolean removeDevice(int device_id)
 	{
 		// TODO Auto-generated method stub
@@ -649,37 +891,7 @@ public class DBHandler implements IDBHandler
 		// TODO Auto-generated method stub
 		return false;
 	}
-
-	public LinkedList<Scenario> getScenarios(int cust_id) 
-	{
-		// TODO Auto-generated method stub
-		return null;
-	}
 	
-	public Scenario getScenario(short i_event_id)
-	{
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	public Customer addCustomer(Customer i_User)
-	{
-		// TODO
-		return null;
-	}
-
-	public Customer getCustomer(String i_username, String i_password) 
-	{
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	public Customer getCustomer(int cust_id) 
-	{
-		// TODO Auto-generated method stub
-		return null;
-	}
-
 	public boolean updateDevice(int origionalDevice_id, Device newDevice) 
 	{
 		// TODO Auto-generated method stub
@@ -888,12 +1100,6 @@ public class DBHandler implements IDBHandler
 	public short getDevicesMaxAvailableIdx()
 	{
 		return (short) (TABLE_maxID[EntityAndIdxValue.DEVICES_TABLE.idx]+1);
-	}
-
-	public LinkedList<Scenario> getScenariosByEvent(Event i_event)
-	{
-		// TODO Auto-generated method stub
-		return null;
 	}
 
 	public boolean isEventUpdated(Event event) 

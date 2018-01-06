@@ -16,19 +16,19 @@ public interface IDBHandler {
 	public LinkedList<Scenario> getScenariosByEvent(Event i_event);
 	public short getIdForScenario();
 	public boolean addProduct(Product i_product) throws SQLException;
-	public LinkedList<Pair<Short,String>> getVendors(); //pair(id,name)
-	public LinkedList <Product> getProducts(int vendor_id);
+	public LinkedList<Pair<Short,String>> getVendors() throws SQLException; //pair(id,name)
+	public LinkedList <Product> getProducts(int vendor_id) throws SQLException;
 	public boolean addDevice(int product_id,int customer_id,int device_serial) throws SQLException ;
 	public boolean removeDevice(int device_id);
 	public User getUser(String i_username, String i_userPassword) throws SQLException;
-	public Vendor getVendor(String i_username, String i_password);
-	public Vendor getVendor(int vendor_id);
+	public Vendor getVendor(String i_username, String i_password) throws SQLException;
+	public Vendor getVendor(int vendor_id) throws SQLException;
 	public boolean removeProduct(int productToRemove_id);
 	public boolean updateProduct(int prod_id, Product new_product);
 	public LinkedList<Scenario> getScenarios(int cust_id);
-	public Customer addCustomer(Customer i_User);
-	public Customer getCustomer(String name, String password);
-	public Customer getCustomer(int cust_id);
+	public Customer addCustomer(Customer i_User) throws SQLException;
+	public Customer getCustomer(String i_username, String i_password) throws SQLException;
+	public Customer getCustomer(int cust_id) throws SQLException;
 	public boolean updateDevice(int origionalDevice_id, Device newDevice);
 	public boolean updateScenario(int origionalScenario_id, Scenario newScenario);
 	public boolean removeScenario(int scenarioToRemove_id);
