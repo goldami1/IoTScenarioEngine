@@ -15,11 +15,11 @@ public class DeviceService {
 	private void HandleEvent(Event i_event) throws Exception
 	{
 		DBHandler DB = DBHandler.getInstance();
-		Scenario scenario = DB.getScenariosByEvent(i_event).getFirst();
+		Scenario scenario = DB.getScenario(i_event.getId());
 		scenario.getEventById(i_event.getId()).setTriggered(true);
 		
 		boolean isAwake = true;
-		Iterator<Entry<Short, Event>> itr = scenario.getEvents();
+		Iterator<Entry<Short, Event>> itr = scenario.getEventsToHappen().entrySet().iterator();
 		while(itr.hasNext())
 		{
 			Event event = itr.next().getValue();
@@ -44,10 +44,10 @@ public class DeviceService {
 	
 	private void activateActions(Scenario i_scenario) throws Exception {
 		
-		Iterator<Entry<Short, Action>> itr = i_scenario.getActions();
+		Iterator<Action> itr = i_scenario.getActions().iterator();
 		while(itr.hasNext())
 		{
-			Action currentAction = itr.next().getValue();
+			Action currentAction = itr.next();
 			currentAction.toggleAction();
 		}
 	}

@@ -24,12 +24,12 @@ public class UserService {
 		}
 	}
 
-	public User addCustomer(User i_user) throws Exception {
+	public Customer addCustomer(User i_user) throws Exception {
 		Customer cust = new Customer(i_user);
 		return cust;
 	}
 
-	public User addVendor(User i_user) throws Exception {
+	public Vendor addVendor(User i_user) throws Exception {
 		Vendor vendor = new Vendor(i_user);
 		return vendor;
 	}

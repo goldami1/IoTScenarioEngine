@@ -7,6 +7,8 @@ import org.IoT_Project.Scenario_Engine.Models.User;
 import org.IoT_Project.Scenario_Engine.Service.UserService;
 import org.IoT_Project.Scenario_Engine.Service.VendorService;
 
+import DataBase.DBHandler;
+
 import java.sql.SQLException;
 import java.util.LinkedList;
 import java.util.List;
@@ -53,7 +55,8 @@ public class Vendor{
 	public Response addVendor(User i_user)
 	{
 		try {
-			User userToAdd = us.addVendor(i_user);
+			org.IoT_Project.Scenario_Engine.Models.Vendor userToAdd = us.addVendor(i_user);
+			DBHandler.getInstance().addVndor(userToAdd);
 			return Response.status(Status.CREATED).entity(userToAdd).build();
 		}
 		catch(Exception ex)

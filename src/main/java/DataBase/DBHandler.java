@@ -32,11 +32,11 @@ public class DBHandler implements IDBHandler
 	private final static String k_driver = "com.mysql.jdbc.Driver";
 	private final static String k_selectEvent="select * from EVENTS where event_id=?;";
 	private final static String k_selectEventProto="select * from EVENTS_PROTO where eventproto_id=?;";
-	private final static String k_userConnectionAuth = "SELECT user_name, user_password FROM CUSTOMERS WHERE user_name= ? and user_password= ? UNION SELECT user_name, user_password FROM VENDORS WHERE user_name= ? and user_password= ?;";
-	private final static String k_doesCustomerExistByName = "SELECT user_name FROM CUSTOMERS WHERE user_name= ?;";
-	private final static String k_doesCustomerExistByID = "SELECT customer_id FROM CUSTOMERS WHERE customer_id= ?;";
-	private final static String k_doesVendorExistByName = "SELECT user_name FROM VENDORS WHERE user_name=? ;";
-	private final static String k_doesVendorExistByID= "SELECT vendor_id FROM VENDORS WHERE vendor_id=? ;";
+	private final static String k_userConnectionAuth = "SELECT user_name, user_password FROM CUSTOMERS WHERE user_name=? and user_password=? UNION SELECT user_name, user_password FROM VENDORS WHERE user_name=? and user_password=?;";
+	private final static String k_doesCustomerExistByName = "SELECT user_name FROM CUSTOMERS WHERE user_name=?;";
+	private final static String k_doesCustomerExistByID = "SELECT customer_id FROM CUSTOMERS WHERE customer_id=?;";
+	private final static String k_doesVendorExistByName = "SELECT user_name FROM VENDORS WHERE user_name=?;";
+	private final static String k_doesVendorExistByID= "SELECT vendor_id FROM VENDORS WHERE vendor_id=?;";
 	private final static String k_selectMaxID = "SELECT MAX(%s) FROM %s;";
 	
 	
@@ -253,7 +253,7 @@ public class DBHandler implements IDBHandler
 	
 	public boolean isUsernameAvailable(String i_userName) throws Exception
 	{
-		return doesCustVendExist((short) -1, i_userName, k_doesCustomerExistByName) || doesCustVendExist((short) -1, i_userName, k_doesVendorExistByName);
+		return !(doesCustVendExist((short) -1, i_userName, k_doesCustomerExistByName)) || !(doesCustVendExist((short) -1, i_userName, k_doesVendorExistByName));
 	}
 	//<end> static find C.R.U.D METHODS <end>
 	//===================================
@@ -340,12 +340,12 @@ public class DBHandler implements IDBHandler
 					throw new Exception("Incorrect Action object - no matching Product, or no Action instance available!");
 			
 			
-				final String sqlQuery = "insert into ACTIONS (device_id, actionproto_id, param_val)"
+				final String sqlQuery = "insert into ACTIONS (device_id, actionproto_id, param_val) "
 						+ "values ("
 						+"'"+currentAction.getDevice_serialNum()+"',"
 						+"'"+currentAction.getActionDescription().getProdId()+"',"
 						+"'"+currentAction.getParameterToString()+"',"
-						+")";
+						+");";
 
 				java.sql.PreparedStatement insertStat  = connection.prepareStatement(sqlQuery);
 				insertStat.executeUpdate();
@@ -375,13 +375,13 @@ public class DBHandler implements IDBHandler
 					throw new Exception("Incorrect Event object - no matching Product, or no Event instance available!");
 			
 			
-				final String sqlQuery = "insert into EVENTS (device_id, eventproto_id, param_val, logicOper)"
+				final String sqlQuery = "insert into EVENTS (device_id, eventproto_id, param_val, logicOper) "
 						+ "values ("
 						+"'"+currentEvent.getDevice_serialNum()+"',"
 						+"'"+currentEvent.getActionDescription().getId()+"',"
 						+"'"+currentEvent.getParameterToString()+"',"
 						+"'"+currentEvent.getLogicOperator()+"',"
-						+")";
+						+");";
 
 				java.sql.PreparedStatement insertStat  = connection.prepareStatement(sqlQuery);
 				insertStat.executeUpdate();
@@ -690,15 +690,15 @@ public class DBHandler implements IDBHandler
 	@SuppressWarnings("finally")
 	public Customer addCustomer(Customer i_User) throws SQLException //final&complete IMPL
 	{
-		final String sqlQuery =	"insert into CUSTOMERS (customer_id, first_name , last_name, user_name, user_password, email)"
+		final String sqlQuery =	"insert into CUSTOMERS (customer_id, first_name , last_name, user_name, user_password, email) "
 				+ "values ("
 				+"'"+i_User.getId()+"',"
 				+"'"+i_User.getName().split(" ")[0]+"',"
-				+"'"+i_User.getName().split(" ")[1]+"'"
-				+"'"+i_User.getUserName()+"'"
-				+"'"+i_User.getPassword()+"'"
+				+"'"+i_User.getName().split(" ")[1]+"',"
+				+"'"+i_User.getUserName()+"',"
+				+"'"+i_User.getPassword()+"',"
 				+"'"+i_User.getEmail()+"'"
-				+")";
+				+");";
 
 		boolean flag = false;
 

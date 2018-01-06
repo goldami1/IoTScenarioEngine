@@ -51,7 +51,6 @@ public class Product {
 			else
 				this.actionState = true;
 		}
-		db.addProduct(i_product);
 	}
 	/*****************************************************************/
 

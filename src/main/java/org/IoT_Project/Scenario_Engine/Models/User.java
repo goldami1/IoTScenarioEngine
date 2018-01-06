@@ -41,7 +41,7 @@ public class User
 	public User(User i_user) throws Exception
 	{
 		DBHandler db = DBHandler.getInstance();
-		boolean isUpdated = this.getId() > 0;
+		boolean isUpdated = i_user.getId() > 0;
 		if(!isUpdated)
 		{
 			if(db.isUsernameAvailable(i_user.getUserName()))
@@ -59,13 +59,13 @@ public class User
 		else
 		{
 			this.id = i_user.getID();
-			this.userName = i_user.getUserName();
-			this.password = i_user.getPassword();
-			this.name = i_user.getName();
-			this.email = i_user.getEmail();
-			this.userPicURL = i_user.getUserPicURL();
-			this.isCustomer = i_user.isCustomer;
 		}
+		this.userName = i_user.getUserName();
+		this.password = i_user.getPassword();
+		this.name = i_user.getName();
+		this.email = i_user.getEmail();
+		this.userPicURL = i_user.getUserPicURL();
+		this.isCustomer = i_user.isCustomer;
 	}
 	
 	

@@ -19,6 +19,7 @@ public class CustomerService {
 	{
 		return DBHandler.getInstance().getCustomer(i_name, i_password);
 	}
+	
 
 	public List<Device> addDevice(short i_CustomerId, Device newDevice) throws Exception{
 		Device deviceToAdd = new Device(newDevice);

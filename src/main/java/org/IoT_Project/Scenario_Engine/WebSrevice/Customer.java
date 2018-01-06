@@ -3,6 +3,8 @@ package org.IoT_Project.Scenario_Engine.WebSrevice;
 import org.IoT_Project.Scenario_Engine.Service.CustomerService;
 import org.IoT_Project.Scenario_Engine.Service.UserService;
 
+import DataBase.DBHandler;
+
 import org.IoT_Project.Scenario_Engine.Models.Scenario;
 import org.IoT_Project.Scenario_Engine.Models.Device;
 import org.IoT_Project.Scenario_Engine.Models.ErrorException;
@@ -33,9 +35,10 @@ public class Customer {
 	
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
-	public String getLogInPageCustomer()
+	public Response getLogInPageCustomer()
 	{
-		return "Should return the login page";
+		//return "Should return the login page";
+		return Response.status(Status.OK).entity(new org.IoT_Project.Scenario_Engine.Models.Customer()).build();
 	}
 	
 	@POST
@@ -53,7 +56,8 @@ public class Customer {
 	public Response addCustomer(User i_user)
 	{
 		try {
-			org.IoT_Project.Scenario_Engine.Models.User userToAdd = us.addCustomer(i_user);
+			org.IoT_Project.Scenario_Engine.Models.Customer userToAdd = us.addCustomer(i_user);
+			DBHandler.getInstance().addCustomer(userToAdd);
 			return Response.status(Status.CREATED).entity(userToAdd).build();
 		}
 		catch(Exception ex)

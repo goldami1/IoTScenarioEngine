@@ -39,10 +39,10 @@ public class Customer extends User {
 		this.isCustomer = true;
 		this.devices = null;
 		this.customerScenarios = null;
-		DBHandler.getInstance().addCustomer(this);
 	}
-	/******************************************************************/
-	
+	/**
+	 * @throws SQLException ****************************************************************/
+
 	
 	public LinkedList<Device> getDevices() {
 		return devices;
