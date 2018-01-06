@@ -536,12 +536,116 @@ public class DBHandler implements IDBHandler
 			return res;
 		}
 	}
+	
+	
+	@SuppressWarnings("finally")
+	public LinkedList<Product> getProductsByProdID(int i_prod_id) throws SQLException//final&complete IMPL
+	{
+		String prod_name=null, prod_pic=null;
+		short prod_id=-1, vend_id=-1;
+		LinkedList<Product> res = null;
+		Product currProd=null;
+		LinkedList<ActionEventProto> currProd_aep_list=null;
+		
+		try
+		{
+			Connection connection = openConnection();
+			PreparedStatement queryStatement, eapQstatement;
+			ResultSet queryResult, eapsQResult;
+			
+			queryStatement  =connection.prepareStatement("select * from PRODUCTS where product_id=?;");
+			queryStatement.setString(1, Integer.toString(i_prod_id));
+			queryResult = queryStatement.executeQuery();
+				
+			while (queryResult.next())
+			{
+				if(res==null)
+					res = new LinkedList<Product>();
+				
+				prod_id = Short.parseShort(queryResult.getString(1));
+				vend_id = Short.parseShort(queryResult.getString(2));
+				prod_name = queryResult.getString(3);
+				prod_pic = queryResult.getString(4);
+				
+				
+				eapQstatement  =connection.prepareStatement("select * from EVENTS_PROTO where product_id=?;");
+				eapQstatement.setString(1, Integer.toString(prod_id));
+				eapsQResult = eapQstatement.executeQuery();
+				while(eapsQResult.next())
+				{
+					if(currProd_aep_list==null)
+						currProd_aep_list = new LinkedList<ActionEventProto>();
+					
+					currProd_aep_list.add(new ActionEventProto(Short.parseShort(eapsQResult.getString(1)),
+							eapsQResult.getString(3),
+							eapsQResult.getString(5), prod_id, null, true));
+				}
+				
+				
+				eapQstatement  =connection.prepareStatement("select * from ACTIONS_PROTO where product_id=?;");
+				eapQstatement.setString(1, Integer.toString(prod_id));
+				eapsQResult = eapQstatement.executeQuery();
+				while(eapsQResult.next())
+				{
+					if(currProd_aep_list==null)
+						currProd_aep_list = new LinkedList<ActionEventProto>();
+					
+					currProd_aep_list.add(new ActionEventProto(Short.parseShort(eapsQResult.getString(1)),
+							eapsQResult.getString(3),
+							eapsQResult.getString(5), prod_id, null, false));
+				}
+				
+				
+				currProd = new Product(prod_id, (short)vend_id, prod_name, prod_name, prod_pic, null, currProd_aep_list);
+					
+				
+				res.add(currProd);
+			}
+		}	
+		finally
+		{
+			closeConnection();
+			if(res==null)
+				throw new SQLException("No products added to provided vendor id");
+			return res;
+		}
+	}
+	
+	
+	@SuppressWarnings("finally")
+	private String getVenNameByID(int i_ven_id) throws SQLException
+	{
+		String res = null;
+		try
+		{
+			Connection connection = openConnection();
+			PreparedStatement queryStatement;
+			ResultSet queryResult;
+			
+			queryStatement  =connection.prepareStatement("select * from VENDORS where vendor_id=?;");
+			queryStatement.setString(1, Integer.toString(i_ven_id));
+			queryResult = queryStatement.executeQuery();
+				
+			if(queryResult.next())
+			{
+				res = queryResult.getString(2);
+			}
+		}	
+		finally
+		{
+			closeConnection();
+			if(res==null)
+				throw new SQLException("DB isn't normalized, vendor name couldn't be found by vendor id!");
+			return res;
+		}
+		
+	}
 
 	//****************	CHANGED UNCERTAIN	*********************\\
 	@SuppressWarnings("finally")
 	public LinkedList<Device> getDevices(short user_id) throws SQLException	//final&complete IMPL
 	{
-		short serial_num=-1, dev_id=-1, prod_id=-1, cust_id=-1;
+		short serial_num=-1, dev_id=-1, prod_id=-1, cust_id=-1, ven_id=-1;
 		Product prod= null;
 		
 		
@@ -567,33 +671,38 @@ public class DBHandler implements IDBHandler
 				cust_id = Short.parseShort(devsQResult.getString(3));
 				serial_num = Short.parseShort(devsQResult.getString(4));
 				
-				prodQStatement  =connection.prepareStatement("select * from PRODUCTS where product_id=?;");
-				prodQStatement.setString(1, Integer.toString(prod_id));
-				prodsQResult = prodQStatement.executeQuery();
+				
+				prod = getProductsByProdID((int)prod_id).getFirst();
+				ven_id = prod.getVendor_id();
+
+				//prodQStatement  =connection.prepareStatement("select * from PRODUCTS where product_id=?;");
+				//prodQStatement.setString(1, Integer.toString(prod_id));
+				//prodsQResult = prodQStatement.executeQuery();
 					
 					
-				if (prodsQResult.next())
-				{
-					short vendor_id = Short.parseShort(prodsQResult.getString(2));
-					String product_name = prodsQResult.getString(3);
-					String product_pic = prodsQResult.getString(4);
+				//if (prodsQResult.next())
+				//{
+					//short vendor_id = Short.parseShort(prodsQResult.getString(2));
+					//String product_name = prodsQResult.getString(3);
+					//String product_pic = prodsQResult.getString(4);
 					//prod = new Product(product_name, product_pic, null, null);
 					//prod = new Product(prod, vendor_id, prod_id);
-					String prod_description = null;
+					//String prod_description = null;
 					/*
 					 * need to add product_description for each product
 					 */
-					prod = new Product(prod_id, vendor_id, product_name, prod_description, product_pic, null, null);
+					//prod = getProductsByProdID((int)prod_id).getFirst();
+					//TODO
 					/*
 					 * NOTES:
 					 * 1. added description for product.
 					 * 2. the nulls in the c'tor(line 489) are the endpoint(for the device) and the supported Action/Event list.
 					 */
-				}
-				else
-					throw new SQLException("relevant product for device couldn't be found! DB isn't normalized!");
+				//}
+				//else
+				//	throw ne        w SQLException("relevant product for device couldn't be found! DB isn't normalized!");
 					
-				Device devToAdd =new Device(dev_id, serial_num, cust_id, prod);
+				Device devToAdd =new Device(dev_id, serial_num, cust_id, prod.setVenName(getVenNameByID(ven_id)));
 				res.add(devToAdd);
 			}
 		}	
@@ -607,12 +716,12 @@ public class DBHandler implements IDBHandler
 	@SuppressWarnings("finally")
 	public boolean addDevice(int product_id, int customer_id, int device_serial) throws SQLException //final&complete IMPL
 	{ 
-		final String sqlQuery =	"insert into DEVICES (product_id, customer_id , serial_num)"
+		final String sqlQuery =	"insert into DEVICES (product_id, customer_id , serial_num) "
 				+ "values ("
 				+"'"+product_id+"',"
 				+"'"+customer_id+"',"
 				+"'"+device_serial+"'"
-				+")";
+				+");";
 
 		boolean flag = false;
 
@@ -622,11 +731,12 @@ public class DBHandler implements IDBHandler
 				java.sql.PreparedStatement insertStat  = connection.prepareStatement(sqlQuery);
 				insertStat.executeUpdate();
 				flag = true;
+				incrementMaxIdxValue(EntityAndIdxValue.DEVICES_TABLE);
 		}
 		finally
 		{
 			closeConnection();
-			incrementMaxIdxValue(EntityAndIdxValue.DEVICES_TABLE);
+			//incrementMaxIdxValue(EntityAndIdxValue.DEVICES_TABLE);
 			return flag;
 		}
 	}
@@ -1228,8 +1338,8 @@ public class DBHandler implements IDBHandler
 				+"'"+i_product.getVendor_id()+"',"
 				+"'"+i_product.getName()+"',"
 				+"'"+i_product.getPicURL()+"'"
-				+"'"+i_product.getEAState()[0]+"'"
-				+"'"+i_product.getEAState()[1]+"'"
+				+"'"+i_product.isEventState()+"'"
+				+"'"+i_product.isActionState()+"'"
 				+")";
 		
 		boolean flag = false;

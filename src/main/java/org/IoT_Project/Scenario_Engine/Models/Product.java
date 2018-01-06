@@ -7,7 +7,7 @@ import DataBase.DBHandler;
 
 public class Product {
 	protected short id, vendor_id;
-	protected String name, picURL, description;
+	protected String name, picURL, description, vendorName;
 	protected LinkedList<ActionEventProto> actionAndEventList;
 	protected String endPoint;
 	protected boolean actionState, eventState;
@@ -37,6 +37,21 @@ public class Product {
 		this.actionAndEventList = Product_actionsAndEvents;
 		this.handleStates();
 	}
+	
+	public Product(short Product_id,
+			   short Vendor_id,
+			   String Product_name,
+			   String Product_description,
+			   String Product_picURL,
+			   String Product_endpoint,
+			   LinkedList<ActionEventProto> Product_actionsAndEvents,
+			   String i_vendorName)
+{
+	this(Product_id, Vendor_id, Product_name, Product_description, Product_picURL, Product_endpoint, Product_actionsAndEvents);
+	vendorName = i_vendorName;
+}
+	
+	
 	
 	/************   ONLY FOR PRODUCT NEW CREATION IN DB   *************/
 	public Product(Product i_product) throws Exception
@@ -146,8 +161,21 @@ public class Product {
 	}
 
 	public void setEventState(boolean ventState) {
-		this.eventState = eventState;
+		this.eventState = ventState;
 	}
 	
+	public String getVendorName() {
+		return vendorName;
+	}
+
+	public void setVendorName(String vendorName) {
+		this.vendorName = vendorName;
+	}
+	
+	public Product setVenName(String i_vendorName)
+	{
+		setVendorName(i_vendorName);
+		return this;
+	}
 	
 }

@@ -16,6 +16,7 @@ public interface IDBHandler {
 	public short getIdForScenario();
 	public boolean addProduct(Product i_product) throws SQLException;
 	public LinkedList<Pair<Short,String>> getVendors() throws SQLException; //pair(id,name)
+	public LinkedList<Product> getProductsByProdID(int i_prod_id) throws SQLException;
 	public LinkedList <Product> getProducts(int vendor_id) throws SQLException;
 	public boolean addDevice(int product_id,int customer_id,int device_serial) throws SQLException ;
 	public void addVndor(Vendor i_vendor) throws SQLException;
