@@ -20,6 +20,7 @@ import org.IoT_Project.Scenario_Engine.Models.Product;
 import org.IoT_Project.Scenario_Engine.Models.Scenario;
 import org.IoT_Project.Scenario_Engine.Models.User;
 import org.IoT_Project.Scenario_Engine.Models.Vendor;
+import org.IoT_Project.Scenario_Engine.Models.Event.ElogicOperand;
 
 import javafx.util.Pair;
 import utils.Constants;
@@ -904,9 +905,11 @@ public class DBHandler implements IDBHandler
 		
 	}
 	
-	private Pair<Short, Scenario> getScenario(short i_cust_id, int i_scenario_id)
+	@SuppressWarnings("finally")
+	private Pair<Short, Scenario> getScenario(short i_cust_id, int i_scenario_id) throws SQLException
 	{
 		short scenario_id=-1, event_id=-1, action_id=-1;
+		boolean isStillOk=true;
 		char logic_oper = '\0';
 		String scenario_name=null, scenario_description=null; 
 		
@@ -975,11 +978,12 @@ public class DBHandler implements IDBHandler
 					logexprsQResult = logexprQStatement.executeQuery();
 					
 					if(!logexprsQResult.next())
-						throw new SQLException("Wrong representation in DB, scenario, event, and logic expression tables aren't normalized!");
+						isStillOk = false;
 					else
 					{
 						logic_oper = logexprsQResult.getString(4).charAt(0);
 					}
+					
 					
 					
 					current_eve.setLogicOper(ElogicOperand.setLogicOperFromChar(logic_oper));
@@ -992,7 +996,7 @@ public class DBHandler implements IDBHandler
 			scen_actQStatement  =connection.prepareStatement("select SCENARIOS.scenario_id, SCENARIOS.customer_id, SCENARIOS.scenario_name, SCENARIOS.scenario_description, SCENARIOS_ACTIONS.action_id from SCENARIOS INNER JOIN SCENARIOS_ACTIONS ON SCENARIOS.scenario_id=SCENARIOS_ACTIONS.scenario_id where SCENARIOS.customer_id=? ORDER BY SCENARIOS.scenario_id;");
 			scen_actQStatement.setString(1, Integer.toString(i_cust_id));
 			scen_actsQResult = scen_actQStatement.executeQuery();
-			while (scen_evesQResult.next())
+			while (scen_actsQResult.next() && isStillOk)
 			{	
 				if(i_scenario_id==-1)
 				{
@@ -1005,18 +1009,18 @@ public class DBHandler implements IDBHandler
 				}
 				else
 				{
-					if(i_scenario_id<Short.parseShort(scen_evesQResult.getString(1)))
+					if(i_scenario_id<Short.parseShort(scen_actsQResult.getString(1)))
 					{
 						break;
 					}
-					else if(i_scenario_id>Short.parseShort(scen_evesQResult.getString(1)))
+					else if(i_scenario_id>Short.parseShort(scen_actsQResult.getString(1)))
 					{
 						isRelevantIter = false;
 					}
-					else if(i_scenario_id==Short.parseShort(scen_evesQResult.getString(1)))
+					else if(i_scenario_id==Short.parseShort(scen_actsQResult.getString(1)))
 					{
 						isRelevantIter = true;
-						scenario_id = Short.parseShort(scen_evesQResult.getString(1));
+						scenario_id = Short.parseShort(scen_actsQResult.getString(1));
 					}
 				}
 				
@@ -1043,6 +1047,8 @@ public class DBHandler implements IDBHandler
 		finally
 		{
 			closeConnection();
+			if(!isStillOk)
+				throw new SQLException("Wrong representation in DB, scenario, event, and logic expression tables aren't normalized!");
 			return new Pair<Short, Scenario>(scenario_id, res);
 		}
 	}
@@ -1054,12 +1060,6 @@ public class DBHandler implements IDBHandler
 	}
 	
 	public Scenario getScenario(short i_event_id)
-	{
-		// TODO Auto-generated method stub
-		return null;
-	}
-	
-	public LinkedList<Scenario> getScenariosByEvent(Event i_event)
 	{
 		// TODO Auto-generated method stub
 		return null;

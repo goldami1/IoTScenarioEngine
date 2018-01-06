@@ -39,6 +39,14 @@ public class Scenario{
 		DBHandler.getInstance().addScenario(this);
 	}
 
+	public Scenario(short scenario_id, String scenario_name, String scenario_description, short i_cust_id,
+			LinkedList<Event> i_eves, LinkedList<Action> i_acts) throws Exception {
+		this(scenario_name, i_eves, i_acts);
+		this.id = scenario_id;
+		this.description = scenario_description;
+		this.cust_id = i_cust_id;
+	}
+
 	public Iterator<ICase> getCases()
 	{
 		return this.cases.iterator();

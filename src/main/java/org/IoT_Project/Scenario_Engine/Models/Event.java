@@ -6,7 +6,40 @@ public class Event extends Action{
 
 	private char logicOperator;
 	private boolean triggered;
-
+	public enum ElogicOperand
+	{
+		oper_AND('&'),
+		oper_OR('|');
+		
+		private char logOper;
+		
+		private ElogicOperand(char i_logicOper) {
+		logOper = i_logicOper;
+		}
+		
+		public static ElogicOperand setLogicOperFromChar(char i_charInput) throws IllegalArgumentException
+		{
+			if(i_charInput == '&')
+				return ElogicOperand.oper_AND;
+			else if(i_charInput == '|')
+				return ElogicOperand.oper_OR;
+			else
+				throw new IllegalArgumentException("Wrong input as logic operand provided!");
+		}
+		
+		public static char charFromELogicOperand(ElogicOperand i_logicOperand)
+		{
+			if(i_logicOperand == ElogicOperand.oper_AND)
+			{
+				return '&';
+			}
+			else
+			{
+				return '|';
+			}
+		}
+	};
+	
 	public Event()
 	{
 		super();
@@ -28,6 +61,11 @@ public class Event extends Action{
 
 	public char getLogicOperator() {
 		return logicOperator;
+	}
+	
+	public void setLogicOper(ElogicOperand i_logicOper)
+	{
+		logicOperator = ElogicOperand.charFromELogicOperand(i_logicOper);
 	}
 
 	public void setLogicOperator(char logicOperator) {

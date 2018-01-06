@@ -13,7 +13,6 @@ public interface IDBHandler {
 	public LinkedList<String> selectQ(String i_selectQ) throws SQLException;
 	public boolean addDevice(Device i_dev) throws SQLException;	
 	public boolean addScenario(Scenario i_Scenario) throws SQLException, Exception;
-	public LinkedList<Scenario> getScenariosByEvent(Event i_event);
 	public short getIdForScenario();
 	public boolean addProduct(Product i_product) throws SQLException;
 	public LinkedList<Pair<Short,String>> getVendors() throws SQLException; //pair(id,name)
