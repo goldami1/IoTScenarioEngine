@@ -36,6 +36,7 @@ public class Customer extends User {
 	public Customer(User i_user) throws Exception
 	{
 		super(i_user);
+		this.isCustomer = true;
 		this.devices = null;
 		this.customerScenarios = null;
 		DBHandler.getInstance().addCustomer(this);

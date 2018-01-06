@@ -36,7 +36,29 @@ public class Action {
 		this.parameter = Action_parameter;
 		this.actionDescription = Action_descriptor;
 	}
-
+	
+	/************   ONLY FOR ACTION NEW CREATION IN DB  
+	 * @throws Exception *************/
+	public Action(Action i_action) throws Exception
+	{
+		/*
+		 * this constructor usement is only for registering new Action object to DB.
+		 */
+		boolean isUpdated = i_action.getId() > 0;
+		DBHandler db = DBHandler.getInstance();
+		this.device_serialNum = i_action.getDevice_serialNum();
+		this.parameter = i_action.getParameter();
+		this.actionDescription = i_action.getActionDescription();
+		if(isUpdated)
+			this.id = i_action.getId();
+		else
+		{
+			this.id = db.getActionsMaxAvailableIdx();
+			db.addAction(this);
+		}
+	}
+	/****************************************************************/
+	
 	public short getId() {
 		return id;
 	}

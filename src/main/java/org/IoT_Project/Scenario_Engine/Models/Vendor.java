@@ -37,8 +37,20 @@ public class Vendor extends User {
 	public Vendor(User i_user) throws Exception
 	{
 		super(i_user);
+		this.isCustomer = false;
 		this.description = this.logoPicURL = null;
 		this.products = null;
+	}
+	
+	public Vendor(Vendor i_vendor) throws Exception
+	{
+		super(i_vendor);
+		this.isCustomer = false;
+		this.description = i_vendor.getDescription();
+		this.logoPicURL = i_vendor.getLogoPicURL();
+		this.products = null;
+		DBHandler.getInstance().addVndor(i_vendor);
+
 	}
 	/*****************************************************************/
 	

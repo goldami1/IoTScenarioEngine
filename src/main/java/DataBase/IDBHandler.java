@@ -18,6 +18,7 @@ public interface IDBHandler {
 	public LinkedList<Pair<Short,String>> getVendors() throws SQLException; //pair(id,name)
 	public LinkedList <Product> getProducts(int vendor_id) throws SQLException;
 	public boolean addDevice(int product_id,int customer_id,int device_serial) throws SQLException ;
+	public void addVndor(Vendor i_vendor) throws SQLException;
 	public boolean removeDevice(int device_id);
 	public User getUser(String i_username, String i_userPassword) throws SQLException;
 	public Vendor getVendor(String i_username, String i_password) throws SQLException;
@@ -26,8 +27,10 @@ public interface IDBHandler {
 	public boolean updateProduct(int prod_id, Product new_product);
 	public LinkedList<Scenario> getScenarios(int cust_id) throws SQLException;
 	public Customer addCustomer(Customer i_User) throws SQLException;
+	public void addAction(Action action);
 	public Customer getCustomer(String i_username, String i_password) throws SQLException;
 	public Customer getCustomer(int cust_id) throws SQLException;
+	public void addEvent(Event event);
 	public boolean updateDevice(int origionalDevice_id, Device newDevice);
 	public boolean updateScenario(int origionalScenario_id, Scenario newScenario);
 	public boolean removeScenario(int scenarioToRemove_id);

@@ -41,16 +41,30 @@ public class User
 	public User(User i_user) throws Exception
 	{
 		DBHandler db = DBHandler.getInstance();
-		if(db.isUsernameAvailable(i_user.getUserName()))
+		boolean isUpdated = this.getId() > 0;
+		if(!isUpdated)
 		{
-			if(i_user.isCustomer)
+			if(db.isUsernameAvailable(i_user.getUserName()))
 			{
-				i_user.setId(db.getCustomersMaxAvailableIdx());
+				if(i_user.isCustomer)
+				{
+					i_user.setId(db.getCustomersMaxAvailableIdx());
+				}
+				else
+				{
+					i_user.setId(db.getVendorsMaxAvailableIdx());
+				}
 			}
-			else
-			{
-				i_user.setId(db.getVendorsMaxAvailableIdx());
-			}
+		}
+		else
+		{
+			this.id = i_user.getID();
+			this.userName = i_user.getUserName();
+			this.password = i_user.getPassword();
+			this.name = i_user.getName();
+			this.email = i_user.getEmail();
+			this.userPicURL = i_user.getUserPicURL();
+			this.isCustomer = i_user.isCustomer;
 		}
 	}
 	

@@ -58,7 +58,35 @@ public class Event extends Action{
 		this.logicOperator = Event_logicOperator;
 		this.triggered = Event_triggered;
 	}
-
+	
+	/************   ONLY FOR EVENT NEW CREATION IN DB  *************/
+	public Event(Event i_event) throws Exception
+	{
+		/*
+		 * this constructor usement is only for registering new Event object to the DB.
+		 */
+		super();
+		boolean isUpdated = i_event.getId() > 0;
+		DBHandler db = DBHandler.getInstance();
+		this.actionDescription = i_event.actionDescription;
+		this.device_serialNum = i_event.getDevice_serialNum();
+		this.parameter = i_event.getParameter();
+		this.logicOperator = i_event.getLogicOperator();
+		this.triggered = false;
+		if(!isUpdated)
+		{
+			this.id = db.getEventsMaxAvailableIdx();
+			this.toggleEvent();
+			db.addEvent(this);
+		}
+		else
+		{
+			this.id = i_event.getId();
+		}
+		
+	}
+	/****************************************************************/
+	
 	public char getLogicOperator() {
 		return logicOperator;
 	}
@@ -80,10 +108,6 @@ public class Event extends Action{
 		this.triggered = triggered;
 	}
 	
-
-	
-	/*
-	 * Need to think where to trigger event!!***
 	private int toggleEvent() throws Exception
 	{
 		if(!DBHandler.getInstance().isEventUpdated(this))
@@ -91,5 +115,5 @@ public class Event extends Action{
 		else
 			return 200;
 	}
-	*/
+	
 }

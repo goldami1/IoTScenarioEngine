@@ -265,7 +265,7 @@ public class DBHandler implements IDBHandler
 	@SuppressWarnings("finally")
 	public boolean addScenario(Scenario i_Scenario) throws Exception 
 	{
-		if(!doesCustVendExist(i_Scenario.getCustomerID(), null, k_doesCustomerExistByID))
+		if(!doesCustVendExist(i_Scenario.getCust_id(), null, k_doesCustomerExistByID))
 		{
 			System.out.println("No such customer!");
 			return false;
@@ -277,8 +277,8 @@ public class DBHandler implements IDBHandler
 		
 		final String sqlQuery =	"insert into SCENARIOS (scenario_id, customer_id, scenario_name, scenario_description)"
 				+ "values ("
-				+"'"+i_Scenario.getID()+"',"
-				+"'"+i_Scenario.getCustomerID()+"',"
+				+"'"+i_Scenario.getId()+"',"
+				+"'"+i_Scenario.getCust_id()+"',"
 				+"'"+i_Scenario.getName()+"',"
 				+"'"+i_Scenario.getDescription()+"',"
 				+")";
@@ -303,7 +303,7 @@ public class DBHandler implements IDBHandler
 	
 	private void addlogExpr(Scenario i_Scenario) throws SQLException
 	{
-		Iterator<Entry<Short,Event>> itr = i_Scenario.getEvents();
+		Iterator<Entry<Short,Event>> itr = i_Scenario.getEventsToHappen().entrySet().iterator();
 		try
 		{
 			Connection connection = openConnection();
@@ -312,7 +312,7 @@ public class DBHandler implements IDBHandler
 			{
 				final String sqlQuery =	"insert into LOGEXPRS (scenario_id, loc_id, event_id)"
 						+ "values ("
-						+"'"+i_Scenario.getID()+"',"
+						+"'"+i_Scenario.getId()+"',"
 						+"'"+Short.toString(i++)+"',"
 						+"'"+itr.next().getValue().getId()+"',"
 						+")";
@@ -329,13 +329,13 @@ public class DBHandler implements IDBHandler
 
 	private void addActions(Scenario i_Scenario) throws Exception 
 	{
-		Iterator<Entry<Short, Action>> itr = i_Scenario.getActions();
+		Iterator<Action> itr = i_Scenario.getActions().iterator();
 		try
 		{
 			Connection connection = openConnection();
 			while(itr.hasNext())
 			{
-				Action currentAction = itr.next().getValue();
+				Action currentAction = itr.next();
 				if(currentAction.getDevice_serialNum()<0 || currentAction.getActionDescription().getProdId()<0)
 					throw new Exception("Incorrect Action object - no matching Product, or no Action instance available!");
 			
@@ -364,7 +364,7 @@ public class DBHandler implements IDBHandler
 	
 	private void addEvents(Scenario i_Scenario) throws Exception 
 	{
-		Iterator<Entry<Short, Event>> itr = i_Scenario.getEvents();
+		Iterator<Entry<Short, Event>> itr = i_Scenario.getEventsToHappen().entrySet().iterator();
 		try
 		{
 			Connection connection = openConnection();
@@ -657,6 +657,36 @@ public class DBHandler implements IDBHandler
 		}
 	}
 
+	public void addVndor(Vendor i_vendor) throws SQLException {
+		final String sqlQuery =	"insert into CUSTOMERS (vendor_id, vendor_name , user_name, user_password, email, vendor_description, vendor_logo_pic)"
+				+ "values ("
+				+"'"+i_vendor.getId()+"',"
+				+"'"+i_vendor.getName()+"',"
+				+"'"+i_vendor.getUserName()+"'"
+				+"'"+i_vendor.getPassword()+"'"
+				+"'"+i_vendor.getEmail()+"'"
+				+"'"+i_vendor.getDescription()+"'"
+				+"'"+i_vendor.getLogoPicURL()+"'"
+				+")";
+
+		boolean flag = false;
+
+		try 
+		{
+				Connection connection = openConnection();
+				java.sql.PreparedStatement insertStat  = connection.prepareStatement(sqlQuery);
+				insertStat.executeUpdate();
+				flag = true;
+				incrementMaxIdxValue(EntityAndIdxValue.VENDORS_TABLE);
+		}
+		finally
+		{
+			closeConnection();
+			if(!flag)
+				throw new SQLException("New Customer couldn't be added!");
+		}
+	}
+	
 	@SuppressWarnings("finally")
 	public Customer addCustomer(Customer i_User) throws SQLException //final&complete IMPL
 	{
@@ -689,7 +719,6 @@ public class DBHandler implements IDBHandler
 		}		
 	}
 	
-	//Returns just a customer, without additionals
 	//Returns just a customer, without additionals
 	@SuppressWarnings("finally")
 	public Customer getCustomer(String i_username, String i_password) throws SQLException //final&complete IMPL
@@ -732,7 +761,6 @@ public class DBHandler implements IDBHandler
 		}
 	}
 
-	//Returns just a customer, without additionals
 	//Returns just a customer, without additionals
 	@SuppressWarnings("finally")
 	public Customer getCustomer(int cust_id) throws SQLException //final&complete IMPL
@@ -1041,7 +1069,7 @@ public class DBHandler implements IDBHandler
 				}
 			}
 			
-			res = new Scenario(scenario_id, scenario_name, scenario_description, (short)i_cust_id, eves, acts);
+			res = new Scenario(scenario_id, (short)i_cust_id, scenario_name, scenario_description, eves, acts);
 			
 		}	
 		finally
@@ -1297,5 +1325,15 @@ public class DBHandler implements IDBHandler
 	{
 		// TODO Auto-generated method stub
 		return false;
+	}
+
+	public void addEvent(Event event) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void addAction(Action action) {
+		// TODO Auto-generated method stub
+		
 	}
 }
