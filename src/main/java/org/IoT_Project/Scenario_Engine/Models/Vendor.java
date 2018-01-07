@@ -1,8 +1,10 @@
 package org.IoT_Project.Scenario_Engine.Models;
 
+import java.awt.image.BufferedImage;
 import java.sql.SQLException;
 import java.util.*;
 import DataBase.DBHandler;
+import utils.serverImgManager;
 
 public class Vendor extends User {
 
@@ -31,6 +33,11 @@ public class Vendor extends User {
 		this.description = Vendor_description;
 		this.logoPicURL = Vendor_logoPicURL;
 		this.products = Vendor_products;
+	}
+	
+	public BufferedImage getLogoPic()
+	{
+		return serverImgManager.getImage(this.userPicURL);
 	}
 	
 	/************   ONLY FOR VENDOR NEW CREATION IN DB   *************/

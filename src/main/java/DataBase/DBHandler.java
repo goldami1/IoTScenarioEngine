@@ -1,5 +1,6 @@
 package DataBase;
 
+import java.awt.image.BufferedImage;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -24,6 +25,7 @@ import org.IoT_Project.Scenario_Engine.Models.Event.ElogicOperand;
 
 import javafx.util.Pair;
 import utils.Constants;
+import utils.serverImgManager;
 
 public class DBHandler implements IDBHandler 
 {	
@@ -72,6 +74,8 @@ public class DBHandler implements IDBHandler
 		currSession=null;
 		TABLE_maxID = new short[EntityAndIdxValue.values().length+1];
 		initializeAllMaxIds();
+		serverImgManager.getInstance();
+		
 	}
 	
 	public static DBHandler getInstance() throws SQLException
@@ -154,6 +158,15 @@ public class DBHandler implements IDBHandler
 	//===================================
 	//<begin> ADD C.R.U.D METHODS <begin>
  
+	/*
+	public boolean addCustomer(String i_firstName, String i_lastName, String i_userName, String i_userPassword, String i_email, BufferedImage i_pic) throws SQLException 
+	{
+		String path = serverImgManager.getInstance().createNewVendor(i_email, i_pic);
+		boolean res = addCustomer(i_firstName, i_lastName, i_userName, i_userPassword, i_email, path);
+		
+		return res;
+	}*/
+	
 	@SuppressWarnings("finally")
 	public boolean addCustomer(String i_firstName, String i_lastName, String i_userName, String i_userPassword, String i_email) throws SQLException 
 	{
@@ -182,6 +195,14 @@ public class DBHandler implements IDBHandler
 			System.out.println("Customer Added Successfully");
 			return flag;
 		}
+	}
+	
+	public boolean addVendor(String i_vendorName, String i_userName, String i_userPassword, String i_email, String i_vendorDescription, BufferedImage i_logo) throws SQLException 
+	{
+		String path = serverImgManager.getInstance().createNewVendor(i_vendorName, i_logo);
+		boolean res = addVendor(i_vendorName, i_userName, i_userPassword, i_email, i_vendorDescription, path);
+		
+		return res;
 	}
 	
 	@SuppressWarnings("finally")

@@ -1,5 +1,6 @@
 package DataBase;
 
+import java.awt.image.BufferedImage;
 import java.sql.SQLException;
 import java.util.LinkedList;
 
@@ -13,6 +14,7 @@ public interface IDBHandler {
 	public LinkedList<String> selectQ(String i_selectQ) throws SQLException;
 	public boolean addDevice(Device i_dev) throws SQLException;	
 	public boolean addScenario(Scenario i_Scenario) throws SQLException, Exception;
+	public boolean addVendor(String i_vendorName, String i_userName, String i_userPassword, String i_email, String i_vendorDescription, BufferedImage i_logo) throws SQLException;
 	public short getIdForScenario();
 	public boolean addProduct(Product i_product) throws SQLException;
 	public LinkedList<Pair<Short,String>> getVendors() throws SQLException; //pair(id,name)
