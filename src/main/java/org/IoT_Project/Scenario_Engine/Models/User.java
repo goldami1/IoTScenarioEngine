@@ -2,15 +2,26 @@ package org.IoT_Project.Scenario_Engine.Models;
 
 import java.sql.SQLException;
 
+import com.google.gson.annotations.SerializedName;
+
 import DataBase.DBHandler;
 
 public class User  
 {
 
+	@SerializedName("id")
 	protected short id;
-	protected String name, userPicURL, email;
-	protected String userName, password;
-
+	@SerializedName("name")
+	protected String name;
+	@SerializedName("userPicURL")
+	protected String userPicURL;
+	@SerializedName("email")
+	protected String email;
+	@SerializedName("userName")
+	protected String userName;
+	@SerializedName("password")
+	protected String password;
+	@SerializedName("isCustomer")
 	protected boolean isCustomer;		//true - Customer, False - vendor
 	
 	public User(short id,

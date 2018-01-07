@@ -1,9 +1,15 @@
 package org.IoT_Project.Scenario_Engine.Models;
 
+import com.google.gson.annotations.SerializedName;
+
 public class Range {
+	@SerializedName("max")
 	double max;
+	@SerializedName("min")
 	double min;
+	@SerializedName("currentVal")
 	double currentVal;
+	@SerializedName("type")
 	String type;
 	
 

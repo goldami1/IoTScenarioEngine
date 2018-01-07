@@ -3,18 +3,28 @@ import java.sql.SQLException;
 import java.util.*;
 import java.util.Map.Entry;
 
+import com.google.gson.annotations.SerializedName;
+
 import DataBase.DBHandler;
 
 
 public class Scenario{
+	@SerializedName("id")
 	short id;
+	@SerializedName("name")
 	String name;
+	@SerializedName("description")
 	String description;
+	@SerializedName("cust_id")
 	short cust_id;
+	@SerializedName("Events")
 	private List<Event>  Events;
+	@SerializedName("Actions")
 	private List<Action> Actions;
+	@SerializedName("eventsToHappen")
 	private Map<Short, Event> eventsToHappen;
 	//private Map<Short, Action> actionsToHandle;
+	@SerializedName("cases")
 	private ICase cases;
 	
 	public Scenario() 

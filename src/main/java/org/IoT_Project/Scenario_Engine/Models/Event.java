@@ -1,10 +1,14 @@
 package org.IoT_Project.Scenario_Engine.Models;
 
+import com.google.gson.annotations.SerializedName;
+
 import DataBase.DBHandler;
 
 public class Event extends Action{
-
+	
+	@SerializedName("logicOperator")
 	private char logicOperator;
+	@SerializedName("triggered")
 	private boolean triggered;
 	public enum ElogicOperand
 	{

@@ -4,11 +4,19 @@ import java.sql.SQLException;
 import java.util.LinkedList;
 import java.util.List;
 
+import com.google.gson.annotations.SerializedName;
+
 import DataBase.DBHandler;
 
 public class Device {
 	
-	private short id, serial_number, customer_id;
+	@SerializedName("id")
+	private short id;
+	@SerializedName("serial_number")
+	private short serial_number;
+	@SerializedName("customer_id")
+	private short customer_id;
+	@SerializedName("protoDevice")
 	private Product protoDevice;
 
 	public Device()

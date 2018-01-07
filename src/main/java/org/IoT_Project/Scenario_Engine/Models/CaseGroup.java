@@ -4,8 +4,12 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+import com.google.gson.annotations.SerializedName;
+
 public class CaseGroup implements ICase {
+	@SerializedName("cases")
 	private List<ICase> cases;
+	@SerializedName("logicOperator")
 	private char logicOperator;
 	
 	public CaseGroup()

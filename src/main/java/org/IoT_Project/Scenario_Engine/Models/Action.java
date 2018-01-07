@@ -8,16 +8,22 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.sql.SQLException;
-
+import com.google.gson.annotations.SerializedName;
 import javax.net.ssl.HttpsURLConnection;
+
+
 
 import DataBase.DBHandler;
 
 
 public class Action {
+	@SerializedName("id")
 	protected short id;
+	@SerializedName("parameter")
 	protected Object parameter;
+	@SerializedName("device_serialNum")
 	protected short device_serialNum;
+	@SerializedName("actionDescription")
 	protected ActionEventProto actionDescription;
 	
 	public Action()
@@ -58,6 +64,7 @@ public class Action {
 		}
 	}
 	/****************************************************************/
+	
 	
 	public short getId() {
 		return id;

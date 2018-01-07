@@ -3,14 +3,32 @@ package org.IoT_Project.Scenario_Engine.Models;
 import java.sql.SQLException;
 import java.util.*;
 
+import com.google.gson.annotations.SerializedName;
+
 import DataBase.DBHandler;
 
 public class Product {
-	protected short id, vendor_id;
-	protected String name, picURL, description, vendorName;
+	
+	@SerializedName("id")
+	protected short id;
+	@SerializedName("vendor_name")
+	protected short vendor_id;
+	@SerializedName("name")
+	protected String name;
+	@SerializedName("picURL")
+	protected String picURL;
+	@SerializedName("description")
+	protected String description;
+	@SerializedName("vendorName")
+	protected String vendorName;
+	@SerializedName("actionAndEventList")
 	protected LinkedList<ActionEventProto> actionAndEventList;
+	@SerializedName("endPoint")
 	protected String endPoint;
-	protected boolean actionState, eventState;
+	@SerializedName("actionState")
+	protected boolean actionState;
+	@SerializedName("eventState")
+	protected boolean eventState;
 	
 	public Product()
 	{

@@ -1,12 +1,19 @@
 package org.IoT_Project.Scenario_Engine.Models;
 import java.sql.SQLException;
 import java.util.*;
+
+import com.google.gson.annotations.SerializedName;
+
 import DataBase.DBHandler;
 
 public class TimeDevice {
+	@SerializedName("instance")
 	private static TimeDevice instance;
+	@SerializedName("connectionToServer")
 	private  String connectionToServer = "";
+	@SerializedName("timeEvents")
 	private Map<Short, Short> timeEvents;
+	@SerializedName("clock")
 	private TimeZone clock;
 	
 	protected TimeDevice() throws SQLException

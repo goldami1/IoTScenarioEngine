@@ -4,10 +4,15 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+import com.google.gson.annotations.SerializedName;
+
 public class Case implements ICase {
 
+	@SerializedName("events")
 	List<Event> events;
+	@SerializedName("logicOperator")
 	char logicOperator;
+	
 	public Case(String caseObj)	//include only Events.
 	{
 		events = new ArrayList<Event>();

@@ -1,6 +1,9 @@
 package org.IoT_Project.Scenario_Engine.Models;
 
+import com.google.gson.annotations.SerializedName;
+
 public class Error {
+	@SerializedName("description")
 	private String description;
 	
 	public Error()

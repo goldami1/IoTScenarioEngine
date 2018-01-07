@@ -3,12 +3,19 @@ package org.IoT_Project.Scenario_Engine.Models;
 import java.awt.image.BufferedImage;
 import java.sql.SQLException;
 import java.util.*;
+
+import com.google.gson.annotations.SerializedName;
+
 import DataBase.DBHandler;
 import utils.serverImgManager;
 
 public class Vendor extends User {
 
-	private String description, logoPicURL;
+	@SerializedName("description")
+	private String description;
+	@SerializedName("logoPicURL")
+	private String logoPicURL;
+	@SerializedName("products")
 	private LinkedList<Product> products;
 	
 	public Vendor()

@@ -1,15 +1,21 @@
 package org.IoT_Project.Scenario_Engine.Models;
 
 import java.sql.SQLException;
-
+import com.google.gson.annotations.SerializedName;
 import DataBase.DBHandler;
 
 public class ActionEventProto {
+	@SerializedName("id")
 	private short id;
+	@SerializedName("name")
 	private String name;
+	@SerializedName("type")
 	private String type;
+	@SerializedName("prodId")
 	private short prodId;
+	@SerializedName("productEP")
 	protected String productEP;
+	@SerializedName("isEvent")
 	private boolean isEvent;
 	
 	public ActionEventProto()

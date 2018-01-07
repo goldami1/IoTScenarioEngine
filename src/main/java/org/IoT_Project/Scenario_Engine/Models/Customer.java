@@ -3,11 +3,15 @@ package org.IoT_Project.Scenario_Engine.Models;
 import java.sql.SQLException;
 import java.util.*;
 
+import com.google.gson.annotations.SerializedName;
+
 import DataBase.DBHandler;
 
 public class Customer extends User {
 	
+	@SerializedName("devices")
 	private LinkedList<Device> devices;
+	@SerializedName("customerScenarios")
 	private LinkedList<Scenario> customerScenarios;
 	
 	public Customer()
