@@ -1,8 +1,14 @@
 package tmpContainers;
 
+import com.google.gson.annotations.SerializedName;
+
 public class VenNameIDContainer {
 
+	@SerializedName("id")
+	private short id;
+	@SerializedName("name")
 	private String name;
+	
 	public String getName() {
 		return name;
 	}
@@ -18,8 +24,6 @@ public class VenNameIDContainer {
 	public void setId(short id) {
 		this.id = id;
 	}
-
-	private short id;
 	
 	public VenNameIDContainer(String i_name, short i_id)
 	{

@@ -98,15 +98,23 @@ public class Product {
 	}
 	/*****************************************************************/
 
-	private void handleStates() {
-		for(ActionEventProto Current_aep : this.actionAndEventList)
+	private void handleStates()
+	{
+		if(actionAndEventList==null)
 		{
-			if(this.actionState && this.eventState)
-				break;
-			if(Current_aep.getIsEvent())
-				this.eventState = true;
-			else
-				this.actionState = true;
+			eventState = actionState = false;
+		}
+		else
+		{
+			for(ActionEventProto Current_aep : this.actionAndEventList)
+			{
+				if(this.actionState && this.eventState)
+					break;
+				if(Current_aep.getIsEvent())
+					this.eventState = true;
+				else
+					this.actionState = true;
+			}
 		}
 	}
 

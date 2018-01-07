@@ -325,9 +325,16 @@ public class DBHandler implements IDBHandler
 	private void addlogExpr(Scenario i_Scenario) throws SQLException
 	{
 		Iterator<Entry<Short,Event>> itr = i_Scenario.getEventsToHappen().entrySet().iterator();
+		boolean isNeedToCloseConn=false;
+		
 		try
 		{
-			Connection connection = openConnection();
+			Connection connection = currSession;
+			if(currSession==null)
+			{
+				connection = openConnection();
+				isNeedToCloseConn = true;
+			}
 			short i=1;
 			while(itr.hasNext())
 			{
@@ -344,7 +351,8 @@ public class DBHandler implements IDBHandler
 		}
 		finally
 		{
-			closeConnection();
+			if(isNeedToCloseConn)
+				closeConnection();
 		}
 	}
 
@@ -386,9 +394,16 @@ public class DBHandler implements IDBHandler
 	private void addEvents(Scenario i_Scenario) throws Exception 
 	{
 		Iterator<Entry<Short, Event>> itr = i_Scenario.getEventsToHappen().entrySet().iterator();
+		boolean isNeedToCloseConn=false;
+		
 		try
 		{
-			Connection connection = openConnection();
+			Connection connection = currSession;
+			if(currSession==null)
+			{
+				connection = openConnection();
+				isNeedToCloseConn = true;
+			}
 			while(itr.hasNext())
 			{
 				Event currentEvent = itr.next().getValue();
@@ -413,7 +428,8 @@ public class DBHandler implements IDBHandler
 		}
 		finally
 		{
-			closeConnection();
+			if(isNeedToCloseConn)
+				closeConnection();
 		}
  
 	}
@@ -422,13 +438,19 @@ public class DBHandler implements IDBHandler
 	@SuppressWarnings("finally")
 	private boolean doesCustVendExist(short i_custVendID, String i_userName, String i_CustVendQuery) throws Exception
 	{
+		boolean isNeedToCloseConn=false;
 		if(i_userName!=null && i_custVendID>0)
 			throw new Exception("wrong use of method doesCustVendExist - choose either username, either userID");
 		
 		Connection connection=null;
 		try
 		{
-			connection = openConnection();
+			connection = currSession;
+			if(currSession==null)
+			{
+				connection = openConnection();
+				isNeedToCloseConn = true;
+			}
 			PreparedStatement queryingStatement = connection.prepareStatement(i_CustVendQuery);
 			if(i_userName!=null)
 				queryingStatement.setString(1,  i_userName);
@@ -444,7 +466,7 @@ public class DBHandler implements IDBHandler
 		} 
 		finally
 		{
-			if(connection!=null)
+			if(connection!=null || isNeedToCloseConn)
 				closeConnection();
 			return false;
 		}
@@ -566,11 +588,17 @@ public class DBHandler implements IDBHandler
 		short prod_id=-1, vend_id=-1;
 		LinkedList<Product> res = null;
 		Product currProd=null;
+		boolean isNeedToCloseConn=false;
 		LinkedList<ActionEventProto> currProd_aep_list=null;
 		
 		try
 		{
-			Connection connection = openConnection();
+			Connection connection = currSession;
+			if(currSession==null)
+			{
+				connection = openConnection();
+				isNeedToCloseConn = true;
+			}
 			PreparedStatement queryStatement, eapQstatement;
 			ResultSet queryResult, eapsQResult;
 			
@@ -625,7 +653,8 @@ public class DBHandler implements IDBHandler
 		}	
 		finally
 		{
-			closeConnection();
+			if(isNeedToCloseConn)
+				closeConnection();
 			if(res==null)
 				throw new SQLException("No products added to provided vendor id");
 			return res;
@@ -637,9 +666,16 @@ public class DBHandler implements IDBHandler
 	private String getVenNameByID(int i_ven_id) throws SQLException
 	{
 		String res = null;
+		boolean isNeedToCloseConn=false;
+		
 		try
 		{
-			Connection connection = openConnection();
+			Connection connection = currSession;
+			if(currSession==null)
+			{
+				connection = openConnection();
+				isNeedToCloseConn = true;
+			}
 			PreparedStatement queryStatement;
 			ResultSet queryResult;
 			
@@ -654,7 +690,8 @@ public class DBHandler implements IDBHandler
 		}	
 		finally
 		{
-			closeConnection();
+			if(isNeedToCloseConn)
+				closeConnection();
 			if(res==null)
 				throw new SQLException("DB isn't normalized, vendor name couldn't be found by vendor id!");
 			return res;
@@ -684,6 +721,8 @@ public class DBHandler implements IDBHandler
 				
 			while (devsQResult.next())
 			{
+				if(connection==null)
+					connection = openConnection();
 				if(res==null)
 					res = new LinkedList<Device>();
 				
@@ -1079,6 +1118,7 @@ public class DBHandler implements IDBHandler
 	{
 		short scenario_id=-1, event_id=-1, action_id=-1;
 		boolean isStillOk=true;
+		boolean isNeedToCloseConn=false;
 		char logic_oper = '\0';
 		String scenario_name=null, scenario_description=null; 
 		
@@ -1088,7 +1128,12 @@ public class DBHandler implements IDBHandler
 		
 		try
 		{
-			Connection connection = openConnection();
+			Connection connection = currSession;
+			if(currSession==null)
+			{
+				connection = openConnection();
+				isNeedToCloseConn = true;
+			}
 			PreparedStatement scen_actQStatement, scen_eveQStatement, logexprQStatement;
 			ResultSet scen_actsQResult, scen_evesQResult, logexprsQResult;
 			boolean isRelevantIter= true;
@@ -1215,7 +1260,8 @@ public class DBHandler implements IDBHandler
 		}	
 		finally
 		{
-			closeConnection();
+			if(isNeedToCloseConn)
+				closeConnection();
 			if(!isStillOk)
 				throw new SQLException("Wrong representation in DB, scenario, event, and logic expression tables aren't normalized!");
 			return new Pair<Short, Scenario>(scenario_id, res);
