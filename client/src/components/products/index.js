@@ -20,7 +20,20 @@ class ProductsPage extends Component {
 			description:'',
 			endpoint:'',
 			image:'',
-			properties: [{ name: '' }],
+			actions:[
+				{
+					name:'',
+					description:'',
+					properties: [
+						{
+							name: '',
+							description:'',
+							type:''
+						}
+					]
+				}
+			],
+
 			loading: false,
 		};
 
@@ -46,28 +59,89 @@ class ProductsPage extends Component {
 		}) 
 	}
 
-	handlePropertyNameChange = (idx) => (evt) => {
-		const newProperty = this.state.properties.map((property, sidx) => {
-		if (idx !== sidx) return property;
-			return { ...property, name: evt.target.value };
-		});
-
-		this.setState({ properties: newProperty });
+	handleRemoveProperty = (idx,pid) => (evt) => {
+		console.log(idx,pid);
 	}
 
-
-	handleAddProperty = () => {
+	handlePropertyChange = (idx,pid) => (evt) => {
 		this.setState({
-			properties: this.state.properties.concat([{ name: '' }])
+
+			actions: this.state.actions.map((action, index) => {
+				var prop;
+				if(index === idx){
+					prop = action.properties.map((property,pindex) => {
+						if (pindex === pid) {
+							console.log(...property, [evt.target.name]: evt.target.value);
+							return {
+								...property, [evt.target.name]: evt.target.value
+							};
+						}
+						return property;
+					})
+					console.log({...action, properties:prop});
+					return {
+						...action, properties:prop
+					}	
+				}
+				return action;
+			})
+
 		});
 	}
 
-  	handleRemoveProperty = (idx) => () => {
-	    this.setState({
-	    	properties: this.state.properties.filter((s, sidx) => idx !== sidx)
-	    });
-  }
+	handleActionChange = (idx) => (evt) => {
+		const newAction = this.state.actions.map((action, sidx) => {
+		if (idx !== sidx) return action;
+			return { ...action, [evt.target.name]: evt.target.value };
+		});
 
+		this.setState({ actions: newAction });
+	}
+
+	handleAddProperty = (idx) => ()=>{
+		console.log(this.state.actions[idx]);
+		this.setState({
+			actions: this.state.actions.map((action, index) => {
+				if(index === idx){
+					return {
+						...action,
+						properties: [...action.properties,
+						{
+							name: '',
+							description:'',
+							type:''
+						}]
+					};
+				}
+				return action;
+			})
+		});
+	}
+
+	handleAddAction = () => {
+		this.setState({
+			actions: this.state.actions.concat([
+				{
+					name:'',
+					description:'',
+					properties: [
+						{
+							name: '',
+							description:'',
+							type:''
+						}
+					]
+				}
+			])
+		});
+	}
+
+
+	handleRemoveAction = (idx) => () => {
+		this.setState({
+			actions: this.state.actions.filter((s, sidx) => idx !== sidx)
+		});
+	}
 
  	render() {
 		const uploadButton = (
@@ -91,9 +165,8 @@ class ProductsPage extends Component {
 		};
 		return (
 
-			<Form layout={'horizontal'}>
-				<Row gutter={16}>
-				<Col span={8}>
+			<Form style={{width:'20%'}}>
+
 					<FormItem label="Name" >
 					  <Input placeholder="Product name" name="name" 
 					  	value={name} 
@@ -104,8 +177,7 @@ class ProductsPage extends Component {
 					  	value={description} 
 					  	onChange={this.onChange}/>
 					</FormItem>
-	      		</Col>
-	      		<Col span={4}>
+
 	      			<FormItem label="Image">
 						<Upload
 							name="avatar"
@@ -118,31 +190,68 @@ class ProductsPage extends Component {
 							{image ? <img src={image} alt="" /> : uploadButton}
 						</Upload>
 					</FormItem>
-				</Col>
-				</Row>
-				<Row gutter={16}>
-				<Col span={10}>
+	
+
 					<FormItem label="Endpoint" >
-					  <Input placeholder="Product name" name="endpoint" 
+					  <Input placeholder="Endpoint" name="endpoint" 
 					  	value={endpoint} 
 					  	onChange={this.onChange}/>
 					</FormItem>					
-				</Col>
-				</Row>
+
 
 				{
-					this.state.properties.map((property, idx) => (
-						<FormItem>
+					this.state.actions.map((action, idx) => (
+						<FormItem >
 							<Input
-								placeholder={`Property ${idx + 1} name`}
-								value={property.name}
-								onChange={this.handlePropertyNameChange(idx)}/>							
-							<Button onClick={this.handleRemoveProperty(idx)} >-</Button>
+								name="name"
+								placeholder={`Action ${idx} name`}
+								value={action.name}
+								onChange={this.handleActionChange(idx)}/>
+							<Input
+								name="description"
+								placeholder={`Action ${idx} description`}
+								value={action.description}
+								onChange={this.handleActionChange(idx)}/>
+
+							{
+								action.properties.map((property,pid) => (
+								<FormItem >	
+									<Input
+										name="name"
+										placeholder={`Action ${idx}  Property  ${pid} name`}
+										value={property.name}
+										onChange={this.handlePropertyChange(idx,pid)}/>
+									<Input
+										name="description"
+										placeholder={`Action ${idx}  Property  ${pid} description`}
+										value={property.description}
+										onChange={this.handlePropertyChange(idx,pid)}/>
+									<Input
+										name="type"
+										placeholder={`Action ${idx}  Property  ${pid} type`}
+										value={property.type}
+										onChange={this.handlePropertyChange(idx,pid)}/>
+									<Button onClick={this.handleRemoveProperty(idx,pid)} >
+										<Icon type="minus" />
+									</Button>
+								</FormItem>
+								))
+							}
+
+							<Button type="dashed" onClick={this.handleAddProperty(idx)} >
+								<Icon type="plus" />Add property
+							</Button>
+							<Button onClick={this.handleRemoveAction(idx)} >
+								<Icon type="minus" />
+							</Button>
 						</FormItem>
 					))
 				}
-				<Button onClick={this.handleAddProperty} >Add property</Button>
-
+				<FormItem>
+					<Button type="dashed" onClick={this.handleAddAction} >
+					<Icon type="plus" />Add action
+					</Button>
+				</FormItem>
 			</Form>
 		);
   }
