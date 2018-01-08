@@ -17,7 +17,6 @@ const DeviceList = props => {
 	return (
 		<ul className="list-inline">
 			{deviceItems}
-			{deviceItems}
 		</ul>
 	);
 };

@@ -15,18 +15,8 @@ const createItems = [
     title: null,
     items: [
       ['/#event', 'Create Event', 'Create Event', CalendarIcon],
-      ['/#nature', 'Create Nature', 'Create Nature', EmojiNatureIcon],
-      ['/#idea', 'Create Idea', 'Create Idea', EmojiObjectsIcon],
-      ['/#travel', 'Create Travel Plans', 'Create Travel Plans', EmojiTravelIcon],
     ],
-  },
-  {
-    title: 'Group with title',
-    items: [
-      ['/#branch', <span>Create a <strong>Bitbucket branch</strong></span>, 'Bitbucket branch', BitbucketBranchesIcon],
-      ['/#page', <span>Create a <strong>Confluence page</strong></span>, 'Confluence page', PageIcon],
-    ],
-  },
+  }
 ];
 
 export default class CreateDrawer extends PureComponent {

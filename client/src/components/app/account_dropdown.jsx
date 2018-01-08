@@ -29,7 +29,7 @@ class UserDropdown extends Component {
 					[{
 						heading: this.props.auth.user.name,
 						items: [
-							{ content: <div onClick={this.props.onLogout}><LogoutIcon size="small"/>Logout</div> },
+							{ content: <div onClick={this.props.onLogout}>Logout</div> },
 						],
 					}]
 				);
@@ -50,7 +50,7 @@ class UserDropdown extends Component {
 		<DropdownMenu
 			appearance="tall"
 			position="right bottom"
-			items={this.items(this.props.auth.user.isCustomer)}
+			items={this.items(this.props.auth.user.isCustomer) || this.items(this.props.auth.user.IsCustomer)}
 		>
 
 			<AkGlobalItem>

@@ -79,8 +79,8 @@ class DeviceForm extends Component {
  	// 	// TODO :: make reusable funtion
 		const vendorOptions = this.props.vendors.map(vendor => {
 			return (
-				<option value={vendor.Key}>
-					{vendor.Value}
+				<option value={vendor.key}>
+					{vendor.value}
 				</option>
 				);
 			}
@@ -94,7 +94,7 @@ class DeviceForm extends Component {
 					{
 						console.log('index '+ index)
 					}
-					{product.Name}
+					{product.name}
 				</option>
 				);
 			}

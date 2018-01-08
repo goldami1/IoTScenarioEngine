@@ -53,14 +53,23 @@ export function receiveVendors(vendors) {
   };
 }
 
-export function fetchDevices(user) {
-	return dispatch => {
-		return axios.get(test_url).then(
-			res => dispatch(receiveDevices(res.data)),
+
+export function fetchDevices() {
+	return (dispatch,getState) => {
+		const {auth} = getState();
+		return axios.get(device_url+auth.user.id).then(
+
+			res =>{ 
+				console.log(res.data);
+				dispatch(receiveDevices(res.data))},
 		  	err => dispatch(errorOccured(err.response.data.error))
 		);
 	}
 }
+
+
+
+
 
 export function deleteDevice(device) {
 	return dispatch => {

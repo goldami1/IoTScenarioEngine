@@ -33,11 +33,11 @@ export function login(data) {
 				console.log(res.data);		
 				console.log("hello");
 				const user = {
-					name 		:res.data.name,
+					name 		:res.data.Name,
 					username 	:res.data.userName,
-					password 	:res.data.password,
-					id 			:res.data.id,
-					isCustomer 	:res.data.customer
+					password 	:res.data.Password,
+					id 			:res.data.Id,
+					isCustomer 	:res.data.IsCustomer
 				};
 
 				localStorage.setItem('user', JSON.stringify(user));
