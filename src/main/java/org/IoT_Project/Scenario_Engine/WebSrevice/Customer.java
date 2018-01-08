@@ -190,7 +190,6 @@ public class Customer {
 		try {
 			List<Scenario> updatedScenarios = cs.addScenario(cust_id, scenarioToAdd);
 			res = Response.status(Status.CREATED).entity(updatedScenarios).build();
-			return res;
 		}
 		catch(Exception ex)
 		{
