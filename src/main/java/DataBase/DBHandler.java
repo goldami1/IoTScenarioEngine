@@ -373,7 +373,7 @@ public class DBHandler implements IDBHandler
 						+ "values ("
 						+"'"+currentAction.getDevice_serialNum()+"',"
 						+"'"+currentAction.getActionDescription().getProdId()+"',"
-						+"'"+currentAction.getParameterToString()+"',"
+						+"'"+currentAction.getParameter()+"',"
 						+");";
 
 				java.sql.PreparedStatement insertStat  = connection.prepareStatement(sqlQuery);
@@ -415,7 +415,7 @@ public class DBHandler implements IDBHandler
 						+ "values ("
 						+"'"+currentEvent.getDevice_serialNum()+"',"
 						+"'"+currentEvent.getActionDescription().getId()+"',"
-						+"'"+currentEvent.getParameterToString()+"',"
+						+"'"+currentEvent.getParameter()+"',"
 						+"'"+currentEvent.getLogicOperator()+"',"
 						+");";
 
@@ -547,7 +547,16 @@ public class DBHandler implements IDBHandler
 					
 					currProd_aep_list.add(new ActionEventProto(Short.parseShort(eapsQResult.getString(1)),
 							eapsQResult.getString(3),
-							eapsQResult.getString(5), prod_id, null, true));
+							eapsQResult.getString(5), 
+							prodName,
+							description,
+							type,
+							supportedValues,
+							min,
+							max,
+							prod_id,
+							endpoint,
+							isEvent));
 				}
 				
 				
@@ -561,11 +570,20 @@ public class DBHandler implements IDBHandler
 					
 					currProd_aep_list.add(new ActionEventProto(Short.parseShort(eapsQResult.getString(1)),
 							eapsQResult.getString(3),
-							eapsQResult.getString(5), prod_id, null, false));
+							eapsQResult.getString(5), 
+							prodName,
+							description,
+							type,
+							supportedValues,
+							min,
+							max,
+							prod_id,
+							endpoint,
+							isEvent));
 				}
 				
 				
-				currProd = new Product(prod_id, (short)vendor_id, prod_name, prod_name, prod_pic, null, currProd_aep_list);
+				currProd = new Product(prod_id, (short)vendor_id, vendor_name, prod_name, prod_description, prod_pic, prod_endpoint, currProd_aep_list);
 					
 				
 				res.add(currProd);
@@ -627,7 +645,16 @@ public class DBHandler implements IDBHandler
 					
 					currProd_aep_list.add(new ActionEventProto(Short.parseShort(eapsQResult.getString(1)),
 							eapsQResult.getString(3),
-							eapsQResult.getString(5), prod_id, null, true));
+							eapsQResult.getString(5), 
+							prodName,
+							description,
+							type,
+							supportedValues,
+							min,
+							max,
+							prod_id,
+							endpoint,
+							isEvent));
 				}
 				
 				
@@ -641,11 +668,20 @@ public class DBHandler implements IDBHandler
 					
 					currProd_aep_list.add(new ActionEventProto(Short.parseShort(eapsQResult.getString(1)),
 							eapsQResult.getString(3),
-							eapsQResult.getString(5), prod_id, null, false));
+							eapsQResult.getString(5), 
+							prodName,
+							description,
+							type,
+							supportedValues,
+							min,
+							max,
+							prod_id,
+							endpoint,
+							isEvent));
 				}
 				
 				
-				currProd = new Product(prod_id, (short)vend_id, prod_name, prod_name, prod_pic, null, currProd_aep_list);
+				currProd = new Product(prod_id, (short)vendor_id, vendor_name, prod_name, prod_description, prod_pic, prod_endpoint, currProd_aep_list);
 					
 				
 				res.add(currProd);
@@ -1367,7 +1403,7 @@ public class DBHandler implements IDBHandler
 			boolean isTriggered = false;
 			boolean isEvent = true;
 			
-			ActionEventProto eve_prototype = new ActionEventProto(eve_proto, eve_name, eve_type, eve_prod_id, eve_deviceEP, isEvent);
+			ActionEventProto eve_prototype = new ActionEventProto(eve_proto, eve_name, description, eve_type, supportedValues, min, max,  eve_prod_id, eve_deviceEP, isEvent);
 			//Action eveWithParamAndDevID = new Action(eve_id, eve_deviceId, eve_param, eve_prototype);
 			Event completeEvent = new Event(eve_id, eve_deviceId, eve_param, eve_prototype, eve_logicOperator, isTriggered);
 			res = completeEvent;

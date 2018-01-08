@@ -33,6 +33,8 @@ public class Scenario{
 		this.name = this.description = null;
 		this.eventsToHappen = null;
 		this.cases = null;
+		this.Events = null;
+		this.Actions = null;
 	}
 	
 	public Scenario(short Scenario_id,
@@ -57,6 +59,7 @@ public class Scenario{
 		{
 			this.actionsToHandle.put(action.getId(), action);
 		}*/
+		this.Events = Scenario_events;
 		this.Actions = Scenario_actions;
 	}
 	
@@ -67,24 +70,29 @@ public class Scenario{
 		/*
 		 * this constructor is only for usement in case of registering new scenario to the DB
 		 */
+		DBHandler db = DBHandler.getInstance();
 		boolean isUpdated = i_scenario.getId() > 0;
 		this.name = i_scenario.getName();
 		this.description = i_scenario.getDescription();
 		this.cust_id = i_scenario.getCust_id();
 		//this.actionsToHandle = new HashMap<Short, Action>();
 		this.eventsToHappen = new HashMap<Short, Event>();
+		this.Events = i_scenario.getEvents();
+		this.Actions = i_scenario.getActions();
 		
-		short Events_StartID, Actions_StartID;
-		Events_StartID = DBHandler.getInstance().getEventsMaxAvailableIdx();
-		Actions_StartID = DBHandler.getInstance().getActionsMaxAvailableIdx();
 		
 		/*
 		 * NOTE: after this loop all events has been registered in DB, and toggled(if needed).
 		 */
 		for(Event e : this.Events)
 		{
-			Event event = new Event(e);
-			this.eventsToHappen.put(event.getId(), event);
+			boolean isEventUpdated = e.getId() > 0;
+			if(!isEventUpdated)
+			{
+				e = new Event(e);
+				db.addEvent(e);
+			}
+			this.eventsToHappen.put(e.getId(), e);
 		}
 		/*
 		 * NOTE: after this loop all actions has been registered in DB(if needed).
@@ -93,12 +101,16 @@ public class Scenario{
 		{
 			//Action action = new Action(a);
 			//this.actionsToHandle.put(action.getId(), action);
-			a = new Action(a);
+			boolean isActionUpdated = a.getId() > 0;
+			if(!isActionUpdated)
+			{
+				a = new Action(a);
+				db.addAction(a);
+			}
 		}
 		if(!isUpdated)
 		{
-			this.id = DBHandler.getInstance().getScenariosMaxAvailableIdx();
-			DBHandler.getInstance().addScenario(this);
+			this.id = db.getScenariosMaxAvailableIdx();
 		}
 		else
 		{
@@ -108,10 +120,25 @@ public class Scenario{
 	}
 	/******************************************************************/
 
+	public boolean resolveScenario()
+	{
+		boolean shouldBeHandled = true;
+		for(Event e : this.Events)
+		{
+			shouldBeHandled &= e.isTriggered();
+		}
+		return shouldBeHandled;
+	}
+
+	public Event getEventById(short id)
+	{
+		return eventsToHappen.get(id);
+	}
+	/////////////////////////////////////////////////////////////////////
+
 	public short getId() {
 		return id;
 	}
-
 
 	public void setId(short id) {
 		this.id = id;
@@ -141,11 +168,6 @@ public class Scenario{
 		this.cust_id = cust_id;
 	}
 
-	public Map<Short, Event> getEventsToHappen() {
-		return eventsToHappen;
-	}
-
-
 	public List<Event> getEvents() {
 		return Events;
 	}
@@ -162,13 +184,13 @@ public class Scenario{
 		Actions = actions;
 	}
 
-	/*
-	 * NOTE: no need of Action map.
-	 * 
-	public Map<Short, Action> getActionsToHandle() {
-		return actionsToHandle;
+	public Map<Short, Event> getEventsToHappen() {
+		return eventsToHappen;
 	}
-	*/
+
+	public void setEventsToHappen(Map<Short, Event> eventsToHappen) {
+		this.eventsToHappen = eventsToHappen;
+	}
 
 	public ICase getCases() {
 		return cases;
@@ -178,18 +200,4 @@ public class Scenario{
 		this.cases = cases;
 	}
 	
-	public boolean resolveScenario()
-	{
-		boolean shouldBeHandled = true;
-		for(Event e : this.Events)
-		{
-			shouldBeHandled &= e.isTriggered();
-		}
-		return shouldBeHandled;
-	}
-
-	public Event getEventById(short id)
-	{
-		return eventsToHappen.get(id);
-	}
 }

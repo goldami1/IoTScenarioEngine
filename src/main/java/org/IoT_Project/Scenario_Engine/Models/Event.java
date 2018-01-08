@@ -47,13 +47,13 @@ public class Event extends Action{
 	public Event()
 	{
 		super();
-		this.logicOperator = 0;
+		this.logicOperator = '&';
 		this.triggered = false;
 	}
 	
 	public Event(short Action_id,
 				 short Action_deviceSerialNum,
-				 Object Action_parameter,
+				 String Action_parameter,
 				 ActionEventProto Action_descriptor,
 				 char Event_logicOperator,
 				 boolean Event_triggered)
@@ -81,7 +81,6 @@ public class Event extends Action{
 		{
 			this.id = db.getEventsMaxAvailableIdx();
 			this.toggleEvent();
-			db.addEvent(this);
 		}
 		else
 		{
@@ -112,6 +111,7 @@ public class Event extends Action{
 		this.triggered = triggered;
 	}
 	
+	/////////////////////////////////////////////////////////////////////////////////////////////
 	private int toggleEvent() throws Exception
 	{
 		if(!DBHandler.getInstance().isEventUpdated(this))

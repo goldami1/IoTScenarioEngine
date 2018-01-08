@@ -20,7 +20,7 @@ public class Action {
 	@SerializedName("id")
 	protected short id;
 	@SerializedName("parameter")
-	protected Object parameter;
+	protected String parameter;
 	@SerializedName("device_serialNum")
 	protected short device_serialNum;
 	@SerializedName("actionDescription")
@@ -28,13 +28,14 @@ public class Action {
 	
 	public Action()
 	{
-		this.parameter = this.actionDescription = null;
+		this.parameter = null;
+		this.actionDescription = null;
 		this.id = this.device_serialNum = -1;
 	}
 	
 	public Action(short Action_id,
 				  short Action_deviceSerialNum,
-				  Object Action_parameter,
+				  String Action_parameter,
 				  ActionEventProto Action_descriptor)
 	{
 		this.id = Action_id;
@@ -43,8 +44,7 @@ public class Action {
 		this.actionDescription = Action_descriptor;
 	}
 	
-	/************   ONLY FOR ACTION NEW CREATION IN DB  
-	 * @throws Exception *************/
+	/************   ONLY FOR ACTION NEW CREATION IN DB   *************/
 	public Action(Action i_action) throws Exception
 	{
 		/*
@@ -60,12 +60,53 @@ public class Action {
 		else
 		{
 			this.id = db.getActionsMaxAvailableIdx();
-			db.addAction(this);
 		}
 	}
 	/****************************************************************/
-	
-	
+	public final int toggleAction() throws Exception
+	{
+		StringBuilder URI = new StringBuilder();
+		
+		/*
+		 * creating the URI:
+		 * (server-url)/product_endpoint/device_serialNum/{if this is an event => event_id}/name of Action_Event/parameter.
+		 */
+		URI.append(this.actionDescription.getProductEP());
+		URI.append("/");
+		URI.append(this.device_serialNum);
+		URI.append("/");
+		
+		/*
+		 * checks if event => giving event_id for the device
+		 * (so when invoked a refrence to the event will be achieved).
+		 */
+		if(this.actionDescription.getIsEvent())
+		{
+			URI.append(this.id);
+			URI.append("/");
+		}
+		
+		URI.append(this.actionDescription.getName());
+		URI.append("/");
+		URI.append(this.parameter);
+		
+		URL ep = new URL(URI.toString());
+		HttpURLConnection con = (HttpsURLConnection)ep.openConnection();
+		con.setRequestMethod("POST");
+		
+		int status = con.getResponseCode();
+		BufferedReader in = new BufferedReader(new InputStreamReader(con.getInputStream()));
+		String inputLine;
+		StringBuffer content = new StringBuffer();
+		content.append("status response - " + status + System.lineSeparator());
+		while ((inputLine = in.readLine()) != null)
+		{
+			content.append(inputLine);
+		}
+		in.close();
+		return status;
+	}
+	/////////////////////////////////////////////////////////////////////////////////////////
 	public short getId() {
 		return id;
 	}
@@ -74,26 +115,12 @@ public class Action {
 		this.id = id;
 	}
 
-	public Object getParameter() {
-		return parameter;
+	public String getParameter() {
+		return this.parameter;
 	}
 
 	public void setParameter(String parameter) {
-		switch(this.actionDescription.getType())
-		{
-		case "int":
-			this.parameter = Integer.parseInt(parameter);
-			break;
-		case "double":
-			this.parameter = Double.parseDouble(parameter);
-			break;
-		case "range":	//!!***need to think about fixes***!!
-			this.parameter = new Range(parameter);
-			break;
-		case "bool":
-			this.parameter = Boolean.parseBoolean(parameter);
-			break;
-		}
+		this.parameter = parameter;
 	}
 
 	public short getDevice_serialNum() {
@@ -111,95 +138,31 @@ public class Action {
 	public void setActionDescription(ActionEventProto actionDescription) {
 		this.actionDescription = actionDescription;
 	}
-	
-	public String getParameterToString() {
-		String result = null;
-		switch(this.actionDescription.getType())
-		{
-		case "int":
-			result = Integer.toString((int)this.parameter);
-			break;
-		case "double":
-			result = Double.toString((double)this.parameter);
-			break;
-		case "Range":
-			Range rng = (Range)this.parameter;
-			result = Double.toString(rng.min);
-			result += "-";
-			result += Double.toString(rng.max);
-			break;
-		case "bool":
-			result = Boolean.toString((boolean)this.parameter);
-			break;
-		}
-		return result;
-	}
-	
-	public final int toggleAction() throws Exception
-	{
-		StringBuilder URI = new StringBuilder();
-		
-		/*
-		 * creating the URI:
-		 * (server-url)/product_endpoint/device_serialNum/{if this is an event => event_id}/name of Action_Event/parameter.
-		 */
-		URI.append(this.actionDescription.getProductEP());
-		URI.append("/");
-		URI.append(this.device_serialNum);
-		
-		/*
-		 * checks if event => giving event_id for the device
-		 * (so when invoked a refrence to the event will be achieved).
-		 */
-		if(this.actionDescription.getIsEvent())
-		{
-			URI.append(this.id);
-			URI.append("/");
-		}
-		
-		URI.append(this.actionDescription.getName());
-		URI.append("/");
-		switch(this.actionDescription.getType())
-		{
-		case "int":
-			URI.append(Integer.toString((int)this.parameter));
-			break;
-		case "double":
-			URI.append(Double.toString((double)this.parameter));
-			break;
-		case "bool":
-			URI.append(Boolean.toString((boolean)this.parameter));
-			break;
-		case "Range":
-			Range rng = (Range)this.parameter;
-			if(rng.getType() == "int")
-			{
-				URI.append(Integer.toString((int)rng.min));
-				URI.append("/");
-				URI.append(Integer.toString((int)rng.max));
-			}
-			else
-			{
-				URI.append(Double.toString((double)rng.min));
-				URI.append("/");
-				URI.append(Double.toString((double)rng.max));
-			}
-			break;
-		}
-		URL ep = new URL(URI.toString());
-		HttpURLConnection con = (HttpsURLConnection)ep.openConnection();
-		con.setRequestMethod("POST");
-		
-		int status = con.getResponseCode();
-		BufferedReader in = new BufferedReader(new InputStreamReader(con.getInputStream()));
-		String inputLine;
-		StringBuffer content = new StringBuffer();
-		content.append("status response - " + status + System.lineSeparator());
-		while ((inputLine = in.readLine()) != null)
-		{
-			content.append(inputLine);
-		}
-		in.close();
-		return status;
-	}
 }
+
+/*
+ * NOTE:
+ * This code is in case that parameter is an object.
+public String getParameterToString() {
+	String result = null;
+	switch(this.actionDescription.getType())
+	{
+	case "int":
+		result = Integer.toString((int)this.parameter);
+		break;
+	case "double":
+		result = Double.toString((double)this.parameter);
+		break;
+	case "Range":
+		Range rng = (Range)this.parameter;
+		result = Double.toString(rng.min);
+		result += "-";
+		result += Double.toString(rng.max);
+		break;
+	case "bool":
+		result = Boolean.toString((boolean)this.parameter);
+		break;
+	}
+	return result;
+}
+*/

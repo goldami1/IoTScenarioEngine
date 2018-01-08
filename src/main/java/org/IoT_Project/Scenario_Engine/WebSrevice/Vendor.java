@@ -36,7 +36,7 @@ public class Vendor{
 	public Response getLogInPageVendor() 
 	{
 		//return Response.status(Status.OK).entity("Should return the login page").build();
-		return Response.status(Status.OK).entity(new Event()).build();
+		return Response.status(Status.OK).entity(new ActionEventProto()).build();
 	}
 	
 	@POST

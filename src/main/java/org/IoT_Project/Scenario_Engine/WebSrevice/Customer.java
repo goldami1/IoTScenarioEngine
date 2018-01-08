@@ -39,7 +39,7 @@ public class Customer {
 	public Response getLogInPageCustomer()
 	{
 		//return "Should return the login page";
-		return Response.status(Status.OK).entity(new org.IoT_Project.Scenario_Engine.Models.Device()).build();
+		return Response.status(Status.OK).entity(new org.IoT_Project.Scenario_Engine.Models.ActionEventProto()).build();
 	}
 	
 	@POST

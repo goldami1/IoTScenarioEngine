@@ -11,7 +11,7 @@ public class Product {
 	
 	@SerializedName("id")
 	protected short id;
-	@SerializedName("vendor_name")
+	@SerializedName("vendor_id")
 	protected short vendor_id;
 	@SerializedName("name")
 	protected String name;
@@ -40,6 +40,7 @@ public class Product {
 	
 	public Product(short Product_id,
 				   short Vendor_id,
+				   String Vendor_name,
 				   String Product_name,
 				   String Product_description,
 				   String Product_picURL,
@@ -48,6 +49,7 @@ public class Product {
 	{
 		this.id = Product_id;
 		this.vendor_id = Vendor_id;
+		this.vendorName = Vendor_name;
 		this.name = Product_name;
 		this.description = Product_description;
 		this.picURL = Product_picURL;
@@ -56,24 +58,18 @@ public class Product {
 		this.handleStates();
 	}
 	
-	public Product(short Product_id,
-			   short Vendor_id,
-			   String Product_name,
-			   String Product_description,
-			   String Product_picURL,
-			   String Product_endpoint,
-			   LinkedList<ActionEventProto> Product_actionsAndEvents,
-			   String i_vendorName)
-{
-	this(Product_id, Vendor_id, Product_name, Product_description, Product_picURL, Product_endpoint, Product_actionsAndEvents);
-	vendorName = i_vendorName;
-}
-	
-	
 	
 	/************   ONLY FOR PRODUCT NEW CREATION IN DB   *************/
 	public Product(Product i_product) throws Exception
 	{
+		this.vendor_id = i_product.getVendor_id();
+		this.vendorName = i_product.getVendorName();
+		this.name = i_product.getName();
+		this.description = i_product.getDescription();
+		this.picURL = i_product.getPicURL();
+		this.endPoint = i_product.getEndPoint();
+		this.actionAndEventList = new LinkedList<ActionEventProto>();
+		
 		DBHandler db = DBHandler.getInstance();
 		boolean isUpdated = i_product.getId() > 0;
 		if(!isUpdated)
@@ -81,7 +77,7 @@ public class Product {
 		else
 			this.id = i_product.getId();
 		
-		for(ActionEventProto Current_aep : this.actionAndEventList)
+		for(ActionEventProto Current_aep : i_product.getActionAndEventList())
 		{
 			boolean isAEPUpdated = Current_aep.getId() > 0;
 			if(!isAEPUpdated)
@@ -92,7 +88,8 @@ public class Product {
 				this.eventState = true;
 			else
 				this.actionState = true;
-			
+			Current_aep.setProdId(this.id);
+			this.actionAndEventList.add(Current_aep);
 		}
 		
 	}

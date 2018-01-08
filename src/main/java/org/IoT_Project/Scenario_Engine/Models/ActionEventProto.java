@@ -1,6 +1,8 @@
 package org.IoT_Project.Scenario_Engine.Models;
 
 import java.sql.SQLException;
+import java.util.List;
+
 import com.google.gson.annotations.SerializedName;
 import DataBase.DBHandler;
 
@@ -9,6 +11,8 @@ public class ActionEventProto {
 	private short id;
 	@SerializedName("name")
 	private String name;
+	@SerializedName("description")
+	private String description;
 	@SerializedName("type")
 	private String type;
 	@SerializedName("prodId")
@@ -17,24 +21,39 @@ public class ActionEventProto {
 	protected String productEP;
 	@SerializedName("isEvent")
 	private boolean isEvent;
+	@SerializedName("supportedValues")
+	private List<String> supportedValues;
+	@SerializedName("minValue")
+	private String min;
+	@SerializedName("maxValue")
+	private String max;
 	
 	public ActionEventProto()
 	{
 		this.id = this.prodId = -1;
 		this.isEvent = false;
-		this.name = this.type = this.productEP = null;
+		this.name = this.type = this.productEP = this.min = this.max = this.description = null;
+		this.supportedValues = null;
 	}
 	
 	public ActionEventProto(short id,
 						    String name,
+						    String description,
 						    String type,
+						    List<String> supportedValues,
+						    String min,
+						    String max,
 						    short prodId,
 						    String productEp,
 						    boolean isEvent)
 	{
 		this.id = id;
 		this.name = name;
+		this.description = description;
 		this.type = type;
+		this.supportedValues = supportedValues;
+		this.min = min;
+		this.max = max;
 		this.prodId = prodId;
 		this.isEvent = isEvent;
 	}
@@ -86,4 +105,37 @@ public class ActionEventProto {
 	public boolean getIsEvent() {
 		return this.isEvent;
 	}
+
+	public String getDescription() {
+		return description;
+	}
+
+	public void setDescription(String description) {
+		this.description = description;
+	}
+
+	public List<String> getSupportedValues() {
+		return supportedValues;
+	}
+
+	public void setSupportedValues(List<String> supportedValues) {
+		this.supportedValues = supportedValues;
+	}
+
+	public String getMin() {
+		return min;
+	}
+
+	public void setMin(String min) {
+		this.min = min;
+	}
+
+	public String getMax() {
+		return max;
+	}
+
+	public void setMax(String max) {
+		this.max = max;
+	}
+	
 }
