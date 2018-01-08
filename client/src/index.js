@@ -10,9 +10,11 @@ import ReduxThunk from "redux-thunk";
 import { setCurrentUser } from './actions/auth_actions';
 import { fetchDevices } from './actions/devices_actions';
 import setAuthorizationToken from './utilities/set_auth_token';
-import MainRouter from './components/';
-import 'bootstrap/dist/css/bootstrap.min.css';
-import '@atlaskit/css-reset';
+import MainRouter from './components/MainRouter';
+// import 'bootstrap/dist/css/bootstrap.min.css';
+// import '@atlaskit/css-reset';
+
+import 'antd/dist/antd.css';
 
 const store = createStore(
 	rootReducer,

@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types';
 import React, { PureComponent } from 'react';
 import { Route, Switch } from 'react-router-dom';
-import App from './app/';
+import App from './newApp/';
 import LoginPage from './login/';
 import RegisterPage from './register/';
 import { Link , withRouter } from 'react-router-dom';
@@ -40,7 +40,7 @@ class MainRouter extends PureComponent {
 
 	render() {
 		return (
-			<App onNavResize={this.onNavResize}>
+			<App>
 				<Switch>
 					<Route path="/login" component={LoginPage} />
 					<Route path="/signup" component={RegisterPage}  />
@@ -57,8 +57,4 @@ class MainRouter extends PureComponent {
 	}
 }
 
-export default MainRouter;
-
-MainRouter.childContextTypes = {
-	navOpenState: PropTypes.object,
-}
+export default withRouter(MainRouter);
