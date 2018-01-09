@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
-import { Upload, Icon, message,Button, Modal, Form, Input, Radio ,Row, Col, Tag, Tooltip} from 'antd';
+import { Tabs, Upload, Icon, message,Button, Modal, Form, Input, Radio ,Row, Col, Tag, Tooltip} from 'antd';
 import { connect } from "react-redux";
 
 const FormItem = Form.Item;
+const { TextArea } = Input;
 
 function getBase64(img, callback) {
 	const reader = new FileReader();
@@ -90,6 +91,11 @@ class ProductsPage extends Component {
 	saveInputRef = input => this.input = input
 		showInput = () => {
 		this.setState({ inputVisible: true }, () => this.input.focus());
+
+	}
+
+	hideInput = () => {
+		this.setState({ inputVisible: false,inputValue:'' });
 	}
 
 	onChange = (event) =>{
@@ -244,30 +250,53 @@ class ProductsPage extends Component {
 	}
 
 
-	getAdditional (property,aid,pid) {
+	getAdditional (property,aid,pid,layout,lableLessLayout) {
 		switch (property.type){
 			case 'int':
 			case 'double':
 				return (
 					<div>
-						<FormItem label="Minimum" >
-							<Input
-								name="min"
-								value={property.min}
-								onChange={this.handlePropertyChange(aid,pid)}/>
-						</FormItem>						
-						<FormItem label="Maximum" >
-							<Input
-								name="max"
-								value={property.max}
-								onChange={this.handlePropertyChange(aid,pid)}/>
+						<FormItem label="Range" {...layout}>
+					        <Input.Group size="large">
+									<Input
+										style={{ width: '25%' }}
+										placeholder="minimum"
+										name="min"
+										value={property.min}
+										onChange={this.handlePropertyChange(aid,pid)}/>
+									<Input
+										style={{ width: '25%' }}
+										placeholder="maximum"
+										name="max"
+										value={property.max}
+										onChange={this.handlePropertyChange(aid,pid)}/>
+
+					        </Input.Group>					
+					
 						</FormItem>	
 					</div>
 				)
 			case 'discrete':
 				const {image, endpoint, name, description, tags, inputVisible, inputValue } = this.state;
 				return (
-					<div>{
+					<div>
+					<FormItem label="Options" {...layout} >
+						{
+							
+							(
+								<Button
+									size="large"
+									onClick={this.showInput}
+									style={{ background: '#fff', borderStyle: 'dashed',width:'100%' }}
+									>
+									<Icon type="plus" />Add option
+								</Button>
+							)
+						}
+					</FormItem>
+
+					<FormItem {...lableLessLayout} >
+						{
 							property.options.map((option, oid) => {
 								const h= this.handleClose;
 								return  (
@@ -277,30 +306,25 @@ class ProductsPage extends Component {
 								);
 
 							})
-						}											
-						{inputVisible && 
+						}
+											
+		
+						{
+							inputVisible && 
 							(
 								<Input
 									ref={this.saveInputRef}
 									type="text"
-									size="small"
 									style={{ width: 78 }}
 									name="inputValue"
 									onChange={this.onChange}
 									onPressEnter={this.handlePropertyChange(aid,pid,true)}
+									onBlur={this.hideInput}
 								/>
 							)
 						}
-						{!inputVisible &&
-							(
-								<Tag
-									onClick={this.showInput}
-									style={{ background: '#fff', borderStyle: 'dashed' }}
-									>
-									<Icon type="plus" /> New Tag
-								</Tag>
-							)
-						}</div>							
+						</FormItem>
+						</div>							
 				)
 			default:
 		}
@@ -316,42 +340,58 @@ class ProductsPage extends Component {
 		const uploadButton = (
 			<div>
 				<Icon type={this.state.loading ? 'loading' : 'plus'} />
-				<div className="ant-upload-text">Upload</div>
+				<div >Upload</div>
 			</div>
 		);
 		const {image, endpoint, name, description, tags, inputVisible, inputValue } = this.state;
-		const formItemLayout = {
-			labelCol: {
-				xs: { span: 24 },
-				sm: { span: 8 },
-			},
+	    const formItemLayout = {
+	      labelCol: {
+	        xs: { span: 24 , offset: 0},
+	        sm: { span: 2 , offset: 0},
+	      },
+	      wrapperCol: {
+	        xs: { span: 24 , offset: 0 },
+	        sm: { span: 5 , offset: 0},
+	      },
+	    };
+		const formItemLayoutWithOutLabel = {
 			wrapperCol: {
-				xs: { span: 24 },
-				sm: { span: 16 },
-			}
+			xs: { span: 24, offset: 0 },
+			sm: { span: 5, offset: 2 },
+			},
 		};
+
 		return (
+			<div>
+					<Row style={{margin:'20px 0'}}>
+						<Col span={5} >
+							<h1>Product creation</h1>
+						</Col>
+					</Row>
+<Tabs type="none" tabPosition="left" animated="false">
 
-			<Form >
+	<Tabs.TabPane tab="Tab 1" key="1">
+			<Form>
 
-					<FormItem label="Name" >
+
+					<FormItem label="Name" {...formItemLayout} >
 					  <Input placeholder="Product name" name="name" 
+					 	size="large"
 						value={name} 
 						onChange={this.onChange}/>
 					</FormItem>
-					<FormItem label="Description">
-					  <Input placeholder="Product name" name="description" 
+					<FormItem label="Description" {...formItemLayout}>
+					  <TextArea placeholder="Product name" name="description"
+					 	 size="large"	 
 						value={description} 
 						onChange={this.onChange}/>
 					</FormItem>
 
-					<FormItem label="Image">
+					<FormItem label="Image" {...formItemLayout}>
 						<Upload
 							name="avatar"
 							listType="picture-card"
-							className="avatar-uploader"
 							showUploadList={false}
-							action="//jsonplaceholder.typicode.com/posts/"
 							onChange={this.handleChange}
 							>
 							{image ? <img src={image} alt="" /> : uploadButton}
@@ -359,8 +399,9 @@ class ProductsPage extends Component {
 					</FormItem>
 	
 
-					<FormItem label="Endpoint" >
-					  <Input placeholder="Endpoint" name="endpoint" 
+					<FormItem label="Endpoint"  {...formItemLayout}>
+					  <Input placeholder="Endpoint" name="endpoint"
+					  	size="large" 
 						value={endpoint} 
 						onChange={this.onChange}/>
 					</FormItem>					
@@ -369,15 +410,17 @@ class ProductsPage extends Component {
 					{
 						this.state.actions.map((action, aid) => (
 							<div >
-							<FormItem label="Name">
+							<FormItem label="Name" {...formItemLayout}>
 								<Input
+									size="large"
 									name="name"
 									placeholder={`Action ${aid} name`}
 									value={action.name}
 									onChange={this.handleActionChange(aid)}/>
 							</FormItem>
-							<FormItem label="Description">
-								<Input
+							<FormItem label="Description" {...formItemLayout}>
+								<TextArea
+									size="large"
 									name="description"
 									placeholder={`Action ${aid} description`}
 									value={action.description}
@@ -386,21 +429,23 @@ class ProductsPage extends Component {
 								{
 									action.properties.map((property,pid) => (
 									<div>
-										<FormItem label="Name">	
+										<FormItem label="Name" {...formItemLayout}>	
 											<Input
+												size="large"
 												name="name"
 												placeholder={`Action ${aid}  Property  ${pid} name`}
 												value={property.name}
 												onChange={this.handlePropertyChange(aid,pid)}/>
 										</FormItem>
-										<FormItem label="Description">
-											<Input
+										<FormItem label="Description" {...formItemLayout}>
+											<TextArea
+												size="large"
 												name="description"
 												placeholder={`Action ${aid}  Property  ${pid} description`}
 												value={property.description}
 												onChange={this.handlePropertyChange(aid,pid)}/>
 										</FormItem>
-										<FormItem label="Type">
+										<FormItem label="Type" {...formItemLayout}>
 											<Radio.Group value={property.type} name="type" onChange={this.handlePropertyChange(aid,pid)}>
 												<Radio.Button value="string">String</Radio.Button>
 												<Radio.Button value="int">Int</Radio.Button>
@@ -408,33 +453,40 @@ class ProductsPage extends Component {
 												<Radio.Button value="discrete">Discrete</Radio.Button>
 											</Radio.Group>
 										</FormItem>
-											{ this.getAdditional(property,aid,pid) }
-	
-											<Button onClick={this.handleRemoveProperty(aid,pid)} >
+											{ this.getAdditional(property,aid,pid,formItemLayout,formItemLayoutWithOutLabel) }
+										<FormItem {...formItemLayoutWithOutLabel}>
+											<Button onClick={this.handleRemoveProperty(aid,pid)} size="large"  style={{width:'100%' }}>
 												<Icon type="minus" />Remove property
 											</Button>
+										</FormItem>
 									</div>
 									))
 								}
-
-								<Button type="dashed" onClick={this.handleAddProperty(aid)} >
-									<Icon type="plus" />Add property
-								</Button>
-								<FormItem>
-									<Button onClick={this.handleRemoveAction(aid)} >
+								<FormItem {...formItemLayoutWithOutLabel}>
+									<Button type="dashed" onClick={this.handleAddProperty(aid)} size="large"  style={{width:'100%' }}>
+										<Icon type="plus" />Add property
+									</Button>
+								</FormItem>
+								<FormItem {...formItemLayoutWithOutLabel}>
+									<Button onClick={this.handleRemoveAction(aid)}  size="large" style={{width:'100%' }}>
 										<Icon type="minus" />Remove action
 									</Button>
 								</FormItem>
 							</div>
 						))
 					}
-					<FormItem>
-						<Button type="dashed" onClick={this.handleAddAction} >
+					<FormItem {...formItemLayoutWithOutLabel} >
+						<Button type="dashed" size="large" onClick={this.handleAddAction}  style={{width:'100%' }}>
 						<Icon type="plus" />Add action
 						</Button>
 					</FormItem>
 				</div>
-			</Form>
+			</Form>	
+	</Tabs.TabPane>
+	<Tabs.TabPane tab="Tab 2" key="2">Content of Tab Pane 2</Tabs.TabPane>
+	<Tabs.TabPane tab="Tab 3" key="3">Content of Tab Pane 3</Tabs.TabPane>
+</Tabs></div>
+
 		);
   }
 }
