@@ -1,0 +1,30 @@
+import {isEmpty} from 'lodash';
+
+export default function links(auth) {
+
+	const  type = (auth.isAuthenticated && !isEmpty(auth.type)) ? 'none' : auth.type;
+
+	switch(type) {
+		case 'enduser': return (
+			[
+				['/devices', 'Devices', 'appstore-o'],
+				['/scenarios', 'Scenarios', 'fork'],
+			]
+		);
+		case 'vendor':  return (
+			[
+				['/login', 'Login', 'login'],
+				['/signup', 'Singup', 'user-add'],
+			]
+		);
+		default: return (
+			[
+				['/login', 'Login', 'login'],
+				['/signup', 'Singup', 'user-add'],
+				['/devices', 'Devices', 'appstore-o'],
+				['/products', 'Products', 'appstore-o'],
+				['/scenarios', 'Scenarios', 'fork'],
+			]
+		);
+	}
+}

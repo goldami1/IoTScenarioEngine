@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Tabs, Upload, Icon, message,Button, Modal, Form, Input, Radio ,Row, Col, Tag, Tooltip} from 'antd';
+import {List, Tabs, Upload, Icon, message,Button, Modal, Form, Input, Radio ,Row, Col, Tag, Tooltip} from 'antd';
 import { connect } from "react-redux";
 
 const FormItem = Form.Item;
@@ -347,30 +347,28 @@ class ProductsPage extends Component {
 	    const formItemLayout = {
 	      labelCol: {
 	        xs: { span: 24 , offset: 0},
-	        sm: { span: 2 , offset: 0},
+	        sm: { span: 6 , offset: 0},
 	      },
 	      wrapperCol: {
 	        xs: { span: 24 , offset: 0 },
-	        sm: { span: 5 , offset: 0},
+	        sm: { span: 10 , offset: 0},
 	      },
 	    };
 		const formItemLayoutWithOutLabel = {
 			wrapperCol: {
 			xs: { span: 24, offset: 0 },
-			sm: { span: 5, offset: 2 },
+			sm: { span: 10, offset: 6 },
 			},
 		};
 
 		return (
 			<div>
-					<Row style={{margin:'20px 0'}}>
-						<Col span={5} >
+					<Row style={{margin:'40px 0'}}>
+						<Col  offset={6} >
 							<h1>Product creation</h1>
 						</Col>
 					</Row>
-<Tabs type="none" tabPosition="left" animated="false">
 
-	<Tabs.TabPane tab="Tab 1" key="1">
 			<Form>
 
 
@@ -389,6 +387,8 @@ class ProductsPage extends Component {
 
 					<FormItem label="Image" {...formItemLayout}>
 						<Upload
+					        showUploadList={false}
+					        action="//jsonplaceholder.typicode.com/posts/"
 							name="avatar"
 							listType="picture-card"
 							showUploadList={false}
@@ -407,8 +407,20 @@ class ProductsPage extends Component {
 					</FormItem>					
 
 				<div>
+					<Row style={{margin:'40px 0 10px'}}>
+						<Col  offset={6} >
+							<h3>Actions</h3>
+						</Col>
+					</Row>
 					{
+
 						this.state.actions.map((action, aid) => (
+									<div style={{
+										border: '3px solid #ebedf0',
+										borderRadius: '10px',
+										padding: '20px',
+										margin:' 0 0 60px'
+									}}>
 							<div >
 							<FormItem label="Name" {...formItemLayout}>
 								<Input
@@ -426,9 +438,21 @@ class ProductsPage extends Component {
 									value={action.description}
 									onChange={this.handleActionChange(aid)}/>
 							</FormItem>
+												<Row style={{margin:'40px 0 10px'}}>
+						<Col  offset={6} >
+							<h3>Properties</h3>
+						</Col>
+					</Row>
 								{
 									action.properties.map((property,pid) => (
-									<div>
+
+									<div style={{
+										border: '1px solid #ebedf0',
+										borderRadius: '2px',
+										padding: '20px',
+										margin:' 0 0 16px'
+									}}>
+
 										<FormItem label="Name" {...formItemLayout}>	
 											<Input
 												size="large"
@@ -445,6 +469,14 @@ class ProductsPage extends Component {
 												value={property.description}
 												onChange={this.handlePropertyChange(aid,pid)}/>
 										</FormItem>
+										<FormItem label="Endpoint" {...formItemLayout}>	
+											<Input
+												size="large"
+												name="endpoint"
+												placeholder={`Action ${aid}  Property  ${pid} name`}
+												value={property.endpoint}
+												onChange={this.handlePropertyChange(aid,pid)}/>
+										</FormItem>		
 										<FormItem label="Type" {...formItemLayout}>
 											<Radio.Group value={property.type} name="type" onChange={this.handlePropertyChange(aid,pid)}>
 												<Radio.Button value="string">String</Radio.Button>
@@ -454,14 +486,18 @@ class ProductsPage extends Component {
 											</Radio.Group>
 										</FormItem>
 											{ this.getAdditional(property,aid,pid,formItemLayout,formItemLayoutWithOutLabel) }
+
 										<FormItem {...formItemLayoutWithOutLabel}>
 											<Button onClick={this.handleRemoveProperty(aid,pid)} size="large"  style={{width:'100%' }}>
 												<Icon type="minus" />Remove property
 											</Button>
 										</FormItem>
+
 									</div>
+		
 									))
 								}
+		
 								<FormItem {...formItemLayoutWithOutLabel}>
 									<Button type="dashed" onClick={this.handleAddProperty(aid)} size="large"  style={{width:'100%' }}>
 										<Icon type="plus" />Add property
@@ -473,6 +509,7 @@ class ProductsPage extends Component {
 									</Button>
 								</FormItem>
 							</div>
+							</div>
 						))
 					}
 					<FormItem {...formItemLayoutWithOutLabel} >
@@ -482,11 +519,8 @@ class ProductsPage extends Component {
 					</FormItem>
 				</div>
 			</Form>	
-	</Tabs.TabPane>
-	<Tabs.TabPane tab="Tab 2" key="2">Content of Tab Pane 2</Tabs.TabPane>
-	<Tabs.TabPane tab="Tab 3" key="3">Content of Tab Pane 3</Tabs.TabPane>
-</Tabs></div>
 
+			</div>
 		);
   }
 }

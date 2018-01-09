@@ -1,12 +1,12 @@
 
 import React, { PureComponent } from 'react';
-import {isEmpty} from 'lodash';
 import { Link , withRouter } from 'react-router-dom';
 import { connect } from "react-redux";
-import {Avatar, Layout, Menu, Icon , Dropdown, Button, message} from 'antd';
+import {Avatar, Popover, Layout, Menu, Icon , Dropdown, Button, message} from 'antd';
 import Navigation from './navigation';
-const { Header, Sider, Content , Footer } = Layout;
+import links  from './links';
 
+const { Header, Sider, Content , Footer } = Layout;
 
 class App extends PureComponent {
 
@@ -14,74 +14,48 @@ class App extends PureComponent {
 		super(props);
 		this.state = {
 			collapsed: false,
-			selectedKeys:[]
 		};
 	}
 
 
 	onCollapse = (collapsed) => {
-		console.log(collapsed);
 		this.setState({ collapsed });
 	}
 	
-	links = (user) =>{
-
-		var type = isEmpty(user) ? 'none' : user.type;
-		switch(type) {
-			case 'enduser': return (
-				[
-					['/login', 'Login', 'login'],
-					['/signup', 'Singup', 'user-add'],
-				]
-			);
-			case 'vendor':  return (
-				[
-					['/login', 'Login', 'login'],
-					['/signup', 'Singup', 'user-add'],
-				]
-			);
-			default: return (
-				[
-					['/login', 'Login', 'login'],
-					['/signup', 'Singup', 'user-add'],
-					['/devices', 'Devices', 'appstore-o'],
-					['/products', 'Products', 'appstore-o'],
-					['/scenarios', 'Scenarios', 'fork'],
-				]
-			);
-		}
-	}
-
-
-
 
 	render() {
 
-
-
+		const { auth, location } = this.props;
+const menu = (
+  <Menu >
+    <Menu.Item size="small">
+      <a target="_blank" rel="noopener noreferrer" href="http://www.alipay.com/">login</a>
+    </Menu.Item>
+    <Menu.Item>
+      <a target="_blank" rel="noopener noreferrer" href="http://www.taobao.com/">lignup</a>
+    </Menu.Item>
+  </Menu>
+);
 		return (
 		<Layout  style={{ minHeight: '100vh' }}>
-			<Sider
-          		collapsible
-          		collapsed={this.state.collapsed}
-          		onCollapse={this.onCollapse}
-				style={{ position: 'relative'}}
-				>
-				<Icon onClick={this.toggle} type="api" style={{height: '100px',marginLeft:20,fontSize: 36, color: '#08c' ,lineHeight:'100px'}}/>
-
-				<Navigation
-					links={this.links(this.props.auth)}
-					selected={ this.props.location.pathname}/>
-					<div  style={{textAlign: 'center',position: 'absolute',bottom: 0 ,width:'100%',marginBottom:'60px'}}>
+			<Sider collapsible collapsed={this.state.collapsed} onCollapse={this.onCollapse}
+				style={{ position: 'relative', overflow:'hidden', paddingTop:60}}>
+				
+				<Navigation links={links(auth)} selected={location.pathname} />
+				 <Dropdown overlay={menu} placement="topRight"  trigger={['click']} size="20" style={{width:'60px', left:'50px' }}>
+					<div style={{textAlign: 'center',position: 'absolute',bottom: 0 ,width:'100%',marginBottom:'60px'}}>
 						<Avatar shape="square" size="large" icon="user" style={{background:'#08c'}} />
 					</div>
+				    </Dropdown>	
+
+
 			</Sider>
 			<Layout style={{height: '100vh'}}>
-				<Content style={{ margin: '40px', padding: 24, background: '#fff' }}>
+				<Content style={{ margin: '40px', padding: 40, background: '#fff' }}>
 					{this.props.children}
 				</Content>
 				<Footer style={{ textAlign: 'center' }}>
-				Scenario Engine  ©2018 Created by Gil
+					Scenario Engine  ©2018 Created by Gil
 				</Footer>
 			</Layout>
 		</Layout>

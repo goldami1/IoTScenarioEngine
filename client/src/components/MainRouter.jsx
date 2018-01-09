@@ -2,7 +2,7 @@ import PropTypes from 'prop-types';
 import React, { PureComponent } from 'react';
 import { Route, Switch } from 'react-router-dom';
 import App from './newApp/';
-import LoginPage from './login/';
+import LoginPage from './login/loginForm';
 import RegisterPage from './register/';
 import { Link , withRouter } from 'react-router-dom';
 import DevicesPage from './devices/';
@@ -18,25 +18,9 @@ import noMatch from './nomatch/';
 class MainRouter extends PureComponent {
 	constructor(props) {
 		super(props);
-		this.state = {
-			navOpenState: {
-				isOpen: true,
-				width: 304,
-			}
-		}
+		this.state = {}
 	}
 
-	getChildContext () {
-		return {
-			navOpenState: this.state.navOpenState,
-		};
-	}
-
-	onNavResize = (navOpenState) => {
-		this.setState({
-			navOpenState,
-		});
-	}
 
 	render() {
 		return (

@@ -18,8 +18,15 @@ const Navigation = props => {
 	);
 
 	return (
-		<Menu theme="dark" mode="inline" selectedKeys={[props.selected]} selectable={false}>
+		<Menu 	
+			theme="dark" 
+			mode="inline" 
+			selectedKeys={[props.selected]} 
+			selectable={false}
+		> 
+
 			{links}		
+
 		</Menu>
 	);
 };
