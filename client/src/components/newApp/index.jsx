@@ -19,10 +19,9 @@ class App extends PureComponent {
 	}
 
 
-	toggle = () => {
-		this.setState({
-			collapsed: !this.state.collapsed,
-		});
+	onCollapse = (collapsed) => {
+		console.log(collapsed);
+		this.setState({ collapsed });
 	}
 	
 	links = (user) =>{
@@ -61,19 +60,23 @@ class App extends PureComponent {
 
 
 		return (
-		<Layout>
+		<Layout  style={{ minHeight: '100vh' }}>
 			<Sider
-			    trigger={null}
           		collapsible
           		collapsed={this.state.collapsed}
-				style={{ overflow: 'auto', height: '100vh', position: 'fixed', left: 0 }}>
+          		onCollapse={this.onCollapse}
+				style={{ position: 'relative'}}
+				>
 				<Icon onClick={this.toggle} type="api" style={{height: '100px',marginLeft:20,fontSize: 36, color: '#08c' ,lineHeight:'100px'}}/>
-				<Navigation
 
-				links={this.links(this.props.auth)}
-				selected={ this.props.location.pathname}/>
+				<Navigation
+					links={this.links(this.props.auth)}
+					selected={ this.props.location.pathname}/>
+					<div  style={{textAlign: 'center',position: 'absolute',bottom: 0,height: '100px' ,width:'100%',marginBottom:'48px'}}>
+						<span  style={{background: '#08c' ,lineHeight:'100px' }}>asdf </span>
+					</div>
 			</Sider>
-			<Layout style={{ marginLeft: 200, height: '100vh'}}>
+			<Layout style={{height: '100vh'}}>
 				<Content style={{ margin: '40px', padding: 24, background: '#fff' }}>
 					{this.props.children}
 				</Content>
