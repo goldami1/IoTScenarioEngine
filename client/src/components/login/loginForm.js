@@ -38,6 +38,7 @@ class LoginForm extends Component {
 			error: '',
 			isLoading: true 
 		});
+		console.log({"UserName":this.state.username, "Password":this.state.password});
 		this.props.login({"UserName":this.state.username, "Password":this.state.password})
 			.then(
 				(res) => this.props.history.push("/"),
@@ -54,7 +55,7 @@ class LoginForm extends Component {
     e.preventDefault();
     this.props.form.validateFields((err, values) => {
       if (!err) {
-        console.log('Received values of form: ', values);
+        this.onSubmit(e);
       }
     });
   }
@@ -76,14 +77,16 @@ class LoginForm extends Component {
 						{getFieldDecorator('userName', {
 							rules: [{ required: true, message: 'Please input your username!' }],
 						})(
-							<Input size="large" prefix={<Icon type="user" style={{ color: 'rgba(0,0,0,.25)' }} />} placeholder="Username" />
+							<Input
+								onChange={this.onChange} name="username" value={this.state.username}
+								size="large" prefix={<Icon type="user" style={{ color: 'rgba(0,0,0,.25)' }} />} placeholder="Username" />
 						)}
 					</FormItem>
 					<FormItem >
 						{getFieldDecorator('password', {
 							rules: [{ required: true, message: 'Please input your Password!' }],
 							})(
-								<Input size="large" prefix={<Icon type="lock" style={{ color: 'rgba(0,0,0,.25)' }} />} type="password" placeholder="Password" />
+								<Input  onChange={this.onChange} name="password" value={this.state.password} size="large" prefix={<Icon type="lock" style={{ color: 'rgba(0,0,0,.25)' }} />} type="password" placeholder="Password" />
 							)}
 					</FormItem>
 					<FormItem >
@@ -98,8 +101,6 @@ class LoginForm extends Component {
 					</FormItem>
 				</Form>
 				</CardWrapper>
-
-
 		);
 	}
 }
