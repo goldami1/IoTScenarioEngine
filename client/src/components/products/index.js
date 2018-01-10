@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import {List, Tabs, Upload, Icon, message,Button, Modal, Form, Input, Radio ,Row, Col, Tag, Tooltip} from 'antd';
 import { connect } from "react-redux";
+import  ContentWrapper from "../common/ContentWrapper";
 
 const FormItem = Form.Item;
 const { TextArea } = Input;
@@ -362,7 +363,7 @@ class ProductsPage extends Component {
 		};
 
 		return (
-			<div>
+			<ContentWrapper>
 					<Row style={{margin:'40px 0'}}>
 						<Col  offset={6} >
 							<h1>Product creation</h1>
@@ -513,14 +514,14 @@ class ProductsPage extends Component {
 						))
 					}
 					<FormItem {...formItemLayoutWithOutLabel} >
-						<Button type="dashed" size="large" onClick={this.handleAddAction}  style={{width:'100%' }}>
+						<Button type="dashed" size="large" height={200} onClick={this.handleAddAction}  style={{width:'100%' }}>
 						<Icon type="plus" />Add action
 						</Button>
 					</FormItem>
 				</div>
 			</Form>	
 
-			</div>
+			</ContentWrapper>
 		);
   }
 }

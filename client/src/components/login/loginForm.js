@@ -3,8 +3,9 @@ import { connect } from "react-redux";
 import { login } from "../../actions/auth_actions";
 import { Link } from 'react-router-dom';
 import { withRouter } from "react-router-dom";
+import  CardWrapper from "../common/CardWrapper";
 
-import { Form, Icon, Input, Button, Checkbox } from 'antd';
+import { Form, Icon, Input, Button, Checkbox ,Card ,Col, Layout} from 'antd';
 const FormItem = Form.Item;
 
 class LoginForm extends Component {
@@ -58,39 +59,52 @@ class LoginForm extends Component {
     });
   }
 	render() {
-		const formItemLayout = {
-			wrapperCol: {
-				xs: { span: 24 },
-				sm: { span: 6, offset:9},
-			},
+		const colLayout = {
+			xs: { span: 24},//'480px',
+			sm: { span: 18, offset:3},//'768px',
+			md: { span: 14, offset:5},//'992px',
+			lg: { span: 12, offset:6},//'992px',
+			xl: { span: 8, offset:8},//'992px',
 		};
 		const { getFieldDecorator } = this.props.form;
 		return (
-			<Form onSubmit={this.handleSubmit} className="login-form" >
-				<FormItem {...formItemLayout}>
-					{getFieldDecorator('userName', {
-						rules: [{ required: true, message: 'Please input your username!' }],
-					})(
-						<Input size="large" prefix={<Icon type="user" style={{ color: 'rgba(0,0,0,.25)' }} />} placeholder="Username" />
-					)}
-				</FormItem>
-				<FormItem {...formItemLayout}>
-					{getFieldDecorator('password', {
-						rules: [{ required: true, message: 'Please input your Password!' }],
+			
+
+				<CardWrapper style={colLayout}>
+				<Form onSubmit={this.handleSubmit} className="login-form" >
+					<FormItem >
+						{getFieldDecorator('userName', {
+							rules: [{ required: true, message: 'Please input your username!' }],
 						})(
-							<Input size="large" prefix={<Icon type="lock" style={{ color: 'rgba(0,0,0,.25)' }} />} type="password" placeholder="Password" />
+							<Input size="large" prefix={<Icon type="user" style={{ color: 'rgba(0,0,0,.25)' }} />} placeholder="Username" />
 						)}
-				</FormItem>
-				<FormItem {...formItemLayout}>
-						<Button type="primary" htmlType="submit" className="login-form-button" style={{width:'100%'}} size="large">
-							Log in
-						</Button>
-						<div style={{textAlign:'center'}}><span>Have a user  <a href="">register now!</a></span></div>
-				</FormItem>
-			</Form>
+					</FormItem>
+					<FormItem >
+						{getFieldDecorator('password', {
+							rules: [{ required: true, message: 'Please input your Password!' }],
+							})(
+								<Input size="large" prefix={<Icon type="lock" style={{ color: 'rgba(0,0,0,.25)' }} />} type="password" placeholder="Password" />
+							)}
+					</FormItem>
+					<FormItem >
+							<Button type="primary" htmlType="submit" className="login-form-button" style={{width:'100%'}} size="large">
+								Log in
+							</Button>
+							<div style={{textAlign:'center'}}>
+								<span>Dont have a user  
+									<Link to="/signup">  Register now!</Link>
+								</span>
+							</div>
+					</FormItem>
+				</Form>
+				</CardWrapper>
+
+
 		);
 	}
 }
+
+
 
 
 // function mapDispatchToProps(dispatch) {
