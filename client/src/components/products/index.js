@@ -1,7 +1,9 @@
 import React, { Component } from 'react';
-import {List, Tabs, Upload, Icon, message,Button, Modal, Form, Input, Radio ,Row, Col, Tag, Tooltip} from 'antd';
+import {List, Tabs, Upload, Icon, message,Button, Modal, Form, Input, Radio ,Row, Col, Tag, Tooltip,Collapse} from 'antd';
 import { connect } from "react-redux";
 import  ContentWrapper from "../common/ContentWrapper";
+
+const {Panel} = Collapse.Panel;
 
 const FormItem = Form.Item;
 const { TextArea } = Input;
@@ -416,7 +418,9 @@ class ProductsPage extends Component {
 					{
 
 						this.state.actions.map((action, aid) => (
-									<div style={{
+									<div
+										key={action,aid}  
+										style={{
 										border: '3px solid #ebedf0',
 										borderRadius: '10px',
 										padding: '20px',
@@ -447,7 +451,9 @@ class ProductsPage extends Component {
 								{
 									action.properties.map((property,pid) => (
 
-									<div style={{
+									<div
+										key={property,pid} 
+										style={{
 										border: '1px solid #ebedf0',
 										borderRadius: '2px',
 										padding: '20px',

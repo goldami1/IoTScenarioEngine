@@ -7,11 +7,13 @@ const Navigation = props => {
 	const links = props.links.map(link => {
 			const [url, title, icon] = link;
 			return (
-				<Menu.Item key={url}>					
+				<Menu.Item key={url}>
+							
 					<Link key={url} to={url}>
 						<Icon type={icon} />
 						<span>{title}</span>
 					</Link>
+				
 				</Menu.Item>	
 			);
 		}

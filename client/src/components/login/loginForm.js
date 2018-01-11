@@ -60,18 +60,11 @@ class LoginForm extends Component {
     });
   }
 	render() {
-		const colLayout = {
-			xs: { span: 24},//'480px',
-			sm: { span: 18, offset:3},//'768px',
-			md: { span: 14, offset:5},//'992px',
-			lg: { span: 12, offset:6},//'992px',
-			xl: { span: 8, offset:8},//'992px',
-		};
 		const { getFieldDecorator } = this.props.form;
 		return (
 			
 
-				<CardWrapper style={colLayout}>
+			<CardWrapper size="small">
 				<Form onSubmit={this.handleSubmit} className="login-form" >
 					<FormItem >
 						{getFieldDecorator('userName', {
@@ -100,7 +93,7 @@ class LoginForm extends Component {
 							</div>
 					</FormItem>
 				</Form>
-				</CardWrapper>
+			</CardWrapper>
 		);
 	}
 }

@@ -26,7 +26,7 @@ class MainRouter extends PureComponent {
 		return (
 			<App>
 				<Switch>
-					<Route path="/login" component={LoginPage} />
+					<Route path="/login"   component={LoginPage} />
 					<Route path="/signup" component={RegisterPage}  />
 					<Route exact path="/devices" component={requireAuth(DevicesPage)} />
 					<Route path='/devices/add' component={DeviceForm} />
