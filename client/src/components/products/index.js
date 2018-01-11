@@ -2,9 +2,8 @@ import React, { Component } from 'react';
 import {List, Tabs, Upload, Icon, message,Button, Modal, Form, Input, Radio ,Row, Col, Tag, Tooltip,Collapse} from 'antd';
 import { connect } from "react-redux";
 import  ContentWrapper from "../common/ContentWrapper";
-
+import ActionEvent from './ActionEvent';
 const {Panel} = Collapse.Panel;
-
 const FormItem = Form.Item;
 const { TextArea } = Input;
 
@@ -363,7 +362,8 @@ class ProductsPage extends Component {
 			sm: { span: 10, offset: 6 },
 			},
 		};
-
+		const Actions = <ActionEvent formItemLayout={formItemLayout} formItemLayoutWithOutLabel={formItemLayoutWithOutLabel}/>;
+		const Events = <ActionEvent formItemLayout={formItemLayout} formItemLayoutWithOutLabel={formItemLayoutWithOutLabel}/>;
 		return (
 			<ContentWrapper>
 					<Row style={{margin:'40px 0'}}>
@@ -410,120 +410,8 @@ class ProductsPage extends Component {
 					</FormItem>					
 
 				<div>
-					<Row style={{margin:'40px 0 10px'}}>
-						<Col  offset={6} >
-							<h3>Actions</h3>
-						</Col>
-					</Row>
-					{
-
-						this.state.actions.map((action, aid) => (
-									<div
-										key={action,aid}  
-										style={{
-										border: '3px solid #ebedf0',
-										borderRadius: '10px',
-										padding: '20px',
-										margin:' 0 0 60px'
-									}}>
-							<div >
-							<FormItem label="Name" {...formItemLayout}>
-								<Input
-									size="large"
-									name="name"
-									placeholder={`Action ${aid} name`}
-									value={action.name}
-									onChange={this.handleActionChange(aid)}/>
-							</FormItem>
-							<FormItem label="Description" {...formItemLayout}>
-								<TextArea
-									size="large"
-									name="description"
-									placeholder={`Action ${aid} description`}
-									value={action.description}
-									onChange={this.handleActionChange(aid)}/>
-							</FormItem>
-												<Row style={{margin:'40px 0 10px'}}>
-						<Col  offset={6} >
-							<h3>Properties</h3>
-						</Col>
-					</Row>
-								{
-									action.properties.map((property,pid) => (
-
-									<div
-										key={property,pid} 
-										style={{
-										border: '1px solid #ebedf0',
-										borderRadius: '2px',
-										padding: '20px',
-										margin:' 0 0 16px'
-									}}>
-
-										<FormItem label="Name" {...formItemLayout}>	
-											<Input
-												size="large"
-												name="name"
-												placeholder={`Action ${aid}  Property  ${pid} name`}
-												value={property.name}
-												onChange={this.handlePropertyChange(aid,pid)}/>
-										</FormItem>
-										<FormItem label="Description" {...formItemLayout}>
-											<TextArea
-												size="large"
-												name="description"
-												placeholder={`Action ${aid}  Property  ${pid} description`}
-												value={property.description}
-												onChange={this.handlePropertyChange(aid,pid)}/>
-										</FormItem>
-										<FormItem label="Endpoint" {...formItemLayout}>	
-											<Input
-												size="large"
-												name="endpoint"
-												placeholder={`Action ${aid}  Property  ${pid} name`}
-												value={property.endpoint}
-												onChange={this.handlePropertyChange(aid,pid)}/>
-										</FormItem>		
-										<FormItem label="Type" {...formItemLayout}>
-											<Radio.Group value={property.type} name="type" onChange={this.handlePropertyChange(aid,pid)}>
-												<Radio.Button value="string">String</Radio.Button>
-												<Radio.Button value="int">Int</Radio.Button>
-												<Radio.Button value="double">Double</Radio.Button>
-												<Radio.Button value="discrete">Discrete</Radio.Button>
-											</Radio.Group>
-										</FormItem>
-											{ this.getAdditional(property,aid,pid,formItemLayout,formItemLayoutWithOutLabel) }
-
-										<FormItem {...formItemLayoutWithOutLabel}>
-											<Button onClick={this.handleRemoveProperty(aid,pid)} size="large"  style={{width:'100%' }}>
-												<Icon type="minus" />Remove property
-											</Button>
-										</FormItem>
-
-									</div>
-		
-									))
-								}
-		
-								<FormItem {...formItemLayoutWithOutLabel}>
-									<Button type="dashed" onClick={this.handleAddProperty(aid)} size="large"  style={{width:'100%' }}>
-										<Icon type="plus" />Add property
-									</Button>
-								</FormItem>
-								<FormItem {...formItemLayoutWithOutLabel}>
-									<Button onClick={this.handleRemoveAction(aid)}  size="large" style={{width:'100%' }}>
-										<Icon type="minus" />Remove action
-									</Button>
-								</FormItem>
-							</div>
-							</div>
-						))
-					}
-					<FormItem {...formItemLayoutWithOutLabel} >
-						<Button type="dashed" size="large" height={200} onClick={this.handleAddAction}  style={{width:'100%' }}>
-						<Icon type="plus" />Add action
-						</Button>
-					</FormItem>
+					{/*{Actions}*/}
+					{/*{Events}*/}
 				</div>
 			</Form>	
 

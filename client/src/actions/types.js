@@ -21,5 +21,5 @@ export const DELETE_PRODUCT 	= 'DELETE_PRODUCT';
 export const ADD_PRODUCT 		= 'ADD_PRODUCT';
 export const REQUEST_PRODUCTS 	= 'REQUEST_PRODUCTS';
 
-export const REMOVE_BANNER	= 'REMOVE_BANNER';
-export const SET_BANNER	= 'SET_BANNER';
+
+export const SET_MESSAGE	= 'SET_MESSAGE';

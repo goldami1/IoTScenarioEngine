@@ -1,15 +1,15 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import {withRouter} from "react-router-dom";
-import { addBanner,removeBanner } from "../actions/app_actions";
+import { setMessage, } from "../actions/appActions";
 
 export default function(ComposedComponent) {
   class Authenticate extends React.Component {
     componentWillMount() {
       if (!this.props.isAuthenticated) {
-        this.props.addBanner('The page you asked for require authentication . Please log in');
+        this.props.setMessage({content:'The page you asked for require authentication . Please log in'});
         this.props.history.push("/login");
-        setTimeout( () => { this.props.removeBanner() }, 5000);
+        setTimeout( () => { this.props.setMessage({content:''}) }, 5000);
       }
     }
 
@@ -32,5 +32,5 @@ export default function(ComposedComponent) {
     };
   }
   
-  return connect(mapStateToProps, {addBanner , removeBanner} )(withRouter(Authenticate));
+  return connect(mapStateToProps, {setMessage} )(withRouter(Authenticate));
 }

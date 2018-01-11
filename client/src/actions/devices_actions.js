@@ -1,3 +1,4 @@
+import isEmpty from 'lodash';
 import axios from 'axios';
 import { 
 	SELECT_DEVICE, 			
@@ -8,7 +9,6 @@ import {
 	RECEIVE_VENDORS,		
 	RECEIVE_PRODUCTS
 } from './types';
-
 
 
 const test_url = 'http://demo6475105.mockable.io/devices';
@@ -58,11 +58,16 @@ export function fetchDevices() {
 	return (dispatch,getState) => {
 		const {auth} = getState();
 		return axios.get(device_url+auth.user.id).then(
-
-			res =>{ 
-				console.log(res.data);
-				dispatch(receiveDevices(res.data))},
-		  	err => dispatch(errorOccured(err.response.data.error))
+			res => {
+		  		try { dispatch(receiveDevices(res.data)) }	  			
+		  		catch(e) { console.error(`FETCH_DEVICES_RESPNSE_ERROR: ${e}`,res.data); } 				
+			},
+		  	err => {
+		  		try { dispatch(errorOccured(err.response.data)) }	  			
+		  		catch(e) { 
+		  			console.error(`FETCH_DEVICES_ERROR: ${e}`,err,err.response); 
+		  		} 
+		  	}
 		);
 	}
 }
@@ -75,10 +80,13 @@ export function deleteDevice(device) {
 	return dispatch => {
 		return axios.delete(delete_ulr).then(
 			res => {
-				dispatch(deviceDeleted(res.data));
-				dispatch(fetchDevices(device.customer_id))
+				try{dispatch(deviceDeleted(res.data));dispatch(fetchDevices(device.customer_id));}
+				catch(e){ console.error(`DELETE_DEVICE_RESPONSE_ERROR: ${e}`,res.data); }
 			},
-		  	err => dispatch(errorOccured(err.response.data.error))
+		  	err => {
+		  		try {dispatch(errorOccured(err.response.data.error))}	  			
+		  		catch(e) { console.error(`DELETE_DEVICE_ERROR: ${e}`,err,err.response); }
+		  	}
 		);
 	}
 }
@@ -93,9 +101,13 @@ export function addDevice(device) {
 		console.log(auth);
 		return axios.post(device_url+auth.user.id,device).then(
 			res => {
-				dispatch(fetchDevices(device.customer_id))
+				try {dispatch(fetchDevices(device.customer_id)) }	  			
+		  		catch(e) { console.error(`ADD_DEVICE_RESPONSE_ERROR: ${e}`,res.data); }						
 			},
-		  	err => dispatch(errorOccured(err.response.data.error))
+		  	err => {
+		  		try {dispatch(errorOccured(err.response.data.error))}	  			
+		  		catch(e) { console.error(`ADD_DEVICE_ERROR: ${e}`,err.response); }
+		  	}
 		);
 	}
 }
@@ -105,14 +117,14 @@ export function fetchProducts(vendor) {
 
 		return axios.get(products_url+vendor).then(
 			res => {
-				console.log('products get');
-				console.log(res.data);
-				dispatch(receiveProducts(res.data))
+				try { dispatch(receiveProducts(res.data)) }	  			
+		  		catch(e) { console.error(`FETCH_PRODUCTS_RESPONSE_ERROR: ${e}`,res.data); }
+				
 			},
 		  	err => {
-				console.log('products err');
-				console.log(err.response.data);		  		
-		  		dispatch(errorOccured(err.response.data.error))}
+		  		try { dispatch(errorOccured(err.response.data.error))}	  			
+		  		catch(e) { console.error(`FETCH_PRODUCTS_ERROR: ${e}`,err.response); } 
+		  	}
 		);
 	}
 }
@@ -122,15 +134,12 @@ export function fetchVendors() {
 	return dispatch => {
 		return axios.get(vendors_url).then(
 			res => {
-				console.log('vendors');
-				console.log(res.data);
-				dispatch(receiveVendors(res.data));
-			}
-				,
+				try { dispatch(receiveVendors(res.data));}	  			
+		  		catch(e) { console.error(`FETCH_VENDORS_RESPONSE_ERROR: ${e}`); } 	
+			},
 		  	err => {
-		  		console.log('vendors err');
-				console.log(err.response.data);
-		  		dispatch(errorOccured(err.response.data.error))
+		  		try { dispatch(errorOccured(err.response.data)) }	  			
+		  		catch(e) { console.error(`FETCH_VENDORS_ERROR: ${e}`); } 
 		  	}
 		);
 	}
