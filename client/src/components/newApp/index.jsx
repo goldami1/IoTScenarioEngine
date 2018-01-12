@@ -2,7 +2,7 @@
 import React, { PureComponent } from 'react';
 import { Link , withRouter } from 'react-router-dom';
 import { connect } from "react-redux";
-import {Avatar,Popover, Layout, Menu, Icon , Dropdown, Button, message} from 'antd';
+import {Avatar,Popconfirm, Popover, Layout, Menu, Icon , Dropdown, Button, message} from 'antd';
 import Navigation from './navigation';
 import links  from './links';
 import {setMessage} from '../../actions/appActions';
@@ -25,28 +25,29 @@ class App extends PureComponent {
 	}
 	
 	message = () => {
+		message.config({getContainer:this})
 		if (this.props.message) {
 			message.error(this.props.message);
 		}
 	};
 
 	render() {
-		{this.message()}
+
 		const { auth, location } = this.props;
+		{this.message()}
 		return (
 			<Layout  style={{ minHeight: '100vh' }}>
 				<Sider collapsible collapsed={this.state.collapsed} onCollapse={this.onCollapse}
 					style={{ position: 'relative', overflow:'hidden', paddingTop:60}}
 				>
-					
 					<Navigation links={links(auth)} selected={location.pathname} />
 				
 						<div style={{textAlign: 'center',position: 'absolute',bottom: 0 ,width:'100%',marginBottom:'60px'}}>
 							<Avatar shape="square" size="large" icon="user" style={{background:'#08c'}} />
-						</div>
+						</div> 
 				</Sider>
 				<Layout style={{height: '100vh'}}>
-					<Content>
+					<Content >
 						{this.props.children}
 					</Content>
 					<Footer style={{ textAlign: 'center' }}>

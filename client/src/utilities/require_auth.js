@@ -9,7 +9,7 @@ export default function(ComposedComponent) {
       if (!this.props.isAuthenticated) {
         this.props.setMessage({content:'The page you asked for require authentication . Please log in'});
         this.props.history.push("/login");
-        setTimeout( () => { this.props.setMessage({content:''}) }, 5000);
+        setTimeout( () => { this.props.setMessage({content:''}) }, 50);
       }
     }
 

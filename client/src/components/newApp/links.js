@@ -13,8 +13,7 @@ export default function links(auth) {
 		);
 		case 'vendor':  return (
 			[
-				['/login', 'Login', 'login'],
-				['/signup', 'Singup', 'user-add'],
+				['/products', 'Products', 'appstore-o']
 			]
 		);
 		default: return (

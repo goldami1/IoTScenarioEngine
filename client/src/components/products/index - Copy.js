@@ -107,38 +107,51 @@ class ProductsPage extends Component {
 		}) 
 	}
 
-	handleRemoveAE = (aeIndex,ae) => () => {
+	handleRemoveAction = (aid) => () => {
 		this.setState({
-			[ae]: this.state[ae].filter((s, saeIndex) => aeIndex !== saeIndex)
+			actions: this.state.actions.filter((s, said) => aid !== said)
 		});
 	}
 
-
-	handleRemoveProperty = (aeIndex,aePropId,ae) => (event) => {
+	handleRemoveProperty = (aid,pid) => (event) => {
 		this.setState({
-			[ae]: this.state[ae].map((singleAe, index) => {
+			actions: this.state.actions.map((action, index) => {
 				var prop;
-				if(index === aeIndex){
-					prop = singleAe.properties.filter((property,pindex) => pindex !== aePropId)
+				if(index === aid){
+					prop = action.properties.filter((property,pindex) => pindex !== pid)
 					return {
-						...singleAe, properties:prop
+						...action, properties:prop
 					}	
 				}
-				return singleAe;
+				return action;
 			})
 
 		});
 	}
-	handleChangeProperty = (aeIndex,aePropId,ae,isOption) => (event) => {
-		console.log(aeIndex,aePropId,isOption,ae);
+
+	handleRemoveProperty = (aid,pid) => (event) => {
+		this.setState({
+			actions: this.state.actions.map((action, index) => {
+				var prop;
+				if(index === aid){
+					prop = action.properties.filter((property,pindex) => pindex !== pid)
+					return {
+						...action, properties:prop
+					}	
+				}
+				return action;
+			})
+
+		});
+	}
+	handlePropertyChange = (aid,pid,isOption) => (event) => {
 		const value = this.state.inputValue;
 		this.setState({
 			actions: this.state.actions.map((action, index) => {
 				var prop;
-				if(index === aeIndex){
+				if(index === aid){
 					prop = action.properties.map((property,pindex) => {
-						if (pindex === aePropId) {
-
+						if (pindex === pid) {
 							if (isOption) {
 								return {
 									...property,
@@ -162,26 +175,26 @@ class ProductsPage extends Component {
 	}
 
 
-	handleChangeAE = (aeIndex,ae) => (event) => {
-		const newAE = this.state[ae].map((singleAe, saeIndex) => {
-		if (aeIndex !== saeIndex) return singleAe;
-			return { ...singleAe, [event.target.name]: event.target.value };
+	handleActionChange = (aid) => (event) => {
+		const newAction = this.state.actions.map((action, said) => {
+		if (aid !== said) return action;
+			return { ...action, [event.target.name]: event.target.value };
 		});
 
-		this.setState({ [ae]: newAE });
+		this.setState({ actions: newAction });
 	}
 
 
 
 
-	handleAddProperty = (aeIndex,ae) => ()=>{
-		console.log(this.state.actions[aeIndex]);
+	handleAddProperty = (aid) => ()=>{
+		console.log(this.state.actions[aid]);
 		this.setState({
-			[ae]: this.state[ae].map((singleAe, index) => {
-				if(index === aeIndex){
+			actions: this.state.actions.map((action, index) => {
+				if(index === aid){
 					return {
-						...singleAe,
-						properties: [...singleAe.properties,
+						...action,
+						properties: [...action.properties,
 						{
 							name: '',
 							description:'',
@@ -190,14 +203,14 @@ class ProductsPage extends Component {
 						}]
 					};
 				}
-				return singleAe;
+				return action;
 			})
 		});
 	}
 
-	handleAddAE = (ae) => () => {
+	handleAddAction = () => {
 		this.setState({
-			[ae]: this.state[ae].concat([
+			actions: this.state.actions.concat([
 				{
 					name:'',
 					description:'',
@@ -215,14 +228,14 @@ class ProductsPage extends Component {
 	}
 
 
-	handleClose = (aeIndex,aePropId,optionId,ae) => (event) => {
+	handleClose = (aid,pid,oid) => (event) => {
 		this.setState({
-			[ae]: this.state[ae].map((singleAe, index) => {
+			actions: this.state.actions.map((action, index) => {
 				var prop,opts;
-				if(index === aeIndex){
-					prop = singleAe.properties.map((property,pindex) => {
-						if (pindex === aePropId) {
-							opts = property.options.filter((option,oindex) => oindex !== optionId)
+				if(index === aid){
+					prop = action.properties.map((property,pindex) => {
+						if (pindex === pid) {
+							opts = property.options.filter((option,oindex) => oindex !== oid)
 							console.log({...property, options:opts})
 							return {
 								...property, options:opts
@@ -231,16 +244,16 @@ class ProductsPage extends Component {
 						return property
 					})
 					return {
-						singleAe,properties:prop
+						action,properties:prop
 					}	
 				}
-				return singleAe;
+				return action;
 			})
 		});
 	}
 
 
-	getInputsAccordingToType (property,aeIndex,aePropId,layout,lableLessLayout,ae) {
+	getAdditional (property,aid,pid,layout,lableLessLayout) {
 		switch (property.type){
 			case 'int':
 			case 'double':
@@ -253,13 +266,13 @@ class ProductsPage extends Component {
 										placeholder="minimum"
 										name="min"
 										value={property.min}
-										onChange={this.handleChangeProperty(aeIndex,aePropId,ae)}/>
+										onChange={this.handlePropertyChange(aid,pid)}/>
 									<Input
 										style={{ width: '25%' }}
 										placeholder="maximum"
 										name="max"
 										value={property.max}
-										onChange={this.handleChangeProperty(aeIndex,aePropId,ae)}/>
+										onChange={this.handlePropertyChange(aid,pid)}/>
 
 					        </Input.Group>					
 					
@@ -287,10 +300,10 @@ class ProductsPage extends Component {
 
 					<FormItem {...lableLessLayout} >
 						{
-							property.options.map((option, optionId) => {
+							property.options.map((option, oid) => {
 								const h= this.handleClose;
 								return  (
-									<Tag key={option} closable afterClose={this.handleClose(aeIndex,aePropId,optionId,ae)}>
+									<Tag key={option} closable afterClose={this.handleClose(aid,pid,oid)}>
 										{option}
 									</Tag>
 								);
@@ -308,7 +321,7 @@ class ProductsPage extends Component {
 									style={{ width: 78 }}
 									name="inputValue"
 									onChange={this.onChange}
-									onPressEnter={this.handleChangeProperty(aeIndex,aePropId,ae,true)}
+									onPressEnter={this.handlePropertyChange(aid,pid,true)}
 									onBlur={this.hideInput}
 								/>
 							)
@@ -320,9 +333,9 @@ class ProductsPage extends Component {
 		}
 	}
 
-	handleRemoveAE = (aeIndex,ae) => () => {
+	handleRemoveAction = (aid) => () => {
 		this.setState({
-			[ae]: this.state[ae].filter((singleAe, index) => aeIndex !== index)
+			actions: this.state.actions.filter((action, index) => aid !== index)
 		});
 	}
 
@@ -404,9 +417,9 @@ class ProductsPage extends Component {
 					</Row>
 					{
 
-						this.state.actions.map((action, aeIndex) => (
+						this.state.actions.map((action, aid) => (
 									<div
-										key={action,aeIndex}  
+										key={action,aid}  
 										style={{
 										border: '3px solid #ebedf0',
 										borderRadius: '10px',
@@ -418,17 +431,17 @@ class ProductsPage extends Component {
 								<Input
 									size="large"
 									name="name"
-									placeholder={`Action ${aeIndex} name`}
+									placeholder={`Action ${aid} name`}
 									value={action.name}
-									onChange={this.handleChangeAE(aeIndex,'actions')}/>
+									onChange={this.handleActionChange(aid)}/>
 							</FormItem>
 							<FormItem label="Description" {...formItemLayout}>
 								<TextArea
 									size="large"
 									name="description"
-									placeholder={`Action ${aeIndex} description`}
+									placeholder={`Action ${aid} description`}
 									value={action.description}
-									onChange={this.handleChangeAE(aeIndex,'actions')}/>
+									onChange={this.handleActionChange(aid)}/>
 							</FormItem>
 												<Row style={{margin:'40px 0 10px'}}>
 						<Col  offset={6} >
@@ -436,10 +449,10 @@ class ProductsPage extends Component {
 						</Col>
 					</Row>
 								{
-									action.properties.map((property,aePropId) => (
+									action.properties.map((property,pid) => (
 
 									<div
-										key={property,aePropId} 
+										key={property,pid} 
 										style={{
 										border: '1px solid #ebedf0',
 										borderRadius: '2px',
@@ -451,38 +464,38 @@ class ProductsPage extends Component {
 											<Input
 												size="large"
 												name="name"
-												placeholder={`Action ${aeIndex}  Property  ${aePropId} name`}
+												placeholder={`Action ${aid}  Property  ${pid} name`}
 												value={property.name}
-												onChange={this.handleChangeProperty(aeIndex,aePropId,'actions')}/>
+												onChange={this.handlePropertyChange(aid,pid)}/>
 										</FormItem>
 										<FormItem label="Description" {...formItemLayout}>
 											<TextArea
 												size="large"
 												name="description"
-												placeholder={`Action ${aeIndex}  Property  ${aePropId} description`}
+												placeholder={`Action ${aid}  Property  ${pid} description`}
 												value={property.description}
-												onChange={this.handleChangeProperty(aeIndex,aePropId,'actions')}/>
+												onChange={this.handlePropertyChange(aid,pid)}/>
 										</FormItem>
 										<FormItem label="Endpoint" {...formItemLayout}>	
 											<Input
 												size="large"
 												name="endpoint"
-												placeholder={`Action ${aeIndex}  Property  ${aePropId} name`}
+												placeholder={`Action ${aid}  Property  ${pid} name`}
 												value={property.endpoint}
-												onChange={this.handleChangeProperty(aeIndex,aePropId,'actions')}/>
+												onChange={this.handlePropertyChange(aid,pid)}/>
 										</FormItem>		
 										<FormItem label="Type" {...formItemLayout}>
-											<Radio.Group value={property.type} name="type" onChange={this.handleChangeProperty(aeIndex,aePropId,'actions')}>
+											<Radio.Group value={property.type} name="type" onChange={this.handlePropertyChange(aid,pid)}>
 												<Radio.Button value="string">String</Radio.Button>
 												<Radio.Button value="int">Int</Radio.Button>
 												<Radio.Button value="double">Double</Radio.Button>
 												<Radio.Button value="discrete">Discrete</Radio.Button>
 											</Radio.Group>
 										</FormItem>
-											{ this.getInputsAccordingToType(property,aeIndex,aePropId,formItemLayout,formItemLayoutWithOutLabel,'actions') }
+											{ this.getAdditional(property,aid,pid,formItemLayout,formItemLayoutWithOutLabel) }
 
 										<FormItem {...formItemLayoutWithOutLabel}>
-											<Button onClick={this.handleRemoveProperty(aeIndex,aePropId,'actions')} size="large"  style={{width:'100%' }}>
+											<Button onClick={this.handleRemoveProperty(aid,pid)} size="large"  style={{width:'100%' }}>
 												<Icon type="minus" />Remove property
 											</Button>
 										</FormItem>
@@ -493,12 +506,12 @@ class ProductsPage extends Component {
 								}
 		
 								<FormItem {...formItemLayoutWithOutLabel}>
-									<Button type="dashed" onClick={this.handleAddProperty(aeIndex,'actions')} size="large"  style={{width:'100%' }}>
+									<Button type="dashed" onClick={this.handleAddProperty(aid)} size="large"  style={{width:'100%' }}>
 										<Icon type="plus" />Add property
 									</Button>
 								</FormItem>
 								<FormItem {...formItemLayoutWithOutLabel}>
-									<Button onClick={this.handleRemoveAE(aeIndex,'events')}  size="large" style={{width:'100%' }}>
+									<Button onClick={this.handleRemoveAction(aid)}  size="large" style={{width:'100%' }}>
 										<Icon type="minus" />Remove action
 									</Button>
 								</FormItem>
@@ -507,7 +520,7 @@ class ProductsPage extends Component {
 						))
 					}
 					<FormItem {...formItemLayoutWithOutLabel} >
-						<Button type="dashed" size="large" height={200} onClick={this.handleAddAE('actions')}  style={{width:'100%' }}>
+						<Button type="dashed" size="large" height={200} onClick={this.handleAddAction}  style={{width:'100%' }}>
 						<Icon type="plus" />Add action
 						</Button>
 					</FormItem>
