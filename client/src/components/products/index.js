@@ -2,7 +2,8 @@ import React, { Component } from 'react';
 import {List, Tabs, Upload, Icon, message,Button, Modal, Form, Input, Radio ,Row, Col, Tag, Tooltip,Collapse} from 'antd';
 import { connect } from "react-redux";
 import  ContentWrapper from "../common/ContentWrapper";
-
+import { addProduct } from "../../actions/productActions";
+import ActionEvent from './ActionEvent';
 const {Panel} = Collapse.Panel;
 
 const FormItem = Form.Item;
@@ -133,10 +134,10 @@ class ProductsPage extends Component {
 		console.log(aeIndex,aePropId,isOption,ae);
 		const value = this.state.inputValue;
 		this.setState({
-			actions: this.state.actions.map((action, index) => {
+			[ae]: this.state[ae].map((singleAe, index) => {
 				var prop;
 				if(index === aeIndex){
-					prop = action.properties.map((property,pindex) => {
+					prop = singleAe.properties.map((property,pindex) => {
 						if (pindex === aePropId) {
 
 							if (isOption) {
@@ -152,10 +153,10 @@ class ProductsPage extends Component {
 						return property;
 					})
 					return {
-						...action, properties:prop
+						...singleAe, properties:prop
 					}	
 				}
-				return action;
+				return singleAe;
 			})
 
 		});
@@ -239,8 +240,23 @@ class ProductsPage extends Component {
 		});
 	}
 
+	onSubmit =  (event) =>{
+			event.preventDefault();
+			this.setState({
+				isLoading: true 
+			});
+			this.props.addProduct({
+				name:this.state.name,
+				description:this.state.description,
+				endpoint:this.state.endpoint,
+				image:this.state.image,
+				actions:this.state.actions,
+				events:this.state.events,
+			})
+		}
 
-	getInputsAccordingToType (property,aeIndex,aePropId,layout,lableLessLayout,ae) {
+	getInputsAccordingToType = (property,aeIndex,aePropId,layout,lableLessLayout,ae)=> {
+		console.log(property,aeIndex,aePropId,layout,lableLessLayout,ae);
 		switch (property.type){
 			case 'int':
 			case 'double':
@@ -267,7 +283,7 @@ class ProductsPage extends Component {
 					</div>
 				)
 			case 'discrete':
-				const {image, endpoint, name, description, tags, inputVisible, inputValue } = this.state;
+				const { tags, inputVisible, inputValue } = this.state;
 				return (
 					<div>
 					<FormItem label="Options" {...layout} >
@@ -351,6 +367,55 @@ class ProductsPage extends Component {
 			},
 		};
 
+	    const formItemLayout1 = {
+	      labelCol: {
+	        xs: { span: 24 , offset: 0},
+	        sm: { span: 6 , offset: 0},
+	      },
+	      wrapperCol: {
+	        xs: { span: 24 , offset: 0 },
+	        sm: { span: 10 , offset: 0},
+	      },
+	    };
+		const formItemLayoutWithOutLabel1 = {
+			wrapperCol: {
+			xs: { span: 24, offset: 0 },
+			sm: { span: 10, offset: 6 },
+			},
+		};
+
+		const Actions = (
+			<ActionEvent 
+				formItemLayoutWithOutLabel={formItemLayoutWithOutLabel1}
+				formItemLayout={formItemLayout}
+				aeCollection={this.state.actions}
+				ae='actions'
+				handleChangeAE = {this.handleChangeAE}
+				getInputsAccordingToType  = {this.getInputsAccordingToType }
+				handleChangeProperty   = {this.handleChangeProperty  }
+				handleRemoveProperty  = {this.handleRemoveProperty }
+				handleAddProperty = {this.handleAddProperty }
+				handleRemoveAE ={this.handleRemoveAE }
+				handleAddAE ={this.handleAddAE }
+			/>);
+
+
+		const Events = (
+			<ActionEvent 
+				formItemLayoutWithOutLabel={formItemLayoutWithOutLabel}
+				formItemLayout={formItemLayout}
+				aeCollection={this.state.events}
+				ae='events'
+				handleChangeAE = {this.handleChangeAE}
+				getInputsAccordingToType  = {this.getInputsAccordingToType }
+				handleChangeProperty   = {this.handleChangeProperty  }
+				handleRemoveProperty  = {this.handleRemoveProperty }
+				handleAddProperty = {this.handleAddProperty }
+				handleRemoveAE ={this.handleRemoveAE }
+				handleAddAE ={this.handleAddAE }
+			/>);
+
+
 		return (
 			<ContentWrapper>
 					<Row style={{margin:'40px 0'}}>
@@ -395,123 +460,14 @@ class ProductsPage extends Component {
 						value={endpoint} 
 						onChange={this.onChange}/>
 					</FormItem>					
-
-				<div>
-					<Row style={{margin:'40px 0 10px'}}>
-						<Col  offset={6} >
-							<h3>Actions</h3>
-						</Col>
-					</Row>
-					{
-
-						this.state.actions.map((action, aeIndex) => (
-									<div
-										key={action,aeIndex}  
-										style={{
-										border: '3px solid #ebedf0',
-										borderRadius: '10px',
-										padding: '20px',
-										margin:' 0 0 60px'
-									}}>
-							<div >
-							<FormItem label="Name" {...formItemLayout}>
-								<Input
-									size="large"
-									name="name"
-									placeholder={`Action ${aeIndex} name`}
-									value={action.name}
-									onChange={this.handleChangeAE(aeIndex,'actions')}/>
-							</FormItem>
-							<FormItem label="Description" {...formItemLayout}>
-								<TextArea
-									size="large"
-									name="description"
-									placeholder={`Action ${aeIndex} description`}
-									value={action.description}
-									onChange={this.handleChangeAE(aeIndex,'actions')}/>
-							</FormItem>
-												<Row style={{margin:'40px 0 10px'}}>
-						<Col  offset={6} >
-							<h3>Properties</h3>
-						</Col>
-					</Row>
-								{
-									action.properties.map((property,aePropId) => (
-
-									<div
-										key={property,aePropId} 
-										style={{
-										border: '1px solid #ebedf0',
-										borderRadius: '2px',
-										padding: '20px',
-										margin:' 0 0 16px'
-									}}>
-
-										<FormItem label="Name" {...formItemLayout}>	
-											<Input
-												size="large"
-												name="name"
-												placeholder={`Action ${aeIndex}  Property  ${aePropId} name`}
-												value={property.name}
-												onChange={this.handleChangeProperty(aeIndex,aePropId,'actions')}/>
-										</FormItem>
-										<FormItem label="Description" {...formItemLayout}>
-											<TextArea
-												size="large"
-												name="description"
-												placeholder={`Action ${aeIndex}  Property  ${aePropId} description`}
-												value={property.description}
-												onChange={this.handleChangeProperty(aeIndex,aePropId,'actions')}/>
-										</FormItem>
-										<FormItem label="Endpoint" {...formItemLayout}>	
-											<Input
-												size="large"
-												name="endpoint"
-												placeholder={`Action ${aeIndex}  Property  ${aePropId} name`}
-												value={property.endpoint}
-												onChange={this.handleChangeProperty(aeIndex,aePropId,'actions')}/>
-										</FormItem>		
-										<FormItem label="Type" {...formItemLayout}>
-											<Radio.Group value={property.type} name="type" onChange={this.handleChangeProperty(aeIndex,aePropId,'actions')}>
-												<Radio.Button value="string">String</Radio.Button>
-												<Radio.Button value="int">Int</Radio.Button>
-												<Radio.Button value="double">Double</Radio.Button>
-												<Radio.Button value="discrete">Discrete</Radio.Button>
-											</Radio.Group>
-										</FormItem>
-											{ this.getInputsAccordingToType(property,aeIndex,aePropId,formItemLayout,formItemLayoutWithOutLabel,'actions') }
-
-										<FormItem {...formItemLayoutWithOutLabel}>
-											<Button onClick={this.handleRemoveProperty(aeIndex,aePropId,'actions')} size="large"  style={{width:'100%' }}>
-												<Icon type="minus" />Remove property
-											</Button>
-										</FormItem>
-
-									</div>
-		
-									))
-								}
-		
-								<FormItem {...formItemLayoutWithOutLabel}>
-									<Button type="dashed" onClick={this.handleAddProperty(aeIndex,'actions')} size="large"  style={{width:'100%' }}>
-										<Icon type="plus" />Add property
-									</Button>
-								</FormItem>
-								<FormItem {...formItemLayoutWithOutLabel}>
-									<Button onClick={this.handleRemoveAE(aeIndex,'events')}  size="large" style={{width:'100%' }}>
-										<Icon type="minus" />Remove action
-									</Button>
-								</FormItem>
-							</div>
-							</div>
-						))
-					}
+					{Actions}
+					{Events}
 					<FormItem {...formItemLayoutWithOutLabel} >
-						<Button type="dashed" size="large" height={200} onClick={this.handleAddAE('actions')}  style={{width:'100%' }}>
-						<Icon type="plus" />Add action
+						<Button loading={this.state.isLoading}type="primary" size="large" height={200} onClick={this.onSubmit}  
+						style={{ marginTop:'60px', width:'100%', height:'60px' }}>
+						<Icon type="plus" />Submit
 						</Button>
 					</FormItem>
-				</div>
 			</Form>	
 
 			</ContentWrapper>
@@ -519,4 +475,4 @@ class ProductsPage extends Component {
   }
 }
 
-export default connect(null, null)(ProductsPage);
+export default connect(null, {addProduct})(ProductsPage);

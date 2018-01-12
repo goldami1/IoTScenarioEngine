@@ -25,7 +25,6 @@ class App extends PureComponent {
 	}
 	
 	message = () => {
-		message.config({getContainer:this})
 		if (this.props.message) {
 			message.error(this.props.message);
 		}

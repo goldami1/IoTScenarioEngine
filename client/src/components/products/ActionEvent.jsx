@@ -13,13 +13,15 @@ const ActionEvent = props => {
 				<div>
 					<Row style={{margin:'40px 0 10px'}}>
 						<Col  offset={6} >
-							<h3>{props.collectionName}</h3>
+							<h3>{props.ae}</h3>
 						</Col>
 					</Row>
 					{
 
-						props.collection.map((ae, aeid) => (
-									<div style={{
+						props.aeCollection.map((singleAe, aeIndex) => (
+									<div
+										key={singleAe,aeIndex}  
+										style={{
 										border: '3px solid #ebedf0',
 										borderRadius: '10px',
 										padding: '20px',
@@ -30,17 +32,17 @@ const ActionEvent = props => {
 								<Input
 									size="large"
 									name="name"
-									placeholder={`${props.collectionName} ${aeid} name`}
-									value={ae.name}
-									onChange={props.handleAEChange(aeid,props.collectionName)}/>
+									placeholder={`${props.ae} ${aeIndex} name`}
+									value={singleAe.name}
+									onChange={props.handleChangeAE(aeIndex,props.ae)}/>
 							</FormItem>
 							<FormItem label="Description" {...props.formItemLayout}>
 								<TextArea
 									size="large"
 									name="description"
-									placeholder={`${props.collectionName} ${aeid} description`}
-									value={ae.description}
-									onChange={props.handleAEChange(aeid,props.collectionName)}/>
+									placeholder={`${props.ae} ${aeIndex} description`}
+									value={singleAe.description}
+									onChange={props.handleChangeAE(aeIndex,props.ae)}/>
 							</FormItem>
 												<Row style={{margin:'40px 0 10px'}}>
 						<Col  offset={6} >
@@ -48,9 +50,11 @@ const ActionEvent = props => {
 						</Col>
 					</Row>
 								{
-									ae.properties.map((property,pid) => (
+									singleAe.properties.map((property,aePropId) => (
 
-									<div style={{
+									<div
+										key={property,aePropId} 
+										style={{
 										border: '1px solid #ebedf0',
 										borderRadius: '2px',
 										padding: '20px',
@@ -61,38 +65,38 @@ const ActionEvent = props => {
 											<Input
 												size="large"
 												name="name"
-												placeholder={`${props.collectionName} ${aeid}  Property  ${pid} name`}
+												placeholder={`${props.ae} ${aeIndex}  Property  ${aePropId} name`}
 												value={property.name}
-												onChange={props.handlePropertyChange(aeid,pid,props.collectionName)}/>
+												onChange={props.handleChangeProperty(aeIndex,aePropId,props.ae)}/>
 										</FormItem>
 										<FormItem label="Description" {...props.formItemLayout}>
 											<TextArea
 												size="large"
 												name="description"
-												placeholder={`${props.collectionName} ${aeid}  Property  ${pid} description`}
+												placeholder={`${props.ae} ${aeIndex}  Property  ${aePropId} description`}
 												value={property.description}
-												onChange={props.handlePropertyChange(aeid,pid,props.collectionName)}/>
+												onChange={props.handleChangeProperty(aeIndex,aePropId,props.ae)}/>
 										</FormItem>
 										<FormItem label="Endpoint" {...props.formItemLayout}>	
 											<Input
 												size="large"
 												name="endpoint"
-												placeholder={`${props.collectionName} ${aeid}  Property  ${pid} name`}
+												placeholder={`${props.ae} ${aeIndex}  Property  ${aePropId} name`}
 												value={property.endpoint}
-												onChange={props.handlePropertyChange(aeid,pid,props.collectionName)}/>
+												onChange={props.handleChangeProperty(aeIndex,aePropId,props.ae)}/>
 										</FormItem>		
 										<FormItem label="Type" {...props.formItemLayout}>
-											<Radio.Group value={property.type} name="type" onChange={props.handlePropertyChange(aeid,pid,props.collectionName)}>
+											<Radio.Group value={property.type} name="type" onChange={props.handleChangeProperty(aeIndex,aePropId,props.ae)}>
 												<Radio.Button value="string">String</Radio.Button>
 												<Radio.Button value="int">Int</Radio.Button>
 												<Radio.Button value="double">Double</Radio.Button>
 												<Radio.Button value="discrete">Discrete</Radio.Button>
 											</Radio.Group>
 										</FormItem>
-											{ props.getAdditional(property,aeid,pid,props.formItemLayout,props.formItemLayoutWithOutLabel,props.collectionName) }
+											{ props.getInputsAccordingToType(property,aeIndex,aePropId,props.formItemLayout,props.formItemLayoutWithOutLabel,props.ae) }
 
 										<FormItem {...props.formItemLayoutWithOutLabel}>
-											<Button onClick={props.handleRemoveProperty(aeid,pid,props.collectionName)} size="large"  style={{width:'100%' }}>
+											<Button onClick={props.handleRemoveProperty(aeIndex,aePropId,props.ae)} size="large"  style={{width:'100%' }}>
 												<Icon type="minus" />Remove property
 											</Button>
 										</FormItem>
@@ -103,13 +107,13 @@ const ActionEvent = props => {
 								}
 		
 								<FormItem {...props.formItemLayoutWithOutLabel}>
-									<Button type="dashed" onClick={props.handleAddProperty(aeid,props.collectionName)} size="large"  style={{width:'100%' }}>
+									<Button type="dashed" onClick={props.handleAddProperty(aeIndex,props.ae)} size="large"  style={{width:'100%' }}>
 										<Icon type="plus" />Add property
 									</Button>
 								</FormItem>
 								<FormItem {...props.formItemLayoutWithOutLabel}>
-									<Button onClick={props.handleRemoveAE(aeid,props.collectionName)}  size="large" style={{width:'100%' }}>
-										<Icon type="minus" />Remove {props.collectionName}
+									<Button onClick={props.handleRemoveAE(aeIndex,props.ae)}  size="large" style={{width:'100%' }}>
+										<Icon type="minus" />Remove {props.ae}
 									</Button>
 								</FormItem>
 							</div>
@@ -117,8 +121,8 @@ const ActionEvent = props => {
 						))
 					}
 					<FormItem {...props.formItemLayoutWithOutLabel} >
-						<Button type="dashed" size="large" height={200} onClick={props.handleAddAE(props.collectionName)}  style={{width:'100%' }}>
-						<Icon type="plus" />Add {props.collectionName}
+						<Button type="dashed" size="large" height={200} onClick={props.handleAddAE(props.ae)}  style={{width:'100%' }}>
+						<Icon type="plus" />Add {props.ae}
 						</Button>
 					</FormItem>
 				</div>
