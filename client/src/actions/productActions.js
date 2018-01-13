@@ -4,7 +4,7 @@ import {
 	PRODUCT_ERROR_OCCURED			
 } from './types';
 
-import {setMessage} from './appActions';
+import {setMessage,setUnknownError} from './appActions';
 
 const test_url = 'http://demo2037819.mockable.io/product';
 const error_url  = 'http://demo6475105.mockable.io/error';
@@ -31,12 +31,16 @@ export function addProduct(product) {
 			},
 		  	err => {
 		  		try {
-		  			dispatch(errorOccured(err.response.data.error));
-		  			dispatch(setMessage({content:'UNKOWN ERROR OCCURED'}));
-        			setTimeout( () => { dispatch(setMessage({})) }, 50);
+		  			const error = err.response.data.error;
+		  			if (error) {
+		  				dispatch(errorOccured(err.response.data.error));
+		  			}else{
+						dispatch(setUnknownError());  				
+		  			}
 		  		}	  			
 		  		catch(e) { 
-		  			console.log('err catch')
+		  				console.log('err catch');
+						dispatch(setUnknownError());
 			  			dispatch(setMessage({content:'UNKOWN ERROR OCCURED'}));
 	        			setTimeout( () => { dispatch(setMessage({})) }, 50);
 			  			console.error(`ADD_PRODUCT_ERROR: ${e}`,err.response); 

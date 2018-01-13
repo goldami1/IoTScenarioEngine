@@ -4,33 +4,38 @@ import {withRouter} from "react-router-dom";
 import { setMessage, } from "../actions/appActions";
 
 export default function(ComposedComponent) {
-  class Authenticate extends React.Component {
-    componentWillMount() {
-      if (!this.props.isAuthenticated) {
-        this.props.setMessage({content:'The page you asked for require authentication . Please log in'});
-        this.props.history.push("/login");
-        setTimeout( () => { this.props.setMessage({content:''}) }, 50);
-      }
-    }
+	class Authenticate extends React.Component {
+		componentWillMount() {
+			if (!this.props.isAuthenticated) {
+				this.props.setMessage(
+						{
+							content: 'The page you asked for require authentication . Please log in',
+							type: 'warning',
+						},
+						true
+					);
+				this.props.history.push("/login");
+			}
+		}
 
-    componentWillUpdate(nextProps) {
-      if (!nextProps.isAuthenticated) {
-        this.props.history.push("/")
-      }
-    }
+		componentWillUpdate(nextProps) {
+			if (!nextProps.isAuthenticated) {
+				this.props.history.push("/")
+			}
+		}
 
-    render() {
-      return (
-        <ComposedComponent {...this.props} />
-      );
-    }
-  }
+		render() {
+			return (
+				<ComposedComponent {...this.props} />
+			);
+		}
+	}
 
-  function mapStateToProps(state) {
-    return {
-      isAuthenticated: state.auth.isAuthenticated
-    };
-  }
-  
-  return connect(mapStateToProps, {setMessage} )(withRouter(Authenticate));
+	function mapStateToProps(state) {
+		return {
+			isAuthenticated: state.auth.isAuthenticated
+		};
+	}
+	
+	return connect(mapStateToProps, {setMessage} )(withRouter(Authenticate));
 }

@@ -24,16 +24,17 @@ class App extends PureComponent {
 		this.setState({ collapsed });
 	}
 	
-	message = () => {
-		if (this.props.message) {
-			message.error(this.props.message);
+	showMessage = () => {
+		const {content,type} = this.props.message;
+		if (content) {
+			message[type](content);
 		}
 	};
 
 	render() {
 
 		const { auth, location } = this.props;
-		{this.message()}
+		{this.showMessage()}
 		return (
 			<Layout  style={{ minHeight: '100vh' }}>
 				<Sider collapsible collapsed={this.state.collapsed} onCollapse={this.onCollapse}
@@ -62,7 +63,7 @@ class App extends PureComponent {
 function mapStateToProps({auth,app}) {
 	return {
 		auth,
-		message:app.message
+		message:app
 
 	}
 }

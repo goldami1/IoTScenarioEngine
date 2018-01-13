@@ -3,14 +3,16 @@ import isEmpty from 'lodash/isEmpty';
 
 
 const initialState = {
-	message:'',
+	content:'',
+	type:'warning'
 };
 
 export default (state = initialState, action = {}) => {
   switch(action.type) {
     case SET_MESSAGE:
 		return Object.assign({}, state, {
-			message:action.message.content
+			content:action.payload.content,
+			type:action.payload.type,
 		});
     default: return state;
   }

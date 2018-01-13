@@ -1,0 +1,29 @@
+
+-----------------------------------------------------------
+    IOT - Scenario Engine  #WE_ARE_GOING_TO_FAIL
+-----------------------------------------------------------
+
+
+	# Products:
+
+		List page: `DONE NOTHING`
+
+		Add/Edit page:
+			#Done: 
+				Design:	'looks bad'
+				Functionality: *FULLY WORKING*
+			#Todo:
+				Design:
+					1. Add side navigation
+					3. Decompose view and edit 
+						- Pan to show the list of actions/events (names only)
+						- Pan to show the current selected action/event
+							-- Allow properties to be collapsible
+
+	# Scenarios:
+		List page: `DONE NOTHING`
+		Add/Edit page: `DONE NOTHING`
+		
+
+
+
