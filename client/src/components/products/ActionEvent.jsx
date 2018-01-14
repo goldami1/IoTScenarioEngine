@@ -44,6 +44,14 @@ const ActionEvent = props => {
 									value={singleAe.description}
 									onChange={props.handleChangeAE(aeIndex,props.ae)}/>
 							</FormItem>
+							<FormItem label="Endpoint" {...props.formItemLayout}>	
+								<Input
+									size="large"
+									name="endpoint"
+									placeholder={`${props.ae} ${aeIndex}  endpoint` }
+									value={singleAe.endpoint}
+									onChange={props.handleChangeAE(aeIndex,props.ae)}/>
+							</FormItem>	
 												<Row style={{margin:'40px 0 10px'}}>
 						<Col  offset={6} >
 							<h3>Properties</h3>
@@ -77,14 +85,7 @@ const ActionEvent = props => {
 												value={property.description}
 												onChange={props.handleChangeProperty(aeIndex,aePropId,props.ae)}/>
 										</FormItem>
-										<FormItem label="Endpoint" {...props.formItemLayout}>	
-											<Input
-												size="large"
-												name="endpoint"
-												placeholder={`${props.ae} ${aeIndex}  Property  ${aePropId} name`}
-												value={property.endpoint}
-												onChange={props.handleChangeProperty(aeIndex,aePropId,props.ae)}/>
-										</FormItem>		
+	
 										<FormItem label="Type" {...props.formItemLayout}>
 											<Radio.Group value={property.type} name="type" onChange={props.handleChangeProperty(aeIndex,aePropId,props.ae)}>
 												<Radio.Button value="string">String</Radio.Button>

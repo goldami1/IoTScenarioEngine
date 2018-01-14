@@ -2,6 +2,8 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { Menu, Icon ,Badge} from 'antd';
+
+const {SubMenu} = Menu;
 const Navigation = props => {
 	
 	const links = props.links.map(link => {
@@ -20,15 +22,13 @@ const Navigation = props => {
 	);
 
 	return (
-		<Menu 	
-			theme="dark" 
+		<Menu
+			theme={ props.theme ? props.theme: 'dark'}
 			mode="inline" 
 			selectedKeys={[props.selected]} 
 			selectable={false}
-		> 
-
+		> 	
 			{links}		
-
 		</Menu>
 	);
 };

@@ -25,37 +25,10 @@ class ProductsPage extends Component {
 			description:'',
 			endpoint:'',
 			image:'',
-			actions:[
-				{
-					name:'',
-					description:'',
-					properties: [
-						{
-							name: '',
-							description:'',
-							type:'',
-							options: []
-						}
-					]
-				}
-			],
-			events:[
-				{
-					name:'',
-					description:'',
-					properties: [
-						{
-							name: '',
-							description:'',
-							type:'',
-							options: []
-						}
-					]
-				}
-			],
+			actions:[],
+			events:[],
 
 			inputValue:'',
-			tags: ['Unremovable', 'Tag 2', 'Tag 3'],
 			inputVisible: false,
 			loading: false,
 		};
@@ -76,28 +49,21 @@ class ProductsPage extends Component {
 		}
 	}
 
-	handleInputConfirm = () => {
 
-		const state = this.state;
-		const inputValue = state.inputValue;
-		let tags = state.tags;
-		if (inputValue && tags.indexOf(inputValue) === -1) {
-			tags = [...tags, inputValue];
-		}
-		console.log(tags);
-		this.setState({
-			tags,
-			inputVisible: false,
-			inputValue: '',
-		});
+
+	saveInputRef = fuck => input => {
+		console.log("asdasdasdasdasdasd");
 	}
 
-	saveInputRef = input => this.input = input
-		showInput = () => {
-		this.setState({ inputVisible: true }, () => this.input.focus());
 
+	showInput = () => {
+		 this.setState({ inputVisible: true });
 	}
 
+
+	clearInput = () => {
+		this.setState({ inputValue:''});
+	}
 	hideInput = () => {
 		this.setState({ inputVisible: false,inputValue:'' });
 	}
@@ -131,7 +97,7 @@ class ProductsPage extends Component {
 		});
 	}
 	handleChangeProperty = (aeIndex,aePropId,ae,isOption) => (event) => {
-		console.log(aeIndex,aePropId,isOption,ae);
+
 		const value = this.state.inputValue;
 		this.setState({
 			[ae]: this.state[ae].map((singleAe, index) => {
@@ -157,7 +123,7 @@ class ProductsPage extends Component {
 					}	
 				}
 				return singleAe;
-			})
+			}),inputValue:''
 
 		});
 	}
@@ -176,7 +142,7 @@ class ProductsPage extends Component {
 
 
 	handleAddProperty = (aeIndex,ae) => ()=>{
-		console.log(this.state.actions[aeIndex]);
+
 		this.setState({
 			[ae]: this.state[ae].map((singleAe, index) => {
 				if(index === aeIndex){
@@ -202,6 +168,7 @@ class ProductsPage extends Component {
 				{
 					name:'',
 					description:'',
+					endpoint:'',
 					properties: [
 						{
 							name: '',
@@ -224,7 +191,7 @@ class ProductsPage extends Component {
 					prop = singleAe.properties.map((property,pindex) => {
 						if (pindex === aePropId) {
 							opts = property.options.filter((option,oindex) => oindex !== optionId)
-							console.log({...property, options:opts})
+
 							return {
 								...property, options:opts
 							}
@@ -232,7 +199,7 @@ class ProductsPage extends Component {
 						return property
 					})
 					return {
-						singleAe,properties:prop
+						...singleAe,properties:prop
 					}	
 				}
 				return singleAe;
@@ -245,18 +212,21 @@ class ProductsPage extends Component {
 			this.setState({
 				isLoading: true 
 			});
-			this.props.addProduct({
+
+			const product = {
 				name:this.state.name,
 				description:this.state.description,
 				endpoint:this.state.endpoint,
 				image:this.state.image,
 				actions:this.state.actions,
-				events:this.state.events,
-			})
+				events:this.state.events,			
+			}
+			console.log('PRODUCT EXAMPLE',product);
+			this.props.addProduct(product);
 		}
 
 	getInputsAccordingToType = (property,aeIndex,aePropId,layout,lableLessLayout,ae)=> {
-		console.log(property,aeIndex,aePropId,layout,lableLessLayout,ae);
+
 		switch (property.type){
 			case 'int':
 			case 'double':
@@ -283,7 +253,7 @@ class ProductsPage extends Component {
 					</div>
 				)
 			case 'discrete':
-				const { tags, inputVisible, inputValue } = this.state;
+				const { inputVisible, inputValue } = this.state;
 				return (
 					<div>
 					<FormItem label="Options" {...layout} >
@@ -319,10 +289,10 @@ class ProductsPage extends Component {
 							inputVisible && 
 							(
 								<Input
-									ref={this.saveInputRef}
 									type="text"
 									style={{ width: 78 }}
 									name="inputValue"
+									value={this.state.inputValue}
 									onChange={this.onChange}
 									onPressEnter={this.handleChangeProperty(aeIndex,aePropId,ae,true)}
 									onBlur={this.hideInput}
@@ -349,7 +319,7 @@ class ProductsPage extends Component {
 				<div >Upload</div>
 			</div>
 		);
-		const {image, endpoint, name, description, tags, inputVisible, inputValue } = this.state;
+		const {image, endpoint, name, description,  inputVisible, inputValue } = this.state;
 	    const formItemLayout = {
 	      labelCol: {
 	        xs: { span: 24 , offset: 0},
