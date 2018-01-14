@@ -39,6 +39,7 @@ public class GsonBodyHandler implements MessageBodyWriter<Object>,
                     .setFieldNamingPolicy(FieldNamingPolicy.UPPER_CAMEL_CASE)
                     .setPrettyPrinting()
                     .serializeNulls()
+                    .enableComplexMapKeySerialization()
                     .create();
         }
         return gson;

@@ -1,29 +1,50 @@
 package org.IoT_Project.Scenario_Engine.Models;
 
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
 import com.google.gson.annotations.SerializedName;
 
-public class Case implements ICase {
+import DataBase.DBHandler;
 
+public class Case implements ICase {
 	@SerializedName("events")
 	List<Event> events;
 	@SerializedName("logicOperator")
 	char logicOperator;
 	
-	public Case(String caseObj)	//include only Events.
+
+	public Case()
 	{
-		events = new ArrayList<Event>();
+		this.events = null;
 		this.logicOperator = '&';
-		String Evnts[] = caseObj.split("|"); //Evnt1 | Evnt2 | ... | Evntn
-		for(String currentEvent: Evnts)
-		{
-			events.add(ParseEvent(currentEvent));
-		}
-		
 	}
+	
+	public Case(List<Event> events,
+				char logicOperator)
+	{
+		this.events = events;
+		this.logicOperator = logicOperator;
+	}
+	
+	public Case(Case c) throws Exception
+	{
+		DBHandler db = DBHandler.getInstance();
+		this.events = c.getEvents();
+		for(Event e : this.events)
+		{
+			boolean isEventUpdated = e.getId() > 0;
+			if(!isEventUpdated)
+			{
+				e = new Event(e);
+				db.addEvent(e);
+			}
+		}
+		this.logicOperator = c.getLogicOperator();
+	}
+
 	@Override
 	public boolean calculateCase()
 	{
@@ -33,33 +54,27 @@ public class Case implements ICase {
 		
 		boolean isTrue = true;
 		Iterator<Event> itr = this.events.iterator();
-		while(itr.hasNext())
+		while(itr.hasNext() && isTrue)
 		{
 			Event currentEvent = itr.next();
-			if(currentEvent.getLogicOperator() == '|')
-			{
-				isTrue |= currentEvent.isTriggered();
-			}
-			else			//logicOperator = '&'
-			{
-				isTrue &= currentEvent.isTriggered();
-			}
+			isTrue &= currentEvent.isTriggered();
 		}
 		return isTrue;
 	}
 
-	private Event ParseEvent(String event)
-	{
-		/*
-		 * function: parsing a String representation of event into an Event object
-		 */
-		Event result = null;
-		
-		return result;
-	}
 	@Override
 	public char getLogicOperator() {
 		return this.logicOperator;
 	}
+	public List<Event> getEvents() {
+		return events;
+	}
+	public void setEvents(List<Event> events) {
+		this.events = events;
+	}
+	public void setLogicOperator(char logicOperator) {
+		this.logicOperator = logicOperator;
+	}
+	
 	
 }

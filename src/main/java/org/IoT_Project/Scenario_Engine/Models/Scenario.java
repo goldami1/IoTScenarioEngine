@@ -17,50 +17,58 @@ public class Scenario{
 	String description;
 	@SerializedName("cust_id")
 	short cust_id;
-	@SerializedName("Events")
-	private List<Event>  Events;
-	@SerializedName("Actions")
-	private List<Action> Actions;
+	//@SerializedName("Events")
+	//private List<Event>  Events;
+	@SerializedName("actions")
+	private List<Action> actions;
 	@SerializedName("eventsToHappen")
 	private Map<Short, Event> eventsToHappen;
-	//private Map<Short, Action> actionsToHandle;
 	@SerializedName("cases")
-	private ICase cases;
+	private CaseGroup cases;
 	
 	public Scenario() 
 	{
 		this.id = this.cust_id = -1;
 		this.name = this.description = null;
 		this.eventsToHappen = null;
+		//this.Events = null;
+		this.actions = null;
 		this.cases = null;
-		this.Events = null;
-		this.Actions = null;
 	}
 	
 	public Scenario(short Scenario_id,
 				    short Scenario_cust_id,
 				    String Scenario_name, 
 				    String Scenario_description, 
-				    List<Event> Scenario_events,
-				    List<Action> Scenario_actions) 
+				    //List<Event> Scenario_events,
+				    List<Action> Scenario_actions,
+				    CaseGroup Scenario_cases) 
 	{
 		this.id = Scenario_id;
 		this.cust_id = Scenario_cust_id;
 		this.name = Scenario_name;
 		this.description = Scenario_description;
 		this.eventsToHappen = new HashMap<Short, Event>();
-		//this.actiotionsToHandle = new HashMap<Short, Action>();
+		//this.Events = new LinkedList<Event>();
+		/*
 		for(Event event : Scenario_events)
 		{
 			this.eventsToHappen.put(event.getId(), event);
 		}
-		/*this.actionsToHandle = new HashMap<Short, Action>();
-		for(Action action : Scenario_actions)
+		*/
+		//this.Events = Scenario_events;
+		this.actions = Scenario_actions;
+		this.cases = Scenario_cases;
+		for(Case c : this.cases.getCases())
 		{
-			this.actionsToHandle.put(action.getId(), action);
-		}*/
-		this.Events = Scenario_events;
-		this.Actions = Scenario_actions;
+			for(Event e : c.getEvents())
+			{
+				//this.Events.add(e);
+				boolean isInMap = this.eventsToHappen.containsKey(e.getId());
+				if(!isInMap)
+					this.eventsToHappen.put(e.getId(), e);
+			}
+		}
 	}
 	
 	
@@ -77,27 +85,32 @@ public class Scenario{
 		this.cust_id = i_scenario.getCust_id();
 		//this.actionsToHandle = new HashMap<Short, Action>();
 		this.eventsToHappen = new HashMap<Short, Event>();
-		this.Events = i_scenario.getEvents();
-		this.Actions = i_scenario.getActions();
+		//this.Events = i_scenario.getEvents();
+		this.actions = i_scenario.getActions();
+		this.cases = i_scenario.getCases();
 		
 		
 		/*
 		 * NOTE: after this loop all events has been registered in DB, and toggled(if needed).
 		 */
-		for(Event e : this.Events)
+		for(Case c : this.cases.getCases())
 		{
-			boolean isEventUpdated = e.getId() > 0;
-			if(!isEventUpdated)
+			for(Event e : c.getEvents())
 			{
-				e = new Event(e);
-				db.addEvent(e);
+				boolean isEventUpdated = e.getId() > 0;
+				if(!isEventUpdated)
+				{
+					e = new Event(e);
+					db.addEvent(e);
+				}
+				this.eventsToHappen.put(e.getId(), e);
 			}
-			this.eventsToHappen.put(e.getId(), e);
 		}
+		
 		/*
 		 * NOTE: after this loop all actions has been registered in DB(if needed).
 		 */
-		for(Action a : this.Actions)
+		for(Action a : this.actions)
 		{
 			//Action action = new Action(a);
 			//this.actionsToHandle.put(action.getId(), action);
@@ -116,17 +129,19 @@ public class Scenario{
 		{
 			this.id = i_scenario.getId();
 		}
-		this.cases = null;
 	}
 	/******************************************************************/
 
 	public boolean resolveScenario()
 	{
 		boolean shouldBeHandled = true;
+		/*
 		for(Event e : this.Events)
 		{
 			shouldBeHandled &= e.isTriggered();
 		}
+		*/
+		shouldBeHandled = this.cases.calculateCase();
 		return shouldBeHandled;
 	}
 
@@ -168,21 +183,13 @@ public class Scenario{
 		this.cust_id = cust_id;
 	}
 
-	public List<Event> getEvents() {
+/*	public List<Event> getEvents() {
 		return Events;
 	}
 
 	public void setEvents(List<Event> events) {
 		Events = events;
-	}
-
-	public List<Action> getActions() {
-		return Actions;
-	}
-
-	public void setActions(List<Action> actions) {
-		Actions = actions;
-	}
+	}*/
 
 	public Map<Short, Event> getEventsToHappen() {
 		return eventsToHappen;
@@ -192,12 +199,20 @@ public class Scenario{
 		this.eventsToHappen = eventsToHappen;
 	}
 
-	public ICase getCases() {
-		return cases;
+	public CaseGroup getCases() {
+		return this.cases;
 	}
 
-	public void setCases(ICase cases) {
+	public void setCases(CaseGroup cases) {
 		this.cases = cases;
+	}
+	
+	public List<Action> getActions() {
+		return this.actions;
+	}
+
+	public void setActions(List<Action> actions) {
+		this.actions = actions;
 	}
 	
 }

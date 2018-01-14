@@ -71,29 +71,33 @@ public class Action {
 		 * creating the URI:
 		 * (server-url)/product_endpoint/device_serialNum/{if this is an event => event_id}/name of Action_Event/parameter.
 		 */
+		
 		URI.append(this.actionDescription.getProductEP());
 		URI.append("/");
 		URI.append(this.device_serialNum);
 		URI.append("/");
 		
-		/*
-		 * checks if event => giving event_id for the device
-		 * (so when invoked a refrence to the event will be achieved).
-		 */
+		URI.append(this.actionDescription.getName());
+		URI.append("?parameter=" + this.parameter);
 		if(this.actionDescription.getIsEvent())
 		{
-			URI.append(this.id);
-			URI.append("/");
+			URI.append("&event_id=" + this.id);
 		}
-		
-		URI.append(this.actionDescription.getName());
-		URI.append("/");
-		URI.append(this.parameter);
-		
+		String USER_AGENT = "Mozilla/5.0";
+
 		URL ep = new URL(URI.toString());
-		HttpURLConnection con = (HttpsURLConnection)ep.openConnection();
-		con.setRequestMethod("POST");
+		//URL ep = new URL(null, URI.toString(), new sun.net.www.protocol.https.Handler());
+		HttpURLConnection con = (HttpURLConnection)ep.openConnection();
+		con.setRequestMethod("GET");
+		con.setRequestProperty("User-Agent", USER_AGENT);
+		//con.setRequestMethod("POST");
+		//con.setDoOutput(true);
 		
+		/*
+		DataOutputStream wr = new DataOutputStream(con.getOutputStream());
+		wr.flush();
+		wr.close();
+		*/
 		int status = con.getResponseCode();
 		BufferedReader in = new BufferedReader(new InputStreamReader(con.getInputStream()));
 		String inputLine;

@@ -7,39 +7,17 @@ import DataBase.DBHandler;
 
 public class DeviceService {
 	
-	public void HandleCall(int event_id) throws Exception
-	{
-		HandleEvent(DBHandler.getInstance().getEvent(event_id));
-	}
 	
-	private void HandleEvent(Event i_event) throws Exception
-	{
+	public void HandleCall(short event_id, boolean i_value) throws Exception
+	{	
 		DBHandler DB = DBHandler.getInstance();
-		Scenario scenario = DB.getScenario(i_event.getId());
-		scenario.getEventById(i_event.getId()).setTriggered(true);
+		Scenario scenario = DB.getScenario(event_id);
+		scenario.getEventById(event_id).setTriggered(i_value);
 		
-		boolean isAwake = true;
-		Iterator<Entry<Short, Event>> itr = scenario.getEventsToHappen().entrySet().iterator();
-		while(itr.hasNext())
-		{
-			Event event = itr.next().getValue();
-			if(event.getLogicOperator() == '&')
-				isAwake &= event.isTriggered();
-			else
-				isAwake |= event.isTriggered();
-		}
-		if(isAwake)
+		if(scenario.resolveScenario())
 		{
 			activateActions(scenario);
 		}
-				
-		/*		
-		*	if(isScenarioAwaken(currentScenario))
-		*	{
-		*		activateActions(currentScenario);
-		*	}
-		*/
-		
 	}
 	
 	private void activateActions(Scenario i_scenario) throws Exception {

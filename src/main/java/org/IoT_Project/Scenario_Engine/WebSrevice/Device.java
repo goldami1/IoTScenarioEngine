@@ -18,20 +18,19 @@ public class Device {
 	@POST
 	//@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.TEXT_HTML)
-	public String handleEvent(
-			@PathParam("device_id") int device_id,
-			@PathParam("Event_id") int Event_id,
+	public void handleEvent(
+			@PathParam("device_id") short device_id,
+			@PathParam("Event_id") short Event_id,
 			@PathParam("event_triggered") boolean eventTriggered)
 	{
-		/*
 		try {
-			ds.HandleCall(Event_id);
+			ds.HandleCall(Event_id, eventTriggered);
 		}
 		catch(Exception ex)
 		{
 			//TODO -- handle exceptions from devices call.
 		}
-		*/
+		/*
 		String res = "got event #";
 		res += Event_id;
 		res += " from device id - ";
@@ -39,5 +38,6 @@ public class Device {
 		res += " trigger = ";
 		res += eventTriggered;
 		return res;
+		*/
 	}
 }

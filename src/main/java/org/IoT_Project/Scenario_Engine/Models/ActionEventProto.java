@@ -55,6 +55,7 @@ public class ActionEventProto {
 		this.min = min;
 		this.max = max;
 		this.prodId = prodId;
+		this.productEP = productEp;
 		this.isEvent = isEvent;
 	}
 
@@ -101,7 +102,7 @@ public class ActionEventProto {
 	public void setIsEvent(boolean b) {
 		this.isEvent = b;
 	}
-
+	 
 	public boolean getIsEvent() {
 		return this.isEvent;
 	}
@@ -109,7 +110,7 @@ public class ActionEventProto {
 	public String getDescription() {
 		return description;
 	}
-
+	
 	public void setDescription(String description) {
 		this.description = description;
 	}
@@ -121,7 +122,7 @@ public class ActionEventProto {
 	public void setSupportedValues(List<String> supportedValues) {
 		this.supportedValues = supportedValues;
 	}
-
+	
 	public String getMin() {
 		return min;
 	}
@@ -137,5 +138,4 @@ public class ActionEventProto {
 	public void setMax(String max) {
 		this.max = max;
 	}
-	
 }

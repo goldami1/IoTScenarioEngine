@@ -7,8 +7,13 @@ import DataBase.DBHandler;
 import javafx.util.Pair;
 
 import org.IoT_Project.Scenario_Engine.Models.Scenario;
+import org.IoT_Project.Scenario_Engine.Models.Action;
+import org.IoT_Project.Scenario_Engine.Models.ActionEventProto;
+import org.IoT_Project.Scenario_Engine.Models.Case;
+import org.IoT_Project.Scenario_Engine.Models.CaseGroup;
 import org.IoT_Project.Scenario_Engine.Models.Device;
 import org.IoT_Project.Scenario_Engine.Models.ErrorException;
+import org.IoT_Project.Scenario_Engine.Models.Event;
 import org.IoT_Project.Scenario_Engine.Models.User;
 
 import java.sql.SQLException;
@@ -36,10 +41,70 @@ public class Customer {
 	
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response getLogInPageCustomer()
+	public Response getLogInPageCustomer() throws Exception
 	{
 		//return "Should return the login page";
-		return Response.status(Status.OK).entity(new org.IoT_Project.Scenario_Engine.Models.ActionEventProto()).build();
+		List<Event> events1 = new LinkedList<Event>();
+		List<Event> events2 = new LinkedList<Event>();
+		List<Action> actions = new LinkedList<Action>();
+		events1.add(new Event((short)-1,
+				 			(short) 123,
+				 			"ON",
+				 			new ActionEventProto((short)1,
+								     "Is TV on state ON",
+								    "description of event",
+								     "discreat",
+								     null,
+								     null,
+								     null,
+								    (short)1,
+								    "http://localhost:8000",
+								    true),
+				 			'&',
+				 			false));
+		events2.add(new Event((short)-1,
+	 			(short) 123,
+	 			"50",
+	 			new ActionEventProto((short)1,
+					     "Is TV on channel X",
+					    "description of event",
+					     "discreat",
+					     null,
+					     null,
+					     null,
+					    (short)1,
+					    "http://localhost:8000",
+					    true),
+	 			'&',
+	 			false));
+		actions.add(new Action((short)-1,
+	 			(short) 123,
+	 			"ON",
+	 			new ActionEventProto((short)1,
+					     "Turn TV on state X",
+					    "description of event",
+					     "discreat",
+					     null,
+					     null,
+					     null,
+					    (short)1,
+					    "http://localhost:8000",
+					    false)));
+		List<Case> cases = new LinkedList<Case>();
+		Case c1 = new Case(events1, '|');
+		Case c2 = new Case(events2, '|');
+		cases.add(c1);
+		cases.add(c2);
+		CaseGroup cg = new CaseGroup(cases, '&');
+		Scenario scenario = new Scenario((short)-1,
+			    (short)1,
+			    "scenario name", 
+			    "scenario description", 
+			    actions,
+			    cg);
+		//actions.get(0).toggleAction();
+		
+		return Response.status(Status.OK).entity(new org.IoT_Project.Scenario_Engine.Models.Scenario()).build();
 	}
 	
 	@POST
