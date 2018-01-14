@@ -56,6 +56,14 @@
 		<artifactId>jersey-json</artifactId>
 		<version>1.8</version>
 	</dependency>
+	
+	<!--  java Mail     -->
+	<!-- https://mvnrepository.com/artifact/javax.mail/mail -->
+	<dependency>
+    		<groupId>javax.mail</groupId>
+    		<artifactId>mail</artifactId>
+    		<version>1.4</version>
+	</dependency>
     
     <!-- https://mvnrepository.com/artifact/org.glassfish.jersey.bundles/jaxrs-ri -->
 	<dependency>

@@ -117,7 +117,10 @@ public class Scenario{
 			boolean isActionUpdated = a.getId() > 0;
 			if(!isActionUpdated)
 			{
-				a = new Action(a);
+				if(a.actionDescription.getName() != MailAction.mailActionProto.getName())
+					a = new Action(a);
+				else
+					a = new MailAction(a);
 				db.addAction(a);
 			}
 		}

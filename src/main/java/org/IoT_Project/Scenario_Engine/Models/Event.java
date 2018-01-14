@@ -1,5 +1,7 @@
 package org.IoT_Project.Scenario_Engine.Models;
 
+import java.util.List;
+
 import com.google.gson.annotations.SerializedName;
 
 import DataBase.DBHandler;
@@ -53,7 +55,7 @@ public class Event extends Action{
 	
 	public Event(short Action_id,
 				 short Action_deviceSerialNum,
-				 String Action_parameter,
+				 List<String> Action_parameter,
 				 ActionEventProto Action_descriptor,
 				 char Event_logicOperator,
 				 boolean Event_triggered)
@@ -74,7 +76,7 @@ public class Event extends Action{
 		DBHandler db = DBHandler.getInstance();
 		this.actionDescription = i_event.actionDescription;
 		this.device_serialNum = i_event.getDevice_serialNum();
-		this.parameter = i_event.getParameter();
+		this.parameters = i_event.getParameters();
 		this.logicOperator = i_event.getLogicOperator();
 		this.triggered = false;
 		if(!isUpdated)

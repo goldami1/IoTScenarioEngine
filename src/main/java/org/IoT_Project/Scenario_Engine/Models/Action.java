@@ -8,6 +8,8 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.sql.SQLException;
+import java.util.List;
+
 import com.google.gson.annotations.SerializedName;
 import javax.net.ssl.HttpsURLConnection;
 
@@ -16,11 +18,11 @@ import javax.net.ssl.HttpsURLConnection;
 import DataBase.DBHandler;
 
 
-public class Action {
+public class Action implements IAction{
 	@SerializedName("id")
 	protected short id;
-	@SerializedName("parameter")
-	protected String parameter;
+	@SerializedName("parameters")
+	protected List<String> parameters;
 	@SerializedName("device_serialNum")
 	protected short device_serialNum;
 	@SerializedName("actionDescription")
@@ -28,19 +30,19 @@ public class Action {
 	
 	public Action()
 	{
-		this.parameter = null;
+		this.parameters = null;
 		this.actionDescription = null;
 		this.id = this.device_serialNum = -1;
 	}
 	
 	public Action(short Action_id,
 				  short Action_deviceSerialNum,
-				  String Action_parameter,
+				  List<String> Action_parameters,
 				  ActionEventProto Action_descriptor)
 	{
 		this.id = Action_id;
 		this.device_serialNum = Action_deviceSerialNum;
-		this.parameter = Action_parameter;
+		this.parameters = Action_parameters;
 		this.actionDescription = Action_descriptor;
 	}
 	
@@ -53,7 +55,7 @@ public class Action {
 		boolean isUpdated = i_action.getId() > 0;
 		DBHandler db = DBHandler.getInstance();
 		this.device_serialNum = i_action.getDevice_serialNum();
-		this.parameter = i_action.getParameter();
+		this.parameters = i_action.getParameters();
 		this.actionDescription = i_action.getActionDescription();
 		if(isUpdated)
 			this.id = i_action.getId();
@@ -63,10 +65,10 @@ public class Action {
 		}
 	}
 	/****************************************************************/
-	public final int toggleAction() throws Exception
+	public int toggleAction() throws Exception
 	{
 		StringBuilder URI = new StringBuilder();
-		
+		int amountOfParams = this.parameters.size();
 		/*
 		 * creating the URI:
 		 * (server-url)/product_endpoint/device_serialNum/{if this is an event => event_id}/name of Action_Event/parameter.
@@ -76,12 +78,37 @@ public class Action {
 		URI.append("/");
 		URI.append(this.device_serialNum);
 		URI.append("/");
-		
 		URI.append(this.actionDescription.getName());
-		URI.append("?parameter=" + this.parameter);
+		URI.append("/");
 		if(this.actionDescription.getIsEvent())
 		{
 			URI.append("&event_id=" + this.id);
+		}
+		if(amountOfParams == 1)
+		{
+			/*
+			 *  Generate the string: ?[param_name]=[value]/
+			 */
+			URI.append("?" + this.actionDescription.getSupportedParametersName().get(0) + "=");
+			URI.append(this.parameters.get(0));
+		}
+		else
+		{
+			/*
+			 *  Generate the string: ?[param1_name]=[value1]&[param2_name]=[value2]...&[paramN_name]=[valueN]/
+			 */
+			int paramIndex = 0;
+			boolean firstEntry = true;
+			for(String s : this.parameters)
+			{
+				if(firstEntry)
+				{
+					URI.append("?" + this.actionDescription.getSupportedParametersName().get(paramIndex) + "=" + s);
+					firstEntry = false;
+				}
+				else
+					URI.append("&" + this.actionDescription.getSupportedParametersName().get(paramIndex) + "=" + s);
+			}
 		}
 		String USER_AGENT = "Mozilla/5.0";
 
@@ -119,12 +146,12 @@ public class Action {
 		this.id = id;
 	}
 
-	public String getParameter() {
-		return this.parameter;
+	public List<String> getParameters() {
+		return this.parameters;
 	}
 
-	public void setParameter(String parameter) {
-		this.parameter = parameter;
+	public void setParameters(List<String> parameter) {
+		this.parameters = parameter;
 	}
 
 	public short getDevice_serialNum() {

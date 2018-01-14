@@ -77,6 +77,9 @@ public class Product {
 		else
 			this.id = i_product.getId();
 		
+		/*
+		 * adding all supported ActionAndEvents from vendor.
+		 */
 		for(ActionEventProto Current_aep : i_product.getActionAndEventList())
 		{
 			boolean isAEPUpdated = Current_aep.getId() > 0;
@@ -91,6 +94,7 @@ public class Product {
 			Current_aep.setProdId(this.id);
 			this.actionAndEventList.add(Current_aep);
 		}
+		this.actionAndEventList.add(MailAction.mailActionProto);
 		
 	}
 	/*****************************************************************/

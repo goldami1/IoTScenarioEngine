@@ -14,6 +14,7 @@ import org.IoT_Project.Scenario_Engine.Models.CaseGroup;
 import org.IoT_Project.Scenario_Engine.Models.Device;
 import org.IoT_Project.Scenario_Engine.Models.ErrorException;
 import org.IoT_Project.Scenario_Engine.Models.Event;
+import org.IoT_Project.Scenario_Engine.Models.MailAction;
 import org.IoT_Project.Scenario_Engine.Models.User;
 
 import java.sql.SQLException;
@@ -44,17 +45,32 @@ public class Customer {
 	public Response getLogInPageCustomer() throws Exception
 	{
 		//return "Should return the login page";
+		List<String> min = new LinkedList<String>();
+		List<String> max = new LinkedList<String>();
+		min.add("1");
+		max.add("55");
+		List<String> types = new LinkedList<String>();
+		types.add("INT");
 		List<Event> events1 = new LinkedList<Event>();
 		List<Event> events2 = new LinkedList<Event>();
 		List<Action> actions = new LinkedList<Action>();
+		List<String> params1 = new LinkedList<String>();
+		List<String> params2 = new LinkedList<String>();
+		List<String> paramsName = new LinkedList<String>();
+		params1.add("galrotenberg3@gmail.com");
+		params1.add("Scenario Engine Test mail");
+		params2.add("50");
+		paramsName.add("value");
+		
 		events1.add(new Event((short)-1,
 				 			(short) 123,
-				 			"ON",
+				 			params1,
 				 			new ActionEventProto((short)1,
 								     "Is TV on state ON",
 								    "description of event",
-								     "discreat",
 								     null,
+								     null,
+								     paramsName,
 								     null,
 								     null,
 								    (short)1,
@@ -64,12 +80,13 @@ public class Customer {
 				 			false));
 		events2.add(new Event((short)-1,
 	 			(short) 123,
-	 			"50",
+	 			params2,
 	 			new ActionEventProto((short)1,
 					     "Is TV on channel X",
 					    "description of event",
-					     "discreat",
 					     null,
+					     null,
+					     paramsName,
 					     null,
 					     null,
 					    (short)1,
@@ -79,12 +96,13 @@ public class Customer {
 	 			false));
 		actions.add(new Action((short)-1,
 	 			(short) 123,
-	 			"ON",
+	 			params1,
 	 			new ActionEventProto((short)1,
 					     "Turn TV on state X",
 					    "description of event",
-					     "discreat",
 					     null,
+					     null,
+					     paramsName,
 					     null,
 					     null,
 					    (short)1,
@@ -102,9 +120,37 @@ public class Customer {
 			    "scenario description", 
 			    actions,
 			    cg);
+		Action a = new MailAction((short)-1,
+	 			(short) 123,
+	 			params1,
+	 			new ActionEventProto((short)1,
+	 				     "Turn TV on state X",
+	 				    "description of event",
+	 				     types,
+	 				     null,
+	 				     paramsName,
+	 				     min,
+	 				     max,
+	 				    (short)1,
+	 				    "http://localhost:8000",
+	 				    false));
+		a.toggleAction();
+		/*
+		(short)1,
+	     "Turn TV on state X",
+	    "description of event",
+	     types,
+	     null,
+	     paramsName,
+	     min,
+	     max,
+	    (short)1,
+	    "http://localhost:8000",
+	    false
+	    */
 		//actions.get(0).toggleAction();
-		
-		return Response.status(Status.OK).entity(new org.IoT_Project.Scenario_Engine.Models.Scenario()).build();
+		//new org.IoT_Project.Scenario_Engine.Models.Scenario()
+		return Response.status(Status.OK).entity(a).build();
 	}
 	
 	@POST

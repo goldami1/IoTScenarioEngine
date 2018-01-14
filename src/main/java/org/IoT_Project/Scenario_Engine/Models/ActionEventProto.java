@@ -13,8 +13,8 @@ public class ActionEventProto {
 	private String name;
 	@SerializedName("description")
 	private String description;
-	@SerializedName("type")
-	private String type;
+	@SerializedName("types")
+	private List<String> types;
 	@SerializedName("prodId")
 	private short prodId;
 	@SerializedName("productEP")
@@ -22,27 +22,33 @@ public class ActionEventProto {
 	@SerializedName("isEvent")
 	private boolean isEvent;
 	@SerializedName("supportedValues")
-	private List<String> supportedValues;
-	@SerializedName("minValue")
-	private String min;
-	@SerializedName("maxValue")
-	private String max;
+	private List<List<String>> supportedValues;
+	@SerializedName("supportedParametersName")
+	private List<String> supportedParametersName;
+	@SerializedName("minValues")
+	private List<String> min;
+	@SerializedName("maxValues")
+	private List<String> max;
 	
 	public ActionEventProto()
 	{
 		this.id = this.prodId = -1;
 		this.isEvent = false;
-		this.name = this.type = this.productEP = this.min = this.max = this.description = null;
+		this.name  = this.productEP = null;
+		this.min = this.max = this.types = null;
+		this.description = null;
 		this.supportedValues = null;
+		this.supportedParametersName = null;
 	}
 	
 	public ActionEventProto(short id,
 						    String name,
 						    String description,
-						    String type,
-						    List<String> supportedValues,
-						    String min,
-						    String max,
+						    List<String> types,
+						    List<List<String>> supportedValues,
+						    List<String> supportedParametersName,
+						    List<String> min,
+						    List<String> max,
 						    short prodId,
 						    String productEp,
 						    boolean isEvent)
@@ -50,8 +56,9 @@ public class ActionEventProto {
 		this.id = id;
 		this.name = name;
 		this.description = description;
-		this.type = type;
+		this.types = types;
 		this.supportedValues = supportedValues;
+		this.supportedParametersName = supportedParametersName;
 		this.min = min;
 		this.max = max;
 		this.prodId = prodId;
@@ -91,12 +98,12 @@ public class ActionEventProto {
 		this.name = name;
 	}
 
-	public String getType() {
-		return this.type;
+	public List<String> getTypes() {
+		return this.types;
 	}
 	
-	public void setType(String type) {
-		this.type = type;
+	public void setTypes(List<String> types) {
+		this.types = types;
 	}
 
 	public void setIsEvent(boolean b) {
@@ -115,27 +122,35 @@ public class ActionEventProto {
 		this.description = description;
 	}
 
-	public List<String> getSupportedValues() {
+	public List<List<String>> getSupportedValues() {
 		return supportedValues;
 	}
 
-	public void setSupportedValues(List<String> supportedValues) {
+	public void setSupportedValues(List<List<String>> supportedValues) {
 		this.supportedValues = supportedValues;
 	}
 	
-	public String getMin() {
+	public List<String> getMin() {
 		return min;
 	}
 
-	public void setMin(String min) {
+	public void setMin(List<String> min) {
 		this.min = min;
 	}
 
-	public String getMax() {
+	public List<String> getMax() {
 		return max;
 	}
 
-	public void setMax(String max) {
+	public void setMax(List<String> max) {
 		this.max = max;
+	}
+
+	public List<String> getSupportedParametersName() {
+		return supportedParametersName;
+	}
+
+	public void setSupportedParametersName(List<String> supportedParametersName) {
+		this.supportedParametersName = supportedParametersName;
 	}
 }
