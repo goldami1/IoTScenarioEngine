@@ -10,6 +10,7 @@ public class DeviceService {
 	
 	public void HandleCall(short event_id, boolean i_value) throws Exception
 	{	
+		//
 		DBHandler DB = DBHandler.getInstance();
 		Scenario scenario = DB.getScenario(event_id);
 		scenario.getEventById(event_id).setTriggered(i_value);
