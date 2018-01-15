@@ -24,14 +24,14 @@ const ActionEvent = props => {
 	return (
 		<div>
 			<Tabs
-				defaultActiveKey="1"
+				defaultActiveKey="200"
 				animated={false}
 				tabPosition="left"
 				size="small"
 			>
 				{props.aeCollection.map((singleAe, aeIndex) => (
 					<TabPane
-						key={aeIndex}
+						key={aeIndex+200}
 						tab={
 							<div>
 								{singleAe.name
@@ -50,7 +50,7 @@ const ActionEvent = props => {
 						}
 					>
 						<Tabs
-							defaultActiveKey="1"
+							defaultActiveKey="ae base info"
 							tabPosition="top"
 							size="small"
 							type="line"
@@ -65,7 +65,7 @@ const ActionEvent = props => {
 								</Button>
 							}
 						>
-							<TabPane tab="Base info" key={aeIndex}>
+							<TabPane tab="Base info" key="ae base info">
 								<FormItem
 									label="Name"
 									{...props.formItemLayout}
@@ -118,11 +118,12 @@ const ActionEvent = props => {
 									/>
 								</FormItem>
 							</TabPane>
-							<TabPane tab="Properties">
-								<Tabs defaultActiveKey="1" tabPosition="left">
+							<TabPane tab="Properties" key="ae properties">
+								<Tabs defaultActiveKey="300" tabPosition="left">
 									{singleAe.properties.map(
 										(property, aePropId) => (
 											<TabPane
+												key={aePropId+300}
 												tab={
 													<div>
 														{property.name
@@ -143,7 +144,6 @@ const ActionEvent = props => {
 														/>
 													</div>
 												}
-												key={aePropId}
 											>
 												<FormItem
 													label="Name"

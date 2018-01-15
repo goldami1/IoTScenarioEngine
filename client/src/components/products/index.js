@@ -40,8 +40,36 @@ class ProductsPage extends Component {
 			description: "",
 			endpoint: "",
 			image: "",
-			actions: [],
-			events: [],
+			actions: [
+				{
+					name: "",
+					description: "",
+					endpoint: "",
+					properties: [
+						{
+							name: "",
+							description: "",
+							type: "",
+							options: []
+						}
+					]
+				},
+			],
+			events: [
+				{
+					name: "",
+					description: "",
+					endpoint: "",
+					properties: [
+						{
+							name: "",
+							description: "",
+							type: "",
+							options: []
+						}
+					]
+				},
+			],
 
 			inputValue: "",
 			inputVisible: false,
@@ -432,6 +460,8 @@ class ProductsPage extends Component {
 			<ContentWrapper>
 				<Form>
 					<Tabs
+						animated={false}
+						defaultActiveKey="0"
 						tabBarExtraContent={
 							<Button.Group>
 								<Button onClick={this.handleAddAE("actions")}>
