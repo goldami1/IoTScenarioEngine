@@ -1,5 +1,5 @@
-export  var flatten = (function (isArray, wrapped) {
-	return function (table) {
+export var flatten = (function(isArray, wrapped) {
+	return function(table) {
 		return reduce("", {}, table);
 	};
 	function reduce(path, accumulator, table) {
@@ -9,7 +9,8 @@ export  var flatten = (function (isArray, wrapped) {
 				var index = 0;
 
 				while (index < length) {
-					var property = path + "[" + index + "]", item = table[index++];
+					var property = path + "[" + index + "]",
+						item = table[index++];
 					if (wrapped(item) !== item) accumulator[property] = item;
 					else reduce(property, accumulator, item);
 				}
@@ -19,13 +20,16 @@ export  var flatten = (function (isArray, wrapped) {
 
 			if (path) {
 				for (var property in table) {
-					var item = table[property], property = path + "." + property, empty = false;
+					var item = table[property],
+						property = path + "." + property,
+						empty = false;
 					if (wrapped(item) !== item) accumulator[property] = item;
 					else reduce(property, accumulator, item);
 				}
 			} else {
 				for (var property in table) {
-					var item = table[property], empty = false;
+					var item = table[property],
+						empty = false;
 					if (wrapped(item) !== item) accumulator[property] = item;
 					else reduce(property, accumulator, item);
 				}
@@ -34,13 +38,16 @@ export  var flatten = (function (isArray, wrapped) {
 		}
 		return accumulator;
 	}
-}(Array.isArray, Object));
+})(Array.isArray, Object);
 
-export  function unflatten(table) {
+export function unflatten(table) {
 	var result = {};
 
 	for (var path in table) {
-		var cursor = result, length = path.length, property = "", index = 0;
+		var cursor = result,
+			length = path.length,
+			property = "",
+			index = 0;
 
 		while (index < length) {
 			var char = path.charAt(index);
@@ -48,19 +55,19 @@ export  function unflatten(table) {
 			if (char === "[") {
 				var start = index + 1,
 					end = path.indexOf("]", start),
-					cursor = cursor[property] = cursor[property] || [],
+					cursor = (cursor[property] = cursor[property] || []),
 					property = path.slice(start, end),
 					index = end + 1;
 			} else {
-				var cursor = cursor[property] = cursor[property] || {},
+				var cursor = (cursor[property] = cursor[property] || {}),
 					start = char === "." ? index + 1 : index,
 					bracket = path.indexOf("[", start),
 					dot = path.indexOf(".", start);
 
-				if (bracket < 0 && dot < 0) var end = index = length;
-				else if (bracket < 0) var end = index = dot;
-				else if (dot < 0) var end = index = bracket;
-				else var end = index = bracket < dot ? bracket : dot;
+				if (bracket < 0 && dot < 0) var end = (index = length);
+				else if (bracket < 0) var end = (index = dot);
+				else if (dot < 0) var end = (index = bracket);
+				else var end = (index = bracket < dot ? bracket : dot);
 
 				var property = path.slice(start, end);
 			}
@@ -71,5 +78,3 @@ export  function unflatten(table) {
 
 	return result[""];
 }
-
-

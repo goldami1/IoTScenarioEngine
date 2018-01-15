@@ -1,4 +1,4 @@
-import PropTypes from 'prop-types';
+import PropTypes from "prop-types";
 import React, { PureComponent } from "react";
 
 import { AkNavigationItemGroup, AkNavigationItem } from "@atlaskit/navigation";
@@ -13,43 +13,40 @@ import EmojiTravelIcon from "@atlaskit/icon/glyph/emoji/travel";
 const createItems = [
   {
     title: null,
-    items: [
-      ['/#event', 'Create Event', 'Create Event', CalendarIcon],
-    ],
+    items: [["/#event", "Create Event", "Create Event", CalendarIcon]]
   }
 ];
 
 export default class CreateDrawer extends PureComponent {
   static PropTypes = {
-    onItemClicked: PropTypes.func,
+    onItemClicked: PropTypes.func
   };
 
   render() {
     return (
       <div>
-        {
-          createItems.map(itemGroup => {
-            return (
-              <AkNavigationItemGroup key={itemGroup.title} title={itemGroup.title}>
-                {
-                  itemGroup.items.map(item => {
-                    const [url, text, label, Icon] = item;
-                    return (
-                      <AkNavigationItem
-                        key={url}
-                        href={url}
-                        icon={<Icon label={label}/>}
-                        text={text.valueOf()}
-                        onClick={this.props.onItemClicked}
-                      />
-                    );
-                  })
-                }
-              </AkNavigationItemGroup>
-            )
-          })
-        }
+        {createItems.map(itemGroup => {
+          return (
+            <AkNavigationItemGroup
+              key={itemGroup.title}
+              title={itemGroup.title}
+            >
+              {itemGroup.items.map(item => {
+                const [url, text, label, Icon] = item;
+                return (
+                  <AkNavigationItem
+                    key={url}
+                    href={url}
+                    icon={<Icon label={label} />}
+                    text={text.valueOf()}
+                    onClick={this.props.onItemClicked}
+                  />
+                );
+              })}
+            </AkNavigationItemGroup>
+          );
+        })}
       </div>
-    )
-  };
+    );
+  }
 }

@@ -1,5 +1,5 @@
-import React, { Component } from 'react';
-import LoginForm from './login_form';
+import React, { Component } from "react";
+import LoginForm from "./login_form";
 
 const LoginPage = () => {
 	return (
@@ -7,6 +7,5 @@ const LoginPage = () => {
 			<LoginForm />
 		</div>
 	);
-	
 };
 export default LoginPage;

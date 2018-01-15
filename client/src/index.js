@@ -1,25 +1,25 @@
-import registerServiceWorker from './registerServiceWorker';
-import React from 'react';
-import ReactDOM from 'react-dom';
-import {BrowserRouter} from 'react-router-dom';
+import registerServiceWorker from "./registerServiceWorker";
+import React from "react";
+import ReactDOM from "react-dom";
+import { BrowserRouter } from "react-router-dom";
 import { createStore, applyMiddleware, compose } from "redux";
-import { Provider} from 'react-redux';
-import rootReducer from './reducers';
+import { Provider } from "react-redux";
+import rootReducer from "./reducers";
 import ReduxPromise from "redux-promise";
 import ReduxThunk from "redux-thunk";
-import { setCurrentUser } from './actions/auth_actions';
-import { fetchDevices } from './actions/devices_actions';
-import setAuthorizationToken from './utilities/set_auth_token';
-import MainRouter from './components/MainRouter';
+import { setCurrentUser } from "./actions/auth_actions";
+import { fetchDevices } from "./actions/devices_actions";
+import setAuthorizationToken from "./utilities/set_auth_token";
+import MainRouter from "./components/MainRouter";
 // import 'bootstrap/dist/css/bootstrap.min.css';
 // import '@atlaskit/css-reset';
 
-import 'antd/dist/antd.css';
+import "antd/dist/antd.css";
 
 const store = createStore(
 	rootReducer,
 	compose(
-		applyMiddleware(ReduxPromise,ReduxThunk),
+		applyMiddleware(ReduxPromise, ReduxThunk),
 		window.devToolsExtension ? window.devToolsExtension() : f => f
 	)
 );
@@ -32,15 +32,13 @@ if (localStorage.user) {
 }
 
 ReactDOM.render(
-
 	<Provider store={store}>
-		<BrowserRouter exact path='/' >
+		<BrowserRouter exact path="/">
 			<MainRouter />
 		</BrowserRouter>
-	</Provider>
+	</Provider>,
 
-	, document.getElementById('root')
+	document.getElementById("root")
 );
-
 
 registerServiceWorker();

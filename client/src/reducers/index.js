@@ -5,10 +5,10 @@ import devices from "./devices";
 import scenarios from "./scenarios";
 
 const rootReducer = combineReducers({
-  auth,
-  devices,
-  scenarios,
-  app
+	auth,
+	devices,
+	scenarios,
+	app
 });
 
 export default rootReducer;

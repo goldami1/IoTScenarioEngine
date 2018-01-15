@@ -1,171 +1,166 @@
-import React, { Component } from 'react';
+import React, { Component } from "react";
 import { connect } from "react-redux";
-import { addDevice , fetchVendors, fetchProducts } from "../../../actions/devices_actions";
-import { Link } from 'react-router-dom';
+import {
+	addDevice,
+	fetchVendors,
+	fetchProducts
+} from "../../../actions/devices_actions";
+import { Link } from "react-router-dom";
 import { withRouter } from "react-router-dom";
 
 class DeviceForm extends Component {
-
-
-	constructor(props){
+	constructor(props) {
 		super(props);
 		this.state = {
-			vendor: '',
-			product:'',
-			serial:'',
-			error:'',
-			isLoading:false
-		}
+			vendor: "",
+			product: "",
+			serial: "",
+			error: "",
+			isLoading: false
+		};
 		this.onChange = this.onChange.bind(this);
 		this.handleChange = this.handleChange.bind(this);
 		this.onSubmit = this.onSubmit.bind(this);
 	}
 
-	onChange( event ){
-		console.log('change');
+	onChange(event) {
+		console.log("change");
 		console.log(event);
 		this.setState({
-			[event.target.name] : event.target.value
-		}) 
+			[event.target.name]: event.target.value
+		});
 	}
 
-	handleChange( event ){
+	handleChange(event) {
 		this.setState({
-			[event.target.name] : event.target.value
+			[event.target.name]: event.target.value
 		}),
-		this.setState({ isLoading: true });
-		this.props.fetchProducts(event.target.value)
-			.then((res) => this.setState({ isLoading: false }));
+			this.setState({ isLoading: true });
+		this.props
+			.fetchProducts(event.target.value)
+			.then(res => this.setState({ isLoading: false }));
 	}
 
-	onSubmit (event ){
+	onSubmit(event) {
 		event.preventDefault();
 		this.setState({
-			error: '',
-			isLoading: true 
+			error: "",
+			isLoading: true
 		});
-		this.props.addDevice({
-			Customer_id:this.props.customer,
-			Serial_number:this.state.serial,
-			ProtoDevice:this.props.products[this.state.product]
-		})
+		this.props
+			.addDevice({
+				Customer_id: this.props.customer,
+				Serial_number: this.state.serial,
+				ProtoDevice: this.props.products[this.state.product]
+			})
 			.then(
-				(res) => {
+				res => {
 					this.props.history.goBack();
 					this.setState({
-						isLoading: false 
+						isLoading: false
 					});
 				},
-				(err) => {
+				err => {
 					this.setState({
 						error: err.response.data.error,
 						isLoading: false
 					});
 				}
 			);
-
 	}
 
 	componentDidMount() {
 		this.setState({ isLoading: true });
-		this.props.fetchVendors()
-			.then((res) => this.setState({ isLoading: false }));
-
+		this.props
+			.fetchVendors()
+			.then(res => this.setState({ isLoading: false }));
 	}
 
-
 	render() {
-
- 	// 	// TODO :: make reusable funtion
+		// 	// TODO :: make reusable funtion
 		const vendorOptions = this.props.vendors.map(vendor => {
-			return (
-				<option value={vendor.key}>
-					{vendor.value}
-				</option>
-				);
-			}
-		);
+			return <option value={vendor.key}>{vendor.value}</option>;
+		});
 
 		const productOptions = this.props.products.map(product => {
-			var index =0;
+			var index = 0;
 			return (
-
 				<option value={index++}>
-					{
-						console.log('index '+ index)
-					}
+					{console.log("index " + index)}
 					{product.name}
 				</option>
-				);
-			}
-		);
+			);
+		});
 
 		return (
-			<form 
-				onSubmit={this.onSubmit} 
-				className=" col-md-4 offset-md-4 m-5 card card-body  ">
-
+			<form
+				onSubmit={this.onSubmit}
+				className=" col-md-4 offset-md-4 m-5 card card-body  "
+			>
 				<div className="form-group">
-					<label >Vendor</label>
-					<select 
+					<label>Vendor</label>
+					<select
 						className="custom-select w-100"
 						onChange={this.handleChange}
 						name="vendor"
-						value={this.state.vendor}>
+						value={this.state.vendor}
+					>
 						{vendorOptions}
 					</select>
 				</div>
 
 				<div className="form-group">
-					<label >Product</label>
-					<select 
+					<label>Product</label>
+					<select
 						onChange={this.onChange}
-						className="custom-select w-100" 
-						name="product" 
+						className="custom-select w-100"
+						name="product"
 						value={this.state.product}
-						
-						>
-						<option></option>
+					>
+						<option />
 						{productOptions}
 					</select>
 				</div>
 				<div className="form-group">
-					<label >Serial</label>
-					<input 
+					<label>Serial</label>
+					<input
 						onChange={this.onChange}
 						value={this.state.serial}
-						type="text" 
-						className="form-control" 
-						name="serial"  
-						placeholder="serial number"/>
+						type="text"
+						className="form-control"
+						name="serial"
+						placeholder="serial number"
+					/>
 				</div>
-				<button 
-
+				<button
 					disabled={this.state.isLoading}
-					type="submit" 
-					className="mt-3 btn btn-primary btn-lg btn-block ">
+					type="submit"
+					className="mt-3 btn btn-primary btn-lg btn-block "
+				>
 					Add device
 				</button>
-				<div className=" m-3 text-center" >
-				{
-					this.state.error &&
-             	  	<div className=" m-3  text-danger">
-                        {this.state.error}
-                    </div>	
-				}
+				<div className=" m-3 text-center">
+					{this.state.error && (
+						<div className=" m-3  text-danger">
+							{this.state.error}
+						</div>
+					)}
 				</div>
 			</form>
 		);
 	}
 }
 
-function mapStateToProps({devices,auth}) {
+function mapStateToProps({ devices, auth }) {
 	return {
 		customer: auth.user.id,
 		vendors: devices.vendors,
-		products: devices.products,
-	}
+		products: devices.products
+	};
 }
 
-
-export default connect(mapStateToProps, { addDevice , fetchVendors, fetchProducts })(withRouter(DeviceForm));
+export default connect(mapStateToProps, {
+	addDevice,
+	fetchVendors,
+	fetchProducts
+})(withRouter(DeviceForm));

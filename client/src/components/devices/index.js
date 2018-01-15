@@ -1,12 +1,10 @@
-import React, { Component } from 'react';
+import React, { Component } from "react";
 import { connect } from "react-redux";
-import DeviceList from './device_list';
-import DeviceDetail from './device_detail';
-import { fetchDevices, deleteDevice } from '../../actions/devices_actions';
-import DeviceForm from './add/';
+import DeviceList from "./device_list";
+import DeviceDetail from "./device_detail";
+import { fetchDevices, deleteDevice } from "../../actions/devices_actions";
+import DeviceForm from "./add/";
 import { Link } from "react-router-dom";
-
-
 
 class DevicesPage extends Component {
 	constructor(props) {
@@ -14,8 +12,8 @@ class DevicesPage extends Component {
 		this.state = {
 			showForm: false,
 			selectedDevice: {},
-			isLoading:false,
-		}
+			isLoading: false
+		};
 	}
 
 	componentDidMount() {
@@ -27,39 +25,45 @@ class DevicesPage extends Component {
 		// 		.then((res) => this.setState({ isLoading: false }));
 		// 	console.log(this.props.devices);
 		// }
-
 	}
 
 	render() {
 		return (
 			<div className="m-5">
-			
-					<Link to="/devices/add" >
-						<button type="button"  className="mb-5 ml-2  btn btn-primary ">
-							Add device
-						</button>
-					</Link>
-				
+				<Link to="/devices/add">
+					<button
+						type="button"
+						className="mb-5 ml-2  btn btn-primary "
+					>
+						Add device
+					</button>
+				</Link>
+
 				{/*<div className="col-md-4">*/}
-					<DeviceList 
-						devices={this.props.devices}
-						onDeviceSelect={ selectedDevice => this.setState({ selectedDevice })}
-						onDeviceDelete={ selectedDevice => this.props.deleteDevice({ selectedDevice })} />
+				<DeviceList
+					devices={this.props.devices}
+					onDeviceSelect={selectedDevice =>
+						this.setState({ selectedDevice })
+					}
+					onDeviceDelete={selectedDevice =>
+						this.props.deleteDevice({ selectedDevice })
+					}
+				/>
 				{/*</div>*/}
-{/*				<div className="col-md-8 ">
+				{/*				<div className="col-md-8 ">
 					<DeviceDetail device={this.state.selectedDevice} />
 				</div>*/}
 			</div>
-
 		);
 	}
 }
 
-
-function mapStateToProps({devices}) {
-  return {
-    devices: devices.devices
-  }
+function mapStateToProps({ devices }) {
+	return {
+		devices: devices.devices
+	};
 }
 
-export default connect(mapStateToProps, { fetchDevices, deleteDevice })(DevicesPage);
+export default connect(mapStateToProps, { fetchDevices, deleteDevice })(
+	DevicesPage
+);

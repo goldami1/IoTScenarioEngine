@@ -1,9 +1,5 @@
-import isEmpty from 'lodash';
-import { LOG_GLOBAL_ERROR } from './types';
-
-
-
-
+import isEmpty from "lodash";
+import { LOG_GLOBAL_ERROR } from "./types";
 
 // export function logGlobalError(error) {
 //   return {
@@ -11,4 +7,3 @@ import { LOG_GLOBAL_ERROR } from './types';
 // 	error
 //   };
 // }
-

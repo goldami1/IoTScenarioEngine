@@ -1,33 +1,32 @@
-import React from 'react';
-import { connect } from 'react-redux';
-import {withRouter} from "react-router-dom";
-import { setMessage, } from "../actions/appActions";
+import React from "react";
+import { connect } from "react-redux";
+import { withRouter } from "react-router-dom";
+import { setMessage } from "../actions/appActions";
 
 export default function(ComposedComponent) {
 	class Authenticate extends React.Component {
 		componentWillMount() {
 			if (!this.props.isAuthenticated) {
 				this.props.setMessage(
-						{
-							content: 'The page you asked for require authentication . Please log in',
-							type: 'warning',
-						},
-						true
-					);
+					{
+						content:
+							"The page you asked for require authentication . Please log in",
+						type: "warning"
+					},
+					true
+				);
 				this.props.history.push("/login");
 			}
 		}
 
 		componentWillUpdate(nextProps) {
 			if (!nextProps.isAuthenticated) {
-				this.props.history.push("/")
+				this.props.history.push("/");
 			}
 		}
 
 		render() {
-			return (
-				<ComposedComponent {...this.props} />
-			);
+			return <ComposedComponent {...this.props} />;
 		}
 	}
 
@@ -36,6 +35,6 @@ export default function(ComposedComponent) {
 			isAuthenticated: state.auth.isAuthenticated
 		};
 	}
-	
-	return connect(mapStateToProps, {setMessage} )(withRouter(Authenticate));
+
+	return connect(mapStateToProps, { setMessage })(withRouter(Authenticate));
 }

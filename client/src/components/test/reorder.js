@@ -1,12 +1,9 @@
 // @flow
-import type { Quote, QuoteMap } from './types';
-import type { DraggableLocation } from '../../src/types';
+import type { Quote, QuoteMap } from "./types";
+import type { DraggableLocation } from "../../src/types";
 
 // a little function to help us with reordering the result
-const reorder = (
-  list: any[],
-  startIndex: number,
-  endIndex: number): any[] => {
+const reorder = (list: any[], startIndex: number, endIndex: number): any[] => {
   const result = Array.from(list);
   const [removed] = result.splice(startIndex, 1);
   result.splice(endIndex, 0, removed);
@@ -19,18 +16,18 @@ export default reorder;
 type ReorderQuoteMapArgs = {|
   quoteMap: QuoteMap,
   source: DraggableLocation,
-  destination: DraggableLocation,
-|}
+  destination: DraggableLocation
+|};
 
 export type ReorderQuoteMapResult = {|
   quoteMap: QuoteMap,
-  autoFocusQuoteId: ?string,
-|}
+  autoFocusQuoteId: ?string
+|};
 
 export const reorderQuoteMap = ({
   quoteMap,
   source,
-  destination,
+  destination
 }: ReorderQuoteMapArgs): ReorderQuoteMapResult => {
   const current: Quote[] = [...quoteMap[source.droppableId]];
   const next: Quote[] = [...quoteMap[destination.droppableId]];
@@ -41,16 +38,16 @@ export const reorderQuoteMap = ({
     const reordered: Quote[] = reorder(
       current,
       source.index,
-      destination.index,
+      destination.index
     );
     const result: QuoteMap = {
       ...quoteMap,
-      [source.droppableId]: reordered,
+      [source.droppableId]: reordered
     };
     return {
       quoteMap: result,
       // not auto focusing in own list
-      autoFocusQuoteId: null,
+      autoFocusQuoteId: null
     };
   }
 
@@ -64,12 +61,11 @@ export const reorderQuoteMap = ({
   const result: QuoteMap = {
     ...quoteMap,
     [source.droppableId]: current,
-    [destination.droppableId]: next,
+    [destination.droppableId]: next
   };
 
   return {
     quoteMap: result,
-    autoFocusQuoteId: target.id,
+    autoFocusQuoteId: target.id
   };
 };
-
