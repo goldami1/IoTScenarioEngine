@@ -17,8 +17,6 @@ public class Scenario{
 	String description;
 	@SerializedName("cust_id")
 	short cust_id;
-	//@SerializedName("Events")
-	//private List<Event>  Events;
 	@SerializedName("actions")
 	private List<Action> actions;
 	@SerializedName("eventsToHappen")
@@ -40,35 +38,49 @@ public class Scenario{
 				    short Scenario_cust_id,
 				    String Scenario_name, 
 				    String Scenario_description, 
-				    //List<Event> Scenario_events,
-				    List<Action> Scenario_actions,
-				    CaseGroup Scenario_cases) 
+				    List<Event> Scenario_events,
+				    List<Action> Scenario_actions)
+				    //CaseGroup Scenario_cases) 
 	{
 		this.id = Scenario_id;
 		this.cust_id = Scenario_cust_id;
 		this.name = Scenario_name;
 		this.description = Scenario_description;
 		this.eventsToHappen = new HashMap<Short, Event>();
-		//this.Events = new LinkedList<Event>();
-		/*
-		for(Event event : Scenario_events)
-		{
-			this.eventsToHappen.put(event.getId(), event);
-		}
-		*/
-		//this.Events = Scenario_events;
 		this.actions = Scenario_actions;
-		this.cases = Scenario_cases;
-		for(Case c : this.cases.getCases())
+		
+		List<Case> casesFromDB = new LinkedList<Case>();
+		List<Event> caseEvents = new LinkedList<Event>();
+		boolean createCase = true;
+		for(Event e : Scenario_events)
 		{
-			for(Event e : c.getEvents())
+			/*
+			 *  Checking if case #i has ended.
+			 *   if YES than createCase = TRUE
+			 */
+			if(e.getLogicOperator() == '|')
 			{
-				//this.Events.add(e);
-				boolean isInMap = this.eventsToHappen.containsKey(e.getId());
-				if(!isInMap)
-					this.eventsToHappen.put(e.getId(), e);
+				e.setLogicOperator('&');
+				createCase = true;
+			}
+			
+			caseEvents.add(e);
+			boolean isInMap = this.eventsToHappen.containsKey(e.getId());
+			if(!isInMap)
+				this.eventsToHappen.put(e.getId(), e);
+			
+			/*
+			 *  In case that case #i has ended then insert it into the list of Cases, and create a new List
+			 *  of Events for the next case.
+			 */
+			if(createCase)
+			{
+				casesFromDB.add(new Case(caseEvents, '|'));
+				caseEvents = new LinkedList<Event>();
+				createCase = false;
 			}
 		}
+		this.cases = new CaseGroup(casesFromDB, '|');
 	}
 	
 	
@@ -218,4 +230,26 @@ public class Scenario{
 		this.actions = actions;
 	}
 	
+	public static List<Event> getLogicEquation(Scenario s)
+	{
+		/*
+		 *  Transform the cases structure into a list of events.
+		 */
+		List<Event> result = new LinkedList<Event>();
+		for(Case cse : s.getCases().getCases())
+		{
+			Iterator<Event> itr_events = cse.getEvents().iterator();
+			while(itr_events.hasNext())
+			{
+				Event e = itr_events.next();
+				boolean lastEvent = !itr_events.hasNext();
+				if(lastEvent)
+					e.setLogicOperator('|');
+				else
+					e.setLogicOperator('&');
+				result.add(e);
+			}
+		}
+		return result;
+	}
 }

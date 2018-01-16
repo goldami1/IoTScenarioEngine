@@ -52,7 +52,7 @@ public class Customer {
 		List<String> types = new LinkedList<String>();
 		types.add("INT");
 		List<Event> events1 = new LinkedList<Event>();
-		List<Event> events2 = new LinkedList<Event>();
+		//List<Event> events2 = new LinkedList<Event>();
 		List<Action> actions = new LinkedList<Action>();
 		List<String> params1 = new LinkedList<String>();
 		List<String> params2 = new LinkedList<String>();
@@ -76,9 +76,9 @@ public class Customer {
 								    (short)1,
 								    "http://localhost:8000",
 								    true),
-				 			'&',
+				 			'|',
 				 			false));
-		events2.add(new Event((short)-1,
+		events1.add(new Event((short)-1,
 	 			(short) 123,
 	 			params2,
 	 			new ActionEventProto((short)1,
@@ -92,7 +92,7 @@ public class Customer {
 					    (short)1,
 					    "http://localhost:8000",
 					    true),
-	 			'&',
+	 			'|',
 	 			false));
 		actions.add(new Action((short)-1,
 	 			(short) 123,
@@ -109,17 +109,17 @@ public class Customer {
 					    "http://localhost:8000",
 					    false)));
 		List<Case> cases = new LinkedList<Case>();
-		Case c1 = new Case(events1, '|');
-		Case c2 = new Case(events2, '|');
-		cases.add(c1);
-		cases.add(c2);
+		//Case c1 = new Case(events1, '|');
+		//Case c2 = new Case(events2, '|');
+		//cases.add(c1);
+		//cases.add(c2);
 		CaseGroup cg = new CaseGroup(cases, '&');
 		Scenario scenario = new Scenario((short)-1,
 			    (short)1,
 			    "scenario name", 
-			    "scenario description", 
-			    actions,
-			    cg);
+			    "scenario description",
+			    events1,
+			    actions);
 		Action a = new MailAction((short)-1,
 	 			(short) 123,
 	 			params1,
@@ -135,21 +135,7 @@ public class Customer {
 	 				    "http://localhost:8000",
 	 				    false));
 		a.toggleAction();
-		/*
-		(short)1,
-	     "Turn TV on state X",
-	    "description of event",
-	     types,
-	     null,
-	     paramsName,
-	     min,
-	     max,
-	    (short)1,
-	    "http://localhost:8000",
-	    false
-	    */
-		//actions.get(0).toggleAction();
-		//new org.IoT_Project.Scenario_Engine.Models.Scenario()
+
 		return Response.status(Status.OK).entity(a).build();
 	}
 	
