@@ -135,21 +135,7 @@ public class Customer {
 	 				    "http://localhost:8000",
 	 				    false));
 		a.toggleAction();
-		/*
-		(short)1,
-	     "Turn TV on state X",
-	    "description of event",
-	     types,
-	     null,
-	     paramsName,
-	     min,
-	     max,
-	    (short)1,
-	    "http://localhost:8000",
-	    false
-	    */
-		//actions.get(0).toggleAction();
-		//new org.IoT_Project.Scenario_Engine.Models.Scenario()
+
 		return Response.status(Status.OK).entity(a).build();
 	}
 	
