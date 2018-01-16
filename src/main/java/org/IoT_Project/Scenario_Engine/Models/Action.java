@@ -28,6 +28,7 @@ public class Action implements IAction{
 	@SerializedName("actionDescription")
 	protected ActionEventProto actionDescription;
 	
+	
 	public Action()
 	{
 		this.parameters = null;

@@ -1,10 +1,7 @@
 package org.IoT_Project.Scenario_Engine.Models;
 
-import java.sql.SQLException;
-import java.util.List;
-
+import java.util.LinkedList;
 import com.google.gson.annotations.SerializedName;
-import DataBase.DBHandler;
 
 public class ActionEventProto {
 	@SerializedName("id")
@@ -13,22 +10,27 @@ public class ActionEventProto {
 	private String name;
 	@SerializedName("description")
 	private String description;
-	@SerializedName("types")
-	private List<String> types;
 	@SerializedName("prodId")
 	private short prodId;
 	@SerializedName("productEP")
 	protected String productEP;
 	@SerializedName("isEvent")
 	private boolean isEvent;
-	@SerializedName("supportedValues")
-	private List<List<String>> supportedValues;
+	
+	// list of eventActionProperties
 	@SerializedName("supportedParametersName")
-	private List<String> supportedParametersName;
+	private LinkedList<String> supportedParametersName;
+	@SerializedName("descriptions")
+	private LinkedList<String> descriptions;
+	@SerializedName("types")
+	private LinkedList<String> types;
+	@SerializedName("supportedValues")
+	private LinkedList<LinkedList<String>> supportedValues;
 	@SerializedName("minValues")
-	private List<String> min;
+	private LinkedList<String> min;
 	@SerializedName("maxValues")
-	private List<String> max;
+	private LinkedList<String> max;
+	
 	
 	public ActionEventProto()
 	{
@@ -44,11 +46,11 @@ public class ActionEventProto {
 	public ActionEventProto(short id,
 						    String name,
 						    String description,
-						    List<String> types,
-						    List<List<String>> supportedValues,
-						    List<String> supportedParametersName,
-						    List<String> min,
-						    List<String> max,
+						    LinkedList<String> types,
+						    LinkedList<LinkedList<String>> supportedValues,
+						    LinkedList<String> supportedParametersName,
+						    LinkedList<String> min,
+						    LinkedList<String> max,
 						    short prodId,
 						    String productEp,
 						    boolean isEvent)
@@ -98,11 +100,11 @@ public class ActionEventProto {
 		this.name = name;
 	}
 
-	public List<String> getTypes() {
+	public LinkedList<String> getTypes() {
 		return this.types;
 	}
 	
-	public void setTypes(List<String> types) {
+	public void setTypes(LinkedList<String> types) {
 		this.types = types;
 	}
 
@@ -122,35 +124,35 @@ public class ActionEventProto {
 		this.description = description;
 	}
 
-	public List<List<String>> getSupportedValues() {
+	public LinkedList<LinkedList<String>> getSupportedValues() {
 		return supportedValues;
 	}
 
-	public void setSupportedValues(List<List<String>> supportedValues) {
+	public void setSupportedValues(LinkedList<LinkedList<String>> supportedValues) {
 		this.supportedValues = supportedValues;
 	}
 	
-	public List<String> getMin() {
+	public LinkedList<String> getMin() {
 		return min;
 	}
 
-	public void setMin(List<String> min) {
+	public void setMin(LinkedList<String> min) {
 		this.min = min;
 	}
 
-	public List<String> getMax() {
+	public LinkedList<String> getMax() {
 		return max;
 	}
 
-	public void setMax(List<String> max) {
+	public void setMax(LinkedList<String> max) {
 		this.max = max;
 	}
 
-	public List<String> getSupportedParametersName() {
+	public LinkedList<String> getSupportedParametersName() {
 		return supportedParametersName;
 	}
 
-	public void setSupportedParametersName(List<String> supportedParametersName) {
+	public void setSupportedParametersName(LinkedList<String> supportedParametersName) {
 		this.supportedParametersName = supportedParametersName;
 	}
 }
