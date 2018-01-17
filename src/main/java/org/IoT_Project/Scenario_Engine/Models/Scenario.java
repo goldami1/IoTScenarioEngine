@@ -3,27 +3,50 @@ import java.sql.SQLException;
 import java.util.*;
 import java.util.Map.Entry;
 
+import javax.persistence.Column;
+import javax.persistence.ElementCollection;
+import javax.persistence.Embeddable;
+import javax.persistence.Embedded;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinTable;
+import javax.persistence.Table;
+
 import com.google.gson.annotations.SerializedName;
 
 import DataBase.DBHandler;
 
-
+@Entity
+@Table(name = "SCENARIOS")
 public class Scenario{
+	@Id
+	@GeneratedValue(strategy=GenerationType.SEQUENCE)
+	@Column (name = "scenario_id")
 	@SerializedName("id")
 	short id;
+	@Column (name = "scenario_name")
 	@SerializedName("name")
 	String name;
+	@Column (name = "scenario_description")
 	@SerializedName("description")
 	String description;
+	@Column (name = "customer_id")
 	@SerializedName("cust_id")
 	short cust_id;
+	@ElementCollection
+	@JoinTable(name = "SCENARIOS_ACTIONS")
 	@SerializedName("actions")
 	private List<Action> actions;
+	@ElementCollection
+	@JoinTable(name = "SCENARIOS_EVENTS")
 	@SerializedName("eventsToHappen")
 	private Map<Short, Event> eventsToHappen;
+												// I M P L E M E N T     IT!
 	@SerializedName("cases")
 	private CaseGroup cases;
-	
+												// I M P L E M E N T     IT!	
 	public Scenario() 
 	{
 		this.id = this.cust_id = -1;

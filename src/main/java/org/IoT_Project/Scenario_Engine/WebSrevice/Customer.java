@@ -4,6 +4,7 @@ import org.IoT_Project.Scenario_Engine.Service.CustomerService;
 import org.IoT_Project.Scenario_Engine.Service.UserService;
 
 import DataBase.DBHandler;
+import DataBase.NDBHandler;
 import javafx.util.Pair;
 
 import org.IoT_Project.Scenario_Engine.Models.Scenario;
@@ -155,7 +156,7 @@ public class Customer {
 	{
 		try {
 			org.IoT_Project.Scenario_Engine.Models.Customer userToAdd = us.addCustomer(i_user);
-			DBHandler.getInstance().addCustomer(userToAdd);
+			NDBHandler.getInstance().addCustomer(userToAdd);
 			return Response.status(Status.CREATED).entity(userToAdd).build();
 		}
 		catch(Exception ex)

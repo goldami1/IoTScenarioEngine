@@ -1,35 +1,83 @@
 package org.IoT_Project.Scenario_Engine.Models;
 
 import java.util.LinkedList;
+import java.util.List;
+
+import javax.persistence.Column;
+import javax.persistence.ElementCollection;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.Lob;
+import javax.persistence.Table;
+
+import org.hibernate.annotations.CollectionId;
+import org.hibernate.annotations.GenericGenerator;
+
 import com.google.gson.annotations.SerializedName;
 
+@Entity
+@Table (name = "AEPROTOS")
 public class ActionEventProto {
+	@Id
+	@GeneratedValue(strategy = GenerationType.SEQUENCE)
+	@Column(name = "ae_id")
 	@SerializedName("id")
 	private short id;
+	@Column(name = "ae_name")
 	@SerializedName("name")
 	private String name;
+	@Column(name = "ae_description")
 	@SerializedName("description")
 	private String description;
+	@Column(name = "product_id")
 	@SerializedName("prodId")
 	private short prodId;
+	@Column(name = "ae_prod_ep")
 	@SerializedName("productEP")
 	protected String productEP;
+	@Column(name = "ae_is_event")
 	@SerializedName("isEvent")
 	private boolean isEvent;
 	
 	// list of eventActionProperties
+	@ElementCollection
+	@JoinTable(name = "AEPARAMS_NAME", joinColumns = @JoinColumn(name = "ae_id"))
+	@GenericGenerator(name = "hilo-gen", strategy = "hilo")
+	@CollectionId(columns = { @Column(name = "param_idx") }, generator = "hil-gen", type = @org.hibernate.annotations.Type(type = "long"))
 	@SerializedName("supportedParametersName")
-	private LinkedList<String> supportedParametersName;
+	private List<String> supportedParametersName;
+	@ElementCollection
+	@JoinTable(name = "AEPARAMS_DESC", joinColumns = @JoinColumn(name = "ae_id"))
+	@GenericGenerator(name = "hilo-gen", strategy = "hilo")
+	@CollectionId(columns = { @Column(name = "desc_idx") }, generator = "hil-gen", type = @org.hibernate.annotations.Type(type = "long"))
 	@SerializedName("descriptions")
-	private LinkedList<String> descriptions;
+	private List<String> descriptions;
+	@ElementCollection
+	@JoinTable(name = "AEPARAMS_TYPE", joinColumns = @JoinColumn(name = "ae_id"))
+	@GenericGenerator(name = "hilo-gen", strategy = "hilo")
+	@CollectionId(columns = { @Column(name = "type_idx") }, generator = "hil-gen", type = @org.hibernate.annotations.Type(type = "long"))
 	@SerializedName("types")
-	private LinkedList<String> types;
+	private List<String> types;
+													//I M P L E M E N T        I T   IN HIBERNATE!!!!!!
 	@SerializedName("supportedValues")
-	private LinkedList<LinkedList<String>> supportedValues;
+	private List<List<String>> supportedValues;
+													//I M P L E M E N T        I T   IN HIBERNATE!!!!!!
+	@ElementCollection
+	@JoinTable(name = "AEPARAMS_MIN", joinColumns = @JoinColumn(name = "ae_id"))
+	@GenericGenerator(name = "hilo-gen", strategy = "hilo")
+	@CollectionId(columns = { @Column(name = "min_idx") }, generator = "hil-gen", type = @org.hibernate.annotations.Type(type = "long"))
 	@SerializedName("minValues")
-	private LinkedList<String> min;
+	private List<String> min;
+	@ElementCollection
+	@JoinTable(name = "AEPARAMS_MAX", joinColumns = @JoinColumn(name = "ae_id"))
+	@GenericGenerator(name = "hilo-gen", strategy = "hilo")
+	@CollectionId(columns = { @Column(name = "max_idx") }, generator = "hil-gen", type = @org.hibernate.annotations.Type(type = "long"))
 	@SerializedName("maxValues")
-	private LinkedList<String> max;
+	private List<String> max;
 	
 	
 	public ActionEventProto()
@@ -46,11 +94,11 @@ public class ActionEventProto {
 	public ActionEventProto(short id,
 						    String name,
 						    String description,
-						    LinkedList<String> types,
-						    LinkedList<LinkedList<String>> supportedValues,
-						    LinkedList<String> supportedParametersName,
-						    LinkedList<String> min,
-						    LinkedList<String> max,
+						    List<String> types,
+						    List<List<String>> supportedValues,
+						    List<String> supportedParametersName,
+						    List<String> min,
+						    List<String> max,
 						    short prodId,
 						    String productEp,
 						    boolean isEvent)
@@ -100,7 +148,7 @@ public class ActionEventProto {
 		this.name = name;
 	}
 
-	public LinkedList<String> getTypes() {
+	public List<String> getTypes() {
 		return this.types;
 	}
 	
@@ -124,15 +172,15 @@ public class ActionEventProto {
 		this.description = description;
 	}
 
-	public LinkedList<LinkedList<String>> getSupportedValues() {
+	public List<List<String>> getSupportedValues() {
 		return supportedValues;
 	}
 
-	public void setSupportedValues(LinkedList<LinkedList<String>> supportedValues) {
+	public void setSupportedValues(List<List<String>> supportedValues) {
 		this.supportedValues = supportedValues;
 	}
 	
-	public LinkedList<String> getMin() {
+	public List<String> getMin() {
 		return min;
 	}
 
@@ -140,7 +188,7 @@ public class ActionEventProto {
 		this.min = min;
 	}
 
-	public LinkedList<String> getMax() {
+	public List<String> getMax() {
 		return max;
 	}
 
@@ -148,7 +196,7 @@ public class ActionEventProto {
 		this.max = max;
 	}
 
-	public LinkedList<String> getSupportedParametersName() {
+	public List<String> getSupportedParametersName() {
 		return supportedParametersName;
 	}
 

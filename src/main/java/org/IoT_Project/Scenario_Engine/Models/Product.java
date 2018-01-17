@@ -3,30 +3,54 @@ package org.IoT_Project.Scenario_Engine.Models;
 import java.sql.SQLException;
 import java.util.*;
 
+import javax.persistence.Column;
+import javax.persistence.ElementCollection;
+import javax.persistence.Embedded;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinTable;
+import javax.persistence.Table;
+
 import com.google.gson.annotations.SerializedName;
 
 import DataBase.DBHandler;
 
+@Entity
+@Table (name = "PRODUCTS")
 public class Product {
-	
+	@Id
+	@GeneratedValue(strategy = GenerationType.SEQUENCE)
+	@Column(name = "product_id")
 	@SerializedName("id")
 	protected short id;
+	@Column(name = "vendor_id")
 	@SerializedName("vendor_id")
 	protected short vendor_id;
+	@Column(name = "product_name")
 	@SerializedName("name")
 	protected String name;
+	@Column(name = "product_picURL")
 	@SerializedName("picURL")
 	protected String picURL;
+	@Column(name = "product_description")
 	@SerializedName("description")
 	protected String description;
+	@Column(name = "vendor_name")
 	@SerializedName("vendorName")
 	protected String vendorName;
+	@ElementCollection
+	@JoinTable(name = "PRODUCTS_AEPROTOS")
 	@SerializedName("actionAndEventList")
 	protected LinkedList<ActionEventProto> actionAndEventList;
+	@Column(name = "product_ep")
 	@SerializedName("endPoint")
 	protected String endPoint;
+	@Column(name = "product_actionstate")
 	@SerializedName("actionState")
 	protected boolean actionState;
+	@Column(name = "product_eventstate")
 	@SerializedName("eventState")
 	protected boolean eventState;
 	

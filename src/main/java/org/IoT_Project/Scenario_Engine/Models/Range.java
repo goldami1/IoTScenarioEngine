@@ -1,7 +1,10 @@
 package org.IoT_Project.Scenario_Engine.Models;
 
+import javax.persistence.Embeddable;
+
 import com.google.gson.annotations.SerializedName;
 
+@Embeddable
 public class Range {
 	@SerializedName("max")
 	double max;

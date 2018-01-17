@@ -1,20 +1,35 @@
 package org.IoT_Project.Scenario_Engine.Models;
 
 import java.awt.image.BufferedImage;
-import java.sql.SQLException;
 import java.util.*;
+
+import javax.persistence.AttributeOverride;
+import javax.persistence.AttributeOverrides;
+import javax.persistence.Column;
+import javax.persistence.ElementCollection;
+import javax.persistence.Entity;
+import javax.persistence.JoinTable;
+import javax.persistence.Table;
 
 import com.google.gson.annotations.SerializedName;
 
 import DataBase.DBHandler;
 import utils.serverImgManager;
 
+@Entity
+@Table(name = "VENDORS")
+@AttributeOverrides({
+	@AttributeOverride(name="user_id", column=@Column(name = "vendor_id")),
+	@AttributeOverride(name ="name", column=@Column(name = "vendor_name"))
+	})
 public class Vendor extends User {
 
 	@SerializedName("description")
 	private String description;
 	@SerializedName("logoPicURL")
 	private String logoPicURL;
+	@ElementCollection
+	@JoinTable(name = "VENDORS_PRODUCTS")
 	@SerializedName("products")
 	private LinkedList<Product> products;
 	

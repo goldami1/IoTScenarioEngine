@@ -3,14 +3,32 @@ package org.IoT_Project.Scenario_Engine.Models;
 import java.sql.SQLException;
 import java.util.*;
 
+import javax.persistence.AttributeOverride;
+import javax.persistence.AttributeOverrides;
+import javax.persistence.Column;
+import javax.persistence.ElementCollection;
+import javax.persistence.Entity;
+import javax.persistence.JoinTable;
+import javax.persistence.Table;
+
 import com.google.gson.annotations.SerializedName;
 
 import DataBase.DBHandler;
 
+@Entity
+@Table (name = "CUSTOMERS")
+@AttributeOverrides({
+	@AttributeOverride(name="user_id", column=@Column(name = "customer_id")),
+	@AttributeOverride(name ="name", column=@Column(name = "customer_name"))
+	})
 public class Customer extends User {
 	
+	@ElementCollection
+	@JoinTable(name = "CUSTOMERS_DEVICES")
 	@SerializedName("devices")
 	private LinkedList<Device> devices;
+	@ElementCollection
+	@JoinTable(name = "CUSTOMERS_SCENARIOS")
 	@SerializedName("customerScenarios")
 	private LinkedList<Scenario> customerScenarios;
 	
