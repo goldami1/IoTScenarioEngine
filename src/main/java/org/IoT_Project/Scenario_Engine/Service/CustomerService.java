@@ -15,8 +15,7 @@ public class CustomerService {
 		return DBHandler.getInstance().getCustomer(i_user.getId());
 	}
 	
-	public Customer fetch(String i_name, String i_password) throws SQLException
-	{
+	public Customer fetch(String i_name, String i_password) throws Exception{
 		return DBHandler.getInstance().getCustomer(i_name, i_password);
 	}
 	
@@ -29,11 +28,7 @@ public class CustomerService {
 			return DBHandler.getInstance().getDevices(i_CustomerId);
 		}
 		else
-		{
-			ErrorException ex = new ErrorException("user doesnt exist");
-			ex.setStatus(Status.NOT_FOUND);
-			throw ex;
-		}
+			throw new Exception("no User");
 	}
 
 	public List<Device> removeDevice(short cust_id, short device_id) throws Exception{
@@ -48,10 +43,7 @@ public class CustomerService {
 			return DBHandler.getInstance().getScenarios(cust_id);
 		}
 		else
-		{
 			throw new Exception("no user");
-		}
-		
 	}
 
 	public List<Scenario> updateScenario(short cust_id, short origionalScenario_id, Scenario newScenario) throws Exception 
@@ -61,7 +53,7 @@ public class CustomerService {
 			return DBHandler.getInstance().getScenarios(cust_id);
 		}
 		else
-			throw new Exception("no user");
+			throw new Exception("no User, or no Device to update");
 		
 	}
 
@@ -70,31 +62,22 @@ public class CustomerService {
 		{
 			return DBHandler.getInstance().getScenarios(cust_id);
 		}
+		/*
+		 * will never reach here
+		 */
 		else
-			throw new Exception("no user");
-		
+			throw new Exception("no User, or no Scenario to update");
 	}
 
 	public List<Device> fetchDevices(short i_user) throws Exception {
-		try {
-			
 			return DBHandler.getInstance().getDevices(i_user);
-			
-		} catch (SQLException e) {
-			ErrorException eex = new ErrorException(e.getMessage());
-			eex.setStatus(Status.INTERNAL_SERVER_ERROR);
-			throw eex;
-		}	
 	}
 
-	public List<Scenario> fetchScenarios(short i_user) throws SQLException {
+	public List<Scenario> fetchScenarios(short i_user) throws Exception {
 		return DBHandler.getInstance().getScenarios(i_user);
 	}
 
 	public List<Device> updateDevice(short cust_id, short dev_id, Device newDevice) throws Exception {
 			return DBHandler.getInstance().getDevices(cust_id);
 	}
-	
-
-
 }

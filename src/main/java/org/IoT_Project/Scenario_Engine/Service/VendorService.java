@@ -11,61 +11,27 @@ import DataBase.DBHandler;
 public class VendorService {
 
 	public org.IoT_Project.Scenario_Engine.Models.Vendor fetch(String i_name, String i_pswd) throws Exception{
-		try {
 			return DBHandler.getInstance().getVendor(i_name, i_pswd);
-		}
-		catch(SQLException ex)
-		{
-			ErrorException eex = new ErrorException(ex.getMessage());
-			eex.setStatus(Status.INTERNAL_SERVER_ERROR);
-			throw eex;
-		}
 	}
 
 	public  List<Product> addProduct(Product i_product) throws Exception{
 		Product newProduct = new Product(i_product);
 		if(DBHandler.getInstance().addProduct(newProduct))
 		{
-			try {
 				return DBHandler.getInstance().getProducts(newProduct.getVendor_id());
-			}
-			catch(SQLException ex)
-			{
-				ErrorException eex = new ErrorException(ex.getMessage());
-				eex.setStatus(Status.INTERNAL_SERVER_ERROR);
-				throw eex;
-			
-			}
 		}
 		else
-		{
-			ErrorException ex = new ErrorException("no user");
-			ex.setStatus(Status.NOT_FOUND);
-			throw ex;
-		}
+			throw new Exception("no User");
 	}
 
 
 	public  List<Product> removeProduct(int vendor_id, Product i_prod2Remove) throws Exception{
 		if(DBHandler.getInstance().removeProduct(i_prod2Remove.getId()))
 		{
-			try {
-				return DBHandler.getInstance().getProducts(vendor_id);
-			}
-			catch(SQLException ex)
-			{
-				ErrorException eex = new ErrorException(ex.getMessage());
-				eex.setStatus(Status.INTERNAL_SERVER_ERROR);
-				throw eex;
-			
-			}
+			return DBHandler.getInstance().getProducts(vendor_id);
 		}
 		else
-		{
-			ErrorException ex = new ErrorException("no user");
-			ex.setStatus(Status.NOT_FOUND);
-			throw ex;
-		}
+			throw new Exception("no User, or no Product to remove");
 	}
 
 	public Vendor fetch(User i_user) throws Exception{
@@ -75,22 +41,10 @@ public class VendorService {
 	public List<Product> updateProduct(short i_id, short i_deviceToUpdateId, Product i_prod) throws Exception{
 		if(DBHandler.getInstance().updateProduct(i_deviceToUpdateId, i_prod))
 		{
-			try {
-				return DBHandler.getInstance().getProducts(i_id);
-			}
-			catch(SQLException ex)
-			{
-				ErrorException eex = new ErrorException(ex.getMessage());
-				eex.setStatus(Status.INTERNAL_SERVER_ERROR);
-				throw eex;
-			}
+			return DBHandler.getInstance().getProducts(i_id);
 		}
 		else
-		{
-			ErrorException ex = new ErrorException("no user");
-			ex.setStatus(Status.NOT_FOUND);
-			throw ex;
-		}
+			throw new Exception("no User, or no Product to update");
 		
 	}
 

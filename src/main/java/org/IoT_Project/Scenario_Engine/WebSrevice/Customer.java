@@ -108,19 +108,32 @@ public class Customer {
 					    (short)1,
 					    "http://localhost:8000",
 					    false)));
+		
 		List<Case> cases = new LinkedList<Case>();
-		//Case c1 = new Case(events1, '|');
-		//Case c2 = new Case(events2, '|');
-		//cases.add(c1);
-		//cases.add(c2);
 		CaseGroup cg = new CaseGroup(cases, '&');
+		
 		Scenario scenario = new Scenario((short)-1,
 			    (short)1,
 			    "scenario name", 
 			    "scenario description",
 			    events1,
 			    actions);
-		Action a = new MailAction((short)-1,
+		Action a = new Action((short)-1,
+	 			(short) 123,
+	 			params2,
+	 			new ActionEventProto((short)1,
+					     "Turn TV on state X",
+					    "description of event",
+					     null,
+					     null,
+					     paramsName,
+					     null,
+					     null,
+					    (short)1,
+					    "http://localhost:8011/Device_Simulator/webapi",
+					    false));
+				
+				/*new MailAction((short)-1,
 	 			(short) 123,
 	 			params1,
 	 			new ActionEventProto((short)1,
@@ -133,7 +146,7 @@ public class Customer {
 	 				     max,
 	 				    (short)1,
 	 				    "http://localhost:8000",
-	 				    false));
+	 				    false));*/
 		a.toggleAction();
 
 		return Response.status(Status.OK).entity(a).build();
@@ -142,9 +155,15 @@ public class Customer {
 	@POST
 	@Consumes(MediaType.APPLICATION_JSON)	
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response fetchCustomer(User i_user) throws Exception
+	public Response fetchCustomer(User i_user) 
 	{
-		return fetch(i_user);
+		try {
+			return fetch(i_user);
+		}
+		catch(Exception ex)
+		{
+			return handleError(ex);
+		}
 	}
 	
 	@Path("/new")
@@ -189,20 +208,17 @@ public class Customer {
 	@Path("/device/{user_id}")
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response fetchDevices(@PathParam("user_id")short i_user) throws Exception
+	public Response fetchDevices(@PathParam("user_id")short i_user) 
 	{
-		Response res = null;
 		List<org.IoT_Project.Scenario_Engine.Models.Device> devices;
 		try {
 			devices = cs.fetchDevices(i_user);
-			res = Response.status(Status.OK).entity(devices).build();
+			return Response.status(Status.OK).entity(devices).build();
 		}
 		catch(Exception ex)
 		{
-			res = handleError(ex);
-		}
-		return res;
-		
+			return handleError(ex);
+		}		
 	}
 	
 	@Path("/device/{cust_id}")
@@ -212,16 +228,14 @@ public class Customer {
 	public Response addDevice(Device i_device, @PathParam("cust_id") short cust_id)
 	{
 		List<Device> updatedDevices;
-		Response res = null;
 		try {
 			updatedDevices = cs.addDevice(cust_id, i_device);
-			res = Response.status(Status.CREATED).entity(updatedDevices).build();
+			return Response.status(Status.CREATED).entity(updatedDevices).build();
 		}
 		catch(Exception ex)
 		{
-			res = handleError(ex);
+			return handleError(ex);
 		}
-		return res;
 	}
 	
 	@Path("device/{user_id}/{dev_id}")
@@ -230,17 +244,15 @@ public class Customer {
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response updateDevice(Device newDevice, @PathParam("user_id") short cust_id, @PathParam("dev_id") short origionalDevice_id)
 	{
-		Response res = null;
 		List<Device> updatedDeviceList;
 		try {
 			updatedDeviceList = cs.updateDevice(cust_id, origionalDevice_id, newDevice);
-			res = Response.status(Status.OK).entity(updatedDeviceList).build();
+			return Response.status(Status.OK).entity(updatedDeviceList).build();
 		}
 		catch(Exception ex)
 		{
-			res = handleError(ex);
+			return handleError(ex);
 		}
-		return res;
 	}
 	
 	@Path("device/{id}/{dev_id}")
@@ -248,33 +260,29 @@ public class Customer {
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response removeDevice(@PathParam("id") short cust_id, @PathParam("dev_id") short device_id)
 	{
-		Response res = null;
 		List<Device> updatedDeviceList;
 		try {
 			updatedDeviceList = cs.removeDevice(cust_id, device_id);
-			res = Response.status(Status.OK).entity(updatedDeviceList).build();
+			return Response.status(Status.OK).entity(updatedDeviceList).build();
 		}
 		catch(Exception ex)
 		{
-			res = handleError(ex);
+			return handleError(ex);
 		}
-		return res;
 	}
 	@Path("/scenario/{user_id}")
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response fetchScenarios(@PathParam("user_id")short i_user)
 	{
-		Response res = null;
 		try {
 			List<Scenario> scenarios = cs.fetchScenarios(i_user);
-			res = Response.status(Status.OK).entity(scenarios).build();
+			return Response.status(Status.OK).entity(scenarios).build();
 		}
 		catch(Exception ex)
 		{
-			res = handleError(ex);
+			return handleError(ex);
 		}
-		return res;
 	}
 	
 	@Path("scenario/{id}")
@@ -283,16 +291,14 @@ public class Customer {
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response addScenario(Scenario scenarioToAdd, @PathParam("id") short cust_id)
 	{
-		Response res = null;
 		try {
 			List<Scenario> updatedScenarios = cs.addScenario(cust_id, scenarioToAdd);
-			res = Response.status(Status.CREATED).entity(updatedScenarios).build();
+			return Response.status(Status.CREATED).entity(updatedScenarios).build();
 		}
 		catch(Exception ex)
 		{
-			res = handleError(ex);
+			return handleError(ex);
 		}
-		return res;
 	}
 	
 	@Path("scenario/{cust_id}/{origion_scenario_id}")
@@ -301,16 +307,14 @@ public class Customer {
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response updateScenario(Scenario newScenario, @PathParam("cust_id") short cust_id, @PathParam("origion_scenario_id")  short origionalScenario_id)
 	{
-		Response res = null;
 		try {
 			List<Scenario> updatedScenarios = cs.updateScenario(cust_id, origionalScenario_id, newScenario);
-			res = Response.status(Status.OK).entity(updatedScenarios).build();
+			return Response.status(Status.OK).entity(updatedScenarios).build();
 		}
 		catch(Exception ex)
 		{
-			res = handleError(ex);
+			return handleError(ex);
 		}
-		return res;
 	}
 	
 	@Path("scenario/{cust_id}/{origion_scenario_id}")
@@ -318,19 +322,17 @@ public class Customer {
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response removeScenario(@PathParam("cust_id") short cust_id, @PathParam("origion_scenario_id") int scenarioToRemove)
 	{
-		Response res = null;
 		try {
 			List<Scenario> updatedScenarios = cs.removeScenario(cust_id, scenarioToRemove);
-			res = Response.status(Status.OK).entity(updatedScenarios).build();
+			return Response.status(Status.OK).entity(updatedScenarios).build();
 		}
 		catch(Exception ex)
 		{
-			res = handleError(ex);
+			return handleError(ex);
 		}
-		return res;
 	}
 	
-	private Response fetch(User i_user) throws Exception
+	private Response fetch(User i_user) 
 	{
 		try {
 			User user = us.fetch(i_user);
@@ -345,18 +347,8 @@ public class Customer {
 	
 	protected Response handleError(Exception ex)
 	{
-		Response res = null;
 		org.IoT_Project.Scenario_Engine.Models.Error er = new org.IoT_Project.Scenario_Engine.Models.Error();
-		ErrorException eex = (ErrorException)ex;
-		if(eex != null)
-		{
-			er.setDescription(eex.getMessage());
-			res.status(eex.getStatus()).entity(er).build();
-			return res;
-		}
-		else
-		{
-			return Response.status(Status.INTERNAL_SERVER_ERROR).entity(ex.getMessage()).build();
-		}
+		er.setDescription(ex.getMessage());
+		return Response.status(Status.INTERNAL_SERVER_ERROR).entity(er).build();
 	}
 }

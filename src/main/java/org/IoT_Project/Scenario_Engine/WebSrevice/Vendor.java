@@ -42,9 +42,15 @@ public class Vendor{
 	@POST
 	@Consumes(MediaType.APPLICATION_JSON)	//MediaType.MULTIPART_FORM_DATA)
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response fetchVendor(org.IoT_Project.Scenario_Engine.Models.User i_user) throws Exception
+	public Response fetchVendor(org.IoT_Project.Scenario_Engine.Models.User i_user) 
 	{
-		return fetch(i_user);
+		try {
+			return fetch(i_user);
+		}
+		catch(Exception ex)
+		{
+			return handleError(ex);
+		}
 	}
 	
 	
@@ -71,16 +77,14 @@ public class Vendor{
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response addProduct(Product i_product)
 	{
-		Response res = null;
 		try {
 			List<Product> products = vs.addProduct(i_product);
-			res = Response.status(Status.OK).entity(products).build();
+			return Response.status(Status.OK).entity(products).build();
 		}
 		catch(Exception ex)
 		{
-			res = this.handleError(ex);
+			return this.handleError(ex);
 		}
-		return res;
 	}
 	
 	@Path("{vendor_id}/{dev_id}")
@@ -89,16 +93,14 @@ public class Vendor{
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response updateProduct(Product i_prod, @PathParam("vendor_id") short vendor_id, @PathParam("dev_id") short i_deviceId)
 	{
-		Response res = null;
 		try {
 			List<Product> updatedProducts = vs.updateProduct(vendor_id, i_deviceId,  i_prod);
-			res = Response.status(Status.OK).entity(updatedProducts).build();
+			return Response.status(Status.OK).entity(updatedProducts).build();
 		}
 		catch(Exception ex)
 		{
-			res = this.handleError(ex);
+			return this.handleError(ex);
 		}
-		return res;
 	}
 	
 	@Path("{vendor_id}")
@@ -107,16 +109,14 @@ public class Vendor{
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response deleteProduct(Product i_prod2Remove, @PathParam("vendor_id") short vendor_id)
 	{
-		Response res = null;
 		try {
 			List<Product> updatedProducts = vs.removeProduct(vendor_id, i_prod2Remove);
-			res = Response.status(Status.OK).entity(updatedProducts).build();
+			return Response.status(Status.OK).entity(updatedProducts).build();
 		}
 		catch(Exception ex)
 		{
-			res = this.handleError(ex);
+			return this.handleError(ex);
 		}
-		return res;
 	}
 	
 	@Path("/product/{vendor_id}")
@@ -148,10 +148,8 @@ public class Vendor{
 	
 	protected Response handleError(Exception ex)
 	{
-		Response res = null;
 		org.IoT_Project.Scenario_Engine.Models.Error er = new org.IoT_Project.Scenario_Engine.Models.Error();
 		er.setDescription(ex.getMessage());
-		res = Response.status(Status.NOT_FOUND).entity(er).build();
-		return res;
+		return Response.status(Status.INTERNAL_SERVER_ERROR).entity(er).build();
 	}
 }

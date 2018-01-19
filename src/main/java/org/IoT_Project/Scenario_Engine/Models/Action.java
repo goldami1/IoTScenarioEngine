@@ -68,7 +68,6 @@ public class Action implements IAction{
 	public int toggleAction() throws Exception
 	{
 		StringBuilder URI = new StringBuilder();
-		int amountOfParams = this.parameters.size();
 		/*
 		 * creating the URI:
 		 * (server-url)/product_endpoint/device_serialNum/{if this is an event => event_id}/name of Action_Event/parameter.
@@ -78,45 +77,39 @@ public class Action implements IAction{
 		URI.append("/");
 		URI.append(this.device_serialNum);
 		URI.append("/");
-		URI.append(this.actionDescription.getName());
+		URI.append(figureSpacesInName(this.actionDescription.getName()));
 		URI.append("/");
 		if(this.actionDescription.getIsEvent())
 		{
 			URI.append("&event_id=" + this.id);
 		}
-		if(amountOfParams == 1)
+		
+		/*
+		 *  Generate the string: ?[param1_name]=[value1]&[param2_name]=[value2]...&[paramN_name]=[valueN]/
+		 */
+		int paramIndex = 0;
+		boolean firstEntry = true;
+		for(String s : this.parameters)
 		{
 			/*
-			 *  Generate the string: ?[param_name]=[value]/
+			 *  Attaching parameter to URL.
 			 */
-			URI.append("?" + this.actionDescription.getSupportedParametersName().get(0) + "=");
-			URI.append(this.parameters.get(0));
-		}
-		else
-		{
-			/*
-			 *  Generate the string: ?[param1_name]=[value1]&[param2_name]=[value2]...&[paramN_name]=[valueN]/
-			 */
-			int paramIndex = 0;
-			boolean firstEntry = true;
-			for(String s : this.parameters)
+			if(firstEntry)
 			{
-				if(firstEntry)
-				{
-					URI.append("?" + this.actionDescription.getSupportedParametersName().get(paramIndex) + "=" + s);
-					firstEntry = false;
-				}
-				else
-					URI.append("&" + this.actionDescription.getSupportedParametersName().get(paramIndex) + "=" + s);
+				URI.append("?" + this.actionDescription.getSupportedParametersName().get(paramIndex) + "=" + s);
+				firstEntry = false;
 			}
+			else
+				URI.append("&" + this.actionDescription.getSupportedParametersName().get(paramIndex) + "=" + s);
 		}
+		
 		String USER_AGENT = "Mozilla/5.0";
 
 		URL ep = new URL(URI.toString());
 		//URL ep = new URL(null, URI.toString(), new sun.net.www.protocol.https.Handler());
 		HttpURLConnection con = (HttpURLConnection)ep.openConnection();
 		con.setRequestMethod("GET");
-		con.setRequestProperty("User-Agent", USER_AGENT);
+		//con.setRequestProperty("User-Agent", USER_AGENT);
 		//con.setRequestMethod("POST");
 		//con.setDoOutput(true);
 		
@@ -168,6 +161,29 @@ public class Action implements IAction{
 
 	public void setActionDescription(ActionEventProto actionDescription) {
 		this.actionDescription = actionDescription;
+	}
+	
+	private String figureSpacesInName(String actionName_arg)
+	{
+
+		/*
+		 *  Handeling spaces in Action name for the URL.
+		 */
+		String actionNameSplitted[] = actionName_arg.split(" ");
+		StringBuilder actionName = new StringBuilder();
+		for(int i=0; i<actionNameSplitted.length; i++)
+		{
+			if(i == 0)
+			{
+				actionName.append(actionNameSplitted[i]);
+			}
+			else
+			{
+				actionName.append("%20");
+				actionName.append(actionNameSplitted[i]);
+			}
+		}
+		return actionName.toString();
 	}
 }
 
