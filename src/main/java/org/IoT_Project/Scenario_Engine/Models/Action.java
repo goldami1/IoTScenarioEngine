@@ -17,6 +17,7 @@ import javax.persistence.ElementCollection;
 import javax.persistence.Embeddable;
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -24,6 +25,7 @@ import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 import org.hibernate.annotations.CollectionId;
@@ -40,17 +42,17 @@ public class Action implements IAction{
 	@Column(name = "action_id")
 	@SerializedName("id")
 	protected short id;
-	@ElementCollection
+	@ElementCollection(fetch = FetchType.EAGER)
 	@JoinTable(name = "AE_PARAM_VALS", joinColumns=@JoinColumn(name = "ae_id"))
-	@GenericGenerator(name = "hilo-gen", strategy = "hilo")
+	@GenericGenerator(name = "hilo-gen", strategy = "sequence")
 	@CollectionId(columns = { @Column(name = "param_val_idx") }, generator = "hilo-gen", type = @org.hibernate.annotations.Type(type = "long"))
 	@SerializedName("parameters")
 	protected List<String> parameters;
 	@Column(name = "device_sn")
 	@SerializedName("device_serialNum")
 	protected short device_serialNum;
-	@Embedded
-	@Column(name = "action_proto")
+	@OneToOne
+	@JoinColumn(name = "actionproto_id")
 	@SerializedName("actionDescription")
 	protected ActionEventProto actionDescription;
 	

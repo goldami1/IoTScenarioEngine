@@ -7,10 +7,13 @@ import javax.persistence.Column;
 import javax.persistence.ElementCollection;
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import com.google.gson.annotations.SerializedName;
@@ -40,10 +43,11 @@ public class Product {
 	@Column(name = "vendor_name")
 	@SerializedName("vendorName")
 	protected String vendorName;
-	@ElementCollection
-	@JoinTable(name = "PRODUCTS_AEPROTOS")
+	@OneToMany
+	@JoinTable(name = "PRODUCTS_AEPROTOS", joinColumns=@JoinColumn(name = "product_id"),
+				inverseJoinColumns=@JoinColumn(name = "aeproto_id"))
 	@SerializedName("actionAndEventList")
-	protected LinkedList<ActionEventProto> actionAndEventList;
+	protected List<ActionEventProto> actionAndEventList;
 	@Column(name = "product_ep")
 	@SerializedName("endPoint")
 	protected String endPoint;
@@ -183,7 +187,7 @@ public class Product {
 		this.description = description;
 	}
 
-	public LinkedList<ActionEventProto> getActionAndEventList() {
+	public List<ActionEventProto> getActionAndEventList() {
 		return actionAndEventList;
 	}
 

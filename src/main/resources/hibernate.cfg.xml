@@ -12,13 +12,19 @@
         <property name="hibernate.connection.password">mtaAmiRomaGalGil</property>
 
 		
-		<property name="hbm2ddl.auto">create</property>
+		<property name="hbm2ddl.auto">update</property>
 		<property name="hibernate.show_sql">true</property>
  
         <!-- add classes to map from here -->
         <mapping class="org.IoT_Project.Scenario_Engine.Models.User" />
         <mapping class="org.IoT_Project.Scenario_Engine.Models.Customer" />
         <mapping class="org.IoT_Project.Scenario_Engine.Models.Vendor" />
+        <mapping class="org.IoT_Project.Scenario_Engine.Models.Action" />
+        <mapping class="org.IoT_Project.Scenario_Engine.Models.ActionEventProto" />
+        <mapping class="org.IoT_Project.Scenario_Engine.Models.Device" />
+        <mapping class="org.IoT_Project.Scenario_Engine.Models.Event" />
+        <mapping class="org.IoT_Project.Scenario_Engine.Models.Product" />
+        <mapping class="org.IoT_Project.Scenario_Engine.Models.Scenario" />
         <mapping class="DataBase.UserPK" />
         
     </session-factory>

@@ -6,6 +6,7 @@ import java.util.List;
 import javax.persistence.Column;
 import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -13,6 +14,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.Lob;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 import org.hibernate.annotations.CollectionId;
 import org.hibernate.annotations.GenericGenerator;
@@ -44,38 +46,38 @@ public class ActionEventProto {
 	private boolean isEvent;
 	
 	// list of eventActionProperties
-	@ElementCollection
+	@ElementCollection(fetch = FetchType.EAGER)
 	@JoinTable(name = "AEPARAMS_NAME", joinColumns = @JoinColumn(name = "ae_id"))
-	@GenericGenerator(name = "hilo-gen", strategy = "hilo")
-	@CollectionId(columns = { @Column(name = "param_idx") }, generator = "hil-gen", type = @org.hibernate.annotations.Type(type = "long"))
+	@GenericGenerator(name = "hilo-gen", strategy = "sequence")
+	@CollectionId(columns = { @Column(name = "param_idx") }, generator = "hilo-gen", type = @org.hibernate.annotations.Type(type = "long"))
 	@SerializedName("supportedParametersName")
 	private List<String> supportedParametersName;
-	@ElementCollection
+	@ElementCollection(fetch = FetchType.EAGER)
 	@JoinTable(name = "AEPARAMS_DESC", joinColumns = @JoinColumn(name = "ae_id"))
-	@GenericGenerator(name = "hilo-gen", strategy = "hilo")
-	@CollectionId(columns = { @Column(name = "desc_idx") }, generator = "hil-gen", type = @org.hibernate.annotations.Type(type = "long"))
+	@GenericGenerator(name = "hilo-gen", strategy = "sequence")
+	@CollectionId(columns = { @Column(name = "desc_idx") }, generator = "hilo-gen", type = @org.hibernate.annotations.Type(type = "long"))
 	@SerializedName("descriptions")
 	private List<String> descriptions;
-	@ElementCollection
+	@ElementCollection(fetch = FetchType.EAGER)
 	@JoinTable(name = "AEPARAMS_TYPE", joinColumns = @JoinColumn(name = "ae_id"))
-	@GenericGenerator(name = "hilo-gen", strategy = "hilo")
-	@CollectionId(columns = { @Column(name = "type_idx") }, generator = "hil-gen", type = @org.hibernate.annotations.Type(type = "long"))
+	@GenericGenerator(name = "hilo-gen", strategy = "sequence")
+	@CollectionId(columns = { @Column(name = "type_idx") }, generator = "hilo-gen", type = @org.hibernate.annotations.Type(type = "long"))
 	@SerializedName("types")
 	private List<String> types;
 													//I M P L E M E N T        I T   IN HIBERNATE!!!!!!
-	@SerializedName("supportedValues")
+	@Transient
 	private List<List<String>> supportedValues;
 													//I M P L E M E N T        I T   IN HIBERNATE!!!!!!
-	@ElementCollection
+	@ElementCollection(fetch = FetchType.EAGER)
 	@JoinTable(name = "AEPARAMS_MIN", joinColumns = @JoinColumn(name = "ae_id"))
-	@GenericGenerator(name = "hilo-gen", strategy = "hilo")
-	@CollectionId(columns = { @Column(name = "min_idx") }, generator = "hil-gen", type = @org.hibernate.annotations.Type(type = "long"))
+	@GenericGenerator(name = "hilo-gen", strategy = "sequence")
+	@CollectionId(columns = { @Column(name = "min_idx") }, generator = "hilo-gen", type = @org.hibernate.annotations.Type(type = "long"))
 	@SerializedName("minValues")
 	private List<String> min;
-	@ElementCollection
+	@ElementCollection(fetch = FetchType.EAGER)
 	@JoinTable(name = "AEPARAMS_MAX", joinColumns = @JoinColumn(name = "ae_id"))
-	@GenericGenerator(name = "hilo-gen", strategy = "hilo")
-	@CollectionId(columns = { @Column(name = "max_idx") }, generator = "hil-gen", type = @org.hibernate.annotations.Type(type = "long"))
+	@GenericGenerator(name = "hilo-gen", strategy = "sequence")
+	@CollectionId(columns = { @Column(name = "max_idx") }, generator = "hilo-gen", type = @org.hibernate.annotations.Type(type = "long"))
 	@SerializedName("maxValues")
 	private List<String> max;
 	

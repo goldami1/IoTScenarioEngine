@@ -10,11 +10,12 @@ import org.IoT_Project.Scenario_Engine.Models.User;
 import org.IoT_Project.Scenario_Engine.Models.Vendor;
 
 import DataBase.DBHandler;
+import DataBase.NDBHandler;
 
 public class UserService {
 	public User fetch(User i_user) throws Exception{
 		try {
-		return DBHandler.getInstance().getUser(i_user.getUserName(), i_user.getPassword());
+		return NDBHandler.getInstance().getUser(i_user.getUserName(), i_user.getPassword());
 		}
 		catch(SQLException sqlex)
 		{

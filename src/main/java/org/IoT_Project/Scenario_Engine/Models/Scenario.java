@@ -8,11 +8,15 @@ import javax.persistence.ElementCollection;
 import javax.persistence.Embeddable;
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 import com.google.gson.annotations.SerializedName;
 
@@ -35,15 +39,18 @@ public class Scenario{
 	@Column (name = "customer_id")
 	@SerializedName("cust_id")
 	short cust_id;
-	@ElementCollection
-	@JoinTable(name = "SCENARIOS_ACTIONS")
+	@OneToMany
+	@JoinTable(name = "SCENARIOS_ACTIONS", joinColumns=@JoinColumn(name = "scenario_id"),
+				inverseJoinColumns=@JoinColumn(name = "action_id"))
 	@SerializedName("actions")
 	private List<Action> actions;
-	@ElementCollection
-	@JoinTable(name = "SCENARIOS_EVENTS")
+	@OneToMany
+	@JoinTable(name = "SCENARIOS_EVENTS", joinColumns=@JoinColumn(name = "scenario_id"),
+				inverseJoinColumns=@JoinColumn(name = "event_id"))
 	@SerializedName("eventsToHappen")
 	private Map<Short, Event> eventsToHappen;
 												// I M P L E M E N T     IT!
+	@Transient
 	@SerializedName("cases")
 	private CaseGroup cases;
 												// I M P L E M E N T     IT!	

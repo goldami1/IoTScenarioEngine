@@ -8,8 +8,14 @@ import javax.persistence.AttributeOverrides;
 import javax.persistence.Column;
 import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
+
+import org.hibernate.annotations.LazyCollection;
+import org.hibernate.annotations.LazyCollectionOption;
 
 import com.google.gson.annotations.SerializedName;
 
@@ -23,20 +29,25 @@ import DataBase.DBHandler;
 	})
 public class Customer extends User {
 	
-	@ElementCollection
-	@JoinTable(name = "CUSTOMERS_DEVICES")
+	@LazyCollection(LazyCollectionOption.FALSE)
+	@OneToMany
+	@JoinTable(name = "CUSTOMERS_DEVICES", joinColumns=@JoinColumn(name = "customer_id"),
+				inverseJoinColumns=@JoinColumn(name = "device_id"))
 	@SerializedName("devices")
-	private LinkedList<Device> devices;
-	@ElementCollection
-	@JoinTable(name = "CUSTOMERS_SCENARIOS")
+	private List<Device> devices;
+	@LazyCollection(LazyCollectionOption.FALSE)
+	@OneToMany
+	@JoinTable(name = "CUSTOMERS_SCENARIOS", joinColumns=@JoinColumn(name = "customer_id"),
+				inverseJoinColumns=@JoinColumn(name = "scenario_id"))
 	@SerializedName("customerScenarios")
-	private LinkedList<Scenario> customerScenarios;
+	private List<Scenario> customerScenarios;
 	
 	public Customer()
 	{
 		super();
 		this.devices = null;
 		this.customerScenarios = null;
+		this.isCustomer = true;
 	}
 	
 	public Customer(short User_id,
@@ -58,7 +69,7 @@ public class Customer extends User {
 	public Customer(User i_user) throws Exception
 	{
 		super(i_user);
-		this.isCustomer = true;
+		this.isCustomer = i_user.isCustomer();
 		this.devices = null;
 		this.customerScenarios = null;
 	}
@@ -66,7 +77,7 @@ public class Customer extends User {
 	 * @throws SQLException ****************************************************************/
 
 	
-	public LinkedList<Device> getDevices() {
+	public List<Device> getDevices() {
 		return devices;
 	}
 
@@ -74,7 +85,7 @@ public class Customer extends User {
 		this.devices = devices;
 	}
 
-	public LinkedList<Scenario> getCustomerScenarios() {
+	public List<Scenario> getCustomerScenarios() {
 		return customerScenarios;
 	}
 

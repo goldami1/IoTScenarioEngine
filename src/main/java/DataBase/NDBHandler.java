@@ -3,6 +3,7 @@ package DataBase;
 import java.awt.image.BufferedImage;
 import java.sql.SQLException;
 import java.util.LinkedList;
+import java.util.List;
 
 import org.IoT_Project.Scenario_Engine.Models.Action;
 import org.IoT_Project.Scenario_Engine.Models.Customer;
@@ -12,17 +13,27 @@ import org.IoT_Project.Scenario_Engine.Models.Product;
 import org.IoT_Project.Scenario_Engine.Models.Scenario;
 import org.IoT_Project.Scenario_Engine.Models.User;
 import org.IoT_Project.Scenario_Engine.Models.Vendor;
+
+import org.hibernate.query.Query;
+
+import javax.persistence.TypedQuery;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Root;
+
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.boot.MetadataSources;
 import org.hibernate.boot.registry.StandardServiceRegistry;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
+import org.hibernate.exception.ConstraintViolationException;
 
 import javafx.util.Pair;
 
 public class NDBHandler implements IDBHandler {
 	private static NDBHandler m_Instance = null;
 	protected SessionFactory m_sessionFactory = null;
+	private Session m_Session = null;
 	
 	protected void setup()
 	{
@@ -54,35 +65,49 @@ public class NDBHandler implements IDBHandler {
 	}
 	
 	
-	public boolean userConnectionAuth(String i_Username, String i_UserPassword) throws SQLException {
-		// TODO Auto-generated method stub
-		return false;
+	public boolean userConnectionAuth(String i_Username, String i_UserPassword) throws SQLException
+	{
+		boolean isUserFound=false;
+		
+		m_Session = m_sessionFactory.openSession();
+		m_Session.beginTransaction();
+		
+		CriteriaQuery<User> userCriteria = m_Session.getCriteriaBuilder().createQuery(User.class);
+		
+		
+		Query query = m_Session.createQuery("SELECT * FROM USERS WHERE user_name = ? and user_password = ?");
+		query.setString(0, i_Username);
+		query.setString(1, i_UserPassword);
+		
+		isUserFound = query.list().size()>0;
+		
+		m_Session.getTransaction().commit();
+		m_Session.close();
+		
+		return isUserFound;
 	}
 
 	
 	public boolean addCustomer(String i_firstName, String i_lastName, String i_userName, String i_userPassword,
-			String i_email) throws SQLException
+			String i_email) throws Exception
 	{
-		Customer customer = new Customer();
+		Customer customer = new Customer();		
 		
 		customer.setName(i_firstName + " " + i_lastName);
 		customer.setUserName(i_userName);
 		customer.setPassword(i_userPassword);
 		customer.setEmail(i_email);
-		Session session=null;
-		if(m_sessionFactory!=null)
-			session = m_sessionFactory.openSession();
-		else
+		
+		m_Session = m_sessionFactory.openSession();
+		m_Session.beginTransaction();
+		
+		m_Session.save(customer);
+		
+		try
 		{
-			this.setup();
-			session = m_sessionFactory.openSession();
-		}
-		session.beginTransaction();
-		
-		session.save(customer);
-		
-		session.getTransaction().commit();
-		session.close();
+		m_Session.getTransaction().commit();
+		}catch(ConstraintViolationException e) {throw new Exception("Can't create a user with existing email / username");}
+		m_Session.close();
 		return true;
 	}
 
@@ -167,9 +192,38 @@ public class NDBHandler implements IDBHandler {
 	}
 
 	
-	public User getUser(String i_username, String i_userPassword) throws SQLException {
-		// TODO Auto-generated method stub
-		return null;
+	public User getUser(String i_username, String i_userPassword) throws Exception
+	{				
+		try
+		{
+		m_Session = m_sessionFactory.openSession();
+		}catch(NullPointerException e) {throw new Exception("DB Critical Error# SessionFactory isn't initialized");}
+
+		m_Session.beginTransaction();
+		/*
+		CriteriaBuilder critbuilder = m_Session.getCriteriaBuilder();
+		CriteriaQuery<User> criteriaQuery = critbuilder.createQuery(User.class);
+		Root<User> root = criteriaQuery.from(User.class);
+		criteriaQuery.select(root);
+		criteriaQuery.where(critbuilder.equal(root.get("user_name"), "goldami1"));
+		*/
+		Query<User> query = m_Session.createQuery("FROM User WHERE user_name = :username AND user_password = :userpass", User.class);
+		query.setParameter("username", i_username);
+		query.setParameter("userpass", i_userPassword);
+		List<User> res = query.getResultList();
+		
+		
+		
+		if(res.size()==0)
+		{
+			m_Session.close();
+			throw new Exception(i_username + "user couldn't be found!");
+		}
+		
+		m_Session.getTransaction().commit();
+		m_Session.close();
+		
+		return res.get(0);
 	}
 
 	
@@ -203,7 +257,7 @@ public class NDBHandler implements IDBHandler {
 	}
 
 	
-	public Customer addCustomer(Customer i_User) throws SQLException {
+	public Customer addCustomer(Customer i_User) throws Exception {
 		if(addCustomer(i_User.getName(), i_User.getName(), i_User.getUserName(), i_User.getPassword(), i_User.getEmail()))
 			return i_User;
 		else
@@ -217,9 +271,30 @@ public class NDBHandler implements IDBHandler {
 	}
 
 	
-	public Customer getCustomer(String i_username, String i_password) throws SQLException {
-		// TODO Auto-generated method stub
-		return null;
+	public Customer getCustomer(String i_username, String i_password) throws Exception {
+		try
+		{
+		m_Session = m_sessionFactory.openSession();
+		}catch(NullPointerException e) {throw new Exception("DB Critical Error# SessionFactory isn't initialized");}
+
+		m_Session.beginTransaction();
+		
+		Query<Customer> query = m_Session.createQuery("FROM Customer WHERE user_name = :username AND user_password = :userpass", Customer.class);
+		query.setParameter("username", i_username);
+		query.setParameter("userpass", i_password);
+		List<Customer> res = query.getResultList();
+		
+		
+		if(res.size()==0)
+		{
+			m_Session.close();
+			throw new Exception(i_username + "user couldn't be found!");
+		}
+		
+		m_Session.getTransaction().commit();
+		m_Session.close();
+		
+		return res.get(0);
 	}
 
 	

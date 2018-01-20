@@ -8,7 +8,10 @@ import javax.persistence.AttributeOverrides;
 import javax.persistence.Column;
 import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import com.google.gson.annotations.SerializedName;
@@ -28,10 +31,11 @@ public class Vendor extends User {
 	private String description;
 	@SerializedName("logoPicURL")
 	private String logoPicURL;
-	@ElementCollection
-	@JoinTable(name = "VENDORS_PRODUCTS")
+	@OneToMany
+	@JoinTable(name = "VENDORS_PRODUCTS", joinColumns=@JoinColumn(name = "vendor_id"),
+				inverseJoinColumns=@JoinColumn(name = "product_id"))
 	@SerializedName("products")
-	private LinkedList<Product> products;
+	private List<Product> products;
 	
 	public Vendor()
 	{
@@ -99,7 +103,7 @@ public class Vendor extends User {
 		this.logoPicURL = logoPicURL;
 	}
 
-	public LinkedList<Product> getProducts() {
+	public List<Product> getProducts() {
 		return this.products;
 	}
 

@@ -157,7 +157,8 @@ public class Customer {
 		try {
 			org.IoT_Project.Scenario_Engine.Models.Customer userToAdd = us.addCustomer(i_user);
 			NDBHandler.getInstance().addCustomer(userToAdd);
-			return Response.status(Status.CREATED).entity(userToAdd).build();
+			org.IoT_Project.Scenario_Engine.Models.Customer userAdded = NDBHandler.getInstance().getCustomer(i_user.getUserName(), i_user.getPassword());
+			return Response.status(Status.CREATED).entity(userAdded).build();
 		}
 		catch(Exception ex)
 		{
