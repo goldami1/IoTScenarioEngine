@@ -8,6 +8,7 @@ import org.IoT_Project.Scenario_Engine.Service.UserService;
 import org.IoT_Project.Scenario_Engine.Service.VendorService;
 
 import DataBase.DBHandler;
+import DataBase.NDBHandler;
 
 import java.sql.SQLException;
 import java.util.LinkedList;
@@ -52,12 +53,13 @@ public class Vendor{
 	@POST
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response addVendor(User i_user)
+	public Response addVendor(org.IoT_Project.Scenario_Engine.Models.Vendor i_user)
 	{
 		try {
 			org.IoT_Project.Scenario_Engine.Models.Vendor userToAdd = us.addVendor(i_user);
-			DBHandler.getInstance().addVndor(userToAdd);
-			return Response.status(Status.CREATED).entity(userToAdd).build();
+			NDBHandler.getInstance().addVendor(userToAdd);
+			org.IoT_Project.Scenario_Engine.Models.Vendor userAdded = NDBHandler.getInstance().getVendor(i_user.getUserName(), i_user.getPassword());
+			return Response.status(Status.CREATED).entity(userAdded).build();
 		}
 		catch(Exception ex)
 		{

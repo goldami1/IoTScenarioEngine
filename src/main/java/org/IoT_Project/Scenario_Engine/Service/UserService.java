@@ -30,7 +30,7 @@ public class UserService {
 		return cust;
 	}
 
-	public Vendor addVendor(User i_user) throws Exception {
+	public Vendor addVendor(Vendor i_user) throws Exception {
 		Vendor vendor = new Vendor(i_user);
 		return vendor;
 	}

@@ -7,6 +7,7 @@ import javax.ws.rs.core.Response.Status;
 
 import org.IoT_Project.Scenario_Engine.Models.*;
 import DataBase.DBHandler;
+import DataBase.NDBHandler;
 
 public class VendorService {
 
@@ -24,10 +25,10 @@ public class VendorService {
 
 	public  List<Product> addProduct(Product i_product) throws Exception{
 		Product newProduct = new Product(i_product);
-		if(DBHandler.getInstance().addProduct(newProduct))
+		if(NDBHandler.getInstance().addProduct(newProduct))
 		{
 			try {
-				return DBHandler.getInstance().getProducts(newProduct.getVendor_id());
+				return NDBHandler.getInstance().getProducts(newProduct.getVendor_id());
 			}
 			catch(SQLException ex)
 			{
