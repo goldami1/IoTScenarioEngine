@@ -74,7 +74,8 @@ public class Vendor{
 	public Response addProduct(Product i_product)
 	{
 		Response res = null;
-		try {
+		try
+		{
 			List<Product> products = vs.addProduct(i_product);
 			res = Response.status(Status.OK).entity(products).build();
 		}

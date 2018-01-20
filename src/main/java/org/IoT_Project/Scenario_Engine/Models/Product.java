@@ -16,6 +16,9 @@ import javax.persistence.JoinTable;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import org.hibernate.annotations.LazyCollection;
+import org.hibernate.annotations.LazyCollectionOption;
+
 import com.google.gson.annotations.SerializedName;
 
 import DataBase.DBHandler;
@@ -43,6 +46,7 @@ public class Product {
 	@Column(name = "vendor_name")
 	@SerializedName("vendorName")
 	protected String vendorName;
+	@LazyCollection(LazyCollectionOption.FALSE)
 	@OneToMany
 	@JoinTable(name = "PRODUCTS_AEPROTOS", joinColumns=@JoinColumn(name = "product_id"),
 				inverseJoinColumns=@JoinColumn(name = "aeproto_id"))
@@ -98,11 +102,11 @@ public class Product {
 		this.endPoint = i_product.getEndPoint();
 		this.actionAndEventList = new LinkedList<ActionEventProto>();
 		
-		DBHandler db = DBHandler.getInstance();
-		boolean isUpdated = i_product.getId() > 0;
-		if(!isUpdated)
-			this.id = db.getProductsMaxAvailableIdx();
-		else
+		//DBHandler db = DBHandler.getInstance();
+		//boolean isUpdated = i_product.getId() > 0;
+		//if(!isUpdated)
+		//	this.id = db.getProductsMaxAvailableIdx();
+		//else
 			this.id = i_product.getId();
 		
 		/*
@@ -113,7 +117,8 @@ public class Product {
 			boolean isAEPUpdated = Current_aep.getId() > 0;
 			if(!isAEPUpdated)
 			{
-				Current_aep.setId(db.getActionsProtoMaxAvailableIdx());
+				//Current_aep.setId(db.getActionsProtoMaxAvailableIdx());
+				Current_aep.setId(this.id);
 			}
 			if(Current_aep.getIsEvent())
 				this.eventState = true;
@@ -122,7 +127,8 @@ public class Product {
 			Current_aep.setProdId(this.id);
 			this.actionAndEventList.add(Current_aep);
 		}
-		this.actionAndEventList.add(MailAction.mailActionProto);
+		//this.actionAndEventList.add(MailAction.mailActionProto);
+		
 		
 	}
 	/*****************************************************************/
@@ -187,12 +193,12 @@ public class Product {
 		this.description = description;
 	}
 
+	public void setActionAndEventList(List<ActionEventProto> actionAndEventList) {
+		this.actionAndEventList = actionAndEventList;
+	}
+	
 	public List<ActionEventProto> getActionAndEventList() {
 		return actionAndEventList;
-	}
-
-	public void setActionAndEventList(LinkedList<ActionEventProto> actionAndEventList) {
-		this.actionAndEventList = actionAndEventList;
 	}
 
 	public String getEndPoint() {

@@ -6,6 +6,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map.Entry;
 import org.IoT_Project.Scenario_Engine.Models.Action;
+import org.IoT_Project.Scenario_Engine.Models.ActionEventProto;
 import org.IoT_Project.Scenario_Engine.Models.Customer;
 import org.IoT_Project.Scenario_Engine.Models.Device;
 import org.IoT_Project.Scenario_Engine.Models.Event;
@@ -352,7 +353,10 @@ public class NDBHandler implements IDBHandler {
 		m_Session.beginTransaction();
 		
 		m_Session.save(i_product);
-		
+		for(ActionEventProto aep : i_product.getActionAndEventList())
+		{
+			m_Session.save(aep);
+		}
 		try
 		{
 		m_Session.getTransaction().commit();
@@ -368,9 +372,37 @@ public class NDBHandler implements IDBHandler {
 	}
 
 	
-	public LinkedList<Product> getProducts(int vendor_id) throws SQLException {
-		// TODO Auto-generated method stub
-		return null;
+	public List<Product> getProducts(int vendor_id) throws Exception
+	{
+		List<Product> res = null;
+		
+		try
+		{
+		m_Session = m_sessionFactory.openSession();
+		}catch(NullPointerException e) {throw new Exception("DB Critical Error# SessionFactory isn't initialized");}
+
+		m_Session.beginTransaction();
+		
+		Query<Product> query = m_Session.createQuery("FROM Product WHERE vendor_id = :venid", Product.class);
+		query.setParameter("venid", (short)vendor_id);
+		List<Product> tmpres = query.getResultList();
+		
+		if(tmpres.size()>0)
+		{
+			res = tmpres;
+		}
+		
+		
+		if(res.size()==0)
+		{
+			m_Session.close();
+			throw new Exception("No products found!");
+		}
+		
+		m_Session.getTransaction().commit();
+		m_Session.close();
+		
+		return res;
 	}
 	
 	

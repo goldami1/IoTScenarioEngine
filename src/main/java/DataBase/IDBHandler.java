@@ -3,6 +3,7 @@ package DataBase;
 import java.awt.image.BufferedImage;
 import java.sql.SQLException;
 import java.util.LinkedList;
+import java.util.List;
 
 import org.IoT_Project.Scenario_Engine.Models.*;
 import javafx.util.Pair;
@@ -20,7 +21,7 @@ public interface IDBHandler {
 	public boolean addProduct(Product i_product) throws Exception;
 	public LinkedList<Pair<Short,String>> getVendors() throws Exception; //pair(id,name)
 	public LinkedList<Product> getProductsByProdID(int i_prod_id) throws SQLException;
-	public LinkedList <Product> getProducts(int vendor_id) throws SQLException;
+	public List<Product> getProducts(int vendor_id) throws Exception;
 	public boolean addDevice(int product_id,int customer_id,int device_serial) throws SQLException ;
 	public void addVndor(Vendor i_vendor) throws Exception;
 	public boolean removeDevice(int device_id);
