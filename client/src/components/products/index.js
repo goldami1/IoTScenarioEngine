@@ -137,6 +137,7 @@ class ProductsPage extends Component {
 			})
 		});
 	};
+	
 	handleChangeProperty = (aeIndex, aePropId, ae, isOption) => event => {
 		const value = this.state.inputValue;
 		this.setState({
@@ -461,7 +462,7 @@ class ProductsPage extends Component {
 				<Form>
 					<Tabs
 						animated={false}
-						defaultActiveKey="0"
+						defaultActiveKey="1"
 						tabBarExtraContent={
 							<Button.Group>
 								<Button onClick={this.handleAddAE("actions")}>

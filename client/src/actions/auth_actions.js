@@ -24,23 +24,29 @@ export function logout() {
 	};
 }
 
-export function login(data) {
+export function login(data,history) {
 	return dispatch => {
 		return axios.post(URL_ROOT, data).then(res => {
-			console.log("hello");
-			console.log(res.data);
-			console.log("hello");
-			const user = {
-				name: res.data.Name,
-				username: res.data.userName,
-				password: res.data.Password,
-				id: res.data.Id,
-				isCustomer: res.data.IsCustomer
-			};
+			var user;
+			try {
+				user = {
+					name: res.data.Name,
+					username: res.data.UserName,
+					password: res.data.Password,
+					id: res.data.Id,
+					type: res.data.IsCustomer ?'enduser':'vendor'
+				};
+				localStorage.setItem("user", JSON.stringify(user));
+				setAuthorizationToken(user);
+				if (user.type =="enduser") {
+					history.push("/scenarios");
+				}else{
+					history.push('/products');
+				}
+				dispatch(setCurrentUser(user));
+				
+			} catch (e) {console.error(`LOGIN_ERROR: ${e}`);}
 
-			localStorage.setItem("user", JSON.stringify(user));
-			setAuthorizationToken(user);
-			dispatch(setCurrentUser(user));
 		});
 	};
 }

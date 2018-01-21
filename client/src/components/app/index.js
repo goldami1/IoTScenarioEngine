@@ -12,10 +12,11 @@ import {
 	Button,
 	message
 } from "antd";
-import Navigation from "./navigation";
+import Navigation from "./Navigation";
+import UserMenu from "./UserMenu";
 import links from "./links";
-import { setMessage } from "../../actions/appActions";
-
+import userLinks from "./userLinks";
+import { logout } from "../../actions/auth_actions";
 const { Header, Sider, Content, Footer } = Layout;
 
 class App extends PureComponent {
@@ -37,44 +38,34 @@ class App extends PureComponent {
 		}
 	};
 
+	logout(){
+		console.log("FUCK LOG OUT");
+	}
 	render() {
 		const { auth, location } = this.props;
 		{
 			this.showMessage();
 		}
+
+		const userMenu = 
+			(
+				<Menu>
+					<Menu.Item>Menu</Menu.Item>
+					<Menu.SubMenu title="SubMenu">
+					<Menu.Item>SubMenuItem</Menu.Item>
+					</Menu.SubMenu>
+			</Menu>)
+		;
 		return (
 			<Layout style={{ minHeight: "100vh" }}>
 				<Sider
 					collapsible
 					collapsed={this.state.collapsed}
 					onCollapse={this.onCollapse}
-					style={{
-						position: "relative",
-						overflow: "hidden",
-						paddingTop: 60
-					}}
+					style={{ position: "relative", overflow: "hidden",paddingTop: 60}}	
 				>
-					<Navigation
-						links={links(auth)}
-						selected={location.pathname}
-					/>
-
-					<div
-						style={{
-							textAlign: "center",
-							position: "absolute",
-							bottom: 0,
-							width: "100%",
-							marginBottom: "60px"
-						}}
-					>
-						<Avatar
-							shape="square"
-							size="large"
-							icon="user"
-							style={{ background: "#08c" }}
-						/>
-					</div>
+					<Navigation links={links(auth)} selected={location.pathname} />	
+					<UserMenu logout={this.props.logout} links={userLinks(auth)}/>
 				</Sider>
 				<Layout style={{ height: "100vh" }}>
 					<Content>{this.props.children}</Content>
@@ -94,4 +85,4 @@ function mapStateToProps({ auth, app }) {
 	};
 }
 
-export default connect(mapStateToProps, { setMessage })(withRouter(App));
+export default connect(mapStateToProps, { logout })(withRouter(App));

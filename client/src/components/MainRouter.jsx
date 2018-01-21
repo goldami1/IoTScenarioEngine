@@ -1,14 +1,14 @@
 import PropTypes from "prop-types";
 import React, { PureComponent } from "react";
 import { Route, Switch } from "react-router-dom";
-import App from "./newApp/";
+import App from "./app/";
 import LoginPage from "./login/loginForm";
 import RegisterPage from "./register/";
 import { Link, withRouter } from "react-router-dom";
 import DevicesPage from "./devices/";
 import DeviceForm from "./devices/add/";
 import ScenarioForm from "./scenarios/add/";
-import ScenariosPage from "./scenarios/";
+// import ScenariosPage from "./scenarios/";
 import ProductsPage from "./products/";
 
 import requireAuth from "../utilities/require_auth";
@@ -35,13 +35,13 @@ class MainRouter extends PureComponent {
 					<Route
 						exact
 						path="/scenarios"
-						component={requireAuth(ScenariosPage)}
+						component={ScenarioForm}
 					/>
-					<Route
+{/*					<Route
 						exact
 						path="/scenarios/add"
-						component={requireAuth(ScenarioForm)}
-					/>
+						component={ScenarioForm}
+					/>*/}
 					<Route
 						exact
 						path="/devices"

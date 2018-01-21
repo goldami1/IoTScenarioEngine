@@ -21,7 +21,7 @@ export default function(ComposedComponent) {
 
 		componentWillUpdate(nextProps) {
 			if (!nextProps.isAuthenticated) {
-				this.props.history.push("/");
+				this.props.history.push("/login");	
 			}
 		}
 
@@ -30,9 +30,10 @@ export default function(ComposedComponent) {
 		}
 	}
 
-	function mapStateToProps(state) {
+	function mapStateToProps({auth}) {
 		return {
-			isAuthenticated: state.auth.isAuthenticated
+			isAuthenticated: auth.isAuthenticated,
+			type: auth.type
 		};
 	}
 

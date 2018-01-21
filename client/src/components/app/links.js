@@ -1,9 +1,7 @@
 import { isEmpty } from "lodash";
 
 export default function links(auth) {
-	const type =
-		auth.isAuthenticated && !isEmpty(auth.type) ? "none" : auth.type;
-
+	const type = auth.isAuthenticated && !isEmpty(auth.type) ? auth.type : '';
 	switch (type) {
 		case "enduser":
 			return [

@@ -58,7 +58,7 @@ export function receiveVendors(vendors) {
 export function fetchDevices() {
 	return (dispatch, getState) => {
 		const { auth } = getState();
-		return axios.get(device_url + auth.user.id).then(
+		return axios.get(device_url + auth.id).then(
 			res => {
 				try {
 					dispatch(receiveDevices(res.data));

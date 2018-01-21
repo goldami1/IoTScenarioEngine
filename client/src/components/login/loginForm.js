@@ -41,20 +41,11 @@ class LoginForm extends Component {
 			UserName: this.state.username,
 			Password: this.state.password
 		});
-		this.props
-			.login({
+		this.props.login({
 				UserName: this.state.username,
 				Password: this.state.password
-			})
-			.then(
-				res => this.props.history.push("/"),
-				err => {
-					this.setState({
-						// error: err.response.data.Description,
-						isLoading: false
-					});
-				}
-			);
+			},this.props.history)
+
 	}
 
 	handleSubmit = e => {
