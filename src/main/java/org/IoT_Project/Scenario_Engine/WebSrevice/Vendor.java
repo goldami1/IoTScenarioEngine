@@ -35,8 +35,37 @@ public class Vendor{
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response getLogInPageVendor() 
 	{
-		//return Response.status(Status.OK).entity("Should return the login page").build();
-		return Response.status(Status.OK).entity(new ActionEventProto()).build();
+		return Response.status(Status.OK).entity("Should return the login page").build();
+		/*
+		 *  For testing product creation
+		 *  
+		List<String> paramsName = new LinkedList<String>();
+		List<String> types = new LinkedList<String>();
+		paramsName.add("value");
+		types.add("int");
+		List<ActionEventProto> a = new LinkedList<ActionEventProto>();
+		ActionEventProto aep = new ActionEventProto((short)1,
+			     "Is TV on channel X",
+			    "description of event",
+			     types,
+			     null,
+			     paramsName,
+			     null,
+			     null,
+			    (short)1,
+			    "http://localhost:8000",
+			    true);
+		a.add(aep);
+		Product p = new Product((short)1,
+								(short)2,
+								"LG",
+								"LG TV",
+								"LG TV mannual",
+								null,
+								"http://localhost:8080/Scenario_Engine/webapi",
+								(LinkedList<ActionEventProto>) a);
+		return Response.status(Status.OK).entity(p).build();
+		*/
 	}
 	
 	@POST
