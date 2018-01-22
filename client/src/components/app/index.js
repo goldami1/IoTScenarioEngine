@@ -38,9 +38,9 @@ class App extends PureComponent {
 		}
 	};
 
-	logout(){
-		console.log("FUCK LOG OUT");
-	}
+	logout = () =>{ this.props.logout(this.props.history); }
+		
+	
 	render() {
 		const { auth, location } = this.props;
 		{
@@ -65,7 +65,7 @@ class App extends PureComponent {
 					style={{ position: "relative", overflow: "hidden",paddingTop: 60}}	
 				>
 					<Navigation links={links(auth)} selected={location.pathname} />	
-					<UserMenu logout={this.props.logout} links={userLinks(auth)}/>
+					<UserMenu logout={this.logout} links={userLinks(auth)}/>
 				</Sider>
 				<Layout style={{ height: "100vh" }}>
 					<Content>{this.props.children}</Content>

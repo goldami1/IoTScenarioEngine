@@ -16,11 +16,12 @@ export function setCurrentUser(user) {
 	};
 }
 
-export function logout() {
+export function logout(history) {
 	return dispatch => {
 		localStorage.removeItem("user");
 		setAuthorizationToken(false);
 		dispatch(setCurrentUser({}));
+		history.push('/login');
 	};
 }
 

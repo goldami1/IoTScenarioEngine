@@ -109,35 +109,15 @@ class CreateModal extends Component {
 		this.setState({ [event.target.name]: event.target.value });
 	};
 
-	onTriggerChange = (values, selectedOptions) => {
-		this.setState({ trigger: values });
+	onChangeOther = state => data => {
+		console.log(state);
+		this.setState({ [state]: data });
 	};
 
-	onTimeChange = time => {
-		console.log(time);
-		this.setState({ time: time });
-	};
-
-	onDateChange = date => {
-		console.log(date);
-		this.setState({ date: date });
-	};
-
-	onDayChange = day => {
-		console.log(day);
-		this.setState({ day: day });
-	};
 
 	timeForm = () => {
-		const days = [
-			"Sunday",
-			"Monday",
-			"Tuesday",
-			"Wednesday",
-			"Thursday",
-			"Friday",
-			"Saturday"
-		];
+		const days = ["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"];
+
 		const children = [];
 		for (let i = 1; i < 8; i++) {
 			children.push(<Option key={i}>{days[i - 1]}</Option>);
@@ -147,7 +127,7 @@ class CreateModal extends Component {
 				<FormItem label="Date and Time" {...formItemLayout}>
 					<DatePicker
 						value={this.state.date}
-						onChange={this.onDateChange}
+						onChange={this.onChangeOther('date')}
 						showToday={false}
 						showTime
 						format="DD/MMM/YY HH:mm"
@@ -161,7 +141,7 @@ class CreateModal extends Component {
 					<FormItem label="Time" {...formItemLayout}>
 						<TimePicker
 							value={this.state.time}
-							onChange={this.onTimeChange}
+							onChange={this.onChangeOther('time')}
 							format="HH:mm"
 						/>
 					</FormItem>
@@ -169,7 +149,7 @@ class CreateModal extends Component {
 						<Select
 							mode="tags"
 							value={this.state.day}
-							onChange={this.onDayChange}
+							onChange={this.onChangeOther('day')}
 							defaultValue={["1", "2", "3", "4", "5", "6", "7"]}
 						>
 							{children}
@@ -181,7 +161,10 @@ class CreateModal extends Component {
 	render() {
 		const deviceForm = (
 			<FormItem label={this.props.type} {...formItemLayout}>
-				<Cascader options={this.state.options} />
+				<Cascader 
+					options={this.state.options} 
+					value={this.state.deviceProps} 
+					onChange={this.onChangeOther('deviceProps')}/>
 			</FormItem>
 		);
 		return (
@@ -190,17 +173,29 @@ class CreateModal extends Component {
 				title={`Create a new ${this.props.type}`}
 				okText="Create"
 				onCancel={this.props.onCancel}
-				onOk={this.props.onOk}
+				onOk={this.props.onOk(
+					{
+						day:this.state.day,
+						date:this.state.date,
+						time:this.state.time,
+						deviceProps:this.state.deviceProps
+					})}
 			>
-				<FormItem label="Trigger type" {...formItemLayout}>
-					<Cascader
-						size="large"
-						value={this.state.trigger}
-						options={this.state.triggerTypeOptions}
-						onChange={this.onTriggerChange}
-					/>
-				</FormItem>
-				{this.state.trigger[0] == "time" ? this.timeForm() : deviceForm}
+				{this.props.type == "event" ? (
+					<div>
+						<FormItem label="Trigger type" {...formItemLayout}>
+							<Cascader
+								size="large"
+								value={this.state.trigger}
+								options={this.state.triggerTypeOptions}
+								onChange={this.onChangeOther('trigger')}
+							/>
+						</FormItem>
+						{this.state.trigger[0] == "time"
+							? this.timeForm()
+							: deviceForm}
+					</div>
+				) : deviceForm }
 			</Modal>
 		);
 	}
