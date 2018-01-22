@@ -3,30 +3,62 @@ package org.IoT_Project.Scenario_Engine.Models;
 import java.sql.SQLException;
 import java.util.*;
 
+import javax.persistence.Column;
+import javax.persistence.ElementCollection;
+import javax.persistence.Embedded;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
+
+import org.hibernate.annotations.LazyCollection;
+import org.hibernate.annotations.LazyCollectionOption;
+
 import com.google.gson.annotations.SerializedName;
 
 import DataBase.DBHandler;
 
+@Entity
+@Table (name = "PRODUCTS")
 public class Product {
-	
+	@Id
+	@GeneratedValue(strategy = GenerationType.SEQUENCE)
+	@Column(name = "product_id")
 	@SerializedName("id")
 	protected short id;
+	@Column(name = "vendor_id")
 	@SerializedName("vendor_id")
 	protected short vendor_id;
+	@Column(name = "product_name")
 	@SerializedName("name")
 	protected String name;
+	@Column(name = "product_picURL")
 	@SerializedName("picURL")
 	protected String picURL;
+	@Column(name = "product_description")
 	@SerializedName("description")
 	protected String description;
+	@Column(name = "vendor_name")
 	@SerializedName("vendorName")
 	protected String vendorName;
+	@LazyCollection(LazyCollectionOption.FALSE)
+	@OneToMany
+	@JoinTable(name = "PRODUCTS_AEPROTOS", joinColumns=@JoinColumn(name = "product_id"),
+				inverseJoinColumns=@JoinColumn(name = "aeproto_id"))
 	@SerializedName("actionAndEventList")
-	protected LinkedList<ActionEventProto> actionAndEventList;
+	protected List<ActionEventProto> actionAndEventList;
+	@Column(name = "product_ep")
 	@SerializedName("endPoint")
 	protected String endPoint;
+	@Column(name = "product_actionstate")
 	@SerializedName("actionState")
 	protected boolean actionState;
+	@Column(name = "product_eventstate")
 	@SerializedName("eventState")
 	protected boolean eventState;
 	
@@ -70,11 +102,11 @@ public class Product {
 		this.endPoint = i_product.getEndPoint();
 		this.actionAndEventList = new LinkedList<ActionEventProto>();
 		
-		DBHandler db = DBHandler.getInstance();
-		boolean isUpdated = i_product.getId() > 0;
-		if(!isUpdated)
-			this.id = db.getProductsMaxAvailableIdx();
-		else
+		//DBHandler db = DBHandler.getInstance();
+		//boolean isUpdated = i_product.getId() > 0;
+		//if(!isUpdated)
+		//	this.id = db.getProductsMaxAvailableIdx();
+		//else
 			this.id = i_product.getId();
 		
 		/*
@@ -85,7 +117,8 @@ public class Product {
 			boolean isAEPUpdated = Current_aep.getId() > 0;
 			if(!isAEPUpdated)
 			{
-				Current_aep.setId(db.getActionsProtoMaxAvailableIdx());
+				//Current_aep.setId(db.getActionsProtoMaxAvailableIdx());
+				Current_aep.setId(this.id);
 			}
 			if(Current_aep.getIsEvent())
 				this.eventState = true;
@@ -95,6 +128,7 @@ public class Product {
 			this.actionAndEventList.add(Current_aep);
 		}
 		this.actionAndEventList.add(MailAction.mailActionProto);
+		
 		
 	}
 	/*****************************************************************/
@@ -159,12 +193,12 @@ public class Product {
 		this.description = description;
 	}
 
-	public LinkedList<ActionEventProto> getActionAndEventList() {
-		return actionAndEventList;
-	}
-
-	public void setActionAndEventList(LinkedList<ActionEventProto> actionAndEventList) {
+	public void setActionAndEventList(List<ActionEventProto> actionAndEventList) {
 		this.actionAndEventList = actionAndEventList;
+	}
+	
+	public List<ActionEventProto> getActionAndEventList() {
+		return actionAndEventList;
 	}
 
 	public String getEndPoint() {

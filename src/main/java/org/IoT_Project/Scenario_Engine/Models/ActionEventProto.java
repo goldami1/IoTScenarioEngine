@@ -1,34 +1,81 @@
 package org.IoT_Project.Scenario_Engine.Models;
 
-import java.sql.SQLException;
+import java.util.LinkedList;
 import java.util.List;
 
-import com.google.gson.annotations.SerializedName;
-import DataBase.DBHandler;
+import javax.persistence.Column;
+import javax.persistence.ElementCollection;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.Lob;
+import javax.persistence.Table;
+import javax.persistence.Transient;
 
+import org.hibernate.annotations.CollectionId;
+import org.hibernate.annotations.GenericGenerator;
+
+import com.google.gson.annotations.SerializedName;
+
+@Entity
+@Table (name = "AEPROTOS")
 public class ActionEventProto {
+	@Id
+	@GeneratedValue(strategy = GenerationType.SEQUENCE)
+	@Column(name = "ae_id")
 	@SerializedName("id")
 	private short id;
+	@Column(name = "ae_name")
 	@SerializedName("name")
 	private String name;
+	@Column(name = "ae_description")
 	@SerializedName("description")
 	private String description;
-	@SerializedName("types")
-	private List<String> types;
+	@Column(name = "product_id")
 	@SerializedName("prodId")
 	private short prodId;
+	@Column(name = "ae_prod_ep")
 	@SerializedName("productEP")
 	protected String productEP;
+	@Column(name = "ae_is_event")
 	@SerializedName("isEvent")
 	private boolean isEvent;
-	@SerializedName("supportedValues")
-	private List<List<String>> supportedValues;
+	
+	// list of eventActionProperties
+	@ElementCollection(fetch = FetchType.EAGER)
+	@JoinTable(name = "AEPARAMS_NAME", joinColumns = @JoinColumn(name = "ae_id"))
+	@GenericGenerator(name = "hilo-gen", strategy = "sequence")
+	@CollectionId(columns = { @Column(name = "param_idx") }, generator = "hilo-gen", type = @org.hibernate.annotations.Type(type = "long"))
 	@SerializedName("supportedParametersName")
 	private List<String> supportedParametersName;
+	@ElementCollection(fetch = FetchType.EAGER)
+	@JoinTable(name = "AEPARAMS_TYPE", joinColumns = @JoinColumn(name = "ae_id"))
+	@GenericGenerator(name = "hilo-gen", strategy = "sequence")
+	@CollectionId(columns = { @Column(name = "type_idx") }, generator = "hilo-gen", type = @org.hibernate.annotations.Type(type = "long"))
+	@SerializedName("types")
+	private List<String> types;
+													//I M P L E M E N T        I T   IN HIBERNATE!!!!!!
+	@Transient
+	@SerializedName("supportedValues")/* Such like Low, Medium, High */
+	private List<List<String>> supportedValues;
+													//I M P L E M E N T        I T   IN HIBERNATE!!!!!!
+	@ElementCollection(fetch = FetchType.EAGER)
+	@JoinTable(name = "AEPARAMS_MIN", joinColumns = @JoinColumn(name = "ae_id"))
+	@GenericGenerator(name = "hilo-gen", strategy = "sequence")
+	@CollectionId(columns = { @Column(name = "min_idx") }, generator = "hilo-gen", type = @org.hibernate.annotations.Type(type = "long"))
 	@SerializedName("minValues")
 	private List<String> min;
+	@ElementCollection(fetch = FetchType.EAGER)
+	@JoinTable(name = "AEPARAMS_MAX", joinColumns = @JoinColumn(name = "ae_id"))
+	@GenericGenerator(name = "hilo-gen", strategy = "sequence")
+	@CollectionId(columns = { @Column(name = "max_idx") }, generator = "hilo-gen", type = @org.hibernate.annotations.Type(type = "long"))
 	@SerializedName("maxValues")
 	private List<String> max;
+	
 	
 	public ActionEventProto()
 	{
@@ -130,6 +177,7 @@ public class ActionEventProto {
 		this.supportedValues = supportedValues;
 	}
 	
+
 	public List<String> getMin() {
 		return min;
 	}
@@ -146,11 +194,15 @@ public class ActionEventProto {
 		this.max = max;
 	}
 
+	public void setSupportedParametersName(List<String> supportedParametersName) {
+		this.supportedParametersName = supportedParametersName;
+	}
+
 	public List<String> getSupportedParametersName() {
 		return supportedParametersName;
 	}
 
-	public void setSupportedParametersName(List<String> supportedParametersName) {
+	public void setSupportedParametersName(LinkedList<String> supportedParametersName) {
 		this.supportedParametersName = supportedParametersName;
 	}
 }

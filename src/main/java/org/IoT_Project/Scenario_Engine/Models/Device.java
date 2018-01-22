@@ -4,18 +4,38 @@ import java.sql.SQLException;
 import java.util.LinkedList;
 import java.util.List;
 
+import javax.persistence.Column;
+import javax.persistence.Embeddable;
+import javax.persistence.Embedded;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToOne;
+import javax.persistence.Table;
+import javax.persistence.UniqueConstraint;
+
 import com.google.gson.annotations.SerializedName;
 
 import DataBase.DBHandler;
 
+@Entity
+@Table(name = "DEVICES", uniqueConstraints = {@UniqueConstraint(columnNames = {"device_sn"})})
 public class Device {
-	
+	@Id
+	@GeneratedValue(strategy = GenerationType.SEQUENCE)
+	@Column(name = "device_id")
 	@SerializedName("id")
 	private short id;
+	@Column(name = "device_sn")
 	@SerializedName("serial_number")
 	private short serial_number;
+	@Column(name = "customer_id")
 	@SerializedName("customer_id")
 	private short customer_id;
+	@OneToOne
+	@JoinColumn(name = "prododevice_id")
 	@SerializedName("protoDevice")
 	private Product protoDevice;
 

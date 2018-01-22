@@ -3,27 +3,57 @@ import java.sql.SQLException;
 import java.util.*;
 import java.util.Map.Entry;
 
+import javax.persistence.Column;
+import javax.persistence.ElementCollection;
+import javax.persistence.Embeddable;
+import javax.persistence.Embedded;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
+import javax.persistence.Transient;
+
 import com.google.gson.annotations.SerializedName;
 
 import DataBase.DBHandler;
 
-
+@Entity
+@Table(name = "SCENARIOS")
 public class Scenario{
+	@Id
+	@GeneratedValue(strategy=GenerationType.SEQUENCE)
+	@Column (name = "scenario_id")
 	@SerializedName("id")
 	short id;
+	@Column (name = "scenario_name")
 	@SerializedName("name")
 	String name;
+	@Column (name = "scenario_description")
 	@SerializedName("description")
 	String description;
+	@Column (name = "customer_id")
 	@SerializedName("cust_id")
 	short cust_id;
+	@OneToMany
+	@JoinTable(name = "SCENARIOS_ACTIONS", joinColumns=@JoinColumn(name = "scenario_id"),
+				inverseJoinColumns=@JoinColumn(name = "action_id"))
 	@SerializedName("actions")
 	private List<Action> actions;
+	@OneToMany
+	@JoinTable(name = "SCENARIOS_EVENTS", joinColumns=@JoinColumn(name = "scenario_id"),
+				inverseJoinColumns=@JoinColumn(name = "event_id"))
 	@SerializedName("eventsToHappen")
 	private Map<Short, Event> eventsToHappen;
+												// I M P L E M E N T     IT!
+	@Transient
 	@SerializedName("cases")
 	private CaseGroup cases;
-	
+												// I M P L E M E N T     IT!	
 	public Scenario() 
 	{
 		this.id = this.cust_id = -1;

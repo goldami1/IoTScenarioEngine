@@ -10,6 +10,7 @@ import org.IoT_Project.Scenario_Engine.Models.User;
 import org.IoT_Project.Scenario_Engine.Models.Vendor;
 
 import DataBase.DBHandler;
+import DataBase.NDBHandler;
 
 public class UserService {
 	public User fetch(User i_user) throws Exception{
@@ -21,7 +22,7 @@ public class UserService {
 		return cust;
 	}
 
-	public Vendor addVendor(User i_user) throws Exception {
+	public Vendor addVendor(Vendor i_user) throws Exception {
 		Vendor vendor = new Vendor(i_user);
 		return vendor;
 	}

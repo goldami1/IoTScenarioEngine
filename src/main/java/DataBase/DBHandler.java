@@ -31,6 +31,8 @@ public class DBHandler implements IDBHandler
 {	
 	private static DBHandler instance;
 	private static Connection currSession;
+	private final static String k_action = "ACTIONS";
+	private final static String k_event = "EVENTS";
 	private final static String k_driver = "com.mysql.jdbc.Driver";
 	private final static String k_selectEvent="select * from EVENTS where event_id=?;";
 	private final static String k_selectEventProto="select * from EVENTS_PROTO where eventproto_id=?;";
@@ -40,6 +42,14 @@ public class DBHandler implements IDBHandler
 	private final static String k_doesVendorExistByName = "SELECT user_name FROM VENDORS WHERE user_name=?;";
 	private final static String k_doesVendorExistByID= "SELECT vendor_id FROM VENDORS WHERE vendor_id=?;";
 	private final static String k_selectMaxID = "SELECT MAX(%s) FROM %s;";
+	private final static String k_selectEventProtoParams =	"SELECT event_name, event_description, productEP, param_id, EVENTS_PROTO.eventproto_id, param_name, param_desc, param_type, param_min, param_max " + 
+														"FROM EVENTS_PROTO INNER JOIN AE_PROTO_PARAMS ON EVENTS_PROTO.eventproto_id=AE_PROTO_PARAMS.eventproto_id " + 
+														"WHERE EVENTS_PROTO.eventproto_id IN (SELECT DISTINCT eventproto_id FROM EVENTS_PROTO where product_id=?) " + 
+														"ORDER BY AE_PROTO_PARAMS.eventproto_id, param_id;";
+	private final static String k_selectActionProtoParams =	"SELECT action_name, action_description, productEP, param_id, ACTIONS_PROTO.actionproto_id, param_name, param_desc, param_type, param_min, param_max " + 
+															"FROM ACTIONS_PROTO INNER JOIN AE_PROTO_PARAMS ON ACTIONS_PROTO.actionproto_id=AE_PROTO_PARAMS.actionproto_id " + 
+															"WHERE ACTIONS_PROTO.actionproto_id IN (SELECT DISTINCT actionproto_id FROM ACTION_PROTO where product_id=?) " + 
+															"ORDER BY AE_PROTO_PARAMS.eventproto_id, param_id;";
 	
 	
 	private short[] TABLE_maxID;
@@ -355,7 +365,32 @@ public class DBHandler implements IDBHandler
 				closeConnection();
 		}
 	}
+	
+	private void insertAEParamsValues(short i_ActionEvent_id ,List<String> i_ParamValues, String i_KActionEvent) throws SQLException
+	{
+		short param_idx=0;
+		String ae = null;
+		if(i_KActionEvent.compareTo(k_action)==0)
+			ae="action_id";
+		else
+			ae="event_id";
 
+		Connection connection = openConnection();
+		for(String paramVal : i_ParamValues)
+		{
+			
+			final String sqlQuery = "insert into " + i_KActionEvent +"_PARAM_VALUES ("+ae+", param_id, param_val)"
+					+ "values ("
+					+"'"+i_ActionEvent_id+"',"
+					+"'"+(param_idx++)+"',"
+					+"'"+paramVal+"'"
+					+");";
+
+			java.sql.PreparedStatement insertStat  = connection.prepareStatement(sqlQuery);
+			insertStat.executeUpdate();
+		}
+	}
+	
 	private void addActions(Scenario i_Scenario) throws Exception 
 	{
 		Iterator<Action> itr = i_Scenario.getActions().iterator();
@@ -369,11 +404,12 @@ public class DBHandler implements IDBHandler
 					throw new Exception("Incorrect Action object - no matching Product, or no Action instance available!");
 			
 			
-				final String sqlQuery = "insert into ACTIONS (device_id, actionproto_id, param_val) "
+				insertAEParamsValues(currentAction.getId() ,currentAction.getParameters(), k_action);
+				
+				final String sqlQuery = "insert into ACTIONS (device_id, actionproto_id) "
 						+ "values ("
 						+"'"+currentAction.getDevice_serialNum()+"',"
-						+"'"+currentAction.getActionDescription().getProdId()+"',"
-						+"'"+currentAction.getParameter()+"',"
+						+"'"+currentAction.getActionDescription().getId()+"'"
 						+");";
 
 				java.sql.PreparedStatement insertStat  = connection.prepareStatement(sqlQuery);
@@ -410,13 +446,13 @@ public class DBHandler implements IDBHandler
 				if(currentEvent.getDevice_serialNum()<0 || currentEvent.getActionDescription().getProdId()<0)
 					throw new Exception("Incorrect Event object - no matching Product, or no Event instance available!");
 			
-			
-				final String sqlQuery = "insert into EVENTS (device_id, eventproto_id, param_val, logicOper) "
+				insertAEParamsValues(currentEvent.getId(), currentEvent.getParameters(), k_event);
+				
+				final String sqlQuery = "insert into EVENTS (device_id, eventproto_id, logicOper) "
 						+ "values ("
 						+"'"+currentEvent.getDevice_serialNum()+"',"
 						+"'"+currentEvent.getActionDescription().getId()+"',"
-						+"'"+currentEvent.getParameter()+"',"
-						+"'"+currentEvent.getLogicOperator()+"',"
+						+"'"+currentEvent.getLogicOperator()+"'"
 						+");";
 
 				java.sql.PreparedStatement insertStat  = connection.prepareStatement(sqlQuery);
@@ -507,21 +543,170 @@ public class DBHandler implements IDBHandler
 			return res;
 		}
 	}
+	
+	private LinkedList<LinkedList<String>> getAESupportedValues(int i_ActionEventId, String i_ActionEvent) throws SQLException
+	{
+		LinkedList<LinkedList<String>> res = null;
+		LinkedList<String> event_opts=null;
+		String sqlQuery = null;
+		short tempParamId=-1;
+		if(i_ActionEvent.compareTo(k_action)==0)
+			sqlQuery = "select * from PARAM_OPTIONS where actionproto_id=? order by param_id;";
+		else
+			sqlQuery = "select * from PARAM_OPTIONS where eventproto_id=? order by param_id;";
+		
+		Connection connection = openConnection();
+		PreparedStatement qStatement;
+		ResultSet qResult;
+		
+		qStatement = connection.prepareStatement(sqlQuery);
+		qStatement.setString(1, Integer.toString(i_ActionEventId));
+		qResult = qStatement.executeQuery();
+		
+		event_opts = new LinkedList<String>();
+		while(qResult.next())
+		{
+			if(res==null)
+				res = new LinkedList<LinkedList<String>>();
+			
+			if(tempParamId != -1 && tempParamId != Short.parseShort(qResult.getString(3)))
+			{					
+				res.add(event_opts);
+				event_opts = new LinkedList<String>();
+			}
+			
+			tempParamId = Short.parseShort(qResult.getString(3));
+			event_opts.add(qResult.getString(4));
+		}
+		
+		return res;
+	}
+	
+	private LinkedList<ActionEventProto> getListOfAEProtosByProdID(short i_prod_id, String i_ActionEvent) throws NumberFormatException, SQLException
+	{
+		LinkedList<ActionEventProto> res=null;
+		Connection connection = openConnection();
+		PreparedStatement qStatement;
+		ResultSet qsResult;
+		String sqlQuery=null;
+		
+		if(i_ActionEvent.compareTo(k_action)==0)
+			sqlQuery = k_selectActionProtoParams;
+		else
+			sqlQuery = k_selectEventProtoParams;
+		
+		qStatement = connection.prepareStatement(sqlQuery);
+		qStatement.setString(1, Integer.toString(i_prod_id));
+		qsResult = qStatement.executeQuery();
+		short tempAENum=-1;
+		LinkedList<String> buf_Types = new LinkedList<String>();
+		LinkedList<String> buf_SupportedParamsName= new LinkedList<String>();
+		LinkedList<String> buf_min = new LinkedList<String>();
+		LinkedList<String> buf_max = new LinkedList<String>();
+		
+		while(qsResult.next())
+		{
+			if(res==null)
+				res = new LinkedList<ActionEventProto>();
+			if(tempAENum != -1 && tempAENum != Integer.parseInt(qsResult.getString(5)))
+			{					
+				res.add(new ActionEventProto(tempAENum,
+						qsResult.getString(1),
+						qsResult.getString(2),
+						buf_Types,
+						getAESupportedValues(tempAENum, i_ActionEvent),
+						buf_SupportedParamsName,
+						buf_min,
+						buf_max,
+						i_prod_id,
+						qsResult.getString(3),
+						true));
+				
+				buf_Types = new LinkedList<String>();
+				buf_SupportedParamsName= new LinkedList<String>();
+				buf_min = new LinkedList<String>();
+				buf_max = new LinkedList<String>();
+			}
+			tempAENum = Short.parseShort(qsResult.getString(5));
+			buf_SupportedParamsName.add(qsResult.getString(6));
+			buf_Types.add(qsResult.getString(8));
+			buf_min.add(qsResult.getString(9));
+			buf_max.add(qsResult.getString(10));
+		}
+		
+		return res;
+	}
+	/*
+	private LinkedList<ActionEventProto> getListOfEventProtosByProdID(short i_prod_id) throws NumberFormatException, SQLException
+	{
+		LinkedList<ActionEventProto> res=null;
+		Connection connection = openConnection();
+		PreparedStatement qStatement;
+		ResultSet qsResult;
+		qStatement = connection.prepareStatement(k_selectEventProtoParams);
+		qStatement.setString(1, Integer.toString(i_prod_id));
+		qsResult = qStatement.executeQuery();
+		short tempEveNum=-1;
+		LinkedList<String> buf_Types = new LinkedList<String>();
+		LinkedList<String> buf_SupportedParamsName= new LinkedList<String>();
+		LinkedList<String> buf_min = new LinkedList<String>();
+		LinkedList<String> buf_max = new LinkedList<String>();
+		
+		while(qsResult.next())
+		{
+			if(res==null)
+				res = new LinkedList<ActionEventProto>();
+			if(tempEveNum != -1 && tempEveNum != Integer.parseInt(qsResult.getString(5)))
+			{					
+				res.add(new ActionEventProto(tempEveNum,
+						qsResult.getString(1),
+						qsResult.getString(2),
+						buf_Types,
+						getAESupportedValues(tempEveNum, k_event),
+						buf_SupportedParamsName,
+						buf_min,
+						buf_max,
+						i_prod_id,
+						qsResult.getString(3),
+						true));
+				
+				buf_Types = new LinkedList<String>();
+				buf_SupportedParamsName= new LinkedList<String>();
+				buf_min = new LinkedList<String>();
+				buf_max = new LinkedList<String>();
+			}
+			tempEveNum = Short.parseShort(qsResult.getString(5));
+			buf_SupportedParamsName.add(qsResult.getString(6));
+			buf_Types.add(qsResult.getString(8));
+			buf_min.add(qsResult.getString(9));
+			buf_max.add(qsResult.getString(10));
+		}
+		
+		return res;
+	}*/
 
 	@SuppressWarnings("finally")
 	public LinkedList<Product> getProducts(int vendor_id) throws SQLException//final&complete IMPL
 	{
-		String prod_name=null, prod_pic=null;
+		String prod_name=null, prod_pic=null, prod_desc=null, prodEP=null, ven_name=null;
 		short prod_id=-1;
-		LinkedList<Product> res = null;
 		Product currProd=null;
+		LinkedList<Product> res = null;
 		LinkedList<ActionEventProto> currProd_aep_list=null;
 		
 		try
 		{
 			Connection connection = openConnection();
-			PreparedStatement queryStatement, eapQstatement;
-			ResultSet queryResult, eapsQResult;
+			PreparedStatement queryStatement, venNameQStatement;
+			ResultSet queryResult, venNameQResult;
+			
+			venNameQStatement  =connection.prepareStatement("select vendor_name from VENDORS where vendor_id=?;");
+			venNameQStatement.setString(1, Integer.toString(vendor_id));
+			venNameQResult = venNameQStatement.executeQuery();
+			if(venNameQResult.next())
+				ven_name = venNameQResult.getString(1);
+			else
+				throw new SQLException("No such vendor found for getProducts");
 			
 			queryStatement  =connection.prepareStatement("select * from PRODUCTS where vendor_id=?;");
 			queryStatement.setString(1, Integer.toString(vendor_id));
@@ -535,57 +720,14 @@ public class DBHandler implements IDBHandler
 				prod_id = Short.parseShort(queryResult.getString(1));
 				prod_name = queryResult.getString(3);
 				prod_pic = queryResult.getString(4);
+				prod_desc = queryResult.getString(7);
+				prodEP = queryResult.getString(8);
 				
+				currProd_aep_list = getListOfAEProtosByProdID(prod_id, k_action);
+				currProd_aep_list.addAll(getListOfAEProtosByProdID(prod_id, k_event));
 				
-				eapQstatement  =connection.prepareStatement("select * from EVENTS_PROTO where product_id=?;");
-				eapQstatement.setString(1, Integer.toString(prod_id));
-				eapsQResult = eapQstatement.executeQuery();
-				while(eapsQResult.next())
-				{
-					if(currProd_aep_list==null)
-						currProd_aep_list = new LinkedList<ActionEventProto>();
+				currProd = new Product(prod_id, (short)vendor_id, ven_name, prod_name, prod_desc, prod_pic, prodEP, currProd_aep_list);
 					
-					currProd_aep_list.add(new ActionEventProto(Short.parseShort(eapsQResult.getString(1)),
-							eapsQResult.getString(3),
-							eapsQResult.getString(5), 
-							prodName,
-							description,
-							type,
-							supportedValues,
-							min,
-							max,
-							prod_id,
-							endpoint,
-							isEvent));
-				}
-				
-				
-				eapQstatement  =connection.prepareStatement("select * from ACTIONS_PROTO where product_id=?;");
-				eapQstatement.setString(1, Integer.toString(prod_id));
-				eapsQResult = eapQstatement.executeQuery();
-				while(eapsQResult.next())
-				{
-					if(currProd_aep_list==null)
-						currProd_aep_list = new LinkedList<ActionEventProto>();
-					
-					currProd_aep_list.add(new ActionEventProto(Short.parseShort(eapsQResult.getString(1)),
-							eapsQResult.getString(3),
-							eapsQResult.getString(5), 
-							prodName,
-							description,
-							type,
-							supportedValues,
-							min,
-							max,
-							prod_id,
-							endpoint,
-							isEvent));
-				}
-				
-				
-				currProd = new Product(prod_id, (short)vendor_id, vendor_name, prod_name, prod_description, prod_pic, prod_endpoint, currProd_aep_list);
-					
-				
 				res.add(currProd);
 			}
 		}	
@@ -602,23 +744,25 @@ public class DBHandler implements IDBHandler
 	@SuppressWarnings("finally")
 	public LinkedList<Product> getProductsByProdID(int i_prod_id) throws SQLException//final&complete IMPL
 	{
-		String prod_name=null, prod_pic=null;
-		short prod_id=-1, vend_id=-1;
-		LinkedList<Product> res = null;
+		String prod_name=null, prod_pic=null, prod_desc=null, prodEP=null, ven_name=null;
+		short prod_id=-1, vendor_id=-1;
 		Product currProd=null;
-		boolean isNeedToCloseConn=false;
+		LinkedList<Product> res = null;
 		LinkedList<ActionEventProto> currProd_aep_list=null;
 		
 		try
 		{
-			Connection connection = currSession;
-			if(currSession==null)
-			{
-				connection = openConnection();
-				isNeedToCloseConn = true;
-			}
-			PreparedStatement queryStatement, eapQstatement;
-			ResultSet queryResult, eapsQResult;
+			Connection connection = openConnection();
+			PreparedStatement queryStatement, venNameQStatement;
+			ResultSet queryResult, venNameQResult;
+			
+			venNameQStatement  =connection.prepareStatement("select vendor_name from VENDORS inner join PRODUCTS on VENDORS.vendor_id=PRODUCTS.vendor_id where product_id=?;");
+			venNameQStatement.setString(1, Integer.toString(i_prod_id));
+			venNameQResult = venNameQStatement.executeQuery();
+			if(venNameQResult.next())
+				ven_name = venNameQResult.getString(1);
+			else
+				throw new SQLException("No such vendor found for getProducts");
 			
 			queryStatement  =connection.prepareStatement("select * from PRODUCTS where product_id=?;");
 			queryStatement.setString(1, Integer.toString(i_prod_id));
@@ -630,67 +774,23 @@ public class DBHandler implements IDBHandler
 					res = new LinkedList<Product>();
 				
 				prod_id = Short.parseShort(queryResult.getString(1));
-				vend_id = Short.parseShort(queryResult.getString(2));
+				vendor_id = Short.parseShort(queryResult.getString(2));
 				prod_name = queryResult.getString(3);
 				prod_pic = queryResult.getString(4);
+				prod_desc = queryResult.getString(7);
+				prodEP = queryResult.getString(8);
 				
+				currProd_aep_list = getListOfAEProtosByProdID(prod_id, k_action);
+				currProd_aep_list.addAll(getListOfAEProtosByProdID(prod_id, k_event));
 				
-				eapQstatement  =connection.prepareStatement("select * from EVENTS_PROTO where product_id=?;");
-				eapQstatement.setString(1, Integer.toString(prod_id));
-				eapsQResult = eapQstatement.executeQuery();
-				while(eapsQResult.next())
-				{
-					if(currProd_aep_list==null)
-						currProd_aep_list = new LinkedList<ActionEventProto>();
+				currProd = new Product(prod_id, vendor_id, ven_name, prod_name, prod_desc, prod_pic, prodEP, currProd_aep_list);
 					
-					currProd_aep_list.add(new ActionEventProto(Short.parseShort(eapsQResult.getString(1)),
-							eapsQResult.getString(3),
-							eapsQResult.getString(5), 
-							prodName,
-							description,
-							type,
-							supportedValues,
-							min,
-							max,
-							prod_id,
-							endpoint,
-							isEvent));
-				}
-				
-				
-				eapQstatement  =connection.prepareStatement("select * from ACTIONS_PROTO where product_id=?;");
-				eapQstatement.setString(1, Integer.toString(prod_id));
-				eapsQResult = eapQstatement.executeQuery();
-				while(eapsQResult.next())
-				{
-					if(currProd_aep_list==null)
-						currProd_aep_list = new LinkedList<ActionEventProto>();
-					
-					currProd_aep_list.add(new ActionEventProto(Short.parseShort(eapsQResult.getString(1)),
-							eapsQResult.getString(3),
-							eapsQResult.getString(5), 
-							prodName,
-							description,
-							type,
-							supportedValues,
-							min,
-							max,
-							prod_id,
-							endpoint,
-							isEvent));
-				}
-				
-				
-				currProd = new Product(prod_id, (short)vendor_id, vendor_name, prod_name, prod_description, prod_pic, prod_endpoint, currProd_aep_list);
-					
-				
 				res.add(currProd);
 			}
 		}	
 		finally
 		{
-			if(isNeedToCloseConn)
-				closeConnection();
+			closeConnection();
 			if(res==null)
 				throw new SQLException("No products added to provided vendor id");
 			return res;
@@ -796,7 +896,7 @@ public class DBHandler implements IDBHandler
 					 */
 				//}
 				//else
-				//	throw ne        w SQLException("relevant product for device couldn't be found! DB isn't normalized!");
+				//	throw new SQLException("relevant product for device couldn't be found! DB isn't normalized!");
 					
 				Device devToAdd =new Device(dev_id, serial_num, cust_id, prod.setVenName(getVenNameByID(ven_id)));
 				res.add(devToAdd);
@@ -832,7 +932,6 @@ public class DBHandler implements IDBHandler
 		finally
 		{
 			closeConnection();
-			//incrementMaxIdxValue(EntityAndIdxValue.DEVICES_TABLE);
 			return flag;
 		}
 	}

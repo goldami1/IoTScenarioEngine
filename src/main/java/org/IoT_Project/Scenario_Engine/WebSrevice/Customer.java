@@ -4,6 +4,7 @@ import org.IoT_Project.Scenario_Engine.Service.CustomerService;
 import org.IoT_Project.Scenario_Engine.Service.UserService;
 
 import DataBase.DBHandler;
+import DataBase.NDBHandler;
 import javafx.util.Pair;
 
 import org.IoT_Project.Scenario_Engine.Models.Scenario;
@@ -174,8 +175,9 @@ public class Customer {
 	{
 		try {
 			org.IoT_Project.Scenario_Engine.Models.Customer userToAdd = us.addCustomer(i_user);
-			DBHandler.getInstance().addCustomer(userToAdd);
-			return Response.status(Status.CREATED).entity(userToAdd).build();
+			NDBHandler.getInstance().addCustomer(userToAdd);
+			org.IoT_Project.Scenario_Engine.Models.Customer userAdded = NDBHandler.getInstance().getCustomer(i_user.getUserName(), i_user.getPassword());
+			return Response.status(Status.CREATED).entity(userAdded).build();
 		}
 		catch(Exception ex)
 		{
@@ -189,7 +191,7 @@ public class Customer {
 	public Response fetchVendors() 
 	{
 		try {
-			LinkedList<Pair<Short, String>> vendors_lst = DBHandler.getInstance().getVendors();
+			LinkedList<Pair<Short, String>> vendors_lst = NDBHandler.getInstance().getVendors();
 			LinkedList<tmpContainers.VenNameIDContainer> formattedVenLST = new LinkedList<tmpContainers.VenNameIDContainer>();
 
 			for(Pair<Short, String> elem:vendors_lst)

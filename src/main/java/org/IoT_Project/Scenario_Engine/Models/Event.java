@@ -2,14 +2,26 @@ package org.IoT_Project.Scenario_Engine.Models;
 
 import java.util.List;
 
-import com.google.gson.annotations.SerializedName;
+import javax.persistence.AttributeOverride;
+import javax.persistence.AttributeOverrides;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Table;
 
+import com.google.gson.annotations.SerializedName;
 import DataBase.DBHandler;
 
+@Entity
+@Table(name = "EVENTS")
+@AttributeOverrides({
+					@AttributeOverride(name="action_id", column=@Column(name = "event_id")),
+					@AttributeOverride(name ="action_proto", column=@Column(name = "event_proto"))
+					})
 public class Event extends Action{
-	
+	@Column(name = "event_logicoper")
 	@SerializedName("logicOperator")
 	private char logicOperator;
+	@Column(name = "event_is_triggered")
 	@SerializedName("triggered")
 	private boolean triggered;
 	public enum ElogicOperand
