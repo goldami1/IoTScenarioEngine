@@ -32,7 +32,7 @@
     "jquery": "^3.2.1",
     "lodash": "^4.17.4",
     "react": "^16.2.0",
-    "react-beautiful-dnd": "^3.0.0",
+    "react-beautiful-dnd": "^4.0.1",
     "react-dom": "^16.2.0",
     "react-images-upload": "^1.1.1",
     "react-redux": "^4.0.0",
