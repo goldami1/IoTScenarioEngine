@@ -1,3 +1,5 @@
+import _ from 'lodash';
+
 export const reorder = (list, startIndex, endIndex) => {
 	const result = Array.from(list);
 	const [removed] = result.splice(startIndex, 1);
@@ -6,7 +8,7 @@ export const reorder = (list, startIndex, endIndex) => {
 };
 
 export const reorderQuoteMap = ({quoteMap,source ,destination}) => {
-
+  console.log(quoteMap);
   const current: Quote[] = [...quoteMap[source.droppableId]];
   const next: Quote[] = [...quoteMap[destination.droppableId]];
   const target: Quote = current[source.index];
@@ -19,12 +21,13 @@ export const reorderQuoteMap = ({quoteMap,source ,destination}) => {
       destination.index,
     );
 
+
     const result = {
       ...quoteMap,
       [source.droppableId]: reordered,
     };
     return {
-      lists: result,
+      lists: Object.values(result),
       // not auto focusing in own list
       autoFocusQuoteId: null,
     };
@@ -44,7 +47,7 @@ export const reorderQuoteMap = ({quoteMap,source ,destination}) => {
   };
 
   return {
-    lists: result,
+    lists: Object.values(result),
     autoFocusQuoteId: target.id,
   };
 };

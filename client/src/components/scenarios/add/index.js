@@ -6,6 +6,8 @@ import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 import { reorder, reorderQuoteMap } from "./reorder";
 import AcEvList from "./AcEvList";
 import {
+	Menu,
+	Dropdown,
 	Form,
 	Cascader,
 	Modal,
@@ -16,6 +18,10 @@ import {
 	Col,
 	Layout
 } from "antd";
+
+
+
+
 
 const RadioButton = Radio.Button;
 const RadioGroup = Radio.Group;
@@ -33,16 +39,13 @@ class ScenarioForm extends Component {
 		super(props);
 		this.state = {
 			lists: [
-				getItems(5, 0),
-				getItems(4, 20),
+				getItems(2, 0),
+				getItems(1, 20),
 				getItems(2, 40),
-				getItems(7, 60),
-				getItems(3, 80),
-				getItems(7, 100)
+				getItems(3, 60),
+				getItems(4, 80),
+				getItems(1, 100)
 			],
-			items: getItems(5),
-			items2: getItems(4),
-			inventory: [],
 			inventoryType: "event",
 			modalVisible: false
 		};
@@ -62,10 +65,28 @@ class ScenarioForm extends Component {
 		);
 	};
 
-	addAE = ae => () => {
+	addAE = (type,ae) => () => {
+		ae.id= 999;
+		console.log(this.state);
+		console.log(Array.isArray(this.state.lists));
+
 		this.setState({
-			inventory: this.state.inventory.concat([ae])
+
+			lists: this.state.lists.map((singleAe, index) => {
+				//fuck js
+				// console.log(singleAe.concat(ae));
+				// console.log(singleAe);
+				// console.log(...singleAe);
+				// console.log([...singleAe]);
+				// console.log([...singleAe,ae]);
+				if (index === type) {
+					return [...singleAe,ae];
+				}
+				return singleAe;
+			})
 		});
+		console.log(this.state);
+		console.log(Array.isArray(this.state.lists));
 	};
 
 	removeFromInventory = index => () => {
@@ -108,7 +129,7 @@ class ScenarioForm extends Component {
 						<AcEvList lists={this.state.lists} id={5} />
 					</Content>
 					<Sider
-						width={220}
+						width={300}
 						style={{
 							padding: "10px",
 							background: "white",
@@ -143,9 +164,11 @@ class ScenarioForm extends Component {
 						</Row>
 						<Row>
 							<ul>
-								{this.state.inventory.map((item, index) => (
-									<li onClick={this.removeFromInventory(index)}>{index}</li>
-								))}
+								{
+									// this.state.inventory.map((item, index) => (
+									// <li onClick={this.removeFromInventory(index)}>{index}</li>
+									// 	))
+								}
 							</ul>
 						</Row>
 					</Sider>

@@ -1,32 +1,41 @@
 import React from "react";
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
-
+import {
+	Avatar,
+	Card,
+	Icon,
+	Menu,
+	Button,
+	Dropdown,
+} from "antd";
 
 
 // using some little inline style helpers to make the app look okay
-const grid = 9;
+
 const getItemStyle = (isDragging, draggableStyle) => ({
 	// some basic styles to make the items look a bit nicer
 	userSelect: "none",
-	padding: grid * 2,
-	margin: `0 0 ${grid}px 0`,
-
-	// change background colour if dragging
+	margin:10,
+	width:250,
 	background: isDragging ? "lightgreen" : "yellow",
-
-	// styles we need to apply on draggables
 	...draggableStyle
 });
 const getListStyle = isDraggingOver => ({
 	background: isDraggingOver ? "lightblue" : "white",
 	float: "left",
-	padding: 10,
-	width: 193
 });
 
 
+
 const AcEvList = props => {
-	
+
+	const menu = (
+		<Menu>
+			<Menu.Item key="Delete" ><Icon type="delete" /><span style={{ marginLeft: 8 }}>Delete</span></Menu.Item>
+			<Menu.Item key="Edit"><Icon type="edit" /><span style={{ marginLeft: 8 }}>Edit</span></Menu.Item>
+		</Menu>
+	);
+
 	return (
 		<Droppable droppableId={`${props.id}`}>
 			{(provided, snapshot) => (
@@ -42,7 +51,7 @@ const AcEvList = props => {
 						>
 							{(provided, snapshot) => (
 								<div>
-									<div
+									<div style={{display:'inline'}}
 										ref={provided.innerRef}
 										{...provided.draggableProps}
 										{...provided.dragHandleProps}
@@ -51,10 +60,24 @@ const AcEvList = props => {
 											provided.draggableProps.style
 										)}
 									>
-										{item.content}
+									
+										<Card  title={item.content} bodyStyle={{padding:15}}
+												extra=  {
+													<Dropdown overlay={menu}>
+														<Icon style={{marginLeft:8}} type="bars" />
+													</Dropdown>
+												} 	
+										>
+											<Card.Meta
+												avatar={<Avatar src="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png" />}
+												style={{padding:'0px'}}
+												description="This is the description"
+											/>
+										</Card>
 									</div>
 									{provided.placeholder}
 								</div>
+
 							)}
 						</Draggable>
 					))}
