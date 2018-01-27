@@ -30,6 +30,8 @@ import javax.persistence.Table;
 
 import org.hibernate.annotations.CollectionId;
 import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.LazyCollection;
+import org.hibernate.annotations.LazyCollectionOption;
 
 import DataBase.DBHandler;
 
@@ -51,6 +53,7 @@ public class Action implements IAction{
 	@Column(name = "device_sn")
 	@SerializedName("device_serialNum")
 	protected short device_serialNum;
+	@LazyCollection(LazyCollectionOption.FALSE)
 	@OneToOne
 	@JoinColumn(name = "actionproto_id")
 	@SerializedName("actionDescription")

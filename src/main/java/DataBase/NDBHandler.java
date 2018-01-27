@@ -4,6 +4,7 @@ import java.awt.image.BufferedImage;
 import java.sql.SQLException;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 import java.util.Map.Entry;
 import org.IoT_Project.Scenario_Engine.Models.Action;
 import org.IoT_Project.Scenario_Engine.Models.ActionEventProto;
@@ -14,6 +15,7 @@ import org.IoT_Project.Scenario_Engine.Models.Product;
 import org.IoT_Project.Scenario_Engine.Models.Scenario;
 import org.IoT_Project.Scenario_Engine.Models.User;
 import org.IoT_Project.Scenario_Engine.Models.Vendor;
+import org.eclipse.persistence.internal.jaxb.many.MapEntry;
 import org.hibernate.query.Query;
 import javafx.util.*;
 import javax.persistence.TypedQuery;
@@ -366,9 +368,37 @@ public class NDBHandler implements IDBHandler {
 	}
 
 	
-	public LinkedList<Product> getProductsByProdID(int i_prod_id) throws SQLException {
-		// TODO Auto-generated method stub
-		return null;
+	public LinkedList<Product> getProductsByProdID(int i_prod_id) throws Exception
+	{
+		List<Product> res = null;
+		
+		try
+		{
+		m_Session = m_sessionFactory.openSession();
+		}catch(NullPointerException e) {throw new Exception("DB Critical Error# SessionFactory isn't initialized");}
+
+		m_Session.beginTransaction();
+		
+		Query<Product> query = m_Session.createQuery("FROM Product WHERE product_id = :prodid", Product.class);
+		query.setParameter("prodid", i_prod_id);
+		List<Product> tmpres = query.getResultList();
+		
+		if(tmpres.size()>0)
+		{
+			res = tmpres;
+		}
+		
+		
+		if(res.size()==0)
+		{
+			m_Session.close();
+			throw new Exception("No products found with product id "+i_prod_id+"!");
+		}
+		
+		m_Session.getTransaction().commit();
+		m_Session.close();
+		
+		return new LinkedList<Product>(res);
 	}
 
 	
@@ -404,100 +434,183 @@ public class NDBHandler implements IDBHandler {
 		
 		return res;
 	}
-	
-	
-	public boolean addDevice(Device i_dev) throws SQLException {
-		// TODO Auto-generated method stub
-		return false;
-	}
-	
-	public boolean addDevice(int product_id, int customer_id, int device_serial) throws SQLException {
-		// TODO Auto-generated method stub
-		return false;
-	}
 
 	
-	public boolean addScenario(Scenario i_Scenario) throws SQLException, Exception {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	
-	public short getIdForScenario() {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
-	
-	public boolean removeDevice(int device_id) {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	
-	public boolean removeProduct(int productToRemove_id) {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	
-	public boolean updateProduct(int prod_id, Product new_product) {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	
-	public LinkedList<Scenario> getScenarios(int cust_id) throws SQLException {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	
-	public void addAction(Action action) {
-		// TODO Auto-generated method stub
+	public boolean addDevice(Device i_dev) throws Exception {
+		m_Session = m_sessionFactory.openSession();
+		m_Session.beginTransaction();
 		
+		m_Session.save(i_dev);
+		try
+		{
+			m_Session.getTransaction().commit();
+		}catch(Exception e) {throw new Exception("Can't add given device!");}
+		m_Session.close();
+		return true;
 	}
-
 	
-	public void addEvent(Event event) {
-		// TODO Auto-generated method stub
+	
+	public boolean addScenario(Scenario i_Scenario) throws Exception
+	{
+		m_Session = m_sessionFactory.openSession();
+		m_Session.beginTransaction();
 		
+		m_Session.save(i_Scenario);
+		for(Action act : i_Scenario.getActions())
+		{
+			m_Session.save(act);
+		}
+		for(Event eve : i_Scenario.getEventsToHappen().values())
+		{
+			m_Session.save(eve);
+		}
+		try
+		{
+		m_Session.getTransaction().commit();
+		}catch(Exception e) {throw new Exception("Can't add provided scenario!");}
+		m_Session.close();
+		return true;
 	}
 
 	
-	public boolean updateDevice(int origionalDevice_id, Device newDevice) {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	
-	public boolean updateScenario(int origionalScenario_id, Scenario newScenario) {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	
-	public boolean removeScenario(int scenarioToRemove_id) {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	
-	public Event getEvent(int event_id) throws SQLException, Exception {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	
-	public LinkedList<Device> getDevices(short i_UserID) throws SQLException {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	
-	public void removeProduct(Product productToRemove) {
-		// TODO Auto-generated method stub
+	public LinkedList<Scenario> getScenarios(int cust_id) throws Exception
+	{
+		List<Scenario> res = null;
 		
+		try
+		{
+		m_Session = m_sessionFactory.openSession();
+		}catch(NullPointerException e) {throw new Exception("DB Critical Error# SessionFactory isn't initialized");}
+
+		m_Session.beginTransaction();
+		
+		Query<Scenario> query = m_Session.createQuery("FROM Scenario WHERE customer_id = :custid", Scenario.class);
+		query.setParameter("custid", cust_id);
+		List<Scenario> tmpres = query.getResultList();
+		
+		if(tmpres.size()>0)
+		{
+			res = tmpres;
+		}
+		
+		
+		if(res.size()==0)
+		{
+			m_Session.close();
+			throw new Exception("No scenarios found for customer id:"+cust_id+"!");
+		}
+		
+		m_Session.getTransaction().commit();
+		m_Session.close();
+		
+		return new LinkedList<>(res);
+	}
+	
+	
+	public void addAction(Action i_action) throws Exception
+	{
+		m_Session = m_sessionFactory.openSession();
+		m_Session.beginTransaction();
+		
+		m_Session.save(i_action);
+		/*
+		for(String param : i_action.getParameters())
+		{
+			m_Session.save(param);
+		}*/
+		
+		try
+		{
+		m_Session.getTransaction().commit();
+		}catch(Exception e) {throw new Exception("Can't add provided action!");}
+		m_Session.close();
 	}
 
-}
+	
+	public void addEvent(Event i_event) throws Exception
+	{
+		m_Session = m_sessionFactory.openSession();
+		m_Session.beginTransaction();
+		
+		m_Session.save(i_event);
+		/*
+		for(String param : i_action.getParameters())
+		{
+			m_Session.save(param);
+		}*/
+		
+		try
+		{
+		m_Session.getTransaction().commit();
+		}catch(Exception e) {throw new Exception("Can't add provided event!");}
+		m_Session.close();
+	}
+	
+	
+	public Event getEvent(int i_event_id) throws Exception
+	{
+		Event res = null;
+		
+		try
+		{
+		m_Session = m_sessionFactory.openSession();
+		}catch(NullPointerException e) {throw new Exception("DB Critical Error# SessionFactory isn't initialized");}
+
+		m_Session.beginTransaction();
+		
+		Query<Event> query = m_Session.createQuery("FROM Event WHERE event_id = :eveid", Event.class);
+		query.setParameter("custid", i_event_id);
+		List<Event> tmpres = query.getResultList();
+		
+		if(tmpres.size()>0)
+		{
+			res = tmpres.remove(0);
+		}
+		
+		
+		if(tmpres.size()==0)
+		{
+			m_Session.close();
+			throw new Exception("No event found for event id:"+i_event_id+"!");
+		}
+		
+		m_Session.getTransaction().commit();
+		m_Session.close();
+		
+		return res;
+	}
+
+	
+	public LinkedList<Device> getDevices(short i_UserID) throws Exception
+	{
+		List<Device> res = null;
+		
+		try
+		{
+		m_Session = m_sessionFactory.openSession();
+		}catch(NullPointerException e) {throw new Exception("DB Critical Error# SessionFactory isn't initialized");}
+
+		m_Session.beginTransaction();
+		
+		Query<Device> query = m_Session.createQuery("FROM Device WHERE customer_id = :userid", Device.class);
+		query.setParameter("userid", i_UserID);
+		List<Device> tmpres = query.getResultList();
+		
+		if(tmpres.size()>0)
+		{
+			res = tmpres;
+		}
+		
+		
+		if(res.size()==0)
+		{
+			m_Session.close();
+			throw new Exception("No devices found for user id:"+i_UserID+"!");
+		}
+		
+		m_Session.getTransaction().commit();
+		m_Session.close();
+		
+		return new LinkedList<>(res);
+	}
+	}

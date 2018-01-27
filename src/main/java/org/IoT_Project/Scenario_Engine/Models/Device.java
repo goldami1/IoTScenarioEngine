@@ -16,6 +16,9 @@ import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 
+import org.hibernate.annotations.LazyCollection;
+import org.hibernate.annotations.LazyCollectionOption;
+
 import com.google.gson.annotations.SerializedName;
 
 import DataBase.DBHandler;
@@ -34,8 +37,9 @@ public class Device {
 	@Column(name = "customer_id")
 	@SerializedName("customer_id")
 	private short customer_id;
+	@LazyCollection(LazyCollectionOption.FALSE)
 	@OneToOne
-	@JoinColumn(name = "prododevice_id")
+	@JoinColumn(name = "product_id")
 	@SerializedName("protoDevice")
 	private Product protoDevice;
 
