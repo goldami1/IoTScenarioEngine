@@ -96,11 +96,20 @@ class ScenarioForm extends Component {
 	};
 
 	onChange = event => {
+		console.log(event)
 		var newState = event.target.value
 			? { [event.target.name]: event.target.value }
 			: { modalVisible: true };
 		this.setState(newState);
 	};
+
+	onMenuChange = event => {
+		console.log(event)
+		var newState = event.key!="addAe"
+			? { inventoryType: event.key }
+			: { modalVisible: true };
+		this.setState(newState); 		
+	}
 
 	onModalCancel = () => {
 		this.setState({ modalVisible: false });
@@ -123,46 +132,61 @@ class ScenarioForm extends Component {
 					<Content
 						style={{ background: "#fff", padding: "10px", overflow: "hidden" }}
 					>
-						<AcEvList lists={this.state.lists} id={2} />
-						<AcEvList lists={this.state.lists} id={3} />
-						<AcEvList lists={this.state.lists} id={4} />
-						<AcEvList lists={this.state.lists} id={5} />
+						<AcEvList style={{float:'left'}} lists={this.state.lists} id={2} />
+						<AcEvList style={{float:'left'}} lists={this.state.lists} id={3} />
+						<AcEvList style={{float:'left'}} lists={this.state.lists} id={4} />
+						<AcEvList style={{float:'left'}} lists={this.state.lists} id={5} />
 					</Content>
 					<Sider
-						width={300}
+						width={270}
 						style={{
-							padding: "10px",
 							background: "white",
 							borderLeft: "1px solid #ebedf0"
 						}}
 					>
-						<Row>
-							<RadioGroup
-								onChange={this.onChange}
-								name="inventoryType"
-								value={this.state.inventoryType}
-							>
-								<RadioButton value="event">Events</RadioButton>
-								<RadioButton value="action">Actions</RadioButton>
+					<Layout  style={{background:'white'}}>
+			
+					 	<Menu
+							mode="horizontal"
+							style={{ lineHeight: '64px' }}
+							selectedKeys={[this.state.inventoryType]}
+							onSelect={this.onMenuChange}
+						>
+							<Menu.Item key="event" >Events</Menu.Item>
+							<Menu.Item key="action">Actions</Menu.Item>
+							<Menu.Item key="addAe" ><Icon type="plus" /></Menu.Item>
+						</Menu>
 
-								<RadioButton>
-									<Icon type="plus" />
-								</RadioButton>
-							</RadioGroup>
+							
+							{
+							// 	<RadioGroup
+							//  	style={{width:'100%', border:'5px'}}
+							// 	onChange={this.onChange}
+							// 	name="inventoryType"
+							// 	value={this.state.inventoryType}
+							// >
+
+							// 	<RadioButton  value="event">Events</RadioButton>
+							// 	<RadioButton value="action">Actions</RadioButton>	
+							// 	<RadioButton>
+							// 		<Icon type="plus" />
+							// 	</RadioButton>
+							// </RadioGroup>
+							}
+
 							<CreateModal
 								type={this.state.inventoryType}
 								visible={this.state.modalVisible}
 								onCancel={this.onModalCancel}
 								onOk={this.addAE}
 							/>
-						</Row>
-						<Row>
+
+
 							<AcEvList
 								lists={this.state.lists}
 								id={this.state.inventoryType == "event" ? 0 : 1}
 							/>
-						</Row>
-						<Row>
+
 							<ul>
 								{
 									// this.state.inventory.map((item, index) => (
@@ -170,7 +194,8 @@ class ScenarioForm extends Component {
 									// 	))
 								}
 							</ul>
-						</Row>
+
+						</Layout>
 					</Sider>
 				</Layout>
 			</DragDropContext>
