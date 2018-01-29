@@ -9,13 +9,13 @@ export const reorder = (list, startIndex, endIndex) => {
 
 export const reorderQuoteMap = ({quoteMap,source ,destination}) => {
   console.log(quoteMap);
-  const current: Quote[] = [...quoteMap[source.droppableId]];
-  const next: Quote[] = [...quoteMap[destination.droppableId]];
-  const target: Quote = current[source.index];
+  const current = [...quoteMap[source.droppableId]];
+  const next = [...quoteMap[destination.droppableId]];
+  const target = current[source.index];
 
   // moving to same list
   if (source.droppableId === destination.droppableId) {
-    const reordered: Quote[] = reorder(
+    const reordered = reorder(
       current,
       source.index,
       destination.index,
@@ -40,7 +40,7 @@ export const reorderQuoteMap = ({quoteMap,source ,destination}) => {
   // insert into next
   next.splice(destination.index, 0, target);
 
-  const result: QuoteMap = {
+  const result = {
     ...quoteMap,
     [source.droppableId]: current,
     [destination.droppableId]: next,

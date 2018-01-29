@@ -73,12 +73,6 @@ class ScenarioForm extends Component {
 		this.setState({
 
 			lists: this.state.lists.map((singleAe, index) => {
-				//fuck js
-				// console.log(singleAe.concat(ae));
-				// console.log(singleAe);
-				// console.log(...singleAe);
-				// console.log([...singleAe]);
-				// console.log([...singleAe,ae]);
 				if (index === type) {
 					return [...singleAe,ae];
 				}
@@ -88,6 +82,26 @@ class ScenarioForm extends Component {
 		console.log(this.state);
 		console.log(Array.isArray(this.state.lists));
 	};
+
+	removeAe = (list,id)=> {
+		this.setState({
+			lists: this.state.lists.map((singleList, listIndex) => {
+				var prop;
+				if (listIndex === list) {
+					return prop = singleList.filter(
+						(ae, aeIndex) => aeIndex !== id
+					);
+				}
+				return singleList;
+			})
+		});
+	}
+
+	handleAeDropdown = (item) => (op) =>{
+		const {key:operation} = op;
+		const {dropId:list,aeId:id} = item;
+		this[operation](list,id);
+	}
 
 	removeFromInventory = index => () => {
 		this.setState({
@@ -116,26 +130,26 @@ class ScenarioForm extends Component {
 	};
 
 	render() {
-		const formItemLayout = {
-			labelCol: {
-				xs: { span: 24 },
-				sm: { span: 3 }
-			},
-			wrapperCol: {
-				xs: { span: 24 },
-				sm: { span: 16 }
-			}
+
+		const aeMenu = {
+			handle: this.handleAeDropdown,
+			items:[
+			//	[<text>		,<icon>,	<operation>	],
+				['Delete',	'delete',	'removeAe'	],
+				['Edit',	'edit',		'editAe'	]
+			]
 		};
+
 		return (
 			<DragDropContext onDragEnd={this.onDragEnd}>
 				<Layout style={{ margin: "40px", borderRadius: "5px solid " }}>
 					<Content
 						style={{ background: "#fff", padding: "10px", overflow: "hidden" }}
 					>
-						<AcEvList style={{float:'left'}} lists={this.state.lists} id={2} />
-						<AcEvList style={{float:'left'}} lists={this.state.lists} id={3} />
-						<AcEvList style={{float:'left'}} lists={this.state.lists} id={4} />
-						<AcEvList style={{float:'left'}} lists={this.state.lists} id={5} />
+						<AcEvList style={{float:'left'}} lists={this.state.lists} id={2} aeMenu={aeMenu}/>
+						<AcEvList style={{float:'left'}} lists={this.state.lists} id={3} aeMenu={aeMenu}/>
+						<AcEvList style={{float:'left'}} lists={this.state.lists} id={4} aeMenu={aeMenu}/>
+						<AcEvList style={{float:'left'}} lists={this.state.lists} id={5} aeMenu={aeMenu}/>
 					</Content>
 					<Sider
 						width={270}
@@ -157,23 +171,7 @@ class ScenarioForm extends Component {
 							<Menu.Item key="addAe" ><Icon type="plus" /></Menu.Item>
 						</Menu>
 
-							
-							{
-							// 	<RadioGroup
-							//  	style={{width:'100%', border:'5px'}}
-							// 	onChange={this.onChange}
-							// 	name="inventoryType"
-							// 	value={this.state.inventoryType}
-							// >
-
-							// 	<RadioButton  value="event">Events</RadioButton>
-							// 	<RadioButton value="action">Actions</RadioButton>	
-							// 	<RadioButton>
-							// 		<Icon type="plus" />
-							// 	</RadioButton>
-							// </RadioGroup>
-							}
-
+						
 							<CreateModal
 								type={this.state.inventoryType}
 								visible={this.state.modalVisible}
@@ -183,17 +181,10 @@ class ScenarioForm extends Component {
 
 
 							<AcEvList
+								aeMenu={aeMenu}	
 								lists={this.state.lists}
 								id={this.state.inventoryType == "event" ? 0 : 1}
 							/>
-
-							<ul>
-								{
-									// this.state.inventory.map((item, index) => (
-									// <li onClick={this.removeFromInventory(index)}>{index}</li>
-									// 	))
-								}
-							</ul>
 
 						</Layout>
 					</Sider>

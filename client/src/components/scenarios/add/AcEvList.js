@@ -1,4 +1,4 @@
-import React from "react";
+import React from 'react';
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 import {
 	Avatar,
@@ -27,18 +27,30 @@ const getListStyle = isDraggingOver => ({
 });
 
 
-
 const AcEvList = props => {
 
-	const menu = (
-		<Menu>
-			<Menu.Item key="Delete" ><Icon type="delete" /><span style={{ marginLeft: 8 }}>Delete</span></Menu.Item>
-			<Menu.Item key="Edit"><Icon type="edit" /><span style={{ marginLeft: 8 }}>Edit</span></Menu.Item>
-		</Menu>
-	);
+
+
+
+	// move to idividual component 
+	const menu = (dropId,aeId) => {
+		return (
+			<Menu onClick={props.aeMenu.handle({dropId,aeId})}>
+				<Menu.Item key="removeAe"><Icon type="delete" /><span style={{ marginLeft: 8 }}>Delete</span></Menu.Item>
+				<Menu.Item key="editAe"><Icon type="edit" /><span style={{ marginLeft: 8 }}>Edit</span></Menu.Item>
+			</Menu>
+		)
+	}
+
+	const dropDown = (list,item) => {
+		return (
+			<Dropdown  placement='bottomCenter' overlay={menu(list,item)} trigger='click'> 
+				<Icon style={{verticalAlign:'middle', marginLeft:8}} type="bars" />
+			</Dropdown>
+		)
+	}
 
 	const aeTitle = (
-
 		<div style={{background:'inherit'}}>
 			<Avatar 
 				style={{verticalAlign: 'middle'}} 
@@ -81,15 +93,13 @@ const AcEvList = props => {
 										<Card 
 											style={{background:'inherit'}}
 											bodyStyle={{padding:15}} title={aeTitle}
-											extra=  { 
-												<Dropdown  placement='bottomCenter' overlay={menu} trigger='click'> 
-													<Icon style={{verticalAlign:'middle', marginLeft:8}} type="bars" />
-												</Dropdown>
-											}
+											extra=  { dropDown(props.id,index)}
+
+								
 										>
-											<Card.Meta
-												description="This is the description"
-											/>
+											<Card.Meta description="This is the description"/>
+												
+											
 										</Card>
 									</div>
 									{provided.placeholder}
