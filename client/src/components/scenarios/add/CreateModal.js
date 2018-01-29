@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { Link, withRouter } from "react-router-dom";
 import ContentWrapper from "../../common/ContentWrapper";
+import _ from 'lodash';
 import {
 	DatePicker,
 	Select,
@@ -45,6 +46,7 @@ class CreateModal extends Component {
 					label: "clock",
 					children: [
 						{
+							fuck:'me',
 							value: "alram clock",
 							label: "alram clock"
 						},
@@ -114,7 +116,19 @@ class CreateModal extends Component {
 		this.setState({ [state]: data });
 	};
 
-
+	mapDevicesToDropdown = (devices,type) => {
+	
+		return _.map(devices, (device) =>{
+			console.log(device);
+			return {
+				label:device.name,
+				value:device.id,
+				children :_.map(device[type],(ae)=>{
+						return {value:ae.id,label:ae.name
+				}})
+			}	
+		});
+	}
 	timeForm = () => {
 		const days = ["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"];
 

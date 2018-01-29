@@ -50,7 +50,7 @@ const AcEvList = props => {
 		)
 	}
 
-	const aeTitle = (
+	const aeTitle = (list,item) => (
 		<div style={{background:'inherit'}}>
 			<Avatar 
 				style={{verticalAlign: 'middle'}} 
@@ -59,7 +59,7 @@ const AcEvList = props => {
 			<span 
 				style={{marginLeft: 16,verticalAlign: 'middle'}}
 			>
-				item.content
+				{item.content} {list}
 			</span>
 		</div>
 	);
@@ -92,7 +92,7 @@ const AcEvList = props => {
 									
 										<Card 
 											style={{background:'inherit'}}
-											bodyStyle={{padding:15}} title={aeTitle}
+											bodyStyle={{padding:15}} title={aeTitle(props.id,item)}
 											extra=  { dropDown(props.id,index)}
 
 								

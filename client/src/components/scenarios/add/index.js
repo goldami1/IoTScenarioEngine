@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import { Link, withRouter } from "react-router-dom";
 import ContentWrapper from "../../common/ContentWrapper";
 import CreateModal from "./CreateModal";
+import _ from 'lodash';
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 import { reorder, reorderQuoteMap } from "./reorder";
 import AcEvList from "./AcEvList";
@@ -20,8 +21,140 @@ import {
 } from "antd";
 
 
+const devices = [
+	{
+		id:'1',
+		name:'clock',
+		description:'show time',
+		img:'some image',
+		vendor:'the company',
+		endpoint:'',
+		
+
+		events:[
+			{
+				id:'1',
+				name:'alarm',
+				description:'rings on time',
+				endpoint:'clock.com/alarm',
+				properties:[
+					{
+						id:'1',
+						name:'hour',
+						description:'enter time',
+						type:'discrete',
+						options:[
+							{
+								id:1,
+								name:'1'
+							},
+							{
+								id:2,
+								name:'2'
+							}
+						],
+						value:''
+					},
+					{
+						id:'2',
+						name:'am / pm',
+						description:'choose am or pm',
+						type:'string',
+						value:''
+					}
+				]
+			}
+
+		],
+		actions:[]
+	},
+	{
+		id:'2',
+		name:'clock',
+		description:'show time',
+		img:'some image',
+		vendor:'the company',
+		endpoint:'',
+		
+
+		actions:[
+			{
+				id:'1',
+				name:'alarm',
+				description:'rings on time',
+				endpoint:'clock.com/alarm',
+				properties:[
+					{
+						id:'1',
+						name:'hour',
+						description:'enter time',
+						type:'discrete',
+						options:[
+							{
+								id:1,
+								name:'1'
+							},
+							{
+								id:2,
+								name:'2'
+							}
+						],
+						value:''
+					},
+					{
+						id:'2',
+						name:'am / pm',
+						description:'choose am or pm',
+						type:'string',
+						value:''
+					}
+				]
+			}
+
+		],
+		events:[]
+	},
+];
 
 
+// {
+// 	value: "time",
+// 	label: "Time",
+// 	children: [
+// 		{
+// 			value: "daily",
+// 			label: "Daily"
+// 		},
+// 		{
+// 			value: "date",
+// 			label: "Specific date"
+// 		}
+// 	]
+// }
+
+
+function mapDevicesToDropdown(devices,type)
+{
+	return _.map(devices, (device) =>{
+		console.log(device);
+		return {
+			label:device.name,
+			value:device.id,
+			children :_.map(device[type],(ae)=>{
+				 return {value:ae.id,label:ae.name
+			}})
+		}	
+	});
+}
+
+function getDeviceWith(devices,type)
+{
+	return _.filter(devices,(item) => {return item[type].length >0}) 
+}
+
+const events = getDeviceWith(devices,'events');
+const actions = getDeviceWith(devices,'actions');
+const test = mapDevicesToDropdown(actions,'actions');
 
 const RadioButton = Radio.Button;
 const RadioGroup = Radio.Group;
@@ -173,6 +306,7 @@ class ScenarioForm extends Component {
 
 						
 							<CreateModal
+								devices={this.state.inventoryType == "event" ? events : actions}
 								type={this.state.inventoryType}
 								visible={this.state.modalVisible}
 								onCancel={this.onModalCancel}
