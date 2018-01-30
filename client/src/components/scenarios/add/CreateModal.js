@@ -15,13 +15,15 @@ import {
 	Icon,
 	Row,
 	Col,
+	InputNumber,
+	Input,
 	Layout
 } from "antd";
 
-const { Header, Footer, Sider, Content } = Layout;
-const CheckboxGroup = Checkbox.Group;
 const RadioButton = Radio.Button;
 const RadioGroup = Radio.Group;
+const { Header, Footer, Sider, Content } = Layout;
+const CheckboxGroup = Checkbox.Group;
 const Option = Select.Option;
 const FormItem = Form.Item;
 
@@ -36,53 +38,22 @@ const formItemLayout = {
 	}
 };
 
+function mapDevicesToDropdown (devices,type) {
+	return _.map(devices, (device) =>{
+		return {
+			label:device.name,
+			value:device.id,
+			children :_.map(device[`${type}s`],(ae)=>{
+				return {value:ae.id,label:ae.name}
+			})
+		}	
+	});
+}
+
 class CreateModal extends Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-			options: [
-				{
-					value: "clock",
-					label: "clock",
-					children: [
-						{
-							fuck:'me',
-							value: "alram clock",
-							label: "alram clock"
-						},
-						{
-							value: "play music",
-							label: "play music"
-						},
-						{
-							value: "say time",
-							label: "say time"
-						}
-					]
-				},
-				{
-					value: "lamp",
-					label: "lamp",
-					children: [
-						{
-							value: "turn light",
-							label: "turn light"
-						},
-						{
-							value: "change color to black",
-							label: "change color to black"
-						},
-						{
-							value: "change color to red",
-							label: "change color to red"
-						},
-						{
-							value: "change color to pink",
-							label: "change color to pink"
-						}
-					]
-				}
-			],
 			triggerTypeOptions: [
 				{
 					value: "device",
@@ -107,28 +78,65 @@ class CreateModal extends Component {
 		};
 	}
 
+	componentWillReceiveProps(nextProps) {
+
+		if(this.props !== nextProps) {
+		  this.setState({
+			options: mapDevicesToDropdown(nextProps.devices,nextProps.type),
+			deviceProps:'',
+			trigger: ["device"]
+		  });
+		}
+	 }
+
 	onChange = event => {
 		this.setState({ [event.target.name]: event.target.value });
 	};
 
-	onChangeOther = state => data => {
-		console.log(state);
+	onChangeOther = state => data => {	
 		this.setState({ [state]: data });
 	};
 
-	mapDevicesToDropdown = (devices,type) => {
-	
-		return _.map(devices, (device) =>{
-			console.log(device);
-			return {
-				label:device.name,
-				value:device.id,
-				children :_.map(device[type],(ae)=>{
-						return {value:ae.id,label:ae.name
-				}})
-			}	
-		});
+
+	getInput = (prop) => {
+		switch (prop.type) {
+			case 'int':
+				return <InputNumber min={prop.min} max={prop.max} step={1} />
+			case 'double':
+				return   <InputNumber min={prop.min} max={prop.max} step={0.1} />
+			case 'string':
+				return <Input placeholder="Basic usage" />
+			case 'discrete':
+				const options = _.map(prop.options,(option) => {
+					return <RadioButton value={option.id}>{option.name}</RadioButton>
+				})
+				return <RadioGroup /*defaultValue="a"*/ >{options}</RadioGroup>		
+			default:
+				return "error";
+		}
 	}
+	aeForm = () =>{
+		const [deviceId,aeId] = this.state.deviceProps;
+		const type = `${this.props.type}s`;
+		const device = _.find(this.props.devices,{id:deviceId});
+		const ae = _.find(device[type],{id:aeId});
+		const fields = _.map(ae.properties,(prop)=>{
+			return <FormItem label={prop.name} {...formItemLayout}>
+				{this.getInput(prop)}
+			</FormItem>
+		})
+		
+		return (
+			<div>
+				<FormItem label='Description' {...formItemLayout} >
+					{ae.description}
+				</FormItem>
+				{fields}
+			</div>
+			 
+		)
+	}
+
 	timeForm = () => {
 		const days = ["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"];
 
@@ -173,13 +181,17 @@ class CreateModal extends Component {
 			);
 	};
 	render() {
+
 		const deviceForm = (
-			<FormItem label={this.props.type} {...formItemLayout}>
-				<Cascader 
-					options={this.state.options} 
-					value={this.state.deviceProps} 
-					onChange={this.onChangeOther('deviceProps')}/>
-			</FormItem>
+			<div>
+				<FormItem label={this.props.type} {...formItemLayout}>
+					<Cascader 
+						options={this.state.options} 
+						value={this.state.deviceProps} 
+						onChange={this.onChangeOther('deviceProps')}/>
+				</FormItem>
+				{this.state.deviceProps && this.aeForm()}
+			</div>
 		);
 		return (
 			<Modal

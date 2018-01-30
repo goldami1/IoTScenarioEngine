@@ -21,9 +21,11 @@ import {
 } from "antd";
 
 
+
+// const demo data
 const devices = [
 	{
-		id:'1',
+		id:1,
 		name:'clock',
 		description:'show time',
 		img:'some image',
@@ -33,13 +35,13 @@ const devices = [
 
 		events:[
 			{
-				id:'1',
+				id:1,
 				name:'alarm',
 				description:'rings on time',
 				endpoint:'clock.com/alarm',
 				properties:[
 					{
-						id:'1',
+						id:1,
 						name:'hour',
 						description:'enter time',
 						type:'discrete',
@@ -56,7 +58,7 @@ const devices = [
 						value:''
 					},
 					{
-						id:'2',
+						id:1,
 						name:'am / pm',
 						description:'choose am or pm',
 						type:'string',
@@ -69,8 +71,8 @@ const devices = [
 		actions:[]
 	},
 	{
-		id:'2',
-		name:'clock',
+		id:1,
+		name:'clock action',
 		description:'show time',
 		img:'some image',
 		vendor:'the company',
@@ -79,13 +81,13 @@ const devices = [
 
 		actions:[
 			{
-				id:'1',
-				name:'alarm',
+				id:1,
+				name:'alarm action',
 				description:'rings on time',
 				endpoint:'clock.com/alarm',
 				properties:[
 					{
-						id:'1',
+						id:1,
 						name:'hour',
 						description:'enter time',
 						type:'discrete',
@@ -102,7 +104,7 @@ const devices = [
 						value:''
 					},
 					{
-						id:'2',
+						id:2,
 						name:'am / pm',
 						description:'choose am or pm',
 						type:'string',
@@ -117,44 +119,14 @@ const devices = [
 ];
 
 
-// {
-// 	value: "time",
-// 	label: "Time",
-// 	children: [
-// 		{
-// 			value: "daily",
-// 			label: "Daily"
-// 		},
-// 		{
-// 			value: "date",
-// 			label: "Specific date"
-// 		}
-// 	]
-// }
-
-
-function mapDevicesToDropdown(devices,type)
-{
-	return _.map(devices, (device) =>{
-		console.log(device);
-		return {
-			label:device.name,
-			value:device.id,
-			children :_.map(device[type],(ae)=>{
-				 return {value:ae.id,label:ae.name
-			}})
-		}	
-	});
-}
-
 function getDeviceWith(devices,type)
 {
 	return _.filter(devices,(item) => {return item[type].length >0}) 
 }
 
-const events = getDeviceWith(devices,'events');
-const actions = getDeviceWith(devices,'actions');
-const test = mapDevicesToDropdown(actions,'actions');
+	const events = getDeviceWith(devices,'events');
+	const actions = getDeviceWith(devices,'actions');
+	// const test = mapDevicesToDropdown(actions,'actions');
 
 const RadioButton = Radio.Button;
 const RadioGroup = Radio.Group;
@@ -243,7 +215,6 @@ class ScenarioForm extends Component {
 	};
 
 	onChange = event => {
-		console.log(event)
 		var newState = event.target.value
 			? { [event.target.name]: event.target.value }
 			: { modalVisible: true };
@@ -251,7 +222,6 @@ class ScenarioForm extends Component {
 	};
 
 	onMenuChange = event => {
-		console.log(event)
 		var newState = event.key!="addAe"
 			? { inventoryType: event.key }
 			: { modalVisible: true };
@@ -291,36 +261,36 @@ class ScenarioForm extends Component {
 							borderLeft: "1px solid #ebedf0"
 						}}
 					>
-					<Layout  style={{background:'white'}}>
-			
-					 	<Menu
-							mode="horizontal"
-							style={{ lineHeight: '64px' }}
-							selectedKeys={[this.state.inventoryType]}
-							onSelect={this.onMenuChange}
-						>
-							<Menu.Item key="event" >Events</Menu.Item>
-							<Menu.Item key="action">Actions</Menu.Item>
-							<Menu.Item key="addAe" ><Icon type="plus" /></Menu.Item>
-						</Menu>
-
-						
-							<CreateModal
-								devices={this.state.inventoryType == "event" ? events : actions}
-								type={this.state.inventoryType}
-								visible={this.state.modalVisible}
-								onCancel={this.onModalCancel}
-								onOk={this.addAE}
-							/>
+						<Layout  style={{background:'white'}}>
+				
+							<Menu
+								mode="horizontal"
+								style={{ lineHeight: '64px' }}
+								selectedKeys={[this.state.inventoryType]}
+								onSelect={this.onMenuChange}
+							>
+								<Menu.Item key="event" >Events</Menu.Item>
+								<Menu.Item key="action">Actions</Menu.Item>
+								<Menu.Item key="addAe" ><Icon type="plus" /></Menu.Item>
+							</Menu>
 
 
-							<AcEvList
-								aeMenu={aeMenu}	
-								lists={this.state.lists}
-								id={this.state.inventoryType == "event" ? 0 : 1}
-							/>
+								<CreateModal
+									devices={this.state.inventoryType == "event" ? events : actions}
+									type={this.state.inventoryType}
+									visible={this.state.modalVisible}
+									onCancel={this.onModalCancel}
+									onOk={this.addAE}
+								/>
 
-						</Layout>
+
+								<AcEvList
+									aeMenu={aeMenu}	
+									lists={this.state.lists}
+									id={this.state.inventoryType == "event" ? 0 : 1}
+								/>
+
+							</Layout>
 					</Sider>
 				</Layout>
 			</DragDropContext>

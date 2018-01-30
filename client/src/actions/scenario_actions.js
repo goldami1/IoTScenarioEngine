@@ -20,6 +20,7 @@ export function errorOccured(error) {
 	};
 }
 
+
 export function receiveScenarios(scenarios) {
 	return {
 		type: RECEIVE_SCENARIOS,

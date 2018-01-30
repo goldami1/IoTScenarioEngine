@@ -1,35 +1,31 @@
 import React from 'react';
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 import {
-	Avatar,
-	Card,
-	Icon,
-	Menu,
-	Button,
-	Dropdown,
+		Avatar,
+		Card,
+		Icon,
+		Menu,
+		Button,
+		Dropdown,
 } from "antd";
 
-
-// using some little inline style helpers to make the app look okay
-
+	// using some little inline style helpers to make the app look okay
 const getItemStyle = (isDragging, draggableStyle) => ({
-	// some basic styles to make the items look a bit nicer
-	userSelect: "none",
-	margin:'10px 0',
-	width:'100%',
-	background:isDragging ? '#fafafa':'white',
-	boxShadow: isDragging  ? '0 4px 12px rgba(0, 0, 0, 0.15)': 'none',
-	...draggableStyle
+		// some basic styles to make the items look a bit nicer
+		userSelect: "none",
+		margin:'10px 0',
+		width:'100%',
+		background:isDragging ? '#fafafa':'white',
+		boxShadow: isDragging  ? '0 4px 12px rgba(0, 0, 0, 0.15)': 'none',
+		...draggableStyle
 });
 const getListStyle = isDraggingOver => ({
-	background: isDraggingOver ? "#e6f7ff" : "white",
-	padding:'5px'
+		background: isDraggingOver ? "#e6f7ff" : "white",
+		padding:'5px'
 });
 
 
 const AcEvList = props => {
-
-
 
 
 	// move to idividual component 
@@ -89,13 +85,10 @@ const AcEvList = props => {
 											provided.draggableProps.style
 										)}
 									>
-									
 										<Card 
 											style={{background:'inherit'}}
 											bodyStyle={{padding:15}} title={aeTitle(props.id,item)}
 											extra=  { dropDown(props.id,index)}
-
-								
 										>
 											<Card.Meta description="This is the description"/>
 												
