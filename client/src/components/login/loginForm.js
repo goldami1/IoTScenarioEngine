@@ -37,14 +37,12 @@ class LoginForm extends Component {
 			error: "",
 			isLoading: true
 		});
-		console.log({
-			UserName: this.state.username,
-			Password: this.state.password
-		});
-		this.props.login({
-				UserName: this.state.username,
-				Password: this.state.password
-			},this.props.history)
+		var user  = {
+			userName: this.state.username,
+			password: this.state.password
+		};
+		console.log(user);
+		this.props.login(user,this.props.history)
 
 	}
 

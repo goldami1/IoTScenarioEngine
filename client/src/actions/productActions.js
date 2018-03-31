@@ -1,10 +1,8 @@
 import axios from "axios";
 import { ADD_PRODUCT, PRODUCT_ERROR_OCCURED } from "./types";
+import { REST_VENDOR} from "./restapi";
 
 import { setMessage, setUnknownError } from "./appActions";
-
-const test_url = "http://demo2037819.mockable.io/product";
-const error_url = "http://demo6475105.mockable.io/error";
 
 export function errorOccured(error) {
 	return {
@@ -18,8 +16,8 @@ export function addProduct(product) {
 	console.log(product);
 	return (dispatch, getState) => {
 		const { auth } = getState();
-		// return axios.post(test_url+auth.user.id,product).then(
-		return axios.post(test_url, product).then(
+		product.vendorName = auth.name;
+		return axios.post(`${REST_VENDOR}/${auth.id}`, product).then(
 			res => {
 				console.log("res");
 				try {

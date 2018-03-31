@@ -1,11 +1,12 @@
-const base 		= "http://localhost:9090/Scenario_Engine/webapi";
+const base 		= "http://localhost:8080/Scenario_Engine/webapi";
 const customer 	= base+"/customer";
 const vendor 	= base+"/vendor";
 
-export const login 			= customer;
-export const addCustomer 	= `${login}/new`;
-export const addvendor 		= `${vendor}/new`"`;
-export const device 		= `${customer}/device/`;
-export const product 		= `${vendor}/product/`;
-export const scenario 		= `${customer}/scenario/`;
+export const REST_LOGIN 	    = customer;
+export const addCustomer 	    = `${REST_LOGIN}/new`;
+export const addvendor 		    = `${vendor}/new`;
+export const device 		    = `${customer}/device/`;
+export const REST_VENDOR 	    = `${vendor}`;
+export const scenario 		    = `${customer}/scenario/`;
+export const addScenario        = `${scenario}` 
 

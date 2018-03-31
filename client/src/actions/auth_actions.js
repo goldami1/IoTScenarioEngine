@@ -1,13 +1,10 @@
 import axios from "axios";
+
 import { isEmpty } from "lodash";
 import setAuthorizationToken from "../utilities/set_auth_token";
 
 import { SET_CURRENT_USER } from "./types";
-
-const URL_ROOT = "http://localhost:9090/Scenario_Engine/webapi/customer";
-const LOGIN_URL = URL_ROOT + "customer";
-const SIGN_URL = URL_ROOT + "/add";
-const POST_RET = "https://httpbin.org/post";
+import { REST_LOGIN } from "./restapi";
 
 export function setCurrentUser(user) {
 	return {
@@ -27,16 +24,18 @@ export function logout(history) {
 
 export function login(data,history) {
 	return dispatch => {
-		return axios.post(URL_ROOT, data).then(res => {
-			var user;
+		return axios.post( REST_LOGIN , data).then(res => {
+			var user; 
 			try {
+				console.log(res.data);
 				user = {
-					name: res.data.Name,
-					username: res.data.UserName,
-					password: res.data.Password,
-					id: res.data.Id,
-					type: res.data.IsCustomer ?'enduser':'vendor'
+					name: res.data.name,
+					username: res.data.userName,
+					password: res.data.password,
+					id: res.data.id,
+					type: res.data.isCustomer ?'enduser':'vendor'
 				};
+				
 				localStorage.setItem("user", JSON.stringify(user));
 				setAuthorizationToken(user);
 				if (user.type =="enduser") {
