@@ -53,6 +53,12 @@ public class ActionEventProto {
 	@SerializedName("supportedParametersName")
 	private List<String> supportedParametersName;
 	@ElementCollection(fetch = FetchType.EAGER)
+	@JoinTable(name = "AEPARAMS_DESC", joinColumns = @JoinColumn(name = "ae_id"))
+	@GenericGenerator(name = "hilo-gen", strategy = "sequence")
+	@CollectionId(columns = { @Column(name = "param_idx") }, generator = "hilo-gen", type = @org.hibernate.annotations.Type(type = "long"))
+	@SerializedName("paramDescription")
+	private List<String> paramDesc;
+	@ElementCollection(fetch = FetchType.EAGER)
 	@JoinTable(name = "AEPARAMS_TYPE", joinColumns = @JoinColumn(name = "ae_id"))
 	@GenericGenerator(name = "hilo-gen", strategy = "sequence")
 	@CollectionId(columns = { @Column(name = "type_idx") }, generator = "hilo-gen", type = @org.hibernate.annotations.Type(type = "long"))
@@ -86,6 +92,7 @@ public class ActionEventProto {
 		this.description = null;
 		this.supportedValues = null;
 		this.supportedParametersName = null;
+		this.paramDesc = null;
 	}
 	
 	public ActionEventProto(short id,
@@ -94,6 +101,7 @@ public class ActionEventProto {
 						    List<String> types,
 						    List<List<String>> supportedValues,
 						    List<String> supportedParametersName,
+						    List<String> i_paramDesc,
 						    List<String> min,
 						    List<String> max,
 						    short prodId,
@@ -106,6 +114,7 @@ public class ActionEventProto {
 		this.types = types;
 		this.supportedValues = supportedValues;
 		this.supportedParametersName = supportedParametersName;
+		this.paramDesc = i_paramDesc;
 		this.min = min;
 		this.max = max;
 		this.prodId = prodId;
@@ -204,5 +213,13 @@ public class ActionEventProto {
 
 	public void setSupportedParametersName(LinkedList<String> supportedParametersName) {
 		this.supportedParametersName = supportedParametersName;
+	}
+	
+	public List<String> getParamDesc() {
+		return paramDesc;
+	}
+
+	public void setParamDesc(List<String> paramDesc) {
+		this.paramDesc = paramDesc;
 	}
 }

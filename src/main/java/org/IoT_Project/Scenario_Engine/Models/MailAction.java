@@ -19,6 +19,7 @@ public class MailAction extends Action{
 																  new LinkedList<String>(Arrays.asList("Email-Address", "Message")),
 																  null,
 																  null,
+																  null,
 																  (short)-1,
 																  null,
 																  false);

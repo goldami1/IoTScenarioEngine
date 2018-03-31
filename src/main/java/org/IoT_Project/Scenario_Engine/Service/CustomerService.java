@@ -15,7 +15,8 @@ public class CustomerService {
 		return DBHandler.getInstance().getCustomer(i_user.getId());
 	}
 	
-	public Customer fetch(String i_name, String i_password) throws Exception{
+	public Customer fetch(String i_name, String i_password) throws Exception
+	{
 		return DBHandler.getInstance().getCustomer(i_name, i_password);
 	}
 	

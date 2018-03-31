@@ -20,7 +20,7 @@ public class VendorService {
 		Product newProduct = new Product(i_product);
 		if(NDBHandler.getInstance().addProduct(newProduct))
 		{
-				return DBHandler.getInstance().getProducts(newProduct.getVendor_id());
+				return NDBHandler.getInstance().getProducts(newProduct.getVendor_id());
 		}
 		else
 			throw new Exception("no User");
@@ -28,22 +28,22 @@ public class VendorService {
 
 
 	public  List<Product> removeProduct(int vendor_id, Product i_prod2Remove) throws Exception{
-		if(DBHandler.getInstance().removeProduct(i_prod2Remove.getId()))
+		if(NDBHandler.getInstance().removeProduct(i_prod2Remove.getId()))
 		{
-			return DBHandler.getInstance().getProducts(vendor_id);
+			return NDBHandler.getInstance().getProducts(vendor_id);
 		}
 		else
 			throw new Exception("no User, or no Product to remove");
 	}
 
 	public Vendor fetch(User i_user) throws Exception{
-		return DBHandler.getInstance().getVendor(i_user.getName(), i_user.getPassword());
+		return NDBHandler.getInstance().getVendor(i_user.getName(), i_user.getPassword());
 	}
 
 	public List<Product> updateProduct(short i_id, short i_deviceToUpdateId, Product i_prod) throws Exception{
-		if(DBHandler.getInstance().updateProduct(i_deviceToUpdateId, i_prod))
+		if(NDBHandler.getInstance().updateProduct(i_deviceToUpdateId, i_prod))
 		{
-			return DBHandler.getInstance().getProducts(i_id);
+			return NDBHandler.getInstance().getProducts(i_id);
 		}
 		else
 			throw new Exception("no User, or no Product to update");
@@ -74,6 +74,6 @@ public class VendorService {
 		
 		return res;*/
 		//TODO
-		return DBHandler.getInstance().getProducts(i_userId);
+		return NDBHandler.getInstance().getProducts(i_userId);
 	}
 }

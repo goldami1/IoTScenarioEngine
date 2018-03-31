@@ -3,7 +3,7 @@ package org.IoT_Project.Scenario_Engine.Service;
 import java.util.*;
 import java.util.Map.Entry;
 import org.IoT_Project.Scenario_Engine.Models.*;
-import DataBase.DBHandler;
+import DataBase.NDBHandler;
 
 public class DeviceService {
 	
@@ -11,7 +11,7 @@ public class DeviceService {
 	public void HandleCall(short event_id, boolean i_value) throws Exception
 	{	
 		//
-		DBHandler DB = DBHandler.getInstance();
+		NDBHandler DB = NDBHandler.getInstance();
 		Scenario scenario = DB.getScenario(event_id);
 		scenario.getEventById(event_id).setTriggered(i_value);
 		

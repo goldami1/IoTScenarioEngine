@@ -14,7 +14,7 @@ import DataBase.NDBHandler;
 
 public class UserService {
 	public User fetch(User i_user) throws Exception{
-		return DBHandler.getInstance().getUser(i_user.getUserName(), i_user.getPassword());
+		return NDBHandler.getInstance().getUser(i_user.getUserName(), i_user.getPassword());
 	}
 
 	public Customer addCustomer(User i_user) throws Exception {
