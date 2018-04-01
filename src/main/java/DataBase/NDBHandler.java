@@ -357,6 +357,7 @@ public class NDBHandler implements IDBHandler {
 		m_Session.save(i_product);
 		for(ActionEventProto aep : i_product.getActionAndEventList())
 		{
+			aep.setProdId(i_product.getId());
 			m_Session.save(aep);
 		}
 		try

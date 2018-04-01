@@ -50,7 +50,8 @@ public class VendorService {
 		
 	}
 
-	public List<Product> fetchProducts(short i_userId) throws SQLException {
+	public List<Product> fetchProducts(short i_userId) throws Exception {
+		List<Product> res = null;
 		/*
 		List<Product> res = new LinkedList<Product>();
 		LinkedList<String> typeslst = new LinkedList<String>();
@@ -74,6 +75,14 @@ public class VendorService {
 		
 		return res;*/
 		//TODO
-		return NDBHandler.getInstance().getProducts(i_userId);
+		res = NDBHandler.getInstance().getProducts(i_userId);
+		if(res != null)
+		{
+			return res;
+		}
+		else
+		{
+			throw new Exception("Couldn't fetch products and return a list of available products");
+		}
 	}
 }

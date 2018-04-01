@@ -13,6 +13,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.Lob;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
@@ -37,6 +38,7 @@ public class ActionEventProto {
 	private String description;
 	@Column(name = "product_id")
 	@SerializedName("prodId")
+	//private Product prod;
 	private short prodId;
 	@Column(name = "ae_prod_ep")
 	@SerializedName("productEP")
@@ -55,8 +57,8 @@ public class ActionEventProto {
 	@ElementCollection(fetch = FetchType.EAGER)
 	@JoinTable(name = "AEPARAMS_DESC", joinColumns = @JoinColumn(name = "ae_id"))
 	@GenericGenerator(name = "hilo-gen", strategy = "sequence")
-	@CollectionId(columns = { @Column(name = "param_idx") }, generator = "hilo-gen", type = @org.hibernate.annotations.Type(type = "long"))
-	@SerializedName("paramDescription")
+	@CollectionId(columns = { @Column(name = "desc_idx") }, generator = "hilo-gen", type = @org.hibernate.annotations.Type(type = "long"))
+	@SerializedName("paramDesc")
 	private List<String> paramDesc;
 	@ElementCollection(fetch = FetchType.EAGER)
 	@JoinTable(name = "AEPARAMS_TYPE", joinColumns = @JoinColumn(name = "ae_id"))
@@ -73,23 +75,25 @@ public class ActionEventProto {
 	@JoinTable(name = "AEPARAMS_MIN", joinColumns = @JoinColumn(name = "ae_id"))
 	@GenericGenerator(name = "hilo-gen", strategy = "sequence")
 	@CollectionId(columns = { @Column(name = "min_idx") }, generator = "hilo-gen", type = @org.hibernate.annotations.Type(type = "long"))
-	@SerializedName("minValues")
+	@SerializedName("min")
 	private List<String> min;
 	@ElementCollection(fetch = FetchType.EAGER)
 	@JoinTable(name = "AEPARAMS_MAX", joinColumns = @JoinColumn(name = "ae_id"))
 	@GenericGenerator(name = "hilo-gen", strategy = "sequence")
 	@CollectionId(columns = { @Column(name = "max_idx") }, generator = "hilo-gen", type = @org.hibernate.annotations.Type(type = "long"))
-	@SerializedName("maxValues")
+	@SerializedName("max")
 	private List<String> max;
 	
 	
 	public ActionEventProto()
 	{
-		this.id = this.prodId = -1;
+		//this.id = this.prodId;
+		this.id = -1;
+		this.prodId = -1;
 		this.isEvent = false;
 		this.name  = this.productEP = null;
 		this.min = this.max = this.types = null;
-		this.description = null;
+		this.description =  null;
 		this.supportedValues = null;
 		this.supportedParametersName = null;
 		this.paramDesc = null;
@@ -118,6 +122,7 @@ public class ActionEventProto {
 		this.min = min;
 		this.max = max;
 		this.prodId = prodId;
+		//this.prod = prod;
 		this.productEP = productEp;
 		this.isEvent = isEvent;
 	}
@@ -129,7 +134,7 @@ public class ActionEventProto {
 	public void setId(short id) {
 		this.id = id;
 	}
-
+	
 	public short getProdId() {
 		return prodId;
 	}
@@ -137,7 +142,6 @@ public class ActionEventProto {
 	public void setProdId(short prodId) {
 		this.prodId = prodId;
 	}
-
 	public String getProductEP() {
 		return productEP;
 	}
@@ -169,7 +173,7 @@ public class ActionEventProto {
 	public boolean getIsEvent() {
 		return this.isEvent;
 	}
-
+	
 	public String getDescription() {
 		return description;
 	}

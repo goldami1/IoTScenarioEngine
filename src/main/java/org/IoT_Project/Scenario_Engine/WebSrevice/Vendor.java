@@ -108,10 +108,11 @@ public class Vendor{
 	@POST
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response addProduct(Product i_product)
+	public Response addProduct(@PathParam("vendor_id") short ven_id, Product i_product)
 	{
 		try
 		{
+			i_product.setVendor_id(ven_id);
 			List<Product> products = vs.addProduct(i_product);
 			return Response.status(Status.OK).entity(products).build();
 		}
