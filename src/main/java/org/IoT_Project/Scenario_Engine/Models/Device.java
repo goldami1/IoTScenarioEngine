@@ -22,6 +22,7 @@ import org.hibernate.annotations.LazyCollectionOption;
 import com.google.gson.annotations.SerializedName;
 
 import DataBase.DBHandler;
+import DataBase.NDBHandler;
 
 @Entity
 @Table(name = "DEVICES", uniqueConstraints = {@UniqueConstraint(columnNames = {"device_sn"})})
@@ -63,7 +64,9 @@ public class Device {
 	/************   ONLY FOR CUSTOMER NEW CREATION IN DB  *************/
 	public Device(Device i_device) throws Exception
 	{
-		DBHandler db = DBHandler.getInstance();
+		//
+		/*
+		NDBHandler db = NDBHandler.getInstance();
 		boolean isUpdated = i_device.getId() > -1;
 		if(!isUpdated)
 		{
@@ -71,6 +74,9 @@ public class Device {
 		}
 		else
 			this.id = i_device.getId();
+		*/
+		//
+		this.id = i_device.getId();
 		this.serial_number = i_device.getSerial_number();
 		this.protoDevice = i_device.getProtoDevice();
 	}

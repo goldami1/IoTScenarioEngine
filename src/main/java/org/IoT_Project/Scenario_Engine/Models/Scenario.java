@@ -15,12 +15,17 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Transient;
+
+import org.hibernate.annotations.LazyCollection;
+import org.hibernate.annotations.LazyCollectionOption;
 
 import com.google.gson.annotations.SerializedName;
 
 import DataBase.DBHandler;
+import DataBase.NDBHandler;
 
 @Entity
 @Table(name = "SCENARIOS")
@@ -49,11 +54,13 @@ public class Scenario{
 				inverseJoinColumns=@JoinColumn(name = "event_id"))
 	@SerializedName("eventsToHappen")
 	private Map<Short, Event> eventsToHappen;
-												// I M P L E M E N T     IT!
-	@Transient
+	
+	@LazyCollection(LazyCollectionOption.FALSE)
+	@OneToOne
+	@JoinColumn(name = "cases_id")
 	@SerializedName("cases")
 	private CaseGroup cases;
-												// I M P L E M E N T     IT!	
+	
 	public Scenario() 
 	{
 		this.id = this.cust_id = -1;
@@ -120,7 +127,6 @@ public class Scenario{
 		/*
 		 * this constructor is only for usement in case of registering new scenario to the DB
 		 */
-		DBHandler db = DBHandler.getInstance();
 		boolean isUpdated = i_scenario.getId() > 0;
 		this.name = i_scenario.getName();
 		this.description = i_scenario.getDescription();
@@ -143,7 +149,7 @@ public class Scenario{
 				if(!isEventUpdated)
 				{
 					e = new Event(e);
-					db.addEvent(e);
+					NDBHandler.getInstance().addEvent(e);
 				}
 				this.eventsToHappen.put(e.getId(), e);
 			}
@@ -163,16 +169,8 @@ public class Scenario{
 					a = new Action(a);
 				else
 					a = new MailAction(a);
-				db.addAction(a);
+				NDBHandler.getInstance().addAction(a);
 			}
-		}
-		if(!isUpdated)
-		{
-			this.id = db.getScenariosMaxAvailableIdx();
-		}
-		else
-		{
-			this.id = i_scenario.getId();
 		}
 	}
 	/******************************************************************/

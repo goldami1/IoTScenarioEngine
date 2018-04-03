@@ -5,11 +5,26 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Table;
+
 import com.google.gson.annotations.SerializedName;
 
 import DataBase.DBHandler;
 
+@Entity
+@Table (name = "CASEGROUPS")
 public class CaseGroup implements ICase {
+	@Id
+	@GeneratedValue(strategy = GenerationType.SEQUENCE)
+	@Column(name = "cg_id")
+	@SerializedName("id")
+	private short id;
+	@Column(name = "cases")
 	@SerializedName("cases")
 	private List<Case> cases;
 	@SerializedName("logicOperator")

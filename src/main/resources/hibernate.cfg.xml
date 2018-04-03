@@ -25,6 +25,8 @@
         <mapping class="org.IoT_Project.Scenario_Engine.Models.Event" />
         <mapping class="org.IoT_Project.Scenario_Engine.Models.Product" />
         <mapping class="org.IoT_Project.Scenario_Engine.Models.Scenario" />
+        <mapping class="org.IoT_Project.Scenario_Engine.Models.CaseGroup" />
+        <mapping class="org.IoT_Project.Scenario_Engine.Models.Case" />
         <mapping class="DataBase.UserPK" />
         
     </session-factory>

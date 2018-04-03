@@ -8,6 +8,7 @@ import javax.ws.rs.core.Response.Status;
 import org.IoT_Project.Scenario_Engine.Models.*;
 
 import DataBase.DBHandler;
+import DataBase.NDBHandler;
 
 public class CustomerService {
 
@@ -24,9 +25,9 @@ public class CustomerService {
 	public List<Device> addDevice(short i_CustomerId, Device newDevice) throws Exception{
 		Device deviceToAdd = new Device(newDevice);
 		deviceToAdd.setCustomer_id(i_CustomerId);
-		if(DBHandler.getInstance().addDevice(deviceToAdd))
+		if(NDBHandler.getInstance().addDevice(deviceToAdd))
 		{
-			return DBHandler.getInstance().getDevices(i_CustomerId);
+			return NDBHandler.getInstance().getDevices(i_CustomerId);
 		}
 		else
 			throw new Exception("no User");
