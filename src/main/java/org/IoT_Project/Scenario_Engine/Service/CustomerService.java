@@ -40,9 +40,9 @@ public class CustomerService {
 	public List<Scenario> addScenario(short cust_id, Scenario scenarioToAdd) throws Exception{
 		Scenario newScenario = new Scenario(scenarioToAdd);
 		newScenario.setCust_id(cust_id);
-		if(DBHandler.getInstance().addScenario(newScenario))
+		if(NDBHandler.getInstance().addScenario(newScenario))
 		{
-			return DBHandler.getInstance().getScenarios(cust_id);
+			return NDBHandler.getInstance().getScenarios(cust_id);
 		}
 		else
 			throw new Exception("no user");

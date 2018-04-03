@@ -18,22 +18,28 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 
+import org.hibernate.annotations.LazyCollection;
+import org.hibernate.annotations.LazyCollectionOption;
+
 import com.google.gson.annotations.SerializedName;
 
 @Entity
-@Table (name = "CASEGROUPS",uniqueConstraints = {@UniqueConstraint(columnNames = {"casegroup_id"})})
-@Inheritance(strategy = InheritanceType.JOINED)
+@Table (name = "CASEGROUPS")
 public class CaseGroup implements ICase {
 	@Id
 	@GeneratedValue(strategy = GenerationType.SEQUENCE)
 	@Column(name = "casegroup_id")
 	@SerializedName("id")
 	private short id;
+
+	@LazyCollection(LazyCollectionOption.FALSE)
 	@OneToMany
 	@JoinTable(name = "CASEGROUPS_CASES", joinColumns=@JoinColumn(name = "casegroup_id"),
 				inverseJoinColumns=@JoinColumn(name = "case_id"))
 	@SerializedName("cases")
 	private List<Case> cases;
+	
+	@Column(name = "logicOperator")
 	@SerializedName("logicOperator")
 	private char logicOperator;
 	
@@ -99,4 +105,11 @@ public class CaseGroup implements ICase {
 		this.logicOperator = logicOperator;
 	}
 	
+	public short getId() {
+		return id;
+	}
+
+	public void setId(short id) {
+		this.id = id;
+	}
 }

@@ -8,6 +8,8 @@ import java.util.Map;
 import java.util.Map.Entry;
 import org.IoT_Project.Scenario_Engine.Models.Action;
 import org.IoT_Project.Scenario_Engine.Models.ActionEventProto;
+import org.IoT_Project.Scenario_Engine.Models.Case;
+import org.IoT_Project.Scenario_Engine.Models.CaseGroup;
 import org.IoT_Project.Scenario_Engine.Models.Customer;
 import org.IoT_Project.Scenario_Engine.Models.Device;
 import org.IoT_Project.Scenario_Engine.Models.Event;
@@ -459,20 +461,38 @@ public class NDBHandler implements IDBHandler {
 		m_Session.save(i_Scenario);
 		for(Action act : i_Scenario.getActions())
 		{
+			m_Session.save(act.getActionDescription());
 			m_Session.save(act);
 		}
 		for(Event eve : i_Scenario.getEventsToHappen().values())
 		{
 			m_Session.save(eve);
 		}
+		m_Session.save(i_Scenario.getCases());
+		for(Case c : i_Scenario.getCases().getCases())
+		{
+			m_Session.save(c);
+			for(Event ev : c.getEvents())
+			{
+				m_Session.save(ev);
+			}
+		}
 		try
 		{
 		m_Session.getTransaction().commit();
 		}catch(Exception e) {throw new Exception("Can't add provided scenario!");}
-		m_Session.close();
+		//m_Session.close();
 		return true;
 	}
 
+	public void OpenSession()
+	{
+		m_Session = m_sessionFactory.openSession();
+	}
+	public void CloseSession()
+	{
+		m_Session.close();
+	}
 	
 	public LinkedList<Scenario> getScenarios(int cust_id) throws Exception
 	{
@@ -480,7 +500,7 @@ public class NDBHandler implements IDBHandler {
 		
 		try
 		{
-		m_Session = m_sessionFactory.openSession();
+		//m_Session = m_sessionFactory.openSession();
 		}catch(NullPointerException e) {throw new Exception("DB Critical Error# SessionFactory isn't initialized");}
 
 		m_Session.beginTransaction();
@@ -502,7 +522,7 @@ public class NDBHandler implements IDBHandler {
 		}
 		
 		m_Session.getTransaction().commit();
-		m_Session.close();
+		//m_Session.close();
 		
 		return new LinkedList<>(res);
 	}
@@ -534,12 +554,13 @@ public class NDBHandler implements IDBHandler {
 		m_Session.beginTransaction();
 		
 		m_Session.save(i_event);
+		
 		/*
-		for(String param : i_action.getParameters())
+		for(String param : i_event.getParameters())
 		{
 			m_Session.save(param);
-		}*/
-		
+		}
+		*/
 		try
 		{
 		m_Session.getTransaction().commit();

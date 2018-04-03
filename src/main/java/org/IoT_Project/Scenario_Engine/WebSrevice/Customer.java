@@ -299,6 +299,7 @@ public class Customer {
 	{
 		try {
 			List<Scenario> updatedScenarios = cs.addScenario(cust_id, scenarioToAdd);
+			//NDBHandler.getInstance().OpenSession();
 			return Response.status(Status.CREATED).entity(updatedScenarios).build();
 		}
 		catch(Exception ex)

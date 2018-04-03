@@ -85,7 +85,6 @@ public class Event extends Action{
 		 */
 		super();
 		boolean isUpdated = i_event.getId() > 0;
-		DBHandler db = DBHandler.getInstance();
 		this.actionDescription = i_event.actionDescription;
 		this.device_serialNum = i_event.getDevice_serialNum();
 		this.parameters = i_event.getParameters();
@@ -93,8 +92,8 @@ public class Event extends Action{
 		this.triggered = false;
 		if(!isUpdated)
 		{
-			this.id = db.getEventsMaxAvailableIdx();
-			this.toggleEvent();
+			//this.id = NDBHandler.getInstance().getEventsMaxAvailableIdx();
+			//this.toggleEvent();
 		}
 		else
 		{

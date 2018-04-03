@@ -53,8 +53,7 @@ public class Action implements IAction{
 	@Column(name = "device_sn")
 	@SerializedName("device_serialNum")
 	protected short device_serialNum;
-	@LazyCollection(LazyCollectionOption.FALSE)
-	@OneToOne
+	@OneToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "actionproto_id")
 	@SerializedName("actionDescription")
 	protected ActionEventProto actionDescription;
