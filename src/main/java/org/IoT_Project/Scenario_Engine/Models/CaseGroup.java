@@ -10,21 +10,28 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Inheritance;
+import javax.persistence.InheritanceType;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.persistence.UniqueConstraint;
 
 import com.google.gson.annotations.SerializedName;
 
-import DataBase.DBHandler;
-
 @Entity
-@Table (name = "CASEGROUPS")
+@Table (name = "CASEGROUPS",uniqueConstraints = {@UniqueConstraint(columnNames = {"casegroup_id"})})
+@Inheritance(strategy = InheritanceType.JOINED)
 public class CaseGroup implements ICase {
 	@Id
 	@GeneratedValue(strategy = GenerationType.SEQUENCE)
-	@Column(name = "cg_id")
+	@Column(name = "casegroup_id")
 	@SerializedName("id")
 	private short id;
-	@Column(name = "cases")
+	@OneToMany
+	@JoinTable(name = "CASEGROUPS_CASES", joinColumns=@JoinColumn(name = "casegroup_id"),
+				inverseJoinColumns=@JoinColumn(name = "case_id"))
 	@SerializedName("cases")
 	private List<Case> cases;
 	@SerializedName("logicOperator")
