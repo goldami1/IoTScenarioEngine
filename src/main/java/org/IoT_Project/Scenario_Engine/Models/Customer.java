@@ -28,7 +28,6 @@ import DataBase.DBHandler;
 	@AttributeOverride(name ="name", column=@Column(name = "customer_name"))
 	})
 public class Customer extends User {
-	
 	@LazyCollection(LazyCollectionOption.FALSE)
 	@OneToMany
 	@JoinTable(name = "CUSTOMERS_DEVICES", joinColumns=@JoinColumn(name = "customer_id"),
@@ -49,32 +48,26 @@ public class Customer extends User {
 		this.customerScenarios = null;
 		this.isCustomer = true;
 	}
-	
-	public Customer(short User_id,
-				  String User_userName,
-				  String User_password,
-				  String User_name,
-				  String User_picURL,
-				  String User_email,
-				  boolean User_isCustomer,
-				  LinkedList<Device> Customer_devices,
-				  LinkedList<Scenario> Customer_scenarios)
-	{
+
+	public Customer(short User_id, String User_userName, String User_password, String User_name, String User_picURL,
+			String User_email, boolean User_isCustomer, LinkedList<Device> Customer_devices,
+			LinkedList<Scenario> Customer_scenarios) {
 		super(User_id, User_userName, User_password, User_name, User_email, User_picURL, User_isCustomer);
 		this.devices = Customer_devices;
 		this.customerScenarios = Customer_scenarios;
 	}
-	
-	/************   ONLY FOR CUSTOMER NEW CREATION IN DB  *************/
-	public Customer(User i_user) throws Exception
-	{
+
+	/************ ONLY FOR CUSTOMER NEW CREATION IN DB *************/
+	public Customer(User i_user) throws Exception {
 		super(i_user);
 		this.isCustomer = i_user.isCustomer();
 		this.devices = null;
 		this.customerScenarios = null;
 	}
+
 	/**
-	 * @throws SQLException ****************************************************************/
+	 * @throws SQLException
+	 ****************************************************************/
 
 	
 	public List<Device> getDevices() {

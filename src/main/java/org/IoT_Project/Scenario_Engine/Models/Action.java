@@ -216,6 +216,10 @@ public class Action implements IAction{
 		}
 		return actionName.toString();
 	}
+	
+	private ActionEventProto extractActionEventProtoById(short id) {
+		return DBHandler.getInstance().getActionEventProtoById(id);
+	}
 }
 
 /*
