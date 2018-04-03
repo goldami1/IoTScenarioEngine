@@ -249,16 +249,9 @@ class ProductsPage extends Component {
 		});
 	};
 
-	actions_eventsToActionEventLists = () =>
+	aePropsToActionEventList = (actionEvents,ae,isEvent) =>
 	{
-		var actionEvents = {
-			name:this.state.name,
-			picUrl:this.state.image,
-			description:this.state.description,
-			endPoint:this.state.endpoint,
-			actionAndEventList:[]
-		}
-		this.state.actions.map((action)=>{
+		ae.map((action)=>{
 			var supportedParametersName =[];
 			var types = [];
 			var paramDescription = [];
@@ -270,69 +263,44 @@ class ProductsPage extends Component {
 			action.properties.map((property)=>{
 				opts_arr = [];
 				property.options.map((option)=>{
-					opts_arr.push(option!=null ? option : "null")
+					opts_arr.push(option!=null ? option : "")
 				})
 				supportedValues.push(opts_arr);
-				supportedParametersName.push(property.name!=null ? property.name : "null");
-				types.push(property.type!=null ? property.type : "null");
-				paramDescription.push(property.description!=null ? property.description : "null");
-				minValues.push(property.min!=null ? property.min : "null");
-				maxValues.push(property.max!=null ? property.max : "null");
+				supportedParametersName.push(property.name!=null ? property.name : "");
+				types.push(property.type!=null ? property.type : "");
+				paramDescription.push(property.description!=null ? property.description : "");
+				minValues.push(property.min!=null ? property.min : "");
+				maxValues.push(property.max!=null ? property.max : "");
 			});
 			actionEvents.actionAndEventList.push(
 				{
 					name:action.name,
 					description:action.description,
-					isEvent:false,
+					isEvent:isEvent,
 					productEP:action.endpoint,
 					types:types,
 					supportedValues:supportedValues,
 					supportedParametersName:supportedParametersName,
-					paramDescription:paramDescription,
-					minValues:minValues,
-					maxValues:maxValues
+					paramDesc:paramDescription,
+					min:minValues,
+					max:maxValues
 				}
 			)
 		});
+	}
+	actions_eventsToActionEventLists = () =>
+	{
+		var actionEvents = {
+			name:this.state.name,
+			picUrl:this.state.image,
+			description:this.state.description,
+			endPoint:this.state.endpoint,
+			actionAndEventList:[]
+		}
 
-		this.state.events.map((event)=>{
-			var supportedParametersName =[];
-			var types = [];
-			var paramDescription = [];
-			var supportedValues = [];
-			var minValues =[];
-			var maxValues = [];
-			var opts_arr = [];
+		this.aePropsToActionEventList(actionEvents,this.state.events,true);
+		this.aePropsToActionEventList(actionEvents,this.state.actions,false);
 
-			event.properties.map((property)=>{
-				opts_arr = [];
-				property.options.map((option)=>{
-					opts_arr.push(option!=null ? option : "null")
-				})
-				supportedValues.push(opts_arr);
-				supportedParametersName.push(property.name!=null ? property.name : "null");
-				types.push(property.type!=null ? property.type : "null");
-				paramDescription.push(property.description!=null ? property.description : "null");
-				minValues.push(property.min!=null ? property.min : "null");
-				maxValues.push(property.max!=null ? property.max : "null");
-			});
-
-			actionEvents.actionAndEventList.push(
-				{
-					name:event.name,
-					description:event.description,
-					isEvent:true,
-					productEP:event.endpoint,
-					types:types,
-					supportedValues:supportedValues,
-					supportedParametersName:supportedParametersName,
-					paramDescription:paramDescription,
-					minValues:minValues,
-					maxValues:maxValues
-				}
-			)
-		});
-		
 		return actionEvents;
 	}
 

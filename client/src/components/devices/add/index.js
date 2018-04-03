@@ -153,7 +153,7 @@ class DeviceForm extends Component {
 
 function mapStateToProps({ devices, auth }) {
 	return {
-		customer: auth.user.id,
+		customer: auth.id,
 		vendors: devices.vendors,
 		products: devices.products
 	};

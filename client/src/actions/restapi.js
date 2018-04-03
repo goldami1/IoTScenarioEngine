@@ -1,4 +1,4 @@
-const base 		= "http://localhost:8080/Scenario_Engine/webapi";
+const base 		= "http://192.168.1.17:8080/Scenario_Engine_roma/webapi";
 const customer 	= base+"/customer";
 const vendor 	= base+"/vendor";
 
