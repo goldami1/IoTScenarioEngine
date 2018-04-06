@@ -9,17 +9,11 @@ import {
 	RECEIVE_VENDORS,
 	RECEIVE_PRODUCTS
 } from "./types";
-
-const test_url = "http://demo6475105.mockable.io/devices";
-const error_url = "http://demo6475105.mockable.io/error";
-const delete_ulr = "https://httpbin.org/delete";
-const URL_ROOT = "http://localhost:9090/Scenario_Engine/webapi/customer";
-const vendors_url =
-	"http://localhost:9090/Scenario_Engine/webapi/customer/vendors";
-const products_url =
-	"http://localhost:9090/Scenario_Engine/webapi/vendor/product/";
-const device_url =
-	"http://localhost:9090/Scenario_Engine/webapi/customer/device/";
+import {
+	REST_DEVICES,
+	REST_VENDORS,
+	REST_PRODUCTS
+} from "./restapi"
 
 export function errorOccured(error) {
 	return {
@@ -58,7 +52,9 @@ export function receiveVendors(vendors) {
 export function fetchDevices() {
 	return (dispatch, getState) => {
 		const { auth } = getState();
-		return axios.get(device_url + auth.id).then(
+		var temp = `${REST_DEVICES}/${auth.id}`;
+
+		return axios.get(`${REST_DEVICES}/${auth.id}`).then(
 			res => {
 				try {
 					dispatch(receiveDevices(res.data));
@@ -84,43 +80,13 @@ export function fetchDevices() {
 	};
 }
 
-export function deleteDevice(device) {
-	return dispatch => {
-		return axios.delete(delete_ulr).then(
-			res => {
-				try {
-					dispatch(deviceDeleted(res.data));
-					dispatch(fetchDevices(device.customer_id));
-				} catch (e) {
-					console.error(
-						`DELETE_DEVICE_RESPONSE_ERROR: ${e}`,
-						res.data
-					);
-				}
-			},
-			err => {
-				try {
-					dispatch(errorOccured(err.response.data.error));
-				} catch (e) {
-					console.error(
-						`DELETE_DEVICE_ERROR: ${e}`,
-						err,
-						err.response
-					);
-				}
-			}
-		);
-	};
-}
 
 export function addDevice(device) {
 	console.log("add device");
 	console.log(device);
 	return (dispatch, getState) => {
 		const { auth } = getState();
-		console.log("add device");
-		console.log(auth);
-		return axios.post(device_url + auth.user.id, device).then(
+		return axios.post(`${REST_DEVICES}/${auth.id}`, device).then(
 			res => {
 				try {
 					dispatch(fetchDevices(device.customer_id));
@@ -141,7 +107,7 @@ export function addDevice(device) {
 
 export function fetchProducts(vendor) {
 	return dispatch => {
-		return axios.get(products_url + vendor).then(
+		return axios.get(`${REST_PRODUCTS}/${vendor}`).then(
 			res => {
 				try {
 					dispatch(receiveProducts(res.data));
@@ -165,7 +131,7 @@ export function fetchProducts(vendor) {
 
 export function fetchVendors() {
 	return dispatch => {
-		return axios.get(vendors_url).then(
+		return axios.get(`${REST_VENDORS}`).then(
 			res => {
 				try {
 					dispatch(receiveVendors(res.data));

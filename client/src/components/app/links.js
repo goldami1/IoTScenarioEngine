@@ -12,11 +12,11 @@ export default function links(auth) {
 			return [["/products", "Products", "appstore-o"]];
 		default:
 			return [
-				["/login", "Login", "login"],
-				["/signup", "Singup", "user-add"],
-				["/devices", "Devices", "appstore-o"],
-				["/products", "Products", "appstore-o"],
-				["/scenarios", "Scenarios", "fork"]
+				["/login",		"Login", 		"login"],
+				["/signup", 	"Singup", 		"user-add"],
+				["/devices", 	"Devices", 		"appstore-o"],
+				["/products", 	"Products", 	"appstore-o"],
+				["/scenarios", 	"Scenarios", 	"fork"]
 			];
 	}
 }

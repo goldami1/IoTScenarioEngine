@@ -22,10 +22,11 @@ class LoginForm extends Component {
 		this.onSubmit = this.onSubmit.bind(this);
 	}
 
-	onChange(event) {
+	onChange(event,fuck) {
 		this.setState({
 			[event.target.name]: event.target.value
 		});
+		this.props.form.setFieldsValue({[event.target.name]: event.target.value});
 	}
 	onClick(event) {
 		// event.preventDefault();
@@ -60,7 +61,7 @@ class LoginForm extends Component {
 			<CardWrapper size="small">
 				<Form onSubmit={this.handleSubmit} className="login-form">
 					<FormItem>
-						{getFieldDecorator("userName", {
+						{getFieldDecorator("username", {
 							rules: [
 								{
 									required: true,
@@ -71,7 +72,7 @@ class LoginForm extends Component {
 							<Input
 								onChange={this.onChange}
 								name="username"
-								value={this.state.username}
+								// value={this.state.username}
 								size="large"
 								prefix={
 									<Icon
@@ -95,7 +96,7 @@ class LoginForm extends Component {
 							<Input
 								onChange={this.onChange}
 								name="password"
-								value={this.state.password}
+								// value={this.state.password}
 								size="large"
 								prefix={
 									<Icon

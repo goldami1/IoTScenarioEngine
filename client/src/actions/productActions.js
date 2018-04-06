@@ -1,6 +1,6 @@
 import axios from "axios";
 import { ADD_PRODUCT, PRODUCT_ERROR_OCCURED } from "./types";
-import { REST_VENDOR} from "./restapi";
+import { REST_VENDORS} from "./restapi";
 
 import { setMessage, setUnknownError } from "./appActions";
 
@@ -17,7 +17,7 @@ export function addProduct(product) {
 	return (dispatch, getState) => {
 		const { auth } = getState();
 		product.vendorName = auth.name;
-		return axios.post(`${REST_VENDOR}/${auth.id}`, product).then(
+		return axios.post(`${REST_VENDORS}/${auth.id}`, product).then(
 			res => {
 				console.log("res");
 				try {

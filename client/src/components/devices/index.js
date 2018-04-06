@@ -45,9 +45,9 @@ class DevicesPage extends Component {
 					onDeviceSelect={selectedDevice =>
 						this.setState({ selectedDevice })
 					}
-					onDeviceDelete={selectedDevice =>
-						this.props.deleteDevice({ selectedDevice })
-					}
+					// onDeviceDelete={selectedDevice =>
+					// 	this.props.deleteDevice({ selectedDevice })
+					// }
 				/>
 				{/*</div>*/}
 				{/*				<div className="col-md-8 ">
@@ -64,6 +64,10 @@ function mapStateToProps({ devices }) {
 	};
 }
 
-export default connect(mapStateToProps, { fetchDevices, deleteDevice })(
+// export default connect(mapStateToProps, { fetchDevices, deleteDevice })(
+// 	DevicesPage
+// );
+
+export default connect(mapStateToProps, { fetchDevices })(
 	DevicesPage
 );
