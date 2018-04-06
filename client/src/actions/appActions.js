@@ -22,7 +22,7 @@ export function setUnknownError() {
 	};
 }
 
-export function setMessage(message, timeout) {
+export function setMessage(message, timeout = 50) {
 	var msg = {
 		content: message.content,
 		type: message.type ? message.type : "warning"
