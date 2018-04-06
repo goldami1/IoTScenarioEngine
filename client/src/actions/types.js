@@ -1,4 +1,6 @@
 export const SET_CURRENT_USER = "SET_CURRENT_USER";
+export const SET_LOGIN_REQUEST_SENT = "SET_LOGIN_REQUEST_SENT";
+export const SET_LOGIN_REQUEST_DONE = "SET_LOGIN_REQUEST_DONE";
 
 export const SELECT_DEVICE          = "SELECT_DEVICE";
 export const DELETE_DEVICE          = "DELETE_DEVICE";

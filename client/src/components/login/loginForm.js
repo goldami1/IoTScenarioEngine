@@ -34,17 +34,13 @@ class LoginForm extends Component {
 	}
 	onSubmit(event) {
 		event.preventDefault();
-		this.setState({
-			error: "",
-			isLoading: true
-		});
 		var user  = {
 			userName: this.state.username,
 			password: this.state.password
 		};
 		console.log(user);
-		this.props.login(user,this.props.history)
 
+		this.props.login(user,this.props.history)
 	}
 
 	handleSubmit = e => {
@@ -114,6 +110,7 @@ class LoginForm extends Component {
 							type="primary"
 							htmlType="submit"
 							className="login-form-button"
+							loading={this.props.isLoading}
 							style={{ width: "100%" }}
 							size="large"
 						>
@@ -132,10 +129,11 @@ class LoginForm extends Component {
 	}
 }
 
-// function mapDispatchToProps(dispatch) {
-//   return bindActionCreators({ loginUser }, dispatch);
-// }
-
+function mapStateToProps({ auth }) {
+	return {
+		isLoading:auth.isLoading
+	};
+}
 // export default connect(null, mapDispatchToProps)(LoginForm);
-export default connect(null, { login })(withRouter(Form.create()(LoginForm)));
+export default connect(mapStateToProps, { login })(withRouter(Form.create()(LoginForm)));
 // export default LoginForm;
