@@ -99,7 +99,6 @@ public class Event extends Action{
 		{
 			this.id = i_event.getId();
 		}
-		
 	}
 	/****************************************************************/
 	
@@ -131,6 +130,10 @@ public class Event extends Action{
 			return this.toggleAction();
 		else
 			return 200;
+	}
+	
+	public boolean contains(short device_id, String event_name) {
+		return this.actionDescription.getName() == event_name && this.actionDescription.getProdId() == device_id;
 	}
 	
 }

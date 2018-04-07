@@ -70,6 +70,7 @@ public class Case implements ICase {
 			}
 		}
 		this.logicOperator = c.getLogicOperator();
+		this.logicOperator = '|';
 	}
 
 	@Override

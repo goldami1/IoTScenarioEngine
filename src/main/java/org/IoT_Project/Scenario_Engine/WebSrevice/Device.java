@@ -14,17 +14,18 @@ public class Device {
 	
 	DeviceService ds = new DeviceService();
 	
-	@Path("{device_id}/{Event_id}/{event_triggered}")
+	@Path("{device_id}/{event_name}/{cust_id}/{event_triggered}")
 	@POST
 	//@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.TEXT_HTML)
 	public void handleEvent(
 			@PathParam("device_id") short device_id,
-			@PathParam("Event_id") short Event_id,
+			@PathParam("cust_id") short cust_id,
+			@PathParam("event_name") String event_name,
 			@PathParam("event_triggered") boolean eventTriggered)
 	{
 		try {
-			ds.HandleCall(Event_id, eventTriggered);
+			ds.HandleCall(device_id, event_name, cust_id, eventTriggered);
 		}
 		catch(Exception ex)
 		{

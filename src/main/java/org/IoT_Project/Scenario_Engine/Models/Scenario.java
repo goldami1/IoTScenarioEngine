@@ -280,4 +280,22 @@ public class Scenario{
 		}
 		return result;
 	}
+	
+	public void HandleEvents(short device_id, String event_name, boolean device_signal) throws Exception {
+		for(Event event : this.eventsToHappen.values()) {
+			if(event.contains(device_id, event_name)) {
+				this.eventsToHappen.get(event.id).setTriggered(device_signal);
+			}
+		}
+		if(this.resolveScenario()) { 
+			this.activateActions();
+		}
+	}
+	
+	
+	private void activateActions() throws Exception {
+		for(Action action : this.actions) {
+			action.toggleAction();
+		}
+	}
 }
