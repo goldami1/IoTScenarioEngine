@@ -32,49 +32,171 @@ function getBase64(img, callback) {
 	reader.readAsDataURL(img);
 }
 
+
+const oldProduct  =    {
+	actionAndEventList: [
+		{
+			description: "light Sensor description...",
+			id: 185,
+			isEvent: false,
+			max: [],
+			min: [],
+			name: "lightSensor",
+			paramDesc: [],
+			prodId: -1,
+			productEP: "http://www.honda.com/endpoint",
+			supportedParametersName: [
+				"name of property no.1",
+				"name of property no.2"
+			],
+			supportedValues:[
+				["asd","asdasd"],
+				["asd","asdasd","asdasdasd"]
+			],
+			types: [
+				"int",
+				"string"
+			]
+		},
+		{
+			description: "light Sensor description...",
+			id: 185,
+			isEvent: false,
+			max: [],
+			min: [],
+			name: "lightSensor",
+			paramDesc: [],
+			prodId: -1,
+			productEP: "http://www.honda.com/endpoint",
+			supportedValues:[
+				["asd","asdasd"],
+				["asd","asdasd","asdasdasd"]
+			],
+			supportedParametersName: [
+				"name of property no.1",
+				"name of property no.2"
+			],
+			types: [
+				"int",
+				"string"
+			]
+		}
+	],
+	actionState: true,
+	description: "bbbbbbbbbbbbbbbbbbbbb...",
+	endPoint: "http://www.honda.com/endpoint",
+	eventState: false,
+	id: 184,
+	name: "Smart Lamp",
+	picURL: "http://www.honda.com/smartlamp.jpg",
+	vendorName: "Honda",
+	vendor_id: 7
+};
+
+
+function productInputReduction(oldProduct)
+{
+	
+	var newProduct = {};
+	newProduct.name 			= oldProduct.name;
+	newProduct.description 		= oldProduct.description;
+	newProduct.endpoint 		= oldProduct.endPoint;
+	newProduct.image 			= oldProduct.picURL;
+	newProduct.endPoint 		= oldProduct.endpoint;
+	newProduct.actions			= [];
+	newProduct.events 			= [];
+
+	oldProduct.actionAndEventList.forEach((ae) => {
+		var newAe = {
+			name:ae.name,
+			description:ae.description,
+			endpoint:ae.productEP,
+			properties:[]
+		}
+		var i;
+
+		for	( i = 0; i<ae.supportedParametersName.length ;i++)
+		{
+			newAe.properties[i] = {
+				name:ae.supportedParametersName[i],
+				description:ae.paramDesc[i],
+				type:ae.types[i],
+				max:ae.max[i],
+				min:ae.min[i],
+				options:[]
+			}
+
+			ae.supportedValues.forEach(option => {
+				newAe.properties[i].options = option;
+			});
+		}
+
+		if (ae.isEvent) 
+		{
+			newProduct.events.push(newAe);
+		}else
+		{
+
+			newProduct.actions.push(newAe);
+		}
+	});
+
+	return newProduct;
+}
+
+
+const newState = productInputReduction(oldProduct);
+
 class ProductsPage extends Component {
 	constructor(props) {
-		super(props);
-		this.state = {
-			name: "",
-			description: "",
-			endpoint: "",
-			image: "",
-			actions: [
-				{
-					name: "",
-					description: "",
-					endpoint: "",
-					properties: [
-						{
-							name: "",
-							description: "",
-							type: "",
-							options: []
-						}
-					]
-				},
-			],
-			events: [
-				{
-					name: "",
-					description: "",
-					endpoint: "",
-					properties: [
-						{
-							name: "",
-							description: "",
-							type: "",
-							options: []
-						}
-					]
-				},
-			],
 
-			inputValue: "",
-			inputVisible: false,
-			loading: false
-		};
+		
+
+		super(props);
+
+		this.state = productInputReduction(oldProduct);
+		// this.state = {
+		// 	name: "",
+		// 	description: "",
+		// 	endpoint: "",
+		// 	image: "",
+		// 	actions: [
+		// 		{
+		// 			name: "",
+		// 			description: "",
+		// 			endpoint: "",
+		// 			properties: [
+		// 				{
+		// 					name: "",
+		// 					description: "",
+		// 					type: "",
+		// 					options: []
+		// 				}
+		// 			]
+		// 		},
+		// 	],
+		// 	events: [
+		// 		{
+		// 			name: "",
+		// 			description: "",
+		// 			endpoint: "",
+		// 			properties: [
+		// 				{
+		// 					name: "",
+		// 					description: "",
+		// 					type: "",
+		// 					options: []
+		// 				}
+		// 			]
+		// 		},
+		// 	],
+
+		// 	inputValue: "",
+		// 	inputVisible: false,
+		// 	loading: false
+		// };
+
+
 	}
 
 	handleChange = info => {
