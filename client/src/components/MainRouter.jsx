@@ -8,7 +8,7 @@ import { Link, withRouter } from "react-router-dom";
 import DevicesPage from "./devices/";
 import DeviceForm from "./devices/add/";
 import ScenarioForm from "./scenarios/add/";
-import ProductsPage from "./products/";
+import ProductsPage from "./products/productsPage";
 
 import requireAuth from "../utilities/require_auth";
 import NoMatch from "./nomatch/";

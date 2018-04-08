@@ -1,6 +1,11 @@
 import axios from "axios";
-import { ADD_PRODUCT, PRODUCT_ERROR_OCCURED } from "./types";
-import { REST_VENDORS} from "./restapi";
+import { 
+	ADD_PRODUCT, 
+	PRODUCT_ERROR_OCCURED ,
+	FETCH_PRODUCTS,RECEIVE_PRODUCTS
+} from "./types";
+
+import { REST_VENDORS ,REST_PRODUCTS} from "./restapi";
 
 import { setMessage, setUnknownError } from "./appActions";
 
@@ -10,6 +15,30 @@ export function errorOccured(error) {
 		error
 	};
 }
+
+export function receiveProducts(products) {
+	return {
+		type: RECEIVE_PRODUCTS,
+		products
+	};
+}
+
+export function fetchProducts() {
+	console.log("fetch product");
+	console.log(product);
+	return (dispatch, getState) => {
+		const { auth } = getState();
+		return axios.get(`${REST_PRODUCTS}/${auth.id}`).then(
+			res => {
+
+			},
+			err => {
+
+			}
+		);
+	};
+}
+
 
 export function addProduct(product) {
 	console.log("add product");

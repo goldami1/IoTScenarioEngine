@@ -8,6 +8,8 @@ export const ADD_DEVICE             = "ADD_DEVICE";
 export const RECEIVE_DEVICES        = "RECEIVE_DEVICES";
 export const DEVICE_ERROR_OCCURED   = "DEVICE_ERROR_OCCURED";
 export const RECEIVE_VENDORS        = "RECEIVE_VENDORS";
+
+export const FETCH_PRODUCTS         = "FETCH_PRODUCTS";
 export const RECEIVE_PRODUCTS       = "RECEIVE_PRODUCTS";
 
 export const PRODUCT_ERROR_OCCURED  = "PRODUCT_ERROR_OCCURED";
