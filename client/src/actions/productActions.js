@@ -25,15 +25,19 @@ export function receiveProducts(products) {
 
 export function fetchProducts() {
 	console.log("fetch product");
-	console.log(product);
+
 	return (dispatch, getState) => {
 		const { auth } = getState();
 		return axios.get(`${REST_PRODUCTS}/${auth.id}`).then(
 			res => {
-
+				dispatch(receiveProducts(res.data));
 			},
 			err => {
-
+				try {
+					dispatch(setMessage({ content: err.response.data ,type: "error" },50));
+				} catch (e) {
+					console.error(`FETCH_PRODUCT_RESPONSE_ERROR: ${e}`, err.response.data);
+				}			
 			}
 		);
 	};

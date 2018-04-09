@@ -2,7 +2,7 @@ import { combineReducers } from "redux";
 import auth from "./auth";
 import app from "./app";
 import devices from "./devices";
-import products from "./devices";
+import products from "./products";
 import scenarios from "./scenarios";
 
 const rootReducer = combineReducers({

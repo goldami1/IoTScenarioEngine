@@ -40,7 +40,7 @@ const AcEvList = props => {
 
 	const dropDown = (list,item) => {
 		return (
-			<Dropdown  placement='bottomCenter' overlay={menu(list,item)} trigger='click'> 
+			<Dropdown  placement='bottomCenter' overlay={menu(list,item)} trigger={['click']}> 
 				<Icon style={{verticalAlign:'middle', marginLeft:8}} type="bars" />
 			</Dropdown>
 		)

@@ -43,6 +43,8 @@ class App extends PureComponent {
 	
 	render() {
 		const { auth, location } = this.props;
+		
+		if(this.props.message)
 		{
 			this.showMessage();
 		}

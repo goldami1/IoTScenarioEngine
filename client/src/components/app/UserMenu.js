@@ -25,7 +25,7 @@ const UserMenu = props => {
 
 	return (
 		<div style={style}>
-			<Dropdown overlay={<Menu>{links}</Menu>} trigger="click" placement="topCenter" >			
+			<Dropdown overlay={<Menu>{links}</Menu>} trigger={['click']} placement="topCenter" >			
 				<Avatar shape="square" size="large" icon="user" style={{ background: "#08c" }}/>
 			</Dropdown>
 		</div>

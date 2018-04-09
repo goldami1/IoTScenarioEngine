@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { login } from "../../actions/auth_actions";
+import { fetchProducts } from "../../actions/productActions";
 import { Link } from "react-router-dom";
 import { withRouter } from "react-router-dom";
 import ContentWrapper from "../common/ContentWrapper";
@@ -14,16 +14,19 @@ class ProductsPage extends Component {
 		};
 	}
 
-	onClick = (event) => {
-		// event.preventDefault();
-		// console.log(this.state);
+    componentDidMount() {
+        this.props.fetchProducts();
+    }
+
+	onProductClick = (product) => {
+        
 	}
 
 	render() {
 		return (
 			<ContentWrapper size="small">
                 <ProductList 
-                    onClick={this.onClick} 
+                    onProductClick={this.onProductClick} 
                     products={this.props.products}>
                 </ProductList>
 			</ContentWrapper>
@@ -37,5 +40,5 @@ function mapStateToProps({ products }) {
 	};
 }
 
-export default connect(mapStateToProps, { login })(withRouter(ProductsPage));
+export default connect(mapStateToProps, { fetchProducts })(withRouter(ProductsPage));
 
