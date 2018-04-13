@@ -34,7 +34,11 @@ public class CustomerService {
 	}
 
 	public List<Device> removeDevice(short cust_id, short device_id) throws Exception{
-			return DBHandler.getInstance().getDevices(cust_id);
+		List<Device> res = null;
+		res =  NDBHandler.getInstance().getDevices(cust_id);
+		if(res==null)
+			throw new Exception("No Devices Found. Couldnt delete device.");
+		return res;
 	}
 
 	public List<Scenario> addScenario(short cust_id, Scenario scenarioToAdd) throws Exception{
@@ -50,36 +54,46 @@ public class CustomerService {
 
 	public List<Scenario> updateScenario(short cust_id, short origionalScenario_id, Scenario newScenario) throws Exception 
 	{
+		/*
 		if(DBHandler.getInstance().updateScenario(origionalScenario_id, newScenario))
 		{
 			return DBHandler.getInstance().getScenarios(cust_id);
 		}
 		else
-			throw new Exception("no User, or no Device to update");
+			throw new Exception("no User, or no Device to update");*/
+		throw new Exception("Unimplemented");
 		
 	}
 
 	public List<Scenario> removeScenario(short cust_id, int scenarioToRemove) throws Exception{
-		if(DBHandler.getInstance().removeScenario(scenarioToRemove))
+		/*if(DBHandler.getInstance().removeScenario(scenarioToRemove))
 		{
 			return DBHandler.getInstance().getScenarios(cust_id);
 		}
-		/*
-		 * will never reach here
-		 */
 		else
 			throw new Exception("no User, or no Scenario to update");
+			*/
+		throw new Exception("Unimplemnted");
 	}
 
 	public List<Device> fetchDevices(short i_user) throws Exception {
-			return DBHandler.getInstance().getDevices(i_user);
+			List<Device> res = null;
+			res =NDBHandler.getInstance().getDevices(i_user);
+			if(res==null)
+				throw new Exception("No devices found for user "+i_user);
+			return res;
 	}
 
 	public List<Scenario> fetchScenarios(short i_user) throws Exception {
-		return DBHandler.getInstance().getScenarios(i_user);
+		List<Scenario> res = null;
+		res = NDBHandler.getInstance().getScenarios(i_user);
+		if(res==null)
+			throw new Exception("No Scenarios found for user "+i_user);
+		return res;
 	}
 
 	public List<Device> updateDevice(short cust_id, short dev_id, Device newDevice) throws Exception {
-			return DBHandler.getInstance().getDevices(cust_id);
+			//return DBHandler.getInstance().getDevices(cust_id);
+		throw new Exception("Unimplemented");
 	}
 }
