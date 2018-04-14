@@ -3,10 +3,10 @@ import { connect } from "react-redux";
 import DeviceList from "./deviceList";
 import DeviceDetail from "./deviceDetail";
 import { fetchDevices, deleteDevice } from "../../actions/deviceActions";
-import DeviceForm from "./add/addDevice";
+import DeviceForm from "./add/deviceForm";
 import { Link } from "react-router-dom";
 import ContentWrapper from "../common/ContentWrapper";
-import { Button } from 'antd';
+import { Button ,Modal ,Spin} from 'antd';
 
 class DevicesPage extends Component {
 	constructor(props) {
@@ -14,12 +14,12 @@ class DevicesPage extends Component {
 		this.state = {
 			showForm: false,
 			selectedDevice: {},
+			modalVisible: false,
 			isLoading: false
 		};
 	}
 
 	componentDidMount() {
-		this.setState({ isLoading: true });
 		this.props.fetchDevices();
 	}
 
@@ -29,20 +29,47 @@ class DevicesPage extends Component {
 		console.log(selectedDevice);  
 	}
 
+	onModalOpen = () => {
+		this.setState({ modalVisible: true });
+	};
+
+	onModalCancel = () => {
+		this.setState({ modalVisible: false });
+	};
+
 	render() {
 		return (
 			<ContentWrapper size="small">
-			
-					<Button> Add device </Button>
-					<DeviceList 
-						onDeviceSelect={this.onDeviceSelect}
-						devices={this.props.devices}>
-					</DeviceList>
+
+					<Button onClick={this.onModalOpen}> Add device </Button>
+
+					{ 
+						this.state.isLoading ?  
+						<Spin /> : 
+						<div>
+							<DeviceList 
+								onDeviceSelect={this.onDeviceSelect}
+								devices={this.props.devices}>
+							</DeviceList>
+
+							<DeviceForm 
+								visible={this.state.modalVisible}
+								onCancel={this.onModalCancel}
+							/>
+						</div>
+					
+					}
+
 			</ContentWrapper>
 		);
 	}
+
 }
 
+
+
+
+ 
 function mapStateToProps({ devices }) {
 	return {
 		devices: devices.devices

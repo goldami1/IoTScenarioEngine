@@ -1,20 +1,28 @@
 import isEmpty from "lodash";
 import axios from "axios";
 import {
+	FETCH_DEVICES,
+	FETCH_VENDORS,
 	SELECT_DEVICE,
 	DELETE_DEVICE,
 	ADD_DEVICE,
 	RECEIVE_DEVICES,
 	DEVICE_ERROR_OCCURED,
 	RECEIVE_VENDORS,
-	RECEIVE_PRODUCTS
+	RECEIVE_PRODUCTS,
+	FETCH_PRODUCTS
 } from "./types";
 import {
 	REST_DEVICES,
 	REST_VENDORS,
 	REST_PRODUCTS
 } from "./restapi";
-import  {setMessage} from "./appActions";
+import  {
+	setMessage,
+	getFromApi,
+	postToApi
+} from "./appActions";
+
 
 export function errorOccured(error) {
 	return {
@@ -50,91 +58,31 @@ export function receiveVendors(vendors) {
 	};
 }
 
+
 export function fetchDevices() {
 	return (dispatch, getState) => {
 		const { auth } = getState();
-		
-		return axios.get(`${REST_DEVICES}/${auth.id}`).then(
-			res => {
-				dispatch(receiveDevices(res.data));
-			},
-			err => {
-				try {
-					dispatch(setMessage({ content: err.response.data ,type: "error" },50));
-				} catch (e) {
-					console.error(`FETCH_PRODUCT_RESPONSE_ERROR: ${e}`, err.response.data);
-				}			
-			}
-		);
+		dispatch(getFromApi(FETCH_DEVICES,`${REST_DEVICES}/${auth.id}`,receiveDevices));
+	};
+}
+
+export function fetchProducts(vendorId) {
+	return (dispatch, getState) => {
+		dispatch(getFromApi(FETCH_PRODUCTS,`${REST_PRODUCTS}/${vendorId}`,receiveProducts));
 	};
 }
 
 
 export function addDevice(device) {
-	console.log("add device");
-	console.log(device);
 	return (dispatch, getState) => {
 		const { auth } = getState();
-		return axios.post(`${REST_DEVICES}/${auth.id}`, device).then(
-			res => {
-				try {
-					dispatch(fetchDevices(device.customer_id));
-				} catch (e) {
-					console.error(`ADD_DEVICE_RESPONSE_ERROR: ${e}`, res.data);
-				}
-			},
-			err => {
-				try {
-					dispatch(errorOccured(err.response.data.error));
-				} catch (e) {
-					console.error(`ADD_DEVICE_ERROR: ${e}`, err.response);
-				}
-			}
-		);
+		dispatch(postToApi(ADD_DEVICE,`${REST_DEVICES}/${auth.id}`,receiveDevices,device))
 	};
 }
 
-export function fetchProducts(vendor) {
-	return dispatch => {
-		return axios.get(`${REST_PRODUCTS}/${vendor}`).then(
-			res => {
-				try {
-					dispatch(receiveProducts(res.data));
-				} catch (e) {
-					console.error(
-						`FETCH_PRODUCTS_RESPONSE_ERROR: ${e}`,
-						res.data
-					);
-				}
-			},
-			err => {
-				try {
-					dispatch(errorOccured(err.response.data.error));
-				} catch (e) {
-					console.error(`FETCH_PRODUCTS_ERROR: ${e}`, err.response);
-				}
-			}
-		);
-	};
-}
 
 export function fetchVendors() {
-	return dispatch => {
-		return axios.get(`${REST_VENDORS}`).then(
-			res => {
-				try {
-					dispatch(receiveVendors(res.data));
-				} catch (e) {
-					console.error(`FETCH_VENDORS_RESPONSE_ERROR: ${e}`);
-				}
-			},
-			err => {
-				try {
-					dispatch(errorOccured(err.response.data));
-				} catch (e) {
-					console.error(`FETCH_VENDORS_ERROR: ${e}`);
-				}
-			}
-		);
+	return (dispatch, getState) => {
+		dispatch(getFromApi(FETCH_VENDORS,`${REST_VENDORS}`,receiveVendors));
 	};
 }
