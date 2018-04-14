@@ -52,7 +52,7 @@ export function login(data,history) {
 							username: res.data.userName,
 							password: res.data.password,
 							id: res.data.id,
-							type: res.data.customer ?'enduser':'vendor'
+							type: (res.data.isCustomer  || res.data.customer) ?'enduser':'vendor'
 						};
 						
 						localStorage.setItem("user", JSON.stringify(user));

@@ -24,7 +24,7 @@ export function setUnknownError() {
 
 export function setMessage(message, timeout = 50) {
 	var msg = {
-		content: message.content,
+		content: message.content ? message.content : "UNKNOW ERROR",
 		type: message.type ? message.type : "warning"
 	};
 

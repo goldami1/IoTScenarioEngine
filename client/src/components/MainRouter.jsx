@@ -5,8 +5,7 @@ import App from "./app/";
 import LoginPage from "./login/loginForm";
 import RegisterPage from "./register/";
 import { Link, withRouter } from "react-router-dom";
-import DevicesPage from "./devices/";
-import DeviceForm from "./devices/add/";
+import DevicesPage from "./devices/devicePage";
 import ScenarioForm from "./scenarios/add/";
 import ProductsPage from "./products/productsPage";
 
@@ -30,7 +29,6 @@ class MainRouter extends PureComponent {
 						path="/devices"
 						component={requireAuth(DevicesPage)}
 					/>
-					<Route path="/devices/add" component={DeviceForm} />
 					<Route
 						exact
 						path="/scenarios"

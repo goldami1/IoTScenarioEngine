@@ -1,0 +1,6 @@
+{
+  "/api/:view": "/:view",
+  "/api/groups/:planet/stats": "/stats?planet=:planet",
+  "/:user/articles": "/articles?author=:user",
+  "/auth/users": "/users"
+}
