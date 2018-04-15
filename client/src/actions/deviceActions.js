@@ -68,7 +68,7 @@ export function fetchDevices() {
 
 export function fetchProducts(vendorId) {
 	return (dispatch, getState) => {
-		dispatch(getFromApi(FETCH_PRODUCTS,`${REST_PRODUCTS}/${vendorId}`,receiveProducts));
+		return dispatch(getFromApi(FETCH_PRODUCTS,`${REST_PRODUCTS}/${vendorId}`,receiveProducts));
 	};
 }
 
