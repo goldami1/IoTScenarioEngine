@@ -7,14 +7,7 @@ export default function(ComposedComponent) {
 	class Authenticate extends React.Component {
 		componentWillMount() {
 			if (!this.props.isAuthenticated) {
-				this.props.setMessage(
-					{
-						content:
-							"The page you asked for require authentication . Please log in",
-						type: "warning"
-					},
-					true
-				);
+				this.props.setMessage({content:"The page you asked for require authentication . Please log in"});
 				this.props.history.push("/login");
 			}
 		}

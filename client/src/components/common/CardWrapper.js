@@ -10,15 +10,26 @@ const CardWraper = props => {
 		}
 	};
 
-	const small = {
-		xs: { span: 24 }, //'480px',
-		sm: { span: 18, offset: 3 }, //'768px',
-		md: { span: 14, offset: 5 }, //'992px',
-		lg: { span: 12, offset: 6 }, //'992px',
-		xl: { span: 8, offset: 8 } //'992px',
-	};
+	const layout = {
+		small:{
+			xs: { span: 24 }, //'480px',
+			sm: { span: 18, offset: 3 }, //'768px',
+			md: { span: 14, offset: 5 }, //'992px',
+			lg: { span: 12, offset: 6 }, //'992px',
+			xl: { span: 8, offset: 8 } //'992px',
+		},
+		medium:{
+			xs: { span: 24 }, //'480px',
+			sm: { span: 18, offset: 3 }, //'768px',
+			md: { span: 14, offset: 5 }, //'992px',
+			lg: { span: 12, offset: 6 }, //'992px',
+			xl: { span: 8, offset: 8 } //'992px',
+		}
 
-	const colStyle = props.size == "small" ? small : {};
+	
+	}
+
+	const colStyle = layout[props.size] ;
 	return (
 		<Col {...colStyle}>
 			<Card {...style}>{props.children}</Card>

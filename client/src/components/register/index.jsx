@@ -1,11 +1,12 @@
 import React, { Component } from "react";
 import RegisterForm from "./register_form";
+import CardWrapper from "../common/CardWrapper";
 
 const RegisterPage = () => {
 	return (
-		<div className="row m-5">
+		<CardWrapper size="medium">
 			<RegisterForm />
-		</div>
+		</CardWrapper>
 	);
 };
 
