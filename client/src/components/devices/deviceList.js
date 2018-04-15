@@ -5,19 +5,28 @@ import { List } from 'antd';
 const DeviceList = props => {
 	const deviceItems = props.devices.map(device => {
 		return (
-			<DeviceListItem
-				onDeviceSelect={props.onDeviceSelect}
-				key={device.id}
-				device={device}
-			/>
+			<div style={{
+				width:"200px", 
+				float:"left",
+				marginLeft:"10px",
+				marginTop:"10px"
+			}}>
+				<DeviceListItem
+					onDeviceSelect={props.onDeviceSelect}
+					key={device.id}
+					device={device}
+				/>
+			</div>
 		);
 	});
 
+	const data = props.devices;
+
 	return 	(	
-		<List style = {{overflow:"hidden"}}
-			grid={{ gutter: 16, xs: 1, sm: 2, md: 4, lg: 4, xl: 6, xxl: 3 }}>
-			{deviceItems}
-		</List>
+		<div style = {{overflow:"hidden"}} 	>
+	
+			{deviceItems} {deviceItems}{deviceItems} {deviceItems}{deviceItems}{deviceItems}{deviceItems}{deviceItems} 
+		</div>
 	);
 
 };

@@ -9,20 +9,6 @@ function setMessageCreator(msg) {
 	};
 }
 
-export function setUnknownError() {
-	return dispatch => {
-		dispatch(
-			setMessage(
-				{
-					content: "UNKOWN ERROR OCCURED",
-					type: "error"
-				},
-				true 
-			)
-		);
-	};
-}
-
 function apiRequest(config,action,type) {
 	return dispatch => {
 		return axios(config).then(
@@ -30,11 +16,11 @@ function apiRequest(config,action,type) {
 			err => {
 				try {
 					dispatch(setMessage({ 
-						content	: err.response.data ,
+						content	: err.response.data.description ,
 						type	: "error" 
 					}));
 				} catch (e) {
-					console.error(`Failed to ${config.method} ${config.type} ${config.method == 'get' ? 'from' : 'to'} ${config.url}`);
+					console.error(`Failed to ${config.method} ${type} ${config.method == 'get' ? 'from' : 'to'} ${config.url}`);
 				}			 
 			}
 		);
@@ -62,10 +48,9 @@ export function setMessage(message, timeout = 50) {
 
 	return dispatch => {
 		dispatch(setMessageCreator(msg));
-		if (timeout) {
-			setTimeout(() => {
-				dispatch(setMessageCreator({}));
-			}, timeout);
-		}
+		setTimeout(() => {
+			dispatch(setMessageCreator({}));
+		}, timeout);
+
 	};
 }

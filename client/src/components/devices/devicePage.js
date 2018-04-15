@@ -6,7 +6,7 @@ import { fetchDevices, deleteDevice } from "../../actions/deviceActions";
 import DeviceForm from "./add/deviceForm";
 import { Link } from "react-router-dom";
 import ContentWrapper from "../common/ContentWrapper";
-import { Button ,Modal ,Spin} from 'antd';
+import { Button ,Modal ,Spin,Row} from 'antd';
 
 class DevicesPage extends Component {
 	constructor(props) {
@@ -41,24 +41,31 @@ class DevicesPage extends Component {
 		return (
 			<ContentWrapper size="small">
 
-					<Button onClick={this.onModalOpen}> Add device </Button>
+						<Button 
+							onClick={this.onModalOpen}
+							style={{marginBottom:"20px"}} 
+						>
+							Add device 
+						</Button>
 
-					{ 
-						this.state.isLoading ?  
-						<Spin /> : 
-						<div>
-							<DeviceList 
-								onDeviceSelect={this.onDeviceSelect}
-								devices={this.props.devices}>
-							</DeviceList>
 
-							<DeviceForm 
-								visible={this.state.modalVisible}
-								onCancel={this.onModalCancel}
-							/>
-						</div>
-					
-					}
+						{ 
+							this.state.isLoading ?  
+							<Spin /> : 
+							<div>
+								<DeviceList 
+									onDeviceSelect={this.onDeviceSelect}
+									devices={this.props.devices}>
+								</DeviceList>
+
+								<DeviceForm 
+									visible={this.state.modalVisible}
+									onCancel={this.onModalCancel}
+								/>
+							</div>
+						
+						}
+
 
 			</ContentWrapper>
 		);

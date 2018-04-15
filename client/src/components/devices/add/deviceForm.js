@@ -12,8 +12,6 @@ import {Form, Modal,Cascader, Input} from "antd"
 
 const FormItem = Form.Item;
 
-updateProductsToOptions()
-
 
 function updateProductsToOptions(products)
 {
@@ -78,9 +76,8 @@ class DeviceForm extends Component {
 			serial_number: this.state.serial,
 			protoDevice:this.props.products[this.state.selectedOptions[1]]
 		})
-		
 	}
-
+	
 	onChange = (value) => {
 		this.setState({selectedOptions: value});
 	} 
