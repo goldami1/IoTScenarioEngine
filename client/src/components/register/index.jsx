@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import RegisterForm from "./register_form";
+import RegisterForm from "./registerForm";
 import CardWrapper from "../common/CardWrapper";
 
 const RegisterPage = () => {
