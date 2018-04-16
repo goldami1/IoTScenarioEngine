@@ -9,6 +9,7 @@ import org.IoT_Project.Scenario_Engine.Service.VendorService;
 
 import DataBase.DBHandler;
 import DataBase.NDBHandler;
+import javafx.util.Pair;
 
 import java.sql.SQLException;
 import java.util.LinkedList;
@@ -24,6 +25,7 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import javax.ws.rs.core.Response.ResponseBuilder;
 import javax.ws.rs.core.Response.Status;
 
 @Path("vendor")
@@ -84,7 +86,6 @@ public class Vendor{
 			return handleError(ex);
 		}
 	}
-	
 	
 	@Path("/new")
 	@POST
@@ -154,14 +155,31 @@ public class Vendor{
 		}
 	}
 	
-	@Path("/product/{vendor_id}")
+	@Path("/product/{vendor_id}/{isFullData}")
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response fetchProducts(@PathParam("vendor_id") short i_userId)
+	public Response fetchProducts(@PathParam("vendor_id") short i_userId, @PathParam("isFullData") boolean i_isFullData)
 	{
 		try {
 			List<Product> products = vs.fetchProducts(i_userId);
-			return Response.status(Status.OK).entity(products).build();
+			Response result; 
+			if(!i_isFullData)
+			{
+				LinkedList<tmpContainers.ProdNameIDContainer> formattedProdLST = new LinkedList<tmpContainers.ProdNameIDContainer>();
+
+				for(Product prod: products)
+				{
+					formattedProdLST.add(new tmpContainers.ProdNameIDContainer(prod.getName(), prod.getId()));
+				}
+						
+			 	result = Response.status(Status.OK).entity(formattedProdLST).build();
+			}
+			else
+			{
+				result = Response.status(Status.OK).entity(products).build();
+			}
+			
+			return result;
 		}
 		catch(Exception ex)
 		{

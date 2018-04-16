@@ -416,7 +416,7 @@ public class NDBHandler implements IDBHandler {
 
 		m_Session.beginTransaction();
 		
-		Query<Product> query = m_Session.createQuery("FROM Product WHERE vendor_id = :venid", Product.class);
+		Query<Product> query = m_Session.createQuery("FROM Product P WHERE vendor_id = :venid", Product.class);
 		query.setParameter("venid", (short)vendor_id);
 		List<Product> tmpres = query.getResultList();
 		
