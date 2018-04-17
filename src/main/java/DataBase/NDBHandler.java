@@ -2,6 +2,7 @@ package DataBase;
 
 import java.awt.image.BufferedImage;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -20,6 +21,8 @@ import org.IoT_Project.Scenario_Engine.Models.Vendor;
 import org.eclipse.persistence.internal.jaxb.many.MapEntry;
 import org.hibernate.query.Query;
 import javafx.util.*;
+import tmpContainers.ProdNameIDContainer;
+
 import javax.persistence.TypedQuery;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
@@ -404,6 +407,40 @@ public class NDBHandler implements IDBHandler {
 		return new LinkedList<Product>(res);
 	}
 
+	
+	public List<Product> getHLProducts(int vendor_id) throws Exception
+	{
+		List<Product> res = null;
+		
+		try
+		{
+		m_Session = m_sessionFactory.openSession();
+		}catch(NullPointerException e) {throw new Exception("DB Critical Error# SessionFactory isn't initialized");}
+		
+		m_Session.beginTransaction();
+		
+		String query = "SELECT new Product(p.product_id, p.product_name) FROM PRODUCTS p WHERE p.vendor_id="+vendor_id;
+		List<Product> tmpres = m_Session.createQuery(query).getResultList();
+				
+		
+		if(tmpres.size()>0)
+		{
+			res = tmpres;
+		}
+		
+		
+		if(res.size()==0)
+		{
+			m_Session.close();
+			throw new Exception("No products found!");
+		}
+		
+		m_Session.getTransaction().commit();
+		m_Session.close();
+		
+		return res;
+	}
+	
 	
 	public List<Product> getProducts(int vendor_id) throws Exception
 	{

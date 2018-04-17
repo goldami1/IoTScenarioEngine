@@ -162,26 +162,18 @@ public class Vendor{
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response fetchProducts(@PathParam("vendor_id") short i_userId, @DefaultValue("true")@QueryParam("isFull") boolean i_isFull)
 	{
+		List<Product> products;
 		try {
-			List<Product> products = vs.fetchProducts(i_userId);
-			Response result; 
-			if(!i_isFull)
+			if(i_isFull)
 			{
-				LinkedList<tmpContainers.ProdNameIDContainer> formattedProdLST = new LinkedList<tmpContainers.ProdNameIDContainer>();
-
-				for(Product prod: products)
-				{
-					formattedProdLST.add(new tmpContainers.ProdNameIDContainer(prod.getName(), prod.getId()));
-				}
-						
-			 	result = Response.status(Status.OK).entity(formattedProdLST).build();
+				products = vs.fetchProducts(i_userId);
 			}
 			else
 			{
-				result = Response.status(Status.OK).entity(products).build();
+				products = vs.fetchHLProducts(i_userId);
 			}
 			
-			return result;
+			return Response.status(Status.OK).entity(products).build();
 		}
 		catch(Exception ex)
 		{

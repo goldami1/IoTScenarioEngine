@@ -50,6 +50,20 @@ public class VendorService {
 		
 	}
 
+	public List<Product> fetchHLProducts(short i_userId) throws Exception
+	{
+		List<Product> res = null;
+		res = NDBHandler.getInstance().getHLProducts(i_userId);
+		if(res != null)
+		{
+			return res;
+		}
+		else
+		{
+			throw new Exception("Couldn't fetch products and return a list of available products");
+		}
+	}
+	
 	public List<Product> fetchProducts(short i_userId) throws Exception {
 		List<Product> res = null;
 		/*

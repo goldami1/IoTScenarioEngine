@@ -91,6 +91,12 @@ public class Product {
 	}
 	
 	
+	public Product(short product_id, String product_name)
+	{
+		name = product_name;
+		id = product_id;
+	}
+	
 	/************   ONLY FOR PRODUCT NEW CREATION IN DB   *************/
 	public Product(Product i_product) throws Exception
 	{
