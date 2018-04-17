@@ -13,6 +13,8 @@ import {
 	FETCH_PRODUCTS
 } from "./types";
 import {
+	devices,
+	api,
 	REST_DEVICES,
 	REST_VENDORS,
 	REST_PRODUCTS
@@ -62,13 +64,14 @@ export function receiveVendors(vendors) {
 export function fetchDevices() {
 	return (dispatch, getState) => {
 		const { auth } = getState();
-		dispatch(getFromApi(FETCH_DEVICES,`${REST_DEVICES}/${auth.id}`,receiveDevices));
+		// dispatch(getFromApi(FETCH_DEVICES,`${REST_DEVICES}/${auth.id}`,receiveDevices));
+		 dispatch(getFromApi(FETCH_DEVICES,`${api(devices)}/${auth.id}`,receiveDevices));
 	};
 }
 
 export function fetchProducts(vendorId) {
 	return (dispatch, getState) => {
-		return dispatch(getFromApi(FETCH_PRODUCTS,`${REST_PRODUCTS}/${vendorId}`,receiveProducts));
+		return dispatch(getFromApi(FETCH_PRODUCTS,`${REST_PRODUCTS}/${vendorId}?isFull=false`,receiveProducts));
 	};
 }
 

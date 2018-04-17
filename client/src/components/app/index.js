@@ -1,4 +1,4 @@
-import React, { PureComponent } from "react";
+import React, { Component } from "react";
 import { Link, withRouter } from "react-router-dom";
 import { connect } from "react-redux";
 import {
@@ -19,7 +19,7 @@ import userLinks from "./userLinks";
 import { logout } from "../../actions/auth_actions";
 const { Header, Sider, Content, Footer } = Layout;
 
-class App extends PureComponent {
+class App extends Component {
 	constructor(props) {
 		super(props);
 		this.state = {
@@ -44,10 +44,10 @@ class App extends PureComponent {
 	render() {
 		const { auth, location } = this.props;
 		
-		if(this.props.message)
-		{
-			this.showMessage();
-		}
+		// if(this.props.message)
+		// {
+		// 	this.showMessage();
+		// }
 
 		const userMenu = 
 			(

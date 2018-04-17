@@ -16,11 +16,6 @@ const FormItem = Form.Item;
 function updateProductsToOptions(products)
 {
 	var newProducts = [];
-	products = [
-		{name:"hello"},
-		{name:"fuck"},
-		{name:"me"}
-	];
 
 	products.forEach((vendor,index)=>{
 		newProducts.push({
@@ -34,11 +29,6 @@ function updateProductsToOptions(products)
 function updateVendorsToOptions(vendors)
 {
 	var options = [];
-	vendors = [
-		{name:"hello"},
-		{name:"fuck"},
-		{name:"me"}
-	];
 
 	vendors.forEach((vendor,index)=>{
 		options.push({
@@ -83,7 +73,7 @@ class DeviceForm extends Component {
 	} 
 
 	onInputChange = (e) =>
-	{
+	{ 5
 		this.setState({serial:e.target.value});
 	}
 	
@@ -94,8 +84,14 @@ class DeviceForm extends Component {
 		// load options lazily
 
 		  targetOption.loading = false;
-		  this.props.fetchProducts(targetOption.value)
-		  			.then(targetOption.children = updateProductsToOptions(this.props.products));
+		  console.log(this.props.vendors);
+		  console.log(this.props.vendors[targetOption.value].id);
+		  this.props.fetchProducts(this.props.vendors[targetOption.value].id)
+		  			.then(
+						  targetOption.children = updateProductsToOptions(this.props.products),
+						  console.log("hello")
+						
+						);
 		  this.setState({
 			options: [...this.state.options],
 		  });

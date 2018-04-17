@@ -23,8 +23,11 @@ class DevicesPage extends Component {
 		this.props.fetchDevices();
 	}
 
+	
+
+
 	onDeviceSelect = (selectedDevice) =>
-	{
+	{ 5
 		this.setState({ selectedDevice }); 
 		console.log(selectedDevice);  
 	}

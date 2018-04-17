@@ -1,0 +1,43 @@
+{
+	"users" :[
+		{
+			"customer": true,
+			"email": "hugh@mail.com",
+			"id": 1,
+			"name": "Hugh Laurie",
+			"password": "1212",
+			"userName": "customer",
+			"customerScenarios": [],
+			"devices": []
+		},
+		{
+			"customer": false,
+			"email": "one@mail.com",
+			"id": 2,
+			"name": "Mr Anderson",
+			"password": "1212",
+			"userName": "vendor",
+			"customerScenarios": [],
+			"devices": []
+		}		
+	],
+	"devices":[
+		{
+			"customer_id":1,
+			"id":1,
+			"serial_number":67
+		}
+	],
+	"vendors":[
+		{
+			"id" :1 ,
+			"name" : "Porsche"
+		}
+	],
+	"products":[
+		{
+			"id" :1 ,
+			"vendor_id" : 1
+		}
+	]
+}
