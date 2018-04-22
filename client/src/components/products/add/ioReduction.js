@@ -17,9 +17,10 @@ export function productInputReduction(oldProduct)
 			endpoint:ae.productEP,
 			properties:[]
 		}
-		var i;
 
-		for	( i = 0; i<ae.supportedParametersName.length ;i++)
+		var i = 0;
+		
+		for	( i ; i<ae.supportedParametersName.length ;i++)
 		{
 			newAe.properties[i] = {
 				name:ae.supportedParametersName[i],
@@ -27,13 +28,11 @@ export function productInputReduction(oldProduct)
 				type:ae.types[i],
 				max:ae.max[i],
 				min:ae.min[i],
-				options:[]
+				options:ae.supportedValues[i]
 			}
 
-			ae.supportedValues.forEach(option => {
-				newAe.properties[i].options = option;
-			});
 		}
+		
 
 		if (ae.isEvent) 
 		{

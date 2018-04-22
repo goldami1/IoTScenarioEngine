@@ -92,7 +92,9 @@
                 ],
                 "prodId": 796,
                 "productEP": "fadsf",
-                "supportedParametersName": [],
+                "supportedParametersName": [
+                  "fuck","me"
+                ],
                 "supportedValues":[
                     ["asd","asd"],
                     []
@@ -196,7 +198,9 @@
             ],
             "prodId": 796,
             "productEP": "fadsf",
-            "supportedParametersName": [],
+            "supportedParametersName": [
+              "asdasd","asdas"
+            ],
             "supportedValues":[
                 ["asd","asd"],
                 []

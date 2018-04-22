@@ -16,6 +16,7 @@ import {
 	Tooltip,
 	Collapse
 } from "antd";
+import {isEmpty } from 'lodash';
 const { Panel } = Collapse.Panel;
 const FormItem = Form.Item;
 const { TextArea } = Input;
@@ -37,15 +38,19 @@ const ActionEvent = props => {
 								{singleAe.name
 									? singleAe.name
 									: `New ${props.ae}`}
-								<Icon
-									className="dynamic-delete-button"
-									type="minus-circle-o"
-									onClick={props.handleRemoveAE(
-										aeIndex,
-										props.ae
-									)}
-									style={{ marginLeft: "20px" }}
-								/>
+								{
+									isEmpty(props.product) &&
+									<Icon
+										className="dynamic-delete-button"
+										type="minus-circle-o"
+										onClick={props.handleRemoveAE(
+											aeIndex,
+											props.ae
+										)}
+										style={{ marginLeft: "20px" }}
+									/>
+								}
+
 							</div>
 						}
 					>
@@ -54,7 +59,7 @@ const ActionEvent = props => {
 							tabPosition="top"
 							size="small"
 							type="line"
-							tabBarExtraContent={
+							tabBarExtraContent={isEmpty(props.product) &&
 								<Button
 									onClick={props.handleAddProperty(
 										aeIndex,
@@ -129,19 +134,23 @@ const ActionEvent = props => {
 														{property.name
 															? property.name
 															: `New property`}
-														<Icon
-															className="dynamic-delete-button"
-															type="minus-circle-o"
-															onClick={props.handleRemoveProperty(
-																aeIndex,
-																aePropId,
-																props.ae
-															)}
-															style={{
-																marginLeft:
-																	"20px"
-															}}
-														/>
+														{
+															isEmpty(props.product) &&
+															<Icon
+																className="dynamic-delete-button"
+																type="minus-circle-o"
+																onClick={props.handleRemoveProperty(
+																	aeIndex,
+																	aePropId,
+																	props.ae
+																)}
+																style={{
+																	marginLeft:
+																		"20px"
+																}}
+															/>
+														}
+
 													</div>
 												}
 											>

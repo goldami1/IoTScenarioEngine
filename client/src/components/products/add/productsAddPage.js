@@ -16,7 +16,7 @@ import {
 	Tooltip,
 	Collapse
 } from "antd";
-
+import {isEmpty } from 'lodash';
 import {productInputReduction} from "./ioReduction";
 import { connect } from "react-redux";
 import ContentWrapper from "../../common/ContentWrapper";
@@ -96,54 +96,69 @@ const oldProduct  =    {
 };
 
 
-const newState = productInputReduction(oldProduct);
-
+const emptyProduct = {
+	name: "",
+	description: "",
+	endpoint: "",
+	image: "",
+	actions: [
+		{
+			name: "",
+			description: "",
+			endpoint: "",
+			properties: [
+				{
+					name: "",
+					description: "",
+					type: "",
+					options: []
+				}
+			]
+		},
+	],
+	events: [
+		{
+			name: "",
+			description: "",
+			endpoint: "",
+			properties: [
+				{
+					name: "",
+					description: "",
+					type: "",
+					options: []
+				}
+			]
+		},
+	]
+}
 class ProductsAddPage extends Component {
 	constructor(props) {
 		super(props);
-		this.state = productInputReduction(oldProduct);
-		// this.state = {
-		// 	name: "",
-		// 	description: "",
-		// 	endpoint: "",
-		// 	image: "",
-		// 	actions: [
-		// 		{
-		// 			name: "",
-		// 			description: "",
-		// 			endpoint: "",
-		// 			properties: [
-		// 				{
-		// 					name: "",
-		// 					description: "",
-		// 					type: "",
-		// 					options: []
-		// 				}
-		// 			]
-		// 		},
-		// 	],
-		// 	events: [
-		// 		{
-		// 			name: "",
-		// 			description: "",
-		// 			endpoint: "",
-		// 			properties: [
-		// 				{
-		// 					name: "",
-		// 					description: "",
-		// 					type: "",
-		// 					options: []
-		// 				}
-		// 			]
-		// 		},
-		// 	],
-
-		// 	inputValue: "",
-		// 	inputVisible: false,
-		// 	loading: false
-		// };
+		this.state = {
+			...emptyProduct,
+			inputValue: "",
+			inputVisible: false,
+			loading: false
+		};
 
 
+	}
+
+	componentWillReceiveProps(nextProps) {
+		if ( (this.props.product != nextProps.product))
+		{
+			if ( isEmpty(nextProps.product) )
+			{
+				this.setState(emptyProduct)
+			}else
+			{
+				this.setState(productInputReduction(nextProps.product))
+			}
+			
+		}
+
+	
 	}
 
 	handleChange = info => {
@@ -174,9 +189,12 @@ class ProductsAddPage extends Component {
 	};
 
 	onChange = event => {
-		this.setState({
-			[event.target.name]: event.target.value
-		});
+		if(isEmpty(this.props.product))
+		{
+			this.setState({
+				[event.target.name]: event.target.value
+			});
+		}
 	};
 
 	handleRemoveAE = (aeIndex, ae) => () => {
@@ -204,44 +222,49 @@ class ProductsAddPage extends Component {
 	};
 	
 	handleChangeProperty = (aeIndex, aePropId, ae, isOption) => event => {
-		const value = this.state.inputValue;
-		this.setState({
-			[ae]: this.state[ae].map((singleAe, index) => {
-				var prop;
-				if (index === aeIndex) {
-					prop = singleAe.properties.map((property, pindex) => {
-						if (pindex === aePropId) {
-							if (isOption) {
+		if(isEmpty(this.props.product)){
+			const value = this.state.inputValue;
+			this.setState({
+				[ae]: this.state[ae].map((singleAe, index) => {
+					var prop;
+					if (index === aeIndex) {
+						prop = singleAe.properties.map((property, pindex) => {
+							if (pindex === aePropId) {
+								if (isOption) {
+									return {
+										...property,
+										options: [...property.options, value]
+									};
+								}
 								return {
 									...property,
-									options: [...property.options, value]
+									[event.target.name]: event.target.value
 								};
 							}
-							return {
-								...property,
-								[event.target.name]: event.target.value
-							};
-						}
-						return property;
-					});
-					return {
-						...singleAe,
-						properties: prop
-					};
-				}
-				return singleAe;
-			}),
-			inputValue: ""
-		});
+							return property;
+						});
+						return {
+							...singleAe,
+							properties: prop
+						};
+					}
+					return singleAe;
+				}),
+				inputValue: ""
+			});
+		}
+
 	};
 
 	handleChangeAE = (aeIndex, ae) => event => {
-		const newAE = this.state[ae].map((singleAe, saeIndex) => {
-			if (aeIndex !== saeIndex) return singleAe;
-			return { ...singleAe, [event.target.name]: event.target.value };
-		});
-
-		this.setState({ [ae]: newAE });
+		if(isEmpty(this.props.product)){
+			const newAE = this.state[ae].map((singleAe, saeIndex) => {
+				if (aeIndex !== saeIndex) return singleAe;
+				return { ...singleAe, [event.target.name]: event.target.value };
+			});
+	
+			this.setState({ [ae]: newAE });
+		}
 	};
 
 	handleAddProperty = (aeIndex, ae) => () => {
@@ -393,9 +416,10 @@ class ProductsAddPage extends Component {
 			case "double":
 				return (
 					<div>
-						<FormItem label="Range" {...layout}>
+						<FormItem label="Range" {...layout} disabled={isEmpty(this.props.product)}>
 							<Input.Group size="large">
 								<Input
+									disabled={isEmpty(this.props.product)}
 									style={{ width: "25%" }}
 									placeholder="minimum"
 									name="min"
@@ -407,6 +431,7 @@ class ProductsAddPage extends Component {
 									)}
 								/>
 								<Input
+									disabled={isEmpty(this.props.product)}
 									style={{ width: "25%" }}
 									placeholder="maximum"
 									name="max"
@@ -425,6 +450,9 @@ class ProductsAddPage extends Component {
 				const { inputVisible, inputValue } = this.state;
 				return (
 					<div>
+					{
+						isEmpty(this.props.product) &&
+
 						<FormItem label="Options" {...layout}>
 							{
 								<Button
@@ -440,6 +468,8 @@ class ProductsAddPage extends Component {
 								</Button>
 							}
 						</FormItem>
+					}
+
 
 						<FormItem {...lableLessLayout}>
 							{property.options.map((option, optionId) => {
@@ -447,7 +477,7 @@ class ProductsAddPage extends Component {
 								return (
 									<Tag
 										key={option}
-										closable
+										closable = {isEmpty(this.props.product)}
 										afterClose={this.handleClose(
 											aeIndex,
 											aePropId,
@@ -484,9 +514,12 @@ class ProductsAddPage extends Component {
 	};
 
 	handleRemoveAE = (aeIndex, ae) => () => {
-		this.setState({
-			[ae]: this.state[ae].filter((singleAe, index) => aeIndex !== index)
-		});
+		if(isEmpty(this.props.product)){
+			this.setState({
+				[ae]: this.state[ae].filter((singleAe, index) => aeIndex !== index)
+			});	
+		}
+
 	};
 
 	render() {
@@ -540,6 +573,7 @@ class ProductsAddPage extends Component {
 
 		const Actions = (
 			<ActionEvent
+				product={this.props.product}
 				formItemLayoutWithOutLabel={formItemLayoutWithOutLabel1}
 				formItemLayout={formItemLayout}
 				aeCollection={this.state.actions}
@@ -556,6 +590,7 @@ class ProductsAddPage extends Component {
 
 		const Events = (
 			<ActionEvent
+				product={this.props.product}
 				formItemLayoutWithOutLabel={formItemLayoutWithOutLabel}
 				formItemLayout={formItemLayout}
 				aeCollection={this.state.events}
@@ -581,7 +616,7 @@ class ProductsAddPage extends Component {
 						<Tabs
 							animated={false}
 							defaultActiveKey="1"
-							tabBarExtraContent={
+							tabBarExtraContent={isEmpty(this.props.product) &&
 								<Button.Group>
 									<Button onClick={this.handleAddAE("actions")}>
 										<Icon type="plus" />Add action
@@ -646,22 +681,26 @@ class ProductsAddPage extends Component {
 								{Events}
 							</TabPane>
 						</Tabs>
-						<FormItem {...formItemLayoutWithOutLabel}>
-							<Button
-								loading={this.state.isLoading}
-								type="primary"
-								size="large"
-								height={200}
-								onClick={this.onSubmit}
-								style={{
-									marginTop: "60px",
-									width: "100%",
-									height: "60px"
-								}}
-							>
-								<Icon type="plus" />Submit
-							</Button>
-						</FormItem>
+						{
+							isEmpty(this.props.product) &&
+							<FormItem {...formItemLayoutWithOutLabel}>
+								<Button
+									loading={this.state.isLoading}
+									type="primary"
+									size="large"
+									height={200}
+									onClick={this.onSubmit}
+									style={{
+										marginTop: "60px",
+										width: "100%",
+										height: "60px"
+									}}
+								>
+									<Icon type="plus" />Submit
+								</Button>
+							</FormItem>
+						}
+
 					</Form>
 				</ContentWrapper>
 			</Modal>
