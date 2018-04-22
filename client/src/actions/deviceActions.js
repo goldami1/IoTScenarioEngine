@@ -15,6 +15,8 @@ import {
 import {
 	devices,
 	api,
+	vendors,
+	products,
 	REST_DEVICES,
 	REST_VENDORS,
 	REST_PRODUCTS
@@ -71,7 +73,8 @@ export function fetchDevices() {
 
 export function fetchProducts(vendorId) {
 	return (dispatch, getState) => {
-		return dispatch(getFromApi(FETCH_PRODUCTS,`${REST_PRODUCTS}/${vendorId}?isFull=false`,receiveProducts));
+		// return dispatch(getFromApi(FETCH_PRODUCTS,`${REST_PRODUCTS}/${vendorId}?isFull=false`,receiveProducts));
+		return dispatch(getFromApi(FETCH_PRODUCTS,`${api(products)}/${vendorId}?isFull=false`,receiveProducts));
 	};
 }
 
@@ -86,6 +89,7 @@ export function addDevice(device) {
 
 export function fetchVendors() {
 	return (dispatch, getState) => {
-		dispatch(getFromApi(FETCH_VENDORS,`${REST_VENDORS}`,receiveVendors));
+		// dispatch(getFromApi(FETCH_VENDORS,`${REST_VENDORS}`,receiveVendors));
+		dispatch(getFromApi(FETCH_VENDORS,api(vendors),receiveVendors));
 	};
 }

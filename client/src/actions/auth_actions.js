@@ -3,12 +3,13 @@ import axios from "axios";
 import { isEmpty } from "lodash";
 import setAuthorizationToken from "../utilities/set_auth_token";
 import {setMessage} from "./appActions";
-import { 
+import {
+
 	SET_LOGIN_REQUEST_SENT,
 	SET_LOGIN_REQUEST_DONE,
 	SET_CURRENT_USER 
 } from "./types";
-import { REST_LOGIN } from "./restapi";
+import { REST_LOGIN ,api} from "./restapi";
 
 export function setCurrentUser(user) {
 	return {

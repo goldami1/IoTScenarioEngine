@@ -21,6 +21,7 @@ function updateProductsToOptions(products)
 		newProducts.push({
 			value:index,
 			label:vendor.name,
+			isLeaf: true
 		})
 	});
 	return newProducts;
@@ -45,6 +46,7 @@ class DeviceForm extends Component {
 		super(props);
 		this.state = {
 			options:[],
+			optionToUpadte:{},
 			selectedOptions:[],
 			serial: "",
 			
@@ -56,7 +58,20 @@ class DeviceForm extends Component {
 	}
 
 	componentWillReceiveProps(nextProps) {
-		this.setState({options:updateVendorsToOptions(nextProps.vendors)});
+		if ( this.props.vendors != nextProps.vendors)
+		{
+			this.setState({options:updateVendorsToOptions(nextProps.vendors)});
+		}
+
+		if ( this.props.products != nextProps.products)
+		{
+			const option = this.state.optionToUpadte;
+			option.children = updateProductsToOptions(nextProps.products),
+		  	this.setState({
+				options: [...this.state.options],
+			  });
+			  console.log(this.state);
+		}		
 	}
 	
 	onSubmit = () =>
@@ -73,7 +88,7 @@ class DeviceForm extends Component {
 	} 
 
 	onInputChange = (e) =>
-	{ 5
+	{ 
 		this.setState({serial:e.target.value});
 	}
 	
@@ -83,18 +98,21 @@ class DeviceForm extends Component {
 	
 		// load options lazily
 
-		  targetOption.loading = false;
-		  console.log(this.props.vendors);
-		  console.log(this.props.vendors[targetOption.value].id);
-		  this.props.fetchProducts(this.props.vendors[targetOption.value].id)
-		  			.then(
-						  targetOption.children = updateProductsToOptions(this.props.products),
-						  console.log("hello")
+		targetOption.loading = false;
+		console.log(targetOption);
+		this.setState({optionToUpadte : targetOption});
+		console.log(this.props.vendors[targetOption.value].id);
+		this.props.fetchProducts(this.props.vendors[targetOption.value].id);
+		//   
+		//   this.props.fetchProducts(this.props.vendors[targetOption.value].id)
+		//   			.then(
+		// 				  targetOption.children = updateProductsToOptions(this.props.products),
+		// 				  console.log("hello")
 						
-						);
-		  this.setState({
-			options: [...this.state.options],
-		  });
+		// 				);
+		//   this.setState({
+		// 	options: [...this.state.options],
+		//   });
 
 	  }
 

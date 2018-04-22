@@ -12,7 +12,9 @@ function setMessageCreator(msg) {
 function apiRequest(config,action,type) {
 	return dispatch => {
 		return axios(config).then(
-			res => { dispatch(action(res.data)); },
+			res => { 
+				dispatch(action(res.data)); 
+			},
 			err => {
 				try {
 					dispatch(setMessage({ 

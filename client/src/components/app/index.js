@@ -31,24 +31,20 @@ class App extends Component {
 		this.setState({ collapsed });
 	};
 
-	showMessage = () => {
-		const { content, type } = this.props.message;
-		if (content) {
-			message[type](content);
-		}
-	};
-
 	logout = () =>{ this.props.logout(this.props.history); }
 		
+	componentWillReceiveProps(nextProps) {
+		if(nextProps.message) // show errors when props updates
+		{
+			const { content, type } = nextProps.message;
+			if (content) {
+				message[type](content);
+			}
+		}
+	} 
 	
 	render() {
 		const { auth, location } = this.props;
-		
-		// if(this.props.message)
-		// {
-		// 	this.showMessage();
-		// }
-
 		const userMenu = 
 			(
 				<Menu>
@@ -56,8 +52,8 @@ class App extends Component {
 					<Menu.SubMenu title="SubMenu">
 					<Menu.Item>SubMenuItem</Menu.Item>
 					</Menu.SubMenu>
-			</Menu>)
-		;
+				</Menu>)
+		;	
 		return (
 			<Layout style={{ minHeight: "100vh" }}>
 				<Sider

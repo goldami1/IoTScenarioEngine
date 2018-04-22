@@ -7,13 +7,13 @@ export const devices       = "devices";
 export const vendors       = "vendors";
 export const products      = "products";
 export const scenarios     = "scenarios";
-export const login         = "login";
+export const loginR         = "login";
 
 
 
 
 const API_ = {
-    ip          : "lolcalhost",
+    ip          : "localhost",
     port        : "8080",
     folder      : "Scenario_Engine/webapi",   
 }
@@ -29,7 +29,7 @@ const API = {
 
 
 const _API_ = {
-    ip          : "lolcalhost",
+    ip          : "localhost",
     port        : "8086",
     folder      : "Scenario_Engine/webapi",   
 }
@@ -45,7 +45,7 @@ const _API = {
 
 export function api(endpoint) {
     const api = ( typeof DEBUG === 'undefined' ) ? API : _API;
-    return api.endpoint;
+    return api[endpoint];
 }
 
 const address   = "192.168.1.17";
