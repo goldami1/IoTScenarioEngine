@@ -67,7 +67,7 @@ export function fetchDevices() {
 	return (dispatch, getState) => {
 		const { auth } = getState();
 		// dispatch(getFromApi(FETCH_DEVICES,`${REST_DEVICES}/${auth.id}`,receiveDevices));
-		 dispatch(getFromApi(FETCH_DEVICES,`${api(devices)}/${auth.id}`,receiveDevices));
+		dispatch(getFromApi(FETCH_DEVICES,`${api(devices)}/${auth.id}`,receiveDevices));
 	};
 }
 

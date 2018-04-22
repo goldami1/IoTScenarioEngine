@@ -5,7 +5,9 @@ import { List } from 'antd';
 const DeviceList = props => {
 	const deviceItems = props.devices.map(device => {
 		return (
-			<div style={{
+			<div 
+				key={device.id}
+				style={{
 				width:"200px", 
 				float:"left",
 				marginLeft:"10px",
@@ -24,8 +26,7 @@ const DeviceList = props => {
 
 	return 	(	
 		<div style = {{overflow:"hidden"}} 	>
-	
-			{deviceItems} {deviceItems}{deviceItems} {deviceItems}{deviceItems}{deviceItems}{deviceItems}{deviceItems} 
+			{deviceItems}
 		</div>
 	);
 

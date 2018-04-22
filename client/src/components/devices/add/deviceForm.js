@@ -74,8 +74,13 @@ class DeviceForm extends Component {
 		}		
 	}
 	
-	onSubmit = () =>
+	onSubmit = () => 
 	{
+		var a = {
+			customer_id: this.props.customer,
+			serial_number: this.state.serial,
+			protoDevice:this.props.products[this.state.selectedOptions[1]]
+		};
 		this.props.addDevice({
 			customer_id: this.props.customer,
 			serial_number: this.state.serial,

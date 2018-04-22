@@ -27,7 +27,7 @@ class DevicesPage extends Component {
 
 
 	onDeviceSelect = (selectedDevice) =>
-	{ 5
+	{
 		this.setState({ selectedDevice }); 
 		console.log(selectedDevice);  
 	}

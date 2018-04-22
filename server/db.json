@@ -24,8 +24,141 @@
   "devices": [
     {
       "id": 1,
-      "customer_id": 1,
-      "serial_number": 67
+      "customer_id": 13,
+      "protoDevice": {
+        "actionAndEventList": [
+            {
+                "description": "fasd",
+                "id": 797,
+                "isEvent": false,
+                "max": [
+                    "null",
+                    "44"
+                ],
+                "min": [
+                    "null",
+                    "2"
+                ],
+                "name": "asdfasd",
+                "paramDesc": [
+                    "adsfads",
+                    "asdf"
+                ],
+                "prodId": 796,
+                "productEP": "fadsf",
+                "supportedParametersName": [],
+                "supportedValues":[
+                    ["asd","asd"],
+                    []
+                ],
+                "types": [
+                    "discrete",
+                    "int"
+                ]
+            }
+        ],
+        "actionState": true,
+        "description": "asdf",
+        "endPoint": "asdf",
+        "eventState": true,
+        "id": 796,
+        "name": "asdf",
+        "vendorName": "Ami Ami",
+        "vendor_id": 7
+      },
+      "serial_number": 111
+    },
+    {
+      "id": 2,
+      "customer_id": 13,
+      "protoDevice": {
+        "actionAndEventList": [
+            {
+                "description": "fasd",
+                "id": 797,
+                "isEvent": false,
+                "max": [
+                    "null",
+                    "44"
+                ],
+                "min": [
+                    "null",
+                    "2"
+                ],
+                "name": "asdfasd",
+                "paramDesc": [
+                    "adsfads",
+                    "asdf"
+                ],
+                "prodId": 796,
+                "productEP": "fadsf",
+                "supportedParametersName": [],
+                "supportedValues":[
+                    ["asd","asd"],
+                    []
+                ],
+                "types": [
+                    "discrete",
+                    "int"
+                ]
+            }
+        ],
+        "actionState": true,
+        "description": "asdf",
+        "endPoint": "asdf",
+        "eventState": true,
+        "id": 796,
+        "name": "asdf",
+        "vendorName": "Ami Ami",
+        "vendor_id": 7
+      },
+      "serial_number": 222
+    },
+    {
+      "id": 3,
+      "customer_id": 13,
+      "protoDevice": {
+        "actionAndEventList": [
+            {
+                "description": "fasd",
+                "id": 797,
+                "isEvent": false,
+                "max": [
+                    "null",
+                    "44"
+                ],
+                "min": [
+                    "null",
+                    "2"
+                ],
+                "name": "asdfasd",
+                "paramDesc": [
+                    "adsfads",
+                    "asdf"
+                ],
+                "prodId": 796,
+                "productEP": "fadsf",
+                "supportedParametersName": [],
+                "supportedValues":[
+                    ["asd","asd"],
+                    []
+                ],
+                "types": [
+                    "discrete",
+                    "int"
+                ]
+            }
+        ],
+        "actionState": true,
+        "description": "asdf",
+        "endPoint": "asdf",
+        "eventState": true,
+        "id": 796,
+        "name": "asdf",
+        "vendorName": "Ami Ami",
+        "vendor_id": 7
+      },
+      "serial_number": 333
     }
   ],
   "vendors": [
@@ -42,7 +175,43 @@
     {
       "id": 1,
       "vendor_id": 1,
-      "name":"Carrera GT3"
+      "name":"Carrera GT3",
+      "actionAndEventList": [
+        {
+            "description": "fasd",
+            "id": 797,
+            "isEvent": false,
+            "max": [
+                "null",
+                "44"
+            ],
+            "min": [
+                "null",
+                "2"
+            ],
+            "name": "asdfasd",
+            "paramDesc": [
+                "adsfads",
+                "asdf"
+            ],
+            "prodId": 796,
+            "productEP": "fadsf",
+            "supportedParametersName": [],
+            "supportedValues":[
+                ["asd","asd"],
+                []
+            ],
+            "types": [
+                "discrete",
+                "int"
+            ]
+        }
+    ],
+    "actionState": true,
+    "description": "Car comapny",
+    "endPoint": "porsche.com/",
+    "eventState": true,
+    "vendorName": "Porsche"
     },
     {
       "id": 2,

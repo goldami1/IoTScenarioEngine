@@ -12,10 +12,12 @@ const ProductListItem = props => {
 				cover={<img alt={props.product.name} src="https://os.alipayobjects.com/rmsportal/QBnOOoLaAfKPirc.png" />}
 				// cover={<img alt="example" src={product.picUrl} />}
 			>
-				<Meta
-					title={props.product.name}
-					description={props.product.description}
-				/>
+				<div>
+					<strong>Product :</strong> {`${props.product.name}`}
+				</div>
+				<div>
+					<strong>Description :</strong> {`${props.product.description}`}
+				</div>
 			</Card>
 		</List.Item>
 	);

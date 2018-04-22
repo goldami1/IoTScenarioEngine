@@ -19,8 +19,8 @@ import {
 
 import {productInputReduction} from "./ioReduction";
 import { connect } from "react-redux";
-import ContentWrapper from "../common/ContentWrapper";
-import { addProduct } from "../../actions/productActions";
+import ContentWrapper from "../../common/ContentWrapper";
+import { addProduct } from "../../../actions/productActions";
 import ActionEvent from "./ActionEvent";
 const { Panel } = Collapse.Panel;
 const TabPane = Tabs.TabPane;
@@ -98,7 +98,7 @@ const oldProduct  =    {
 
 const newState = productInputReduction(oldProduct);
 
-class ProductsPage extends Component {
+class ProductsAddPage extends Component {
 	constructor(props) {
 		super(props);
 		this.state = productInputReduction(oldProduct);
@@ -571,96 +571,102 @@ class ProductsPage extends Component {
 		);
 
 		return (
-			<ContentWrapper>
-				<Form>
-					<Tabs
-						animated={false}
-						defaultActiveKey="1"
-						tabBarExtraContent={
-							<Button.Group>
-								<Button onClick={this.handleAddAE("actions")}>
-									<Icon type="plus" />Add action
-								</Button>
-								<Button onClick={this.handleAddAE("events")}>
-									<Icon type="plus" />Add event
-								</Button>
-							</Button.Group>
-						}
-					>
-						<TabPane tab="Base info" key="1">
-							<FormItem label="Name" {...formItemLayout}>
-								<Input
-									placeholder="Product name"
-									name="name"
-									size="large"
-									value={name}
-									onChange={this.onChange}
-								/>
-							</FormItem>
-							<FormItem label="Description" {...formItemLayout}>
-								<TextArea
-									placeholder="Product name"
-									name="description"
-									size="large"
-									value={description}
-									onChange={this.onChange}
-								/>
-							</FormItem>
-
-							<FormItem label="Image" {...formItemLayout}>
-								<Upload
-									showUploadList={false}
-									action="//jsonplaceholder.typicode.com/posts/"
-									name="avatar"
-									listType="picture-card"
-									showUploadList={false}
-									onChange={this.handleChange}
-								>
-									{image ? (
-										<img src={image} alt="" />
-									) : (
-										uploadButton
-									)}
-								</Upload>
-							</FormItem>
-
-							<FormItem label="Endpoint" {...formItemLayout}>
-								<Input
-									placeholder="Endpoint"
-									name="endpoint"
-									size="large"
-									value={endpoint}
-									onChange={this.onChange}
-								/>
-							</FormItem>
-						</TabPane>
-						<TabPane tab="Actions" key="2">
-							{Actions}
-						</TabPane>
-						<TabPane tab="Events" key="3">
-							{Events}
-						</TabPane>
-					</Tabs>
-					<FormItem {...formItemLayoutWithOutLabel}>
-						<Button
-							loading={this.state.isLoading}
-							type="primary"
-							size="large"
-							height={200}
-							onClick={this.onSubmit}
-							style={{
-								marginTop: "60px",
-								width: "100%",
-								height: "60px"
-							}}
+			<Modal
+				width = {1000}
+				visible={this.props.visible}
+				onCancel={this.props.onCancel}
+			>
+				<ContentWrapper>
+					<Form>
+						<Tabs
+							animated={false}
+							defaultActiveKey="1"
+							tabBarExtraContent={
+								<Button.Group>
+									<Button onClick={this.handleAddAE("actions")}>
+										<Icon type="plus" />Add action
+									</Button>
+									<Button onClick={this.handleAddAE("events")}>
+										<Icon type="plus" />Add event
+									</Button>
+								</Button.Group>
+							}
 						>
-							<Icon type="plus" />Submit
-						</Button>
-					</FormItem>
-				</Form>
-			</ContentWrapper>
+							<TabPane tab="Base info" key="1">
+								<FormItem label="Name" {...formItemLayout}>
+									<Input
+										placeholder="Product name"
+										name="name"
+										size="large"
+										value={name}
+										onChange={this.onChange}
+									/>
+								</FormItem>
+								<FormItem label="Description" {...formItemLayout}>
+									<TextArea
+										placeholder="Product name"
+										name="description"
+										size="large"
+										value={description}
+										onChange={this.onChange}
+									/>
+								</FormItem>
+
+								<FormItem label="Image" {...formItemLayout}>
+									<Upload
+										showUploadList={false}
+										action="//jsonplaceholder.typicode.com/posts/"
+										name="avatar"
+										listType="picture-card"
+										showUploadList={false}
+										onChange={this.handleChange}
+									>
+										{image ? (
+											<img src={image} alt="" />
+										) : (
+											uploadButton
+										)}
+									</Upload>
+								</FormItem>
+
+								<FormItem label="Endpoint" {...formItemLayout}>
+									<Input
+										placeholder="Endpoint"
+										name="endpoint"
+										size="large"
+										value={endpoint}
+										onChange={this.onChange}
+									/>
+								</FormItem>
+							</TabPane>
+							<TabPane tab="Actions" key="2">
+								{Actions}
+							</TabPane>
+							<TabPane tab="Events" key="3">
+								{Events}
+							</TabPane>
+						</Tabs>
+						<FormItem {...formItemLayoutWithOutLabel}>
+							<Button
+								loading={this.state.isLoading}
+								type="primary"
+								size="large"
+								height={200}
+								onClick={this.onSubmit}
+								style={{
+									marginTop: "60px",
+									width: "100%",
+									height: "60px"
+								}}
+							>
+								<Icon type="plus" />Submit
+							</Button>
+						</FormItem>
+					</Form>
+				</ContentWrapper>
+			</Modal>
 		);
 	}
 }
 
-export default connect(null, { addProduct })(ProductsPage);
+export default connect(null, { addProduct })(ProductsAddPage);

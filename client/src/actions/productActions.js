@@ -5,7 +5,11 @@ import {
 	FETCH_PRODUCTS,RECEIVE_PRODUCTS
 } from "./types";
 
-import { REST_VENDORS ,REST_PRODUCTS} from "./restapi";
+import { 
+	api,
+	products,
+	REST_VENDORS ,REST_PRODUCTS
+} from "./restapi";
 
 import { setMessage ,getFromApi,postToApi} from "./appActions";
 
@@ -21,7 +25,8 @@ export function receiveProducts(products) {
 export function fetchProducts() {
 	return (dispatch, getState) => {
 		const { auth } = getState();
-		dispatch(getFromApi(FETCH_PRODUCTS,`${REST_PRODUCTS}/${auth.id}`,receiveProducts));
+		// dispatch(getFromApi(FETCH_PRODUCTS,`${REST_PRODUCTS}/${auth.id}`,receiveProducts));
+		dispatch(getFromApi(FETCH_PRODUCTS,`${api(products)}/${auth.id}`,receiveProducts));
 	};
 }
 export function addProduct(product) {

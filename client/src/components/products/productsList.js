@@ -5,17 +5,25 @@ import { List } from 'antd';
 const ProductList = props => {
 	const productItems = props.products.map(product => {
 		return (
-			<ProductListItem
-				onProductClick={props.onProductClick}
+			<div 
 				key={product.id}
-				product={product}
-			/>
+				style={{
+					width:"200px", 
+					float:"left",
+					marginLeft:"10px",
+					marginTop:"10px"
+			}}>
+				<ProductListItem
+					onProductClick={props.onProductClick}
+					key={product.id}
+					product={product}
+				/>
+			</div>
 		);
 	});
 
 	return  (
-		<List style = {{overflow:"hidden"}}
-			grid={{ gutter: 16, xs: 1, sm: 2, md: 4, lg: 4, xl: 6, xxl: 3 }}>
+		<List style = {{overflow:"hidden"}} >
 			{productItems}
 		</List>);
 };

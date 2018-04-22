@@ -9,15 +9,18 @@ const DeviceListItem = ({ device, onDeviceSelect }) => {
 				style= {{borderRadius:"5px", overflow:"hidden"}}
 				onClick ={ () => { onDeviceSelect(device) } }
 				hoverable
-				cover={<img alt={device.name} src="https://os.alipayobjects.com/rmsportal/QBnOOoLaAfKPirc.png" />}
+				cover={<img alt={device.protoDevice.name} src="https://os.alipayobjects.com/rmsportal/QBnOOoLaAfKPirc.png" />}
 				// cover={<img alt="example" src={device.picUrl} />}
 			>
-				<Meta
-					// title={device.name}
-					// description={device.description}
-					title="Fuck me title"
-					description="{device.description}"
-				/>
+				<div>
+					<strong>Product :</strong> {`${device.protoDevice.vendorName}/${device.protoDevice.name}`}
+				</div>
+				<div>
+					<strong>Description :</strong> {`${device.protoDevice.description}`}
+				</div>
+				<div>
+					<strong>Serial :</strong> {`${device.serial_number}`}
+				</div>
 			</Card>
 	);
 };
