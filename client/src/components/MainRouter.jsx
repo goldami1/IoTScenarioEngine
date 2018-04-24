@@ -6,11 +6,12 @@ import LoginPage from "./login/loginForm";
 import RegisterPage from "./register/";
 import { Link, withRouter } from "react-router-dom";
 import DevicesPage from "./devices/devicePage";
-import ScenarioForm from "./scenarios/add/";
+import ScenariosPage from "./scenarios/scenariosPage";
 import ProductsPage from "./products/productsPage";
 
 import requireAuth from "../utilities/require_auth";
 import NoMatch from "./nomatch/";
+import { scenarios } from "../actions/restapi";
 
 class MainRouter extends PureComponent {
 	constructor(props) {
@@ -32,14 +33,14 @@ class MainRouter extends PureComponent {
 					<Route
 						exact
 						path="/scenarios"
-						component={ScenarioForm}
+						component={requireAuth(ScenariosPage)}
 					/>
 					<Route
 						exact
 						path="/devices"
 						component={requireAuth(DevicesPage)}
 					/>
-					<Route path="/products" component={ProductsPage} />
+					<Route path="/products" component={requireAuth(ProductsPage)} />
 					<Route component={NoMatch} />
 				</Switch>
 			</App>

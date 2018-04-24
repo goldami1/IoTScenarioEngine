@@ -2,6 +2,7 @@ import React from "react";
 import { connect } from "react-redux";
 import { withRouter } from "react-router-dom";
 import { setMessage } from "../actions/appActions";
+import {isEmpty} from 'lodash';
 
 export default function(ComposedComponent) {
 	class Authenticate extends React.Component {
