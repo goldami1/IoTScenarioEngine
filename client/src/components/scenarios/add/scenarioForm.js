@@ -140,7 +140,7 @@ const FormItem = Form.Item;
 const getItems = (count, offset) =>
 	Array.from({ length: count }, (v, k) => k).map(k => ({
 		id: `item-${k + offset}`,
-		content: `item ${k + offset}`
+		content: "שדג"
 	}));
 
 class ScenarioForm extends Component {

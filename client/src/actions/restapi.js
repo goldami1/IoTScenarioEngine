@@ -48,7 +48,7 @@ export function api(endpoint) {
     return api[endpoint];
 }
 
-const address   = "192.168.1.17";
+const address   = "localhost";
 const port      = "8080";
 const folder    = "Scenario_Engine/webapi";
 

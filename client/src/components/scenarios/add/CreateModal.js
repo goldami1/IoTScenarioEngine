@@ -39,12 +39,12 @@ const formItemLayout = {
 };
 
 function mapDevicesToDropdown (devices,type) {
-	return _.map(devices, (device) =>{
+	return _.map(devices, (device,index) =>{
 		return {
 			label:device.name,
-			value:device.id,
-			children :_.map(device[`${type}s`],(ae)=>{
-				return {value:ae.id,label:ae.name}
+			value:index,
+			children :_.map(device[`${type}s`],(ae,index)=>{
+				return {value:index,label:ae.name}
 			})
 		}	
 	});
@@ -54,6 +54,7 @@ class CreateModal extends Component {
 	constructor(props) {
 		super(props);
 		this.state = {
+			aeProp:[],
 			triggerTypeOptions: [
 				{
 					value: "device",
@@ -89,8 +90,12 @@ class CreateModal extends Component {
 		}
 	 }
 
-	onChange = event => {
-		this.setState({ [event.target.name]: event.target.value });
+	onChange = (event) => {
+		// this.setState({ aeProp[2] : event.target.value });
+		const props = this.state.aeProp;
+		props[event.target.name] =  event.target.value;
+		this.setState ({aeProp:props});
+		console.log(this.state)
 	};
 
 	onChangeOther = state => data => {	
@@ -98,19 +103,19 @@ class CreateModal extends Component {
 	};
 
 
-	getInput = (prop) => {
+	getInput = (prop,index) => {
 		switch (prop.type) {
 			case 'int':
-				return <InputNumber min={prop.min} max={prop.max} step={1} />
+				return <InputNumber  onChange={this.onChange} value={ this.state.aeProp[index] } name={index} min={prop.min} max={prop.max} step={1} />
 			case 'double':
-				return   <InputNumber min={prop.min} max={prop.max} step={0.1} />
+				return   <InputNumber onChange={this.onChange} value={ this.state.aeProp[index] } name={index} min={prop.min} max={prop.max} step={0.1} />
 			case 'string':
-				return <Input placeholder="Basic usage" />
+				return <Input onChange={this.onChange} value={ this.state.aeProp[index] } name={index}  placeholder="Basic usage" />
 			case 'discrete':
-				const options = _.map(prop.options,(option) => {
-					return <RadioButton value={option.id}>{option.name}</RadioButton>
+				const options = _.map(prop.options,(option,index) => {
+					return <RadioButton value={index}>{option}</RadioButton>
 				})
-				return <RadioGroup /*defaultValue="a"*/ >{options}</RadioGroup>		
+				return <RadioGroup   onChange={this.onChange} value={ this.state.aeProp[index] } name={index} >{options}</RadioGroup>		
 			default:
 				return "error";
 		}
@@ -118,11 +123,11 @@ class CreateModal extends Component {
 	aeForm = () =>{
 		const [deviceId,aeId] = this.state.deviceProps;
 		const type = `${this.props.type}s`;
-		const device = _.find(this.props.devices,{id:deviceId});
-		const ae = _.find(device[type],{id:aeId});
-		const fields = _.map(ae.properties,(prop)=>{
-			return <FormItem label={prop.name} {...formItemLayout}>
-				{this.getInput(prop)}
+		const device = this.props.devices[deviceId]
+		const ae = device[type][aeId];
+		const fields = _.map(ae.properties,(prop,index)=>{
+			return <FormItem label={prop.name} extra={prop.description} {...formItemLayout}>
+				{this.getInput(prop,index)}
 			</FormItem>
 		})
 		
@@ -204,7 +209,8 @@ class CreateModal extends Component {
 						day:this.state.day,
 						date:this.state.date,
 						time:this.state.time,
-						deviceProps:this.state.deviceProps
+						device:this.state.deviceProps,
+						props:this.state.aeProp
 					})}
 			>
 				{this.props.type == "event" ? (

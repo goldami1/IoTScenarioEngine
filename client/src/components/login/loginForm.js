@@ -35,8 +35,8 @@ class LoginForm extends Component {
 	onSubmit(event) {
 		event.preventDefault();
 		var user  = {
-			userName: this.state.username,
-			password: this.state.password
+			UserName: this.state.username,
+			Password: this.state.password
 		};
 		console.log(user);
 
