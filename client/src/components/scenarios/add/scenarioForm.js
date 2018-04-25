@@ -193,15 +193,15 @@ class ScenarioForm extends Component {
 		);
 	};
 
-	addAE = (type,ae) => () => {
-		ae.id= 999;
+	addAE = (ae) => () => {
+		ae.id = this.state
 		console.log(this.state);
 		console.log(Array.isArray(this.state.lists));
 
 		this.setState({
 
 			lists: this.state.lists.map((singleAe, index) => {
-				if (index === type) {
+				if (index === ae.type) {
 					return [...singleAe,ae];
 				}
 				return singleAe;

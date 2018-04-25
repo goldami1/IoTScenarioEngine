@@ -204,13 +204,11 @@ class CreateModal extends Component {
 				title={`Create a new ${this.props.type}`}
 				okText="Create"
 				onCancel={this.props.onCancel}
-				onOk={this.props.onOk(this.props.type== "event" ? 0 : 1,
+				onOk={this.props.onOk(
 					{
-						day:this.state.day,
-						date:this.state.date,
-						time:this.state.time,
-						device:this.state.deviceProps,
-						props:this.state.aeProp
+						device	:this.state.deviceProps,
+						props	:this.state.aeProp,
+						type	:this.props.type
 					})}
 			>
 				{this.props.type == "event" ? (
