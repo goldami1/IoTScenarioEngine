@@ -8,11 +8,8 @@ const ScenariosList = props => {
 			<div 
 				key={scenario.id}
 				style={{
-					width:"200px", 
-					float:"left",
-					marginLeft:"10px",
 					marginTop:"10px"
-			}}>
+				}}>
 				<ScenariosListItem
 					onScenarioClick={props.onScenarioClick}
 					key={scenario.id}

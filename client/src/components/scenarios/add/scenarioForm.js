@@ -1,6 +1,10 @@
 import React, { Component } from "react";
+import { connect } from "react-redux";
 import { Link, withRouter } from "react-router-dom";
 import ContentWrapper from "../../common/ContentWrapper";
+import { fetchDevices } from "../../../actions/deviceActions";
+import {deviceInputReduction} from "./ioReduction"
+import { addScenario ,fetchScenarios} from "../../../actions/scenarioActions";
 import CreateModal from "./CreateModal";
 import _ from 'lodash';
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
@@ -151,10 +155,29 @@ class ScenarioForm extends Component {
 				getItems(4, 80),
 				getItems(1, 100)
 			],
+			actionDevices:[],
+			eventDevices:[],
 			inventoryType: "event",
 			modalVisible: false
 		};
+
+
+	
 	}
+	componentDidMount() {
+		this.props.fetchDevices();
+	}
+
+	componentWillReceiveProps(nextProps) {
+
+		if(this.props !== nextProps) {
+		  this.setState({
+			actionDevices:deviceInputReduction(nextProps.devices,'actions'),
+			eventDevices:deviceInputReduction(nextProps.devices,'events'),
+		  });
+		}
+	 }
+
 
 	onDragEnd = result => {
 		if (!result.destination) {
@@ -280,7 +303,7 @@ class ScenarioForm extends Component {
 
 
 									<CreateModal
-										devices={this.state.inventoryType == "event" ? events : actions}
+										devices={this.state.inventoryType == "event" ? this.state.eventDevices : this.state.actionDevices}
 										type={this.state.inventoryType}
 										visible={this.state.modalVisible}
 										onCancel={this.onModalCancel}
@@ -303,4 +326,12 @@ class ScenarioForm extends Component {
 	}
 }
 
-export default withRouter(ScenarioForm);
+
+function mapStateToProps({devices}) {
+	return {
+		devices: devices.devices
+	};
+}
+
+export default connect(mapStateToProps, { fetchDevices,addScenario })(withRouter(ScenarioForm));
+

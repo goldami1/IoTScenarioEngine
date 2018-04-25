@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { fetchScenarios } from "../../actions/scenarioActions";
+import { fetchScenarios ,} from "../../actions/scenarioActions";
+import { fetchDevices ,} from "../../actions/deviceActions";
 import { Link } from "react-router-dom";
 import { withRouter } from "react-router-dom";
 import ContentWrapper from "../common/ContentWrapper";
@@ -13,18 +14,19 @@ class ScenariosPage extends Component {
 		super(props);
 		this.state = {
 			modalVisble:false,
-			selectedProduct:{}
+			selectedScenario:{}
 		};
 	}
 
     componentDidMount() {
-        this.props.fetchScenarios();
+		this.props.fetchScenarios();
+		this.props.fetchDevices();
     }
 
-	onAddProductClick = () => {
+	onAddScenarioClick = () => {
 		this.setState({
 			modalVisble: true,
-			selectedProduct:{}
+			selectedScenario:{}
 		});
 		console.log(this.state);
 	}
@@ -32,14 +34,14 @@ class ScenariosPage extends Component {
 	onModalCancel = () => {
 		this.setState({
 			modalVisble: false,
-			selectedProduct:{}
+			selectedScenario:{}
 		})
 	}
 	
-	onProductClick = (product) => {
+	onScenarioClick = (scenario) => {
 		this.setState({
 			modalVisble: true,
-			selectedProduct:product
+			selectedProduct:scenario
 		});
 		console.log(this.state);		
 	}
@@ -48,7 +50,7 @@ class ScenariosPage extends Component {
 		return (
 			<ContentWrapper size="small">
 				<Button 
-					onClick={this.onAddProductClick}
+					onClick={this.onAddScenarioClick}
 					style={{marginBottom:"20px"}} 
 				>
 					Add scenario 
@@ -60,7 +62,7 @@ class ScenariosPage extends Component {
 				
 				<ScenarioForm
 					visible={this.state.modalVisble}
-					product={this.state.selectedProduct}
+					product={this.state.selectedScenario}
 					onCancel={this.onModalCancel}
 				/>
 			</ContentWrapper> 
@@ -75,5 +77,5 @@ function mapStateToProps({ scenarios }) {
 	};
 }
 
-export default connect(mapStateToProps, { fetchScenarios })(withRouter(ScenariosPage));
+export default connect(mapStateToProps, { fetchScenarios,fetchDevices })(withRouter(ScenariosPage));
 

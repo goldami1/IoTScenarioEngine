@@ -7,6 +7,7 @@ const ScenariosListItem = props => {
 	return (
 		<List.Item  >
 			<Card
+				style ={{width:"100%"}}
 				onClick ={ () => { props.onScenarioClick(props.scenario) } }
 				hoverable
 			>
