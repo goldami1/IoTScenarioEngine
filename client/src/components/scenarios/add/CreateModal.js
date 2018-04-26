@@ -94,7 +94,7 @@ class CreateModal extends Component {
 		// this.setState({ aeProp[2] : event.target.value });
 		const props = this.state.aeProp;
 		props[event.target.name] =  event.target.value;
-		this.setState ({aeProp:props});
+		this.setState ({aeProp:props}); 
 		console.log(this.state)
 	};
 
@@ -106,9 +106,9 @@ class CreateModal extends Component {
 	getInput = (prop,index) => {
 		switch (prop.type) {
 			case 'int':
-				return <InputNumber  onChange={this.onChange} value={ this.state.aeProp[index] } name={index} min={prop.min} max={prop.max} step={1} />
+				return <InputNumber  onChange={ (e) => this.onChange({target:{name:index,value:e}}) } value={ this.state.aeProp[index] } name={index} min={prop.min} max={prop.max} step={1} />
 			case 'double':
-				return   <InputNumber onChange={this.onChange} value={ this.state.aeProp[index] } name={index} min={prop.min} max={prop.max} step={0.1} />
+				return   <InputNumber onChange={ (e) => this.onChange({target:{name:index,value:e}})} value={ this.state.aeProp[index] } name={index} min={prop.min} max={prop.max} step={0.1} />
 			case 'string':
 				return <Input onChange={this.onChange} value={ this.state.aeProp[index] } name={index}  placeholder="Basic usage" />
 			case 'discrete':
@@ -117,7 +117,7 @@ class CreateModal extends Component {
 				})
 				return <RadioGroup   onChange={this.onChange} value={ this.state.aeProp[index] } name={index} >{options}</RadioGroup>		
 			default:
-				return "error";
+				return "error"; 
 		}
 	}
 	aeForm = () =>{
@@ -188,15 +188,20 @@ class CreateModal extends Component {
 	render() {
 
 		const deviceForm = (
-			<div>
-				<FormItem label={this.props.type} {...formItemLayout}>
+			
+				!_.isEmpty(this.state.options) &&
+
+				<div>
+					<FormItem label={this.props.type} {...formItemLayout}>
 					<Cascader 
 						options={this.state.options} 
 						value={this.state.deviceProps} 
 						onChange={this.onChangeOther('deviceProps')}/>
-				</FormItem>
-				{this.state.deviceProps && this.aeForm()}
-			</div>
+					</FormItem>
+					{this.state.deviceProps && this.aeForm()}
+				</div>
+			
+
 		);
 		return (
 			<Modal
@@ -208,7 +213,7 @@ class CreateModal extends Component {
 					{
 						device	:this.state.deviceProps,
 						props	:this.state.aeProp,
-						type	:this.props.type
+						type	:this.props.type == "event" ? 0 : 1
 					})}
 			>
 				{this.props.type == "event" ? (

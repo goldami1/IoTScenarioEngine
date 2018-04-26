@@ -41,9 +41,14 @@ class ScenariosPage extends Component {
 	onScenarioClick = (scenario) => {
 		this.setState({
 			modalVisble: true,
-			selectedProduct:scenario
+			selectedScenario:scenario
 		});
 		console.log(this.state);		
+	}
+
+	onSubmit = (scenario) => {
+		console.log(scenario);
+		this.onModalCancel();
 	}
 
 	render() {
@@ -62,8 +67,10 @@ class ScenariosPage extends Component {
 				
 				<ScenarioForm
 					visible={this.state.modalVisble}
-					product={this.state.selectedScenario}
+					preview={this.state.selectedScenario}
 					onCancel={this.onModalCancel}
+					okText="Add scenario"
+					onOk={this.onSubmit}
 				/>
 			</ContentWrapper> 
 

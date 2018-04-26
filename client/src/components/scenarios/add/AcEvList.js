@@ -20,6 +20,8 @@ const getItemStyle = (isDragging, draggableStyle) => ({
 		...draggableStyle
 });
 const getListStyle = isDraggingOver => ({
+		width:"240px",
+		minHeight:"200px",
 		background: isDraggingOver ? "#e6f7ff" : "white",
 		padding:'5px'
 });
@@ -45,7 +47,7 @@ const AcEvList = props => {
 			</Dropdown>
 		)
 	}
-
+ 
 	const aeTitle = (list,item) => (
 		<div style={{background:'inherit'}}>
 			<Avatar 
@@ -61,7 +63,7 @@ const AcEvList = props => {
 	);
 
 	return (
-		<Droppable droppableId={`${props.id}`}>
+		<Droppable droppableId={`${props.id}`} >
 			{(provided, snapshot) => (
 				<div
 					ref={provided.innerRef}
@@ -70,6 +72,7 @@ const AcEvList = props => {
 				<Card bodyStyle={{padding:15}}>
 					{props.lists[props.id].map((item, index) => (
 						<Draggable
+							isDragDisabled={props.preview}
 							key={item.id}
 							draggableId={item.id}
 							index={index}
@@ -88,7 +91,7 @@ const AcEvList = props => {
 										<Card 
 											style={{background:'inherit'}}
 											bodyStyle={{padding:15}} title={aeTitle(props.id,item)}
-											extra=  { dropDown(props.id,index)}
+											extra=  {!props.preview && dropDown(props.id,index)}
 										>
 											<Card.Meta description="This is the description"/>
 												

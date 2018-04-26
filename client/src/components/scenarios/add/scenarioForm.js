@@ -24,6 +24,7 @@ import {
 	Layout
 } from "antd";
 
+//move from here
 
 
 // const demo data
@@ -140,21 +141,23 @@ const FormItem = Form.Item;
 const getItems = (count, offset) =>
 	Array.from({ length: count }, (v, k) => k).map(k => ({
 		id: `item-${k + offset}`,
-		content: "שדג"
+		content: `item-${k + offset}`
 	}));
 
+var num
 class ScenarioForm extends Component {
 	constructor(props) {
 		super(props);
 		this.state = {
 			lists: [
-				getItems(2, 0),
-				getItems(1, 20),
-				getItems(2, 40),
-				getItems(3, 60),
-				getItems(4, 80),
-				getItems(1, 100)
+				[],
+				[],
+				[],
+				[],
+				[],
+				[]
 			],
+			aeCounter:0,
 			actionDevices:[],
 			eventDevices:[],
 			inventoryType: "event",
@@ -172,8 +175,8 @@ class ScenarioForm extends Component {
 
 		if(this.props !== nextProps) {
 		  this.setState({
-			actionDevices:deviceInputReduction(nextProps.devices,'actions'),
-			eventDevices:deviceInputReduction(nextProps.devices,'events'),
+			actionDevices:getDeviceWith(deviceInputReduction(nextProps.devices,'actions'),'actions'),
+			eventDevices:getDeviceWith(deviceInputReduction(nextProps.devices,'events'),'events'),
 		  });
 		}
 	 }
@@ -194,21 +197,18 @@ class ScenarioForm extends Component {
 	};
 
 	addAE = (ae) => () => {
-		ae.id = this.state
-		console.log(this.state);
-		console.log(Array.isArray(this.state.lists));
-
+		ae.id = `${this.state.aeCounter}`;
 		this.setState({
-
+			aeCounter:ae.id + 1,
 			lists: this.state.lists.map((singleAe, index) => {
-				if (index === ae.type) {
+				if (index === ae.type) 
+				{
 					return [...singleAe,ae];
 				}
 				return singleAe;
 			})
 		});
-		console.log(this.state);
-		console.log(Array.isArray(this.state.lists));
+		this.onModalCancel();
 	};
 
 	removeAe = (list,id)=> {
@@ -255,6 +255,10 @@ class ScenarioForm extends Component {
 		this.setState({ modalVisible: false });
 	};
 
+	createScenario = () =>
+	{
+		return "fuck";
+	}
 	render() {
 
 		const aeMenu = {
@@ -271,15 +275,16 @@ class ScenarioForm extends Component {
 				width = {1300}
 				visible={this.props.visible}
 				onCancel={this.props.onCancel}
+				onOk={() =>{this.props.onOk(this.createScenario())} }
 			>
 				<DragDropContext onDragEnd={this.onDragEnd}>
 					<Layout style={{ margin: "40px", borderRadius: "5px solid " }}>
 						<Content
 							style={{ background: "#fff", padding: "10px", overflow: "hidden" }}
 						>
-							<AcEvList style={{float:'left'}} lists={this.state.lists} id={2} aeMenu={aeMenu}/>
-							<AcEvList style={{float:'left'}} lists={this.state.lists} id={3} aeMenu={aeMenu}/>
-							<AcEvList style={{float:'left'}} lists={this.state.lists} id={4} aeMenu={aeMenu}/>
+							<AcEvList style={{float:'left'}} lists={this.state.lists} id={2} aeMenu={aeMenu} preview={ !_.isEmpty(this.props.preview)}/>
+							<AcEvList style={{float:'left'}} lists={this.state.lists} id={3} aeMenu={aeMenu} preview={ !_.isEmpty(this.props.preview)}/>
+							<AcEvList style={{float:'left'}} lists={this.state.lists} id={4} aeMenu={aeMenu} preview={ !_.isEmpty(this.props.preview)}/>
 						</Content>
 						<Sider
 							width={270}
@@ -298,7 +303,10 @@ class ScenarioForm extends Component {
 								>
 									<Menu.Item key="event" >Events</Menu.Item>
 									<Menu.Item key="action">Actions</Menu.Item>
-									<Menu.Item key="addAe" ><Icon type="plus" /></Menu.Item>
+									{	
+										_.isEmpty(this.props.preview) &&
+										<Menu.Item key="addAe" ><Icon type="plus" /></Menu.Item>
+									}
 								</Menu>
 
 
@@ -312,6 +320,7 @@ class ScenarioForm extends Component {
 
 
 									<AcEvList
+										preview={ !_.isEmpty(this.props.preview)}
 										aeMenu={aeMenu}	
 										lists={this.state.lists}
 										id={this.state.inventoryType == "event" ? 0 : 1}
