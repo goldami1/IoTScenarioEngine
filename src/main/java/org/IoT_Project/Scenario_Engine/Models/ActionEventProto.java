@@ -3,6 +3,7 @@ package org.IoT_Project.Scenario_Engine.Models;
 import java.util.LinkedList;
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
@@ -18,8 +19,10 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
+
 import org.hibernate.annotations.CollectionId;
 import org.hibernate.annotations.GenericGenerator;
+
 
 import com.google.gson.annotations.SerializedName;
 
@@ -70,7 +73,7 @@ public class ActionEventProto {
 													//I M P L E M E N T        I T   IN HIBERNATE!!!!!!
 	
 	@SerializedName("supportedValues")/* Such like Low, Medium, High */
-	@OneToMany
+	@OneToMany(cascade= {CascadeType.ALL})
 	private List<utils.TypesCont> supportedValues;
 													//I M P L E M E N T        I T   IN HIBERNATE!!!!!!
 	@ElementCollection(fetch = FetchType.EAGER)
@@ -191,6 +194,14 @@ public class ActionEventProto {
 	public void setSupportedValues(List<utils.TypesCont> supportedValues) {
 		this.supportedValues = supportedValues;
 	}
+	
+//	public List<utils.TypesCont> getSupportedValues() {
+//		return supportedValues;
+//	}
+//
+//	public void setSupportedValues(List<utils.TypesCont> supportedValues) {
+//		this.supportedValues = supportedValues;
+//	}
 	
 
 	public List<String> getMin() {
