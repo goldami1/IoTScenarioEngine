@@ -11,12 +11,8 @@ import {
 } from "./types";
 import { login ,api} from "./restapi";
 
-export function setCurrentUser(user,history) {
-	if (user.type =="enduser") {
-		history.push("/scenarios");
-	}else{
-		history.push('/products');
-	}
+export function setCurrentUser(user) {
+
 	return {
 		type: SET_CURRENT_USER,
 		user
@@ -60,10 +56,14 @@ export function loginRequest(data,history) {
 							id: res.data.id,
 							type: (res.data.isCustomer  || res.data.customer) ?'enduser':'vendor'
 						};
-						
+						if (user.type =="enduser") {
+							history.push("/scenarios");
+						}else{
+							history.push('/products');
+						}
 						localStorage.setItem("user", JSON.stringify(user));
 						setAuthorizationToken(user);
-						dispatch(setCurrentUser(user,history));
+						dispatch(setCurrentUser(user));
 						
 					} catch (e) {console.error(`LOGIN_ERROR_RES: ${e}`);}
 
