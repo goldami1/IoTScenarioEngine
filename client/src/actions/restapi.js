@@ -1,14 +1,15 @@
 import { getFromApi } from "./appActions";
 
 
-const DEBUG = true;
-
+// const DEBUG = true;
+export const addCustomer   = "addCustomer";
+export const addVendor      = "addVendor";
 export const devices       = "devices";
 export const vendors       = "vendors";
 export const products      = "products";
 export const scenarios     = "scenarios";
-export const loginR         = "login";
-
+export const login         = "login";
+export const postProduct = "postProduct";
 
 
 
@@ -19,6 +20,9 @@ const API_ = {
 }
 const API = {
     login       : `http://${API_.ip}:${API_.port}/${API_.folder}/customer`,
+    vendor      : `http://${API_.ip}:${API_.port}/${API_.folder}/vendor`,
+    postProduct : `http://${API_.ip}:${API_.port}/${API_.folder}/vendor`,
+    customer    : `http://${API_.ip}:${API_.port}/${API_.folder}/customer`,
     addCustomer : `http://${API_.ip}:${API_.port}/${API_.folder}/customer/new`,
     addVendor   : `http://${API_.ip}:${API_.port}/${API_.folder}/vendor/new`,
     devices     : `http://${API_.ip}:${API_.port}/${API_.folder}/customer/device`,
@@ -57,7 +61,7 @@ const customer 	= `${base}/customer`;
 const vendor 	= `${base}/vendor`;
 
 export const REST_LOGIN 	    = customer;
-export const addCustomer 	    = `${customer}/new`;
+// export const addCustomer 	    = `${customer}/new`;
 export const addvendor 		    = `${vendor}/new`;
 export const REST_DEVICES 	    = `${customer}/device`;
 export const REST_VENDORS 	    = `${customer}/vendors`;

@@ -416,10 +416,10 @@ class ProductsAddPage extends Component {
 			case "double":
 				return (
 					<div>
-						<FormItem label="Range" {...layout} disabled={isEmpty(this.props.product)}>
+						<FormItem label="Range" {...layout}>
 							<Input.Group size="large">
 								<Input
-									disabled={isEmpty(this.props.product)}
+									disabled={!isEmpty(this.props.product)}
 									style={{ width: "25%" }}
 									placeholder="minimum"
 									name="min"
@@ -431,7 +431,7 @@ class ProductsAddPage extends Component {
 									)}
 								/>
 								<Input
-									disabled={isEmpty(this.props.product)}
+									disabled={!isEmpty(this.props.product)}
 									style={{ width: "25%" }}
 									placeholder="maximum"
 									name="max"

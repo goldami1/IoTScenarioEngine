@@ -1,4 +1,4 @@
-import { SET_CURRENT_USER ,SET_LOGIN_REQUEST_SENT,SET_LOGIN_REQUEST_DONE} from "../actions/types";
+import { SET_CURRENT_USER ,SET_LOGIN_REQUEST_SENT,SET_LOGIN_REQUEST_DONE, USER_CREATED} from "../actions/types";
 import isEmpty from "lodash/isEmpty";
 
 const initialState = {
@@ -8,7 +8,8 @@ const initialState = {
 	password:'',
 	name:'',
 	type:'',
-	isLoading:false
+	isLoading:false,
+	userCreated:false,
 };
 
 export default (state = initialState, action = {}) => {
@@ -28,6 +29,10 @@ export default (state = initialState, action = {}) => {
 				isLoading:true
 			}
 			break;
+		case USER_CREATED:
+			return {
+				userCreated:true
+			};
 		case SET_LOGIN_REQUEST_DONE:
 			return {
 				isLoading:false

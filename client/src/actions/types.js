@@ -1,7 +1,8 @@
 export const SET_CURRENT_USER       = "SET_CURRENT_USER";
 export const SET_LOGIN_REQUEST_SENT = "SET_LOGIN_REQUEST_SENT";
 export const SET_LOGIN_REQUEST_DONE = "SET_LOGIN_REQUEST_DONE";
-
+export const SIGNUP_USER = "SIGNUP_USER";
+export const USER_CREATED = "USER_CREATED";
 
 
 export const FETCH_DEVICES          = "FETCH_DEVICES";

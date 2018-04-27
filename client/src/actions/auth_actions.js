@@ -9,7 +9,7 @@ import {
 	SET_LOGIN_REQUEST_DONE,
 	SET_CURRENT_USER 
 } from "./types";
-import { REST_LOGIN ,api} from "./restapi";
+import { login ,api} from "./restapi";
 
 export function setCurrentUser(user) {
 	return {
@@ -39,10 +39,10 @@ export function logout(history) {
 	};
 }
 
-export function login(data,history) {
+export function loginRequest(data,history) {
 	return dispatch => {
 		dispatch(loginRequestSent());
-		return axios.post( REST_LOGIN , data).then(
+		return axios.post( api(login) , data).then(
 				res => {
 					var user;
 					dispatch(loginRequestReceived()); 

@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { Link, withRouter } from "react-router-dom";
-import { userSignupRequest } from "../../actions/signup_actions";
+import { userSignupRequest } from "../../actions/signupActions";
 import { connect } from "react-redux";
 
 import { Form ,Radio,Input, Button} from 'antd';
@@ -41,42 +41,26 @@ class RegisterForm extends Component {
 
 		console.log(this.props);
 
-		var user;
-		if (this.state.isVendor) {
-			user = {
-				isCustomer: false,
-				UserName: this.state.username,
-				Name: this.state.companyName,
-				Password: this.state.password,
-				Email: this.state.email
-			};
-		} else {
-			user = {
-				isCustomer: true,
-				UserName: this.state.username,
-				Name: `${this.state.firstName}  ${this.state.lastName}`,
-				Password: this.state.password,
-				Email: this.state.email
-			};
-		}
+		var user = {
+			isCustomer: !this.state.isVendor,
+			userName: this.state.username,
+			name: this.state.isVendor ? this.state.companyName : `${this.state.firstName} ${this.state.lastLame}`,
+			description:this.state.description,
+			password: this.state.password,
+			email: this.state.email
+		};
+
 		console.log("signup");
+		console.log(this.state);
 		console.log(user);
-		this.props.userSignupRequest(user).then(
-			res => this.props.history.push("/login"),
-			err => {
-				this.setState({
-					// error: err.response.data.error,
-					isLoading: false
-				});
-			}
-		);
+		this.props.userSignupRequest(user);
 	}
 
 	render() {
 		const vendorForm = (
 			<div>
 				<FormItem label="Comapny name">
-					<Input value={this.state.comapnyName} name="comapnyName" onChange={this.onChange}/>
+					<Input value={this.state.companyName} name="companyName" onChange={this.onChange}/>
 				</FormItem>
 				<FormItem label="Description">
 					<TextArea value={this.state.description} name="description" onChange={this.onChange}/>

@@ -8,6 +8,7 @@ import {
 import { 
 	api,
 	products,
+	postProduct,
 	REST_VENDORS ,REST_PRODUCTS
 } from "./restapi";
 
@@ -33,7 +34,7 @@ export function addProduct(product) {
 	return (dispatch, getState) => {
 		const { auth } = getState();
 		product.vendorName = auth.name;
-		dispatch(postToApi(ADD_PRODUCT,`${REST_VENDORS}/${auth.id}`,receiveProducts,product))
+		dispatch(postToApi(ADD_PRODUCT,`${api(postProduct)}/${auth.id}`,receiveProducts,product))
 	};
 }
 

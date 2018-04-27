@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { login } from "../../actions/auth_actions";
+import { loginRequest } from "../../actions/auth_actions";
 import { Link } from "react-router-dom";
 import { withRouter } from "react-router-dom";
 import CardWrapper from "../common/CardWrapper";
@@ -35,12 +35,12 @@ class LoginForm extends Component {
 	onSubmit(event) {
 		event.preventDefault();
 		var user  = {
-			UserName: this.state.username,
-			Password: this.state.password
+			userName: this.state.username,
+			password: this.state.password
 		};
 		console.log(user);
 
-		this.props.login(user,this.props.history)
+		this.props.loginRequest(user,this.props.history)
 	}
 
 	handleSubmit = e => {
@@ -135,5 +135,5 @@ function mapStateToProps({ auth }) {
 	};
 }
 // export default connect(null, mapDispatchToProps)(LoginForm);
-export default connect(mapStateToProps, { login })(withRouter(Form.create()(LoginForm)));
+export default connect(mapStateToProps, { loginRequest })(withRouter(Form.create()(LoginForm)));
 // export default LoginForm;
