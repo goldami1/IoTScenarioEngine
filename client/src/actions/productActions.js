@@ -7,9 +7,9 @@ import {
 
 import { 
 	api,
-	products,
-	postProduct,
-	REST_VENDORS ,REST_PRODUCTS
+	endpoints,
+	REST_VENDORS ,
+	REST_PRODUCTS
 } from "./restapi";
 
 import { setMessage ,getFromApi,postToApi} from "./appActions";
@@ -27,14 +27,15 @@ export function fetchProducts() {
 	return (dispatch, getState) => {
 		const { auth } = getState();
 		// dispatch(getFromApi(FETCH_PRODUCTS,`${REST_PRODUCTS}/${auth.id}`,receiveProducts));
-		dispatch(getFromApi(FETCH_PRODUCTS,`${api(products)}/${auth.id}`,{res:receiveProducts}));
+		dispatch(getFromApi(FETCH_PRODUCTS,`${api(endpoints.product)}/${auth.id}`,{res:receiveProducts}));
 	};
 }
+
 export function addProduct(product) {
 	return (dispatch, getState) => {
 		const { auth } = getState();
 		product.vendorName = auth.name;
-		dispatch(postToApi(ADD_PRODUCT,`${api(postProduct)}/${auth.id}`,{res:receiveProducts},product))
+		dispatch(postToApi(ADD_PRODUCT,`${api(endpoints.product)}/${auth.id}`,{res:receiveProducts},product))
 	};
 }
 

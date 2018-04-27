@@ -2,16 +2,17 @@ import { getFromApi } from "./appActions";
 
 
 // const DEBUG = true;
-export const addCustomer   = "addCustomer";
-export const addVendor      = "addVendor";
-export const devices       = "devices";
-export const vendors       = "vendors";
-export const products      = "products";
-export const scenarios     = "scenarios";
-export const login         = "login";
-export const postProduct = "postProduct";
 
-
+export const endpoints = {
+    addCustomer : "addCustomer",
+    addVendor   : "addVendor",
+    device      : "device",
+    vendor      : "vendor",
+    vendors     : "vendors",
+    scenario    : "scenario",
+    login       : "login",
+    product     : "product"
+}
 
 const API_ = {
     ip          : "192.168.1.12",
@@ -21,14 +22,13 @@ const API_ = {
 const API = {
     login       : `http://${API_.ip}:${API_.port}/${API_.folder}/customer`,
     vendor      : `http://${API_.ip}:${API_.port}/${API_.folder}/vendor`,
-    postProduct : `http://${API_.ip}:${API_.port}/${API_.folder}/vendor`,
     customer    : `http://${API_.ip}:${API_.port}/${API_.folder}/customer`,
     addCustomer : `http://${API_.ip}:${API_.port}/${API_.folder}/customer/new`,
     addVendor   : `http://${API_.ip}:${API_.port}/${API_.folder}/vendor/new`,
-    devices     : `http://${API_.ip}:${API_.port}/${API_.folder}/customer/device`,
+    device     : `http://${API_.ip}:${API_.port}/${API_.folder}/customer/device`,
     vendors     : `http://${API_.ip}:${API_.port}/${API_.folder}/customer/vendors`,
-    products    : `http://${API_.ip}:${API_.port}/${API_.folder}/vendor/product`,
-    scenarios   : `http://${API_.ip}:${API_.port}/${API_.folder}/customer/scenario/`
+    product    : `http://${API_.ip}:${API_.port}/${API_.folder}/vendor/product`,
+    scenario   : `http://${API_.ip}:${API_.port}/${API_.folder}/customer/scenario/`
 }
 
 
@@ -39,12 +39,14 @@ const _API_ = {
 }
 const _API = {
     login       : `http://${_API_.ip}:${_API_.port}/${_API_.folder}/customer`,
+    vendor      : `http://${_API_.ip}:${_API_.port}/${_API_.folder}/vendor`,
+    customer    : `http://${_API_.ip}:${_API_.port}/${_API_.folder}/customer`,
     addCustomer : `http://${_API_.ip}:${_API_.port}/${_API_.folder}/customer/new`,
     addVendor   : `http://${_API_.ip}:${_API_.port}/${_API_.folder}/vendor/new`,
-    devices     : `http://${_API_.ip}:${_API_.port}/${_API_.folder}/customer/device`,
+    device     : `http://${_API_.ip}:${_API_.port}/${_API_.folder}/customer/device`,
     vendors     : `http://${_API_.ip}:${_API_.port}/${_API_.folder}/customer/vendors`,
-    products    : `http://${_API_.ip}:${_API_.port}/${_API_.folder}/vendor/product`,
-    scenarios   : `http://${_API_.ip}:${_API_.port}/${_API_.folder}/customer/scenario/`
+    product    : `http://${_API_.ip}:${_API_.port}/${_API_.folder}/vendor/product`,
+    scenario   : `http://${_API_.ip}:${_API_.port}/${_API_.folder}/customer/scenario/`
 }
 
 export function api(endpoint) {

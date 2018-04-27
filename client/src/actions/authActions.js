@@ -9,7 +9,11 @@ import {
 	SET_LOGIN_REQUEST_DONE,
 	SET_CURRENT_USER 
 } from "./types";
-import { login ,api} from "./restapi";
+
+import { 
+	endpoints ,
+	api
+} from "./restapi";
 
 export function setCurrentUser(user) {
 
@@ -43,7 +47,7 @@ export function logout(history) {
 export function loginRequest(data,history) {
 	return dispatch => {
 		dispatch(loginRequestSent());
-		return axios.post( api(login) , data).then(
+		return axios.post( api(endpoints.login) , data).then(
 				res => {
 					var user;
 					dispatch(loginRequestReceived()); 

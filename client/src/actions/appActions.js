@@ -20,7 +20,7 @@ function apiRequest(config,action,type) {
 			res => {
 				if(isFunction(action.res))
 				{
-					dispatch(action.res(res.data)); 
+					return dispatch(action.res(res.data)); 
 				}
 			},
 			err => {

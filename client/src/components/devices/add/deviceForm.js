@@ -48,7 +48,7 @@ class DeviceForm extends Component {
 			options:[],
 			optionToUpadte:{},
 			selectedOptions:[],
-			serial: "",
+			serial: 0,
 			
 		};
 	}
@@ -76,14 +76,9 @@ class DeviceForm extends Component {
 	
 	onSubmit = () => 
 	{
-		var a = {
-			customer_id: this.props.customer,
-			serial_number: this.state.serial,
-			protoDevice:this.props.products[this.state.selectedOptions[1]]
-		};
 		this.props.addDevice({
 			customer_id: this.props.customer,
-			serial_number: this.state.serial,
+			serial_number: parseInt(this.state.serial),
 			protoDevice:this.props.products[this.state.selectedOptions[1]]
 		})
 	}

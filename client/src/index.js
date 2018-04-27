@@ -27,7 +27,7 @@ if (localStorage.user) {
 	const user = JSON.parse(localStorage.user);
 	setAuthorizationToken(user);
 	store.dispatch(setCurrentUser(user));
-	store.dispatch(fetchDevices());
+	// store.dispatch(fetchDevices());
 	// store.dispatch(fetchProducts());
 	// store.dispatch(fetchSenarios());
 }
