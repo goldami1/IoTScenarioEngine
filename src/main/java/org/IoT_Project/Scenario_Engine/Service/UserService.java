@@ -19,11 +19,13 @@ public class UserService {
 
 	public Customer addCustomer(User i_user) throws Exception {
 		Customer cust = new Customer(i_user);
+		cust.setCustomer(true);
 		return cust;
 	}
 
 	public Vendor addVendor(Vendor i_user) throws Exception {
 		Vendor vendor = new Vendor(i_user);
+
 		return vendor;
 	}
 }

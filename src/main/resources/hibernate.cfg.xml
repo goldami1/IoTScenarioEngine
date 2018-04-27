@@ -7,7 +7,7 @@
     <session-factory>
     
         <property name="hibernate.connection.driver_class">com.mysql.jdbc.Driver</property>
-        <property name="hibernate.connection.url">jdbc:mysql://mtatest.ctssrz2bfct5.us-east-2.rds.amazonaws.com:3306/new_scenario_engine</property>
+        <property name="hibernate.connection.url">jdbc:mysql://mtatest.ctssrz2bfct5.us-east-2.rds.amazonaws.com:3306/scenginev1</property>
         <property name="hibernate.connection.username">scengine</property>
         <property name="hibernate.connection.password">mtaAmiRomaGalGil</property>
 

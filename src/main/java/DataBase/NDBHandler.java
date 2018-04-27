@@ -654,20 +654,17 @@ public class NDBHandler implements IDBHandler {
 		Query<Device> query = m_Session.createQuery("FROM Device WHERE customer_id = :userid", Device.class);
 		query.setParameter("userid", i_UserID);
 		List<Device> tmpres = query.getResultList();
-		
-		if(tmpres.size()>0)
-		{
-			res = tmpres;
-		}
+		res = tmpres;
 		
 		
 		if(res.size()==0)
 		{
 			m_Session.close();
-			throw new Exception("No devices found for user id:"+i_UserID+"!");
 		}
-		
-		m_Session.getTransaction().commit();
+		else
+		{
+			m_Session.getTransaction().commit();
+		}
 		m_Session.close();
 		
 		return new LinkedList<>(res);

@@ -31,6 +31,7 @@ import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
+import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
@@ -178,10 +179,13 @@ public class Customer {
 	public Response addCustomer(User i_user)
 	{
 		try {
-			org.IoT_Project.Scenario_Engine.Models.Customer userToAdd = us.addCustomer(i_user);
-			NDBHandler.getInstance().addCustomer(userToAdd);
-			org.IoT_Project.Scenario_Engine.Models.Customer userAdded = NDBHandler.getInstance().getCustomer(i_user.getUserName(), i_user.getPassword());
-			return Response.status(Status.CREATED).entity(userAdded).build();
+				org.IoT_Project.Scenario_Engine.Models.Customer userToAdd = us.addCustomer(i_user);
+				NDBHandler.getInstance().addCustomer(userToAdd);
+				org.IoT_Project.Scenario_Engine.Models.Customer userAdded = NDBHandler.getInstance().getCustomer(i_user.getUserName(), i_user.getPassword());
+				return Response.status(Status.CREATED).entity(userAdded).build();
+			
+			
+						
 		}
 		catch(Exception ex)
 		{

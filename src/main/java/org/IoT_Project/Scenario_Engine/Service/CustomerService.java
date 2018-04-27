@@ -79,8 +79,6 @@ public class CustomerService {
 	public List<Device> fetchDevices(short i_user) throws Exception {
 			List<Device> res = null;
 			res =NDBHandler.getInstance().getDevices(i_user);
-			if(res==null)
-				throw new Exception("No devices found for user "+i_user);
 			return res;
 	}
 
