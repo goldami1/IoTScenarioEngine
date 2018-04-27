@@ -67,14 +67,14 @@ export function fetchDevices() {
 	return (dispatch, getState) => {
 		const { auth } = getState();
 		// dispatch(getFromApi(FETCH_DEVICES,`${REST_DEVICES}/${auth.id}`,receiveDevices));
-		dispatch(getFromApi(FETCH_DEVICES,`${api(devices)}/${auth.id}`,receiveDevices));
+		dispatch(getFromApi(FETCH_DEVICES,`${api(devices)}/${auth.id}`,{res:receiveDevices}));
 	};
 }
 
 export function fetchProducts(vendorId) {
 	return (dispatch, getState) => {
 		// return dispatch(getFromApi(FETCH_PRODUCTS,`${REST_PRODUCTS}/${vendorId}?isFull=false`,receiveProducts));
-		return dispatch(getFromApi(FETCH_PRODUCTS,`${api(products)}/${vendorId}?isFull=false`,receiveProducts));
+		return dispatch(getFromApi(FETCH_PRODUCTS,`${api(products)}/${vendorId}?isFull=false`,{res:receiveProducts}));
 	};
 }
 
@@ -82,7 +82,7 @@ export function fetchProducts(vendorId) {
 export function addDevice(device) {
 	return (dispatch, getState) => {
 		const { auth } = getState();
-		dispatch(postToApi(ADD_DEVICE,`${REST_DEVICES}/${auth.id}`,receiveDevices,device))
+		dispatch(postToApi(ADD_DEVICE,`${REST_DEVICES}/${auth.id}`,{res:receiveDevices},device))
 	};
 }
 
@@ -90,6 +90,6 @@ export function addDevice(device) {
 export function fetchVendors() {
 	return (dispatch, getState) => {
 		// dispatch(getFromApi(FETCH_VENDORS,`${REST_VENDORS}`,receiveVendors));
-		dispatch(getFromApi(FETCH_VENDORS,api(vendors),receiveVendors));
+		dispatch(getFromApi(FETCH_VENDORS,api(vendors),{res:receiveVendors}));
 	};
 }

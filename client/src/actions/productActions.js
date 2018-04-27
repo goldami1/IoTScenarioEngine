@@ -27,14 +27,14 @@ export function fetchProducts() {
 	return (dispatch, getState) => {
 		const { auth } = getState();
 		// dispatch(getFromApi(FETCH_PRODUCTS,`${REST_PRODUCTS}/${auth.id}`,receiveProducts));
-		dispatch(getFromApi(FETCH_PRODUCTS,`${api(products)}/${auth.id}`,receiveProducts));
+		dispatch(getFromApi(FETCH_PRODUCTS,`${api(products)}/${auth.id}`,{res:receiveProducts}));
 	};
 }
 export function addProduct(product) {
 	return (dispatch, getState) => {
 		const { auth } = getState();
 		product.vendorName = auth.name;
-		dispatch(postToApi(ADD_PRODUCT,`${api(postProduct)}/${auth.id}`,receiveProducts,product))
+		dispatch(postToApi(ADD_PRODUCT,`${api(postProduct)}/${auth.id}`,{res:receiveProducts},product))
 	};
 }
 

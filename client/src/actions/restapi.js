@@ -14,7 +14,7 @@ export const postProduct = "postProduct";
 
 
 const API_ = {
-    ip          : "localhost",
+    ip          : "192.168.1.12",
     port        : "8080",
     folder      : "Scenario_Engine/webapi",   
 }

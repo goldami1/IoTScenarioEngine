@@ -1,4 +1,11 @@
-import { SET_CURRENT_USER ,SET_LOGIN_REQUEST_SENT,SET_LOGIN_REQUEST_DONE, USER_CREATED} from "../actions/types";
+import { 
+	SET_CURRENT_USER ,
+	SET_LOGIN_REQUEST_SENT,
+	SET_LOGIN_REQUEST_DONE, 
+	USER_CREATED, 
+	USER_CREATION_FAILED,
+    USER_CREATION_REQUEST
+} from "../actions/types";
 import isEmpty from "lodash/isEmpty";
 
 const initialState = {
@@ -31,8 +38,22 @@ export default (state = initialState, action = {}) => {
 			break;
 		case USER_CREATED:
 			return {
-				userCreated:true
+				userCreated:true,
+				isLoading:false
 			};
+			break;
+		case USER_CREATION_FAILED:
+			return {
+				userCreated:false,
+				isLoading:false,
+			};
+			break;
+		case USER_CREATION_REQUEST:
+			return {
+				userCreated:false,
+				isLoading:true,
+			};
+			break;
 		case SET_LOGIN_REQUEST_DONE:
 			return {
 				isLoading:false

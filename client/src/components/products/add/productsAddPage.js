@@ -352,8 +352,9 @@ class ProductsAddPage extends Component {
 				opts_arr = [];
 				property.options.map((option)=>{
 					opts_arr.push(option!=null ? option : "")
-				})
-				supportedValues.push(opts_arr);
+				});
+				// supportedValues.push(opts_arr);
+				supportedValues.push({types:opts_arr});
 				supportedParametersName.push(property.name!=null ? property.name : "");
 				types.push(property.type!=null ? property.type : "");
 				paramDescription.push(property.description!=null ? property.description : "");
@@ -375,6 +376,10 @@ class ProductsAddPage extends Component {
 				}
 			)
 		});
+
+		console.log(actionEvents);
+		console.log(actionEvents);
+		console.log(actionEvents);
 	}
 	actions_eventsToActionEventLists = () =>
 	{

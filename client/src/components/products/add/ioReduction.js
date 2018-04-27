@@ -28,7 +28,8 @@ export function productInputReduction(oldProduct)
 				type:ae.types[i],
 				max:ae.max[i],
 				min:ae.min[i],
-				options:ae.supportedValues[i]
+				options:ae.supportedValues[i].types
+				// options:ae.supportedValues[i]
 			}
 
 		}

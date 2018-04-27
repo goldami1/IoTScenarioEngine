@@ -1,4 +1,4 @@
-import { isEmpty } from "lodash";
+import { isEmpty , isFunction} from "lodash";
 import { SET_MESSAGE } from "./types";
 import axios from "axios";
 
@@ -10,12 +10,24 @@ function setMessageCreator(msg) {
 }
 
 function apiRequest(config,action,type) {
+	
 	return dispatch => {
+		if(isFunction(action.pre))
+		{
+			dispatch(action.pre()); 
+		}
 		return axios(config).then(
-			res => { 
-				dispatch(action(res.data)); 
+			res => {
+				if(isFunction(action.res))
+				{
+					dispatch(action.res(res.data)); 
+				}
 			},
 			err => {
+				if(isFunction(action.err))
+				{
+					dispatch(action.err()); 
+				}
 				try {
 					dispatch(setMessage({ 
 						content	: err.response.data.description ,

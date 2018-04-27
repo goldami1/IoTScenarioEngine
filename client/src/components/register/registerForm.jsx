@@ -99,15 +99,21 @@ class RegisterForm extends Component {
 					<FormItem label="Password">
 						<Input  type="password" value={this.state.password} name="password" onChange={this.onChange}/>
 					</FormItem>
-				
-					<Button 
-						style={{width:"100%"}}
-						type="primary"
-						disabled={this.state.isLoading}
-						onClick={this.onSubmit}
-					>
-						Register
-					</Button>
+
+					<FormItem>
+						<Button
+							size="large"
+							type="primary"
+							htmlType="submit"
+							className="login-form-button"
+							style={{width:"100%"}}
+							loading={this.props.isLoading}
+							onClick={this.onSubmit}
+						>
+							Register
+						</Button>
+					</FormItem>
+					
 
 					<p style={{textAlign:"center", marginTop:"10px"}}><Link to="/login" > Have a user <strong>Login</strong> </Link></p>
 						
@@ -117,5 +123,11 @@ class RegisterForm extends Component {
 	}
 }
 
+function mapStateToProps({ auth }) {
+	return {
+		isLoading:auth.isLoading
+	};
+}
+
 // export default RegisterForm;
-export default connect(null, { userSignupRequest })(withRouter(RegisterForm));
+export default connect(mapStateToProps, { userSignupRequest })(withRouter(RegisterForm));

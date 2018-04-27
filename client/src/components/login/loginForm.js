@@ -105,7 +105,7 @@ class LoginForm extends Component {
 							/>
 						)}
 					</FormItem>
-					<FormItem>
+				<FormItem>	
 						<Button
 							type="primary"
 							htmlType="submit"
