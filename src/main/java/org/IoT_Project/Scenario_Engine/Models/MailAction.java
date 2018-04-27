@@ -6,23 +6,35 @@ import java.util.List;
 import java.util.Properties;
 import javax.mail.*;
 import javax.mail.internet.*;
+
+import utils.TypesCont;
+
 import javax.activation.*;
 
 public class MailAction extends Action{
 
-
+	
 	static ActionEventProto mailActionProto = new ActionEventProto((short)0,
 																  "Email",
 																  "Sending mail with subjected Scenario/Action/Event details",
 																  new LinkedList<String>(Arrays.asList("STRING", "STRING")),
-																  null,
+																  new LinkedList<utils.TypesCont>(Arrays.asList(
+																			new utils.TypesCont(null, new LinkedList<String>(Arrays.asList("banani", "banoni"))),
+																			new utils.TypesCont(null, new LinkedList<String>(Arrays.asList("banani", "banoni")))
+																			)),																  
 																  new LinkedList<String>(Arrays.asList("Email-Address", "Message")),
-																  null,
-																  null,
-																  null,
+																  new LinkedList<String>(Arrays.asList("dec1", "desc2")),
+																  new LinkedList<String>(Arrays.asList("min1","min1")),
+																  new LinkedList<String>(Arrays.asList("max1","max2")),
 																  (short)-1,
-																  null,
+																  "EmailEndPoint",
 																  false);
+	
+//	new LinkedList<utils.TypesCont>(Arrays.asList(
+//			new utils.TypesCont(null, new LinkedList<String>(Arrays.asList("banani", "banoni"))),
+//			new utils.TypesCont(null, new LinkedList<String>(Arrays.asList("banani", "banoni")))
+//			))
+	
 	public MailAction()
 	{
 		super();

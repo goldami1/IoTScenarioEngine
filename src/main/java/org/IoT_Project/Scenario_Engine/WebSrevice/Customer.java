@@ -200,14 +200,15 @@ public class Customer {
 	{
 		try {
 			LinkedList<Pair<Short, String>> vendors_lst = NDBHandler.getInstance().getVendors();
-//			LinkedList<tmpContainers.VenNameIDContainer> formattedVenLST = new LinkedList<tmpContainers.VenNameIDContainer>();
+			LinkedList<tmpContainers.VenNameIDContainer> formattedVenLST = new LinkedList<tmpContainers.VenNameIDContainer>();
 
-//			for(Pair<Short, String> elem:vendors_lst)
-//			{
-//				formattedVenLST.add(new tmpContainers.VenNameIDContainer(elem.getValue(), elem.getKey()));
-//			}
+			for(Pair<Short, String> elem:vendors_lst)
+			{
+				formattedVenLST.add(new tmpContainers.VenNameIDContainer(elem.getValue(), elem.getKey()));
+			}
 					
-		 	return Response.status(Status.OK).entity(vendors_lst).build();
+		 	//return Response.status(Status.OK).entity(vendors_lst).build();
+			return Response.status(Status.OK).entity(formattedVenLST).build();
 		}
 		catch(Exception ex)
 		{

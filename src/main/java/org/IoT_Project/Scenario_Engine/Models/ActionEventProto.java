@@ -26,6 +26,8 @@ import org.hibernate.annotations.GenericGenerator;
 
 import com.google.gson.annotations.SerializedName;
 
+import utils.TypesCont;
+
 @Entity
 @Table (name = "AEPROTOS")
 public class ActionEventProto {
@@ -72,10 +74,13 @@ public class ActionEventProto {
 	private List<String> types;
 													//I M P L E M E N T        I T   IN HIBERNATE!!!!!!
 	
+	@OneToMany
+	@JoinTable(name = "AEPS_SUPPORTEDVALUES", joinColumns=@JoinColumn(name = "ae_id"),
+	inverseJoinColumns=@JoinColumn(name = "typescont_id"))
 	@SerializedName("supportedValues")/* Such like Low, Medium, High */
-	@OneToMany(cascade= {CascadeType.ALL})
-	private List<utils.TypesCont> supportedValues;
-													//I M P L E M E N T        I T   IN HIBERNATE!!!!!!
+	private List<TypesCont> supportedValues;
+
+	//I M P L E M E N T        I T   IN HIBERNATE!!!!!!
 	@ElementCollection(fetch = FetchType.EAGER)
 	@JoinTable(name = "AEPARAMS_MIN", joinColumns = @JoinColumn(name = "ae_id"))
 	@GenericGenerator(name = "hilo-gen", strategy = "sequence")
@@ -186,12 +191,12 @@ public class ActionEventProto {
 	public void setDescription(String description) {
 		this.description = description;
 	}
-
-	public List<utils.TypesCont> getSupportedValues() {
+	
+	public List<TypesCont> getSupportedValues() {
 		return supportedValues;
 	}
 
-	public void setSupportedValues(List<utils.TypesCont> supportedValues) {
+	public void setSupportedValues(List<TypesCont> supportedValues) {
 		this.supportedValues = supportedValues;
 	}
 	

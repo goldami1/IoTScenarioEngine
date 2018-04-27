@@ -17,13 +17,18 @@ public class VendorService {
 	}
 
 	public  List<Product> addProduct(Product i_product) throws Exception{
+		List<Product> res = null;
 		Product newProduct = new Product(i_product);
 		if(NDBHandler.getInstance().addProduct(newProduct))
 		{
-				return NDBHandler.getInstance().getProducts(newProduct.getVendor_id());
+				res = NDBHandler.getInstance().getProducts(newProduct.getVendor_id());
+				return res;
 		}
 		else
+		{
+			NDBHandler.getInstance().CloseSession();
 			throw new Exception("no User");
+		}
 	}
 
 

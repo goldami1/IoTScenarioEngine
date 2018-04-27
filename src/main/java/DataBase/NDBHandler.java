@@ -20,8 +20,11 @@ import org.IoT_Project.Scenario_Engine.Models.User;
 import org.IoT_Project.Scenario_Engine.Models.Vendor;
 import org.eclipse.persistence.internal.jaxb.many.MapEntry;
 import org.hibernate.query.Query;
+import org.hibernate.resource.transaction.spi.TransactionStatus;
+
 import javafx.util.*;
 import tmpContainers.ProdNameIDContainer;
+import utils.TypesCont;
 
 import javax.persistence.TypedQuery;
 import javax.persistence.criteria.CriteriaBuilder;
@@ -88,7 +91,10 @@ public class NDBHandler implements IDBHandler {
 		query.setParameter("userpass", i_UserPassword);
 		List<User> res = query.getResultList();
 		
+		if(m_Session.getTransaction().getStatus().equals(TransactionStatus.ACTIVE))
+		{
 		m_Session.getTransaction().commit();
+		}
 		m_Session.close();
 		
 		return res.size()>0;
@@ -112,7 +118,10 @@ public class NDBHandler implements IDBHandler {
 		
 		try
 		{
-		m_Session.getTransaction().commit();
+			if(m_Session.getTransaction().getStatus().equals(TransactionStatus.ACTIVE))
+			{
+			m_Session.getTransaction().commit();
+			}
 		}catch(ConstraintViolationException e) {throw new Exception("Can't create a user with existing email / username");}
 		m_Session.close();
 		return true;
@@ -146,7 +155,10 @@ public class NDBHandler implements IDBHandler {
 		
 		try
 		{
-		m_Session.getTransaction().commit();
+			if(m_Session.getTransaction().getStatus().equals(TransactionStatus.ACTIVE))
+			{
+			m_Session.getTransaction().commit();
+			}
 		}catch(ConstraintViolationException e) {throw new Exception("Can't create a user with existing email / username");}
 		m_Session.close();
 		return true;
@@ -204,7 +216,10 @@ public class NDBHandler implements IDBHandler {
 			throw new Exception(i_username + "user couldn't be found!");
 		}
 		
+		if(m_Session.getTransaction().getStatus().equals(TransactionStatus.ACTIVE))
+		{
 		m_Session.getTransaction().commit();
+		}
 		m_Session.close();
 		
 		return res.get(0);
@@ -231,7 +246,10 @@ public class NDBHandler implements IDBHandler {
 			throw new Exception(i_username + "user couldn't be found!");
 		}
 		
+		if(m_Session.getTransaction().getStatus().equals(TransactionStatus.ACTIVE))
+		{
 		m_Session.getTransaction().commit();
+		}
 		m_Session.close();
 		
 		return res.get(0);
@@ -257,7 +275,10 @@ public class NDBHandler implements IDBHandler {
 			throw new Exception("a customer with id:"+cust_id+" couldn't be found!");
 		}
 		
+		if(m_Session.getTransaction().getStatus().equals(TransactionStatus.ACTIVE))
+		{
 		m_Session.getTransaction().commit();
+		}
 		m_Session.close();
 		
 		return res.get(0);
@@ -294,8 +315,10 @@ public class NDBHandler implements IDBHandler {
 			throw new Exception("No vendors found!");
 		}
 		
+		if(m_Session.getTransaction().getStatus().equals(TransactionStatus.ACTIVE))
+		{
 		m_Session.getTransaction().commit();
-		m_Session.close();
+		}
 		
 		return res;
 	}
@@ -321,7 +344,10 @@ public class NDBHandler implements IDBHandler {
 			throw new Exception(i_username + "user (vendor) couldn't be found!");
 		}
 		
+		if(m_Session.getTransaction().getStatus().equals(TransactionStatus.ACTIVE))
+		{
 		m_Session.getTransaction().commit();
+		}
 		m_Session.close();
 		
 		return res.get(0);
@@ -347,7 +373,10 @@ public class NDBHandler implements IDBHandler {
 			throw new Exception("a customer (vendor) with id:"+vendor_id+" couldn't be found!");
 		}
 		
+		if(m_Session.getTransaction().getStatus().equals(TransactionStatus.ACTIVE))
+		{
 		m_Session.getTransaction().commit();
+		}
 		m_Session.close();
 		
 		return res.get(0);
@@ -363,13 +392,23 @@ public class NDBHandler implements IDBHandler {
 		for(ActionEventProto aep : i_product.getActionAndEventList())
 		{
 			aep.setProdId(i_product.getId());
+			if(aep.getSupportedValues() != null)
+			{
+				for(TypesCont tc : aep.getSupportedValues())
+				{
+					m_Session.save(tc);
+				}
+			}
 			m_Session.save(aep);
 		}
 		try
 		{
-		m_Session.getTransaction().commit();
+			if(m_Session.getTransaction().getStatus().equals(TransactionStatus.ACTIVE))
+			{
+			m_Session.getTransaction().commit();
+			}
 		}catch(Exception e) {throw new Exception("Can't add given product!");}
-		m_Session.close();
+		//m_Session.close();
 		return true;
 	}
 
@@ -401,7 +440,10 @@ public class NDBHandler implements IDBHandler {
 			throw new Exception("No products found with product id "+i_prod_id+"!");
 		}
 		
+		if(m_Session.getTransaction().getStatus().equals(TransactionStatus.ACTIVE))
+		{
 		m_Session.getTransaction().commit();
+		}
 		m_Session.close();
 		
 		return new LinkedList<Product>(res);
@@ -419,7 +461,7 @@ public class NDBHandler implements IDBHandler {
 		
 		m_Session.beginTransaction();
 		
-		String query = "SELECT new Product(p.product_id, p.product_name) FROM PRODUCTS p WHERE p.vendor_id="+vendor_id;
+		String query = "SELECT new Product(p.id, p.name) FROM Product p WHERE p.vendor_id="+vendor_id;
 		List<Product> tmpres = m_Session.createQuery(query).getResultList();
 				
 		
@@ -435,7 +477,10 @@ public class NDBHandler implements IDBHandler {
 			throw new Exception("No products found!");
 		}
 		
+		if(m_Session.getTransaction().getStatus().equals(TransactionStatus.ACTIVE))
+		{
 		m_Session.getTransaction().commit();
+		}
 		m_Session.close();
 		
 		return res;
@@ -469,8 +514,10 @@ public class NDBHandler implements IDBHandler {
 			throw new Exception("No products found!");
 		}
 		
+		if(m_Session.getTransaction().getStatus().equals(TransactionStatus.ACTIVE))
+		{
 		m_Session.getTransaction().commit();
-		m_Session.close();
+		}
 		
 		return res;
 	}
@@ -483,7 +530,10 @@ public class NDBHandler implements IDBHandler {
 		m_Session.save(i_dev);
 		try
 		{
+			if(m_Session.getTransaction().getStatus().equals(TransactionStatus.ACTIVE))
+			{
 			m_Session.getTransaction().commit();
+			}
 		}catch(Exception e) {throw new Exception("Can't add given device!");}
 		m_Session.close();
 		return true;
@@ -516,7 +566,10 @@ public class NDBHandler implements IDBHandler {
 		}
 		try
 		{
-		m_Session.getTransaction().commit();
+			if(m_Session.getTransaction().getStatus().equals(TransactionStatus.ACTIVE))
+			{
+			m_Session.getTransaction().commit();
+			}
 		}catch(Exception e) {throw new Exception("Can't add provided scenario!");}
 		//m_Session.close();
 		return true;
@@ -558,7 +611,10 @@ public class NDBHandler implements IDBHandler {
 			throw new Exception("No scenarios found for customer id:"+cust_id+"!");
 		}
 		
+		if(m_Session.getTransaction().getStatus().equals(TransactionStatus.ACTIVE))
+		{
 		m_Session.getTransaction().commit();
+		}
 		//m_Session.close();
 		
 		return new LinkedList<>(res);
@@ -579,7 +635,10 @@ public class NDBHandler implements IDBHandler {
 		
 		try
 		{
-		m_Session.getTransaction().commit();
+			if(m_Session.getTransaction().getStatus().equals(TransactionStatus.ACTIVE))
+			{
+			m_Session.getTransaction().commit();
+			}
 		}catch(Exception e) {throw new Exception("Can't add provided action!");}
 		m_Session.close();
 	}
@@ -600,7 +659,10 @@ public class NDBHandler implements IDBHandler {
 		*/
 		try
 		{
-		m_Session.getTransaction().commit();
+			if(m_Session.getTransaction().getStatus().equals(TransactionStatus.ACTIVE))
+			{
+			m_Session.getTransaction().commit();
+			}
 		}catch(Exception e) {throw new Exception("Can't add provided event!");}
 		m_Session.close();
 	}
@@ -633,7 +695,10 @@ public class NDBHandler implements IDBHandler {
 			throw new Exception("No event found for event id:"+i_event_id+"!");
 		}
 		
+		if(m_Session.getTransaction().getStatus().equals(TransactionStatus.ACTIVE))
+		{
 		m_Session.getTransaction().commit();
+		}
 		m_Session.close();
 		
 		return res;
@@ -663,9 +728,12 @@ public class NDBHandler implements IDBHandler {
 		}
 		else
 		{
+			if(m_Session.getTransaction().getStatus().equals(TransactionStatus.ACTIVE))
+			{
 			m_Session.getTransaction().commit();
+			}
 		}
-		m_Session.close();
+		//m_Session.close();
 		
 		return new LinkedList<>(res);
 	}

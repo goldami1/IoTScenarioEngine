@@ -10,9 +10,9 @@
         <property name="hibernate.connection.url">jdbc:mysql://mtatest.ctssrz2bfct5.us-east-2.rds.amazonaws.com:3306/scenginev1</property>
         <property name="hibernate.connection.username">scengine</property>
         <property name="hibernate.connection.password">mtaAmiRomaGalGil</property>
-
+		<property name="connection.pool_size">500</property>
 		
-		<property name="hbm2ddl.auto">update</property>
+		<!-- <property name="hbm2ddl.auto">update</property>  -->
 		<property name="hibernate.show_sql">true</property>
  
         <!-- add classes to map from here -->
