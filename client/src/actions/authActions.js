@@ -11,7 +11,12 @@ import {
 } from "./types";
 import { login ,api} from "./restapi";
 
-export function setCurrentUser(user) {
+export function setCurrentUser(user,history) {
+	if (user.type =="enduser") {
+		history.push("/scenarios");
+	}else{
+		history.push('/products');
+	}
 	return {
 		type: SET_CURRENT_USER,
 		user
@@ -58,12 +63,7 @@ export function loginRequest(data,history) {
 						
 						localStorage.setItem("user", JSON.stringify(user));
 						setAuthorizationToken(user);
-						if (user.type =="enduser") {
-							history.push("/scenarios");
-						}else{
-							history.push('/products');
-						}
-						dispatch(setCurrentUser(user));
+						dispatch(setCurrentUser(user,history));
 						
 					} catch (e) {console.error(`LOGIN_ERROR_RES: ${e}`);}
 

@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { loginRequest } from "../../actions/auth_actions";
+import { loginRequest } from "../../actions/authActions";
 import { Link } from "react-router-dom";
 import { withRouter } from "react-router-dom";
 import CardWrapper from "../common/CardWrapper";

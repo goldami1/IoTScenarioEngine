@@ -7,7 +7,7 @@ import { Provider } from "react-redux";
 import rootReducer from "./reducers";
 import ReduxPromise from "redux-promise";
 import ReduxThunk from "redux-thunk";
-import { setCurrentUser } from "./actions/auth_actions";
+import { setCurrentUser } from "./actions/authActions";
 import { fetchDevices, fetchProducts } from "./actions/deviceActions";
 import setAuthorizationToken from "./utilities/set_auth_token";
 import MainRouter from "./components/MainRouter";

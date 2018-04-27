@@ -16,7 +16,7 @@ import Navigation from "./Navigation";
 import UserMenu from "./UserMenu";
 import links from "./links";
 import userLinks from "./userLinks";
-import { logout } from "../../actions/auth_actions";
+import { logout } from "../../actions/authActions";
 const { Header, Sider, Content, Footer } = Layout;
 
 class App extends Component {
