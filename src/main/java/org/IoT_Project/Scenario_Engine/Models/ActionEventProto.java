@@ -14,6 +14,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
@@ -67,9 +68,10 @@ public class ActionEventProto {
 	@SerializedName("types")
 	private List<String> types;
 													//I M P L E M E N T        I T   IN HIBERNATE!!!!!!
-	@Transient
+	
 	@SerializedName("supportedValues")/* Such like Low, Medium, High */
-	private List<List<String>> supportedValues;
+	@OneToMany
+	private List<utils.TypesCont> supportedValues;
 													//I M P L E M E N T        I T   IN HIBERNATE!!!!!!
 	@ElementCollection(fetch = FetchType.EAGER)
 	@JoinTable(name = "AEPARAMS_MIN", joinColumns = @JoinColumn(name = "ae_id"))
@@ -103,7 +105,7 @@ public class ActionEventProto {
 						    String name,
 						    String description,
 						    List<String> types,
-						    List<List<String>> supportedValues,
+						    List<utils.TypesCont> supportedValues,
 						    List<String> supportedParametersName,
 						    List<String> i_paramDesc,
 						    List<String> min,
@@ -182,11 +184,11 @@ public class ActionEventProto {
 		this.description = description;
 	}
 
-	public List<List<String>> getSupportedValues() {
+	public List<utils.TypesCont> getSupportedValues() {
 		return supportedValues;
 	}
 
-	public void setSupportedValues(List<List<String>> supportedValues) {
+	public void setSupportedValues(List<utils.TypesCont> supportedValues) {
 		this.supportedValues = supportedValues;
 	}
 	
