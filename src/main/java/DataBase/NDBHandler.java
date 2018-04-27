@@ -549,10 +549,18 @@ public class NDBHandler implements IDBHandler {
 		for(Action act : i_Scenario.getActions())
 		{
 			m_Session.save(act.getActionDescription());
+			for(TypesCont tc : act.getActionDescription().getSupportedValues())
+			{
+				m_Session.save(tc);
+			}
 			m_Session.save(act);
 		}
 		for(Event eve : i_Scenario.getEventsToHappen().values())
 		{
+			for(TypesCont tc : eve.getActionDescription().getSupportedValues())
+			{
+				m_Session.save(tc);
+			}
 			m_Session.save(eve);
 		}
 		m_Session.save(i_Scenario.getCases());
