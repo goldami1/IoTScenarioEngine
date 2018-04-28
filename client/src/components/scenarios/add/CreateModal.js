@@ -113,7 +113,7 @@ class CreateModal extends Component {
 				return <Input onChange={this.onChange} value={ this.state.aeProp[index] } name={index}  placeholder="Basic usage" />
 			case 'discrete':
 				const options = _.map(prop.options,(option,index) => {
-					return <RadioButton value={index}>{option}</RadioButton>
+					return <RadioButton value={option}>{option}</RadioButton>
 				})
 				return <RadioGroup   onChange={this.onChange} value={ this.state.aeProp[index] } name={index} >{options}</RadioGroup>		
 			default:
@@ -133,7 +133,7 @@ class CreateModal extends Component {
 		
 		return (
 			<div>
-				<FormItem label='Description' {...formItemLayout} >
+				<FormItem label='Description' {...formItemLayout}  style={{marginBottom:"60px"}} >
 					{ae.description}
 				</FormItem>
 				{fields}

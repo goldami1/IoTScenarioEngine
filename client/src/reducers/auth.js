@@ -9,14 +9,17 @@ import {
 import isEmpty from "lodash/isEmpty";
 
 const initialState = {
-	isAuthenticated: false,
-	id:'',
-	username:'',
-	password:'',
-	name:'',
-	type:'',
-	isLoading:false,
-	userCreated:false,
+	// isAuthenticated: false,
+	// id:'',
+	// username:'',
+	// password:'',
+	// name:'',
+	// type:'',
+	// isLoading:false,
+	// userCreated:false,
+
+	isAuthenticated: true,
+	id:1,
 };
 
 export default (state = initialState, action = {}) => {

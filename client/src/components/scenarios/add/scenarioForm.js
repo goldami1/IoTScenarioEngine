@@ -10,6 +10,7 @@ import _ from 'lodash';
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 import { reorder, reorderQuoteMap } from "./reorder";
 import AcEvList from "./AcEvList";
+import {isEmpty} from 'lodash';
 import {
 	Menu,
 	Dropdown,
@@ -21,6 +22,7 @@ import {
 	Icon,
 	Row,
 	Col,
+	Input,
 	Layout
 } from "antd";
 
@@ -137,14 +139,14 @@ const RadioButton = Radio.Button;
 const RadioGroup = Radio.Group;
 const { Header, Footer, Sider, Content } = Layout;
 const FormItem = Form.Item;
-
+const { TextArea } = Input;
+const InputGroup = Input.Group;
 const getItems = (count, offset) =>
 	Array.from({ length: count }, (v, k) => k).map(k => ({
 		id: `item-${k + offset}`,
 		content: `item-${k + offset}`
 	}));
 
-var num
 class ScenarioForm extends Component {
 	constructor(props) {
 		super(props);
@@ -158,6 +160,8 @@ class ScenarioForm extends Component {
 				[]
 			],
 			aeCounter:0,
+			name:"",
+			description:"",
 			actionDevices:[],
 			eventDevices:[],
 			inventoryType: "event",
@@ -196,10 +200,30 @@ class ScenarioForm extends Component {
 		);
 	};
 
+	generateAeItem = (ae) =>
+	{
+		const collection = (this.state)[ae.type==1 ? "actionDevices" : "eventDevices"];
+		const original = collection[ae.device[0]].original;
+
+		var aeContent = {
+			device_serialNum:original.serial_number,
+			actionDescription:original.protoDevice.actionAndEventList[ae.device[1]],
+			parameters:ae.props,
+
+			triggered: false
+		};
+		if( ae.type==0 )
+		{
+			aeContent.logicOperator =  "|"
+		}
+		
+		return aeContent;
+	}
 	addAE = (ae) => () => {
 		ae.id = `${this.state.aeCounter}`;
+		ae.content = this.generateAeItem(ae);
 		this.setState({
-			aeCounter:ae.id + 1,
+			aeCounter:parseInt(ae.id) + 1,
 			lists: this.state.lists.map((singleAe, index) => {
 				if (index === ae.type) 
 				{
@@ -257,10 +281,46 @@ class ScenarioForm extends Component {
 
 	createScenario = () =>
 	{
-		return "fuck";
-	}
-	render() {
 
+
+		
+		var scenario = {
+			name:this.state.name,
+			cust_id:this.props.customerId,
+			description:this.state.description,
+			actions:this.state.lists[1].map(action => {return action.content}),
+			cases:{
+				cases: this.state.lists.filter(
+					(list,index) => 
+						{
+							return (index >1 && !isEmpty(list))
+						}).map( list => {
+							return {
+								logicOperator: "&",
+								events : list.map(ev => { return  ev.content})
+							}
+						}),
+				logicOperator :'|'
+			}
+		}
+
+		scenario.cases.cases.forEach( singleCase => {
+			singleCase.events[singleCase.length - 1].logicOperator = '&';
+		});
+		return scenario;
+	}
+
+	render() {
+		const formItemLayout = {
+			labelCol: {
+			  xs: { span: 24 },
+			  sm: { span: 5 },
+			},
+			wrapperCol: {
+			  xs: { span: 24 },
+			  sm: { span: 12 },
+			},
+		  };
 		const aeMenu = {
 			handle: this.handleAeDropdown,
 			items:[
@@ -275,10 +335,19 @@ class ScenarioForm extends Component {
 				width = {1300}
 				visible={this.props.visible}
 				onCancel={this.props.onCancel}
+				okText="Add Scenario"
 				onOk={() =>{this.props.onOk(this.createScenario())} }
 			>
-				<Form>
-				</Form>
+				<InputGroup size="large" style={{ margin: "40px" }}>
+					<Col span={3}>
+						<Input  onChange={this.onChange} name="name" value={this.state.name} placeholder="Scenario name" />
+					</Col>
+					<Col span={12}>
+						<Input onChange={this.onChange} name="description" value={this.state.description} placeholder="Describe your scenario" />
+					</Col>
+				</InputGroup>
+
+
 				<DragDropContext onDragEnd={this.onDragEnd}>
 					<Layout style={{ margin: "40px", borderRadius: "5px solid " }}>
 						<Content
@@ -318,6 +387,7 @@ class ScenarioForm extends Component {
 										visible={this.state.modalVisible}
 										onCancel={this.onModalCancel}
 										onOk={this.addAE}
+										
 									/>
 
 
@@ -338,9 +408,10 @@ class ScenarioForm extends Component {
 }
 
 
-function mapStateToProps({devices}) {
+function mapStateToProps({devices,auth}) {
 	return {
-		devices: devices.devices
+		devices: devices.devices,
+		customerId:auth.id
 	};
 }
 

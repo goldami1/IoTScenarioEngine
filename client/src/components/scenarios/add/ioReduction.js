@@ -50,7 +50,9 @@ var dev = {
 export function deviceInputReduction(oldDevice)
 {
 	var devices = oldDevice.filter(device => !isEmpty(device.protoDevice)).map((device)=> {
-		return productInputReduction(device.protoDevice)
+		var newDevice = productInputReduction(device.protoDevice);
+		newDevice.original = device;
+		return newDevice;
 	})
 
 	return devices;

@@ -57,7 +57,7 @@ const AcEvList = props => {
 			<span 
 				style={{marginLeft: 16,verticalAlign: 'middle'}}
 			>
-				{item.content} {list}
+				{JSON.stringify(item.content)} {list}
 			</span>
 		</div>
 	);
