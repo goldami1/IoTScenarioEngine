@@ -189,7 +189,7 @@ class ProductsAddPage extends Component {
 	};
 
 	onChange = event => {
-		if(isEmpty(this.props.product))
+		if((isEmpty(this.props.product) || this.props.editable ))
 		{
 			this.setState({
 				[event.target.name]: event.target.value
@@ -222,7 +222,7 @@ class ProductsAddPage extends Component {
 	};
 	
 	handleChangeProperty = (aeIndex, aePropId, ae, isOption) => event => {
-		if(isEmpty(this.props.product)){
+		if(isEmpty(this.props.product) || this.props.editable ){
 			const value = this.state.inputValue;
 			this.setState({
 				[ae]: this.state[ae].map((singleAe, index) => {
@@ -257,7 +257,7 @@ class ProductsAddPage extends Component {
 	};
 
 	handleChangeAE = (aeIndex, ae) => event => {
-		if(isEmpty(this.props.product)){
+		if((isEmpty(this.props.product) || this.props.editable )){
 			const newAE = this.state[ae].map((singleAe, saeIndex) => {
 				if (aeIndex !== saeIndex) return singleAe;
 				return { ...singleAe, [event.target.name]: event.target.value };
@@ -424,7 +424,7 @@ class ProductsAddPage extends Component {
 						<FormItem label="Range" {...layout}>
 							<Input.Group size="large">
 								<Input
-									disabled={!isEmpty(this.props.product)}
+									disabled={!(isEmpty(this.props.product) || (this.props.editable))}
 									style={{ width: "25%" }}
 									placeholder="minimum"
 									name="min"
@@ -436,7 +436,7 @@ class ProductsAddPage extends Component {
 									)}
 								/>
 								<Input
-									disabled={!isEmpty(this.props.product)}
+									disabled={!(isEmpty(this.props.product) || (this.props.editable))}
 									style={{ width: "25%" }}
 									placeholder="maximum"
 									name="max"
@@ -456,7 +456,7 @@ class ProductsAddPage extends Component {
 				return (
 					<div>
 					{
-						isEmpty(this.props.product) &&
+						(isEmpty(this.props.product) || this.props.editable) &&
 
 						<FormItem label="Options" {...layout}>
 							{
@@ -482,7 +482,7 @@ class ProductsAddPage extends Component {
 								return (
 									<Tag
 										key={option}
-										closable = {isEmpty(this.props.product)}
+										closable = {isEmpty(this.props.product) || this.props.editable }
 										afterClose={this.handleClose(
 											aeIndex,
 											aePropId,
@@ -519,7 +519,7 @@ class ProductsAddPage extends Component {
 	};
 
 	handleRemoveAE = (aeIndex, ae) => () => {
-		if(isEmpty(this.props.product)){
+		if(isEmpty(this.props.product) || (this.props.editable )){
 			this.setState({
 				[ae]: this.state[ae].filter((singleAe, index) => aeIndex !== index)
 			});	
@@ -621,7 +621,7 @@ class ProductsAddPage extends Component {
 						<Tabs
 							animated={false}
 							defaultActiveKey="1"
-							tabBarExtraContent={isEmpty(this.props.product) &&
+							tabBarExtraContent={(isEmpty(this.props.product)|| this.props.editable )  &&
 								<Button.Group>
 									<Button onClick={this.handleAddAE("actions")}>
 										<Icon type="plus" />Add action
@@ -687,7 +687,7 @@ class ProductsAddPage extends Component {
 							</TabPane>
 						</Tabs>
 						{
-							isEmpty(this.props.product) &&
+							(isEmpty(this.props.product) || this.props.editable ) &&
 							<FormItem {...formItemLayoutWithOutLabel}>
 								<Button
 									loading={this.state.isLoading}

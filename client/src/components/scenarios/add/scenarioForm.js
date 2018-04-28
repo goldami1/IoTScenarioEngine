@@ -277,6 +277,8 @@ class ScenarioForm extends Component {
 				onCancel={this.props.onCancel}
 				onOk={() =>{this.props.onOk(this.createScenario())} }
 			>
+				<Form>
+				</Form>
 				<DragDropContext onDragEnd={this.onDragEnd}>
 					<Layout style={{ margin: "40px", borderRadius: "5px solid " }}>
 						<Content

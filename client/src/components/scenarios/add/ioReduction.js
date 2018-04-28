@@ -1,5 +1,5 @@
 import {productInputReduction} from "../../products/add/ioReduction";
-
+import {isEmpty} from 'lodash';
 
 var dev = {
 	id:1,
@@ -49,7 +49,7 @@ var dev = {
 }
 export function deviceInputReduction(oldDevice)
 {
-	var devices = oldDevice.map((device)=> {
+	var devices = oldDevice.filter(device => !isEmpty(device.protoDevice)).map((device)=> {
 		return productInputReduction(device.protoDevice)
 	})
 

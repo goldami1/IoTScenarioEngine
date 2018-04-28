@@ -35,6 +35,8 @@ export function addProduct(product) {
 	return (dispatch, getState) => {
 		const { auth } = getState();
 		product.vendorName = auth.name;
+		console.log("product");
+		console.log(product);
 		dispatch(postToApi(ADD_PRODUCT,`${api(endpoints.product)}/${auth.id}`,{res:receiveProducts},product))
 	};
 }

@@ -6,7 +6,7 @@ export function productInputReduction(oldProduct)
 	newProduct.description 		= oldProduct.description;
 	newProduct.endpoint 		= oldProduct.endPoint;
 	newProduct.image 			= oldProduct.picURL;
-	newProduct.endPoint 		= oldProduct.endpoint;
+	newProduct.endPoint 		= oldProduct.endPoint;
 	newProduct.actions			= [];
 	newProduct.events 			= [];
 

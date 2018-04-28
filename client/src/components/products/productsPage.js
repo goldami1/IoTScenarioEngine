@@ -13,7 +13,9 @@ class ProductsPage extends Component {
 		super(props);
 		this.state = {
 			modalVisble:false,
-			selectedProduct:{}
+			selectedProduct:{},
+			modalVisble:false,
+			editable:false
 		};
 	}
 
@@ -60,6 +62,7 @@ class ProductsPage extends Component {
 						
 						<ProductsAddPage
 							visible={this.state.modalVisble}
+							editable={this.state.editable}
 							product={this.state.selectedProduct}
 							onCancel={this.onModalCancel}
 						/>

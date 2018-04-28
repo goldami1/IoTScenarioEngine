@@ -24,7 +24,7 @@
   "devices": [
     {
       "id": 1,
-      "customer_id": 13,
+      "customer_id": 1,
       "protoDevice": {
         "actionAndEventList": [
             {
@@ -175,57 +175,231 @@
   ],
   "products": [
     {
-      "id": 1,
-      "vendor_id": 1,
-      "name":"Carrera GT3",
-      "actionAndEventList": [
-        {
-            "description": "fasd",
-            "id": 797,
-            "isEvent": false,
-            "max": [
-                "null",
-                "44"
-            ],
-            "min": [
-                "null",
-                "2"
-            ],
-            "name": "asdfasd",
-            "paramDesc": [
-                "adsfads",
-                "asdf"
-            ],
-            "prodId": 796,
-            "productEP": "fadsf",
-            "supportedParametersName": [
-              "asdasd","asdas"
-            ],
-            "supportedValues":[
-                ["asd","asd"],
-                []
-            ],
-            "types": [
-                "discrete",
-                "int"
-            ]
-        }
-    ],
-    "actionState": true,
-    "description": "Car comapny",
-    "endPoint": "porsche.com/",
-    "eventState": true,
-    "vendorName": "Porsche"
-    },
-    {
-      "id": 2,
-      "vendor_id": 1,
-      "name":"Cayen"
-    },
-    {
-      "id": 3,
-      "vendor_id": 2,
-      "name":"Passat"
+        "actionAndEventList": [
+            {
+                "description": "Set reminder",
+                "id": 128,
+                "isEvent": true,
+                "max": [
+                    "23",
+                    "59"
+                ],
+                "min": [
+                    "0",
+                    "0"
+                ],
+                "name": "Reminder",
+                "paramDesc": [
+                    "Set remider time",
+                    "Set reminder minutes"
+                ],
+                "prodId": 125,
+                "productEP": "reminder",
+                "supportedParametersName": [
+                    "Hour",
+                    "Minute"
+                ],
+                "supportedValues": [
+                    {
+                        "id": 126,
+                        "types": []
+                    },
+                    {
+                        "id": 127,
+                        "types": []
+                    }
+                ],
+                "types": [
+                    "int",
+                    "int"
+                ]
+            },
+            {
+                "description": "Call back when time of day arrived",
+                "id": 130,
+                "isEvent": true,
+                "max": [
+                    ""
+                ],
+                "min": [
+                    ""
+                ],
+                "name": "Day time",
+                "paramDesc": [
+                    "Set time of day to remind"
+                ],
+                "prodId": 125,
+                "productEP": "daytime",
+                "supportedParametersName": [
+                    "Day time"
+                ],
+                "supportedValues": [
+                    {
+                        "id": 129,
+                        "types": [
+                            "Mor",
+                            "Noon",
+                            "Eve"
+                        ]
+                    }
+                ],
+                "types": [
+                    "discrete"
+                ]
+            },
+            {
+                "description": "Set alarm",
+                "id": 133,
+                "isEvent": false,
+                "max": [
+                    "23",
+                    "59"
+                ],
+                "min": [
+                    "0",
+                    "0"
+                ],
+                "name": "Alarm",
+                "paramDesc": [
+                    "Set time in hours",
+                    "Set  minutes"
+                ],
+                "prodId": 125,
+                "productEP": "alarm",
+                "supportedParametersName": [
+                    "Hour",
+                    "Minute"
+                ],
+                "supportedValues": [
+                    {
+                        "id": 131,
+                        "types": []
+                    },
+                    {
+                        "id": 132,
+                        "types": []
+                    }
+                ],
+                "types": [
+                    "int",
+                    "int"
+                ]
+            },
+            {
+                "description": "set volume",
+                "id": 135,
+                "isEvent": false,
+                "max": [
+                    ""
+                ],
+                "min": [
+                    ""
+                ],
+                "name": "Volume",
+                "paramDesc": [
+                    "Set alarm volume"
+                ],
+                "prodId": 125,
+                "productEP": "volume",
+                "supportedParametersName": [
+                    "Alarm volume"
+                ],
+                "supportedValues": [
+                    {
+                        "id": 134,
+                        "types": [
+                            "Low",
+                            "Medium",
+                            "High"
+                        ]
+                    }
+                ],
+                "types": [
+                    "discrete"
+                ]
+            },
+            {
+                "description": "Set good morning message",
+                "id": 137,
+                "isEvent": false,
+                "max": [
+                    ""
+                ],
+                "min": [
+                    ""
+                ],
+                "name": "Good Morning",
+                "paramDesc": [
+                    "Set message of good for good morning "
+                ],
+                "prodId": 125,
+                "productEP": "message",
+                "supportedParametersName": [
+                    "Message"
+                ],
+                "supportedValues": [
+                    {
+                        "id": 136,
+                        "types": []
+                    }
+                ],
+                "types": [
+                    "string"
+                ]
+            },
+            {
+                "description": "Sending mail with subjected Scenario/Action/Event details",
+                "id": 140,
+                "isEvent": false,
+                "max": [
+                    "max1",
+                    "max2"
+                ],
+                "min": [
+                    "min1",
+                    "min1"
+                ],
+                "name": "Email",
+                "paramDesc": [
+                    "dec1",
+                    "desc2"
+                ],
+                "prodId": 125,
+                "productEP": "EmailEndPoint",
+                "supportedParametersName": [
+                    "Email-Address",
+                    "Message"
+                ],
+                "supportedValues": [
+                    {
+                        "id": 138,
+                        "types": [
+                            "banani",
+                            "banoni"
+                        ]
+                    },
+                    {
+                        "id": 139,
+                        "types": [
+                            "banani",
+                            "banoni"
+                        ]
+                    }
+                ],
+                "types": [
+                    "STRING",
+                    "STRING"
+                ]
+            }
+        ],
+        "actionState": true,
+        "description": "Alarm clock",
+        "endPoint": "clock",
+        "eventState": true,
+        "id": 125,
+        "name": "Clock",
+        "vendorName": "Mercedez",
+        "vendor_id": 2
     }
   ]
 }

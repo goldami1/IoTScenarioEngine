@@ -1,9 +1,10 @@
 import React from "react";
 import DeviceListItem from "./deviceListItem";
 import { List } from 'antd';
+import {isEmpty} from 'lodash';
 
 const DeviceList = props => {
-	const deviceItems = props.devices.map(device => {
+	const deviceItems = props.devices.filter(device => !isEmpty(device.protoDevice)).map(device => {
 		return (
 			<div 
 				key={device.id}
@@ -22,7 +23,6 @@ const DeviceList = props => {
 		);
 	});
 
-	const data = props.devices;
 
 	return 	(	
 		<div style = {{overflow:"hidden"}} 	>

@@ -1,7 +1,7 @@
 import { getFromApi } from "./appActions";
 
 
-// const DEBUG = true;
+const DEBUG = true;
 
 export const endpoints = {
     addCustomer : "addCustomer",
