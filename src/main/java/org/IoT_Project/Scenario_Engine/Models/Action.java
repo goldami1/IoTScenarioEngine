@@ -124,11 +124,11 @@ public class Action implements IAction{
 			 */
 			if(firstEntry)
 			{
-				URI.append("?" + figureSpacesInName(this.actionDescription.getSupportedParametersName().get(paramIndex)) + "=" + s);
+				URI.append("?" + figureSpacesInName(this.actionDescription.getSupportedParametersName().get(paramIndex++)) + "=" + s);
 				firstEntry = false;
 			}
 			else
-				URI.append("&" + figureSpacesInName(this.actionDescription.getSupportedParametersName().get(paramIndex)) + "=" + s);		
+				URI.append("&" + figureSpacesInName(this.actionDescription.getSupportedParametersName().get(paramIndex++)) + "=" + s);		
 		}
 		
 		String USER_AGENT = "Mozilla/5.0";
