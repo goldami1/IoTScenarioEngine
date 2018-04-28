@@ -20,7 +20,7 @@ function apiRequest(config,action,type) {
 			res => {
 				if(isFunction(action.res))
 				{
-					return dispatch(action.res(res.data)); 
+					dispatch(action.res(res.data)); 
 				}
 			},
 			err => {
@@ -45,6 +45,14 @@ export function getFromApi(type,url,action)
 {
 	return apiRequest({method:'get',url:url,},action,type);
 }
+
+export function redirect(address,history)
+{
+	return dispatch => {
+		history.push(address);
+	}
+}
+
 
 export function postToApi(type,url,action,payload)
 {

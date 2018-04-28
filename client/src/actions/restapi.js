@@ -15,7 +15,8 @@ export const endpoints = {
 }
 
 const API_ = {
-    ip          : "192.168.1.12",
+    // ip          : "192.168.1.12",
+    ip          : "localhost",
     port        : "8080",
     folder      : "Scenario_Engine/webapi",   
 }

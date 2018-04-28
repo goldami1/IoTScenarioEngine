@@ -8,7 +8,7 @@ const DeviceListItem = ({ device, onDeviceSelect }) => {
 			<Card
 				style= {{borderRadius:"5px", overflow:"hidden"}}
 				onClick ={ () => { onDeviceSelect(device) } }
-				hoverable
+				hoverable 
 				cover={<img alt={device.protoDevice.name} src="https://os.alipayobjects.com/rmsportal/QBnOOoLaAfKPirc.png" />}
 				// cover={<img alt="example" src={device.picUrl} />}
 			>

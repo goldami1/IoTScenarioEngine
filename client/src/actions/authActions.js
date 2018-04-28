@@ -2,7 +2,7 @@ import axios from "axios";
 
 import { isEmpty } from "lodash";
 import setAuthorizationToken from "../utilities/set_auth_token";
-import {setMessage} from "./appActions";
+import {setMessage,redirect} from "./appActions";
 import {
 
 	SET_LOGIN_REQUEST_SENT,
@@ -60,14 +60,16 @@ export function loginRequest(data,history) {
 							id: res.data.id,
 							type: (res.data.isCustomer  || res.data.customer) ?'enduser':'vendor'
 						};
-						if (user.type =="enduser") {
-							history.push("/scenarios");
-						}else{
-							history.push('/products');
-						}
+
 						localStorage.setItem("user", JSON.stringify(user));
 						setAuthorizationToken(user);
+					
 						dispatch(setCurrentUser(user));
+						if (user.type =="enduser") {
+							dispatch(redirect("/scenarios",history))
+						}else{
+							dispatch(redirect("/products",history))
+						}
 						
 					} catch (e) {console.error(`LOGIN_ERROR_RES: ${e}`);}
 

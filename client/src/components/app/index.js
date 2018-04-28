@@ -58,7 +58,8 @@ class App extends Component {
 			<Layout style={{ minHeight: "100vh" }}>
 				<Sider
 					collapsible
-					collapsed={this.state.collapsed}
+					width={auth.isAuthenticated ? 200 : 0 }
+					collapsed={auth.isAuthenticated ? this.state.collapsed : false}
 					onCollapse={this.onCollapse}
 					style={{ position: "relative", overflow: "hidden",paddingTop: 60}}	
 				>

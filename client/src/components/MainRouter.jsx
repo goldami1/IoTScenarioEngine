@@ -35,11 +35,6 @@ class MainRouter extends PureComponent {
 						path="/scenarios"
 						component={requireAuth(ScenariosPage)}
 					/>
-					<Route
-						exact
-						path="/devices"
-						component={requireAuth(DevicesPage)}
-					/>
 					<Route path="/products" component={requireAuth(ProductsPage)} />
 					<Route component={NoMatch} />
 				</Switch>
