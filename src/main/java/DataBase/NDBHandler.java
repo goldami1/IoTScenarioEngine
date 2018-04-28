@@ -622,7 +622,7 @@ public class NDBHandler implements IDBHandler {
 	
 	public LinkedList<Scenario> getScenarios(int cust_id) throws Exception
 	{
-		List<Scenario> res = null;
+		LinkedList<Scenario> res = null;
 		
 		try
 		{
@@ -634,15 +634,26 @@ public class NDBHandler implements IDBHandler {
 		Query<Scenario> query = m_Session.createQuery("FROM Scenario WHERE customer_id = :custid", Scenario.class);
 		query.setParameter("custid", cust_id);
 		List<Scenario> tmpres = query.getResultList();
-		
-		if(tmpres.size()>0)
+		LinkedList<Scenario> result_scenarios = new LinkedList<>();
+		for(Scenario scenario : tmpres) {
+			LinkedList<Event> events = new LinkedList<>();
+			for(Event e : scenario.getEventsToHappen().values()) {
+				events.add(e);
+			}
+			result_scenarios.add(new Scenario((short)scenario.getId(),
+											 (short)scenario.getCust_id(),
+											 scenario.getName(),
+											 scenario.getDescription(),
+											 events,
+											 scenario.getActions()));
+		}
+		if(result_scenarios.size()>0)
 		{
-			res = tmpres;
+			res = result_scenarios;
 		}
 		
 		
-		if(res.size()==0)
-		{
+		if(res.size()==0) {
 			m_Session.close();
 			throw new Exception("No scenarios found for customer id:"+cust_id+"!");
 		}
@@ -653,7 +664,7 @@ public class NDBHandler implements IDBHandler {
 		}
 		//m_Session.close();
 		
-		return new LinkedList<>(res);
+		return res;
 	}
 	
 	

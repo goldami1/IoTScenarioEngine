@@ -283,9 +283,4 @@ public class Scenario{
 		}
 		return result;
 	}
-	
-	public void setEvent(Event event) {
-		this.eventsToHappen.remove(event.id);
-		this.eventsToHappen.put(event.id, event);
-	}
 }
