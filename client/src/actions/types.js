@@ -34,4 +34,7 @@ export const DELETE_PRODUCT 		= "DELETE_PRODUCT";
 export const ADD_PRODUCT 			= "ADD_PRODUCT";
 export const REQUEST_PRODUCTS 		= "REQUEST_PRODUCTS";
 
+export const ADD_PRODUCT_REQUEST    = "ADD_PRODUCT_REQUEST";
+export const ADD_PRODUCT_ERROR     = "ADD_PRODUCT_ERROR";
+
 export const SET_MESSAGE 			= "SET_MESSAGE";

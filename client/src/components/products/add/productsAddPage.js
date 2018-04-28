@@ -143,22 +143,19 @@ class ProductsAddPage extends Component {
 		};
 
 
-	}
+	} 
 
 	componentWillReceiveProps(nextProps) {
-		if ( (this.props.product != nextProps.product))
-		{
-			if ( isEmpty(nextProps.product) )
+			if ( (this.props.product != nextProps.product))
 			{
-				this.setState(emptyProduct)
-			}else
-			{
-				this.setState(productInputReduction(nextProps.product))
+				if ( isEmpty(nextProps.product) )
+				{
+					this.setState(emptyProduct)
+				}else
+				{
+					this.setState(productInputReduction(nextProps.product))
+				}
 			}
-			
-		}
-
-	
 	}
 
 	handleChange = info => {
@@ -377,9 +374,6 @@ class ProductsAddPage extends Component {
 			)
 		});
 
-		console.log(actionEvents);
-		console.log(actionEvents);
-		console.log(actionEvents);
 	}
 	actions_eventsToActionEventLists = () =>
 	{
@@ -402,9 +396,7 @@ class ProductsAddPage extends Component {
 		this.setState({
 			isLoading: true
 		});
-		console.clear();
 		const product = this.actions_eventsToActionEventLists();
-		console.log(product);
 		this.props.addProduct(product);
 	};
 
@@ -615,6 +607,10 @@ class ProductsAddPage extends Component {
 				width = {1000}
 				visible={this.props.visible}
 				onCancel={this.props.onCancel}
+				okText="Submit"
+				onOk={this.onSubmit}
+				confirmLoading={this.props.isLoading}
+				footer={(isEmpty(this.props.product)|| this.props.editable ) ? Modal.footer : null}
 			>
 				<ContentWrapper>
 					<Form>
@@ -686,25 +682,6 @@ class ProductsAddPage extends Component {
 								{Events}
 							</TabPane>
 						</Tabs>
-						{
-							(isEmpty(this.props.product) || this.props.editable ) &&
-							<FormItem {...formItemLayoutWithOutLabel}>
-								<Button
-									loading={this.state.isLoading}
-									type="primary"
-									size="large"
-									height={200}
-									onClick={this.onSubmit}
-									style={{
-										marginTop: "60px",
-										width: "100%",
-										height: "60px"
-									}}
-								>
-									<Icon type="plus" />Submit
-								</Button>
-							</FormItem>
-						}
 
 					</Form>
 				</ContentWrapper>

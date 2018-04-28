@@ -1,6 +1,7 @@
 {
   "/Scenario_Engine/webapi/*": "/$1",
   "/customer/device/:id": "/devices?customer_id=:id",
+  "/customer/scenario/:id": "/scenarios?cust_id=:id",
   "/customer/vendors/" : "/vendors",
   "/vendor/product/:id\\?isFull=:f" : "/vendor/product/:id",
   "/vendor/product/:id" : "/products?vendor_id=:id"

@@ -23,6 +23,12 @@ class ProductsPage extends Component {
         this.props.fetchProducts();
     }
 
+	componentWillReceiveProps(nextProps) {
+		if(this.props.isLoading && !nextProps.isLoading && !nextProps.isFailed)
+		{
+			this.setState({modalVisble: false});
+		}
+	}
 	onAddProductClick = () => {
 		this.setState({
 			modalVisble: true,
@@ -30,6 +36,7 @@ class ProductsPage extends Component {
 		});
 		console.log(this.state);
 	}
+
 
 	onModalCancel = () => {
 		this.setState({
@@ -61,6 +68,8 @@ class ProductsPage extends Component {
 						</ProductList>
 						
 						<ProductsAddPage
+							isFailed={this.props.isFailed}
+							isLoading={this.props.isLoading}
 							visible={this.state.modalVisble}
 							editable={this.state.editable}
 							product={this.state.selectedProduct}
@@ -74,7 +83,9 @@ class ProductsPage extends Component {
 
 function mapStateToProps({ products }) {
 	return {
-		products:products.products
+		products:products.products,
+		isFailed:products.error,
+		isLoading:products.isLoading
 	};
 }
 

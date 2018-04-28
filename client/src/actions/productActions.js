@@ -1,6 +1,8 @@
 import axios from "axios";
 import { 
-	ADD_PRODUCT, 
+	ADD_PRODUCT,
+	ADD_PRODUCT_REQUEST,
+	ADD_PRODUCT_ERROR,
 	PRODUCT_ERROR_OCCURED ,
 	FETCH_PRODUCTS,RECEIVE_PRODUCTS
 } from "./types";
@@ -31,13 +33,27 @@ export function fetchProducts() {
 	};
 }
 
+export function addProductRequest() 
+{
+	return {
+		type: ADD_PRODUCT_REQUEST
+	};
+}
+
+export function addProductFail() 
+{
+	return {
+		type: ADD_PRODUCT_ERROR
+	};
+}
+
 export function addProduct(product) {
 	return (dispatch, getState) => {
 		const { auth } = getState();
 		product.vendorName = auth.name;
 		console.log("product");
 		console.log(product);
-		dispatch(postToApi(ADD_PRODUCT,`${api(endpoints.product)}/${auth.id}`,{res:receiveProducts},product))
+		dispatch(postToApi(ADD_PRODUCT,`${api(endpoints.product)}/${auth.id}`,{res:receiveProducts,pre:addProductRequest,err:addProductFail},product))
 	};
 }
 

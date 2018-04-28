@@ -2,395 +2,260 @@
   "users": [
     {
       "customer": true,
-      "email": "hugh@mail.com",
+      "email": "brad@mail.com",
       "id": 1,
-      "name": "Hugh Laurie",
+      "name": "Brad pit",
       "password": "1212",
-      "userName": "customer",
+      "userName": "brad",
       "customerScenarios": [],
       "devices": []
     },
     {
       "customer": false,
-      "email": "one@mail.com",
+      "email": "rolex@mail.com",
       "id": 2,
-      "name": "Mr Anderson",
+      "name": "Rolex",
       "password": "1212",
-      "userName": "vendor",
-      "customerScenarios": [],
-      "devices": []
+      "userName": "rolex",
+      "description": "Watch comapny",
+      "products": []
     }
   ],
+  "user": {
+    "name": "Brad  Brad ",
+    "username": "brad",
+    "password": "1212",
+    "id": 1,
+    "type": "enduser"
+  },
+  "vendor": {
+    "name": "Rolex",
+    "username": "rolex",
+    "password": "1212",
+    "id": 2,
+    "type": "vendor"
+  },
   "devices": [
     {
-      "id": 1,
       "customer_id": 1,
+      "id": 196,
       "protoDevice": {
         "actionAndEventList": [
-            {
-                "description": "fasd",
-                "id": 797,
-                "isEvent": false,
-                "max": [
-                    "null",
-                    "44"
-                ],
-                "min": [
-                    "null",
-                    "2"
-                ],
-                "name": "asdfasd",
-                "paramDesc": [
-                    "adsfads",
-                    "asdf"
-                ],
-                "prodId": 796,
-                "productEP": "fadsf",
-                "supportedParametersName": [],
-                "supportedValues":[
-                    ["asd","asd"],
-                    []
-                ],
+          {
+            "description": "Set reminder",
+            "id": 128,
+            "isEvent": true,
+            "max": [
+              "23",
+              "59"
+            ],
+            "min": [
+              "0",
+              "0"
+            ],
+            "name": "Reminder",
+            "paramDesc": [
+              "Set remider time",
+              "Set reminder minutes"
+            ],
+            "prodId": 125,
+            "productEP": "reminder",
+            "supportedParametersName": [
+              "Hour",
+              "Minute"
+            ],
+            "supportedValues": [
+              {
+                "id": 126,
+                "types": []
+              },
+              {
+                "id": 127,
+                "types": []
+              }
+            ],
+            "types": [
+              "int",
+              "int"
+            ]
+          },
+          {
+            "description": "Call back when time of day arrived",
+            "id": 130,
+            "isEvent": true,
+            "max": [
+              ""
+            ],
+            "min": [
+              ""
+            ],
+            "name": "Day time",
+            "paramDesc": [
+              "Set time of day to remind"
+            ],
+            "prodId": 125,
+            "productEP": "daytime",
+            "supportedParametersName": [
+              "Day time"
+            ],
+            "supportedValues": [
+              {
+                "id": 129,
                 "types": [
-                    "discrete",
-                    "int"
+                  "Mor",
+                  "Noon",
+                  "Eve"
                 ]
-            }
-        ],
-        "actionState": true,
-        "description": "asdf",
-        "endPoint": "asdf",
-        "eventState": true,
-        "id": 796,
-        "name": "asdf",
-        "vendorName": "Ami Ami",
-        "vendor_id": 7
-      },
-      "serial_number": 111
-    },
-    {
-      "id": 2,
-      "customer_id": 13,
-      "protoDevice": {
-        "actionAndEventList": [
-            {
-                "description": "fasd",
-                "id": 797,
-                "isEvent": false,
-                "max": [
-                    "null",
-                    "44"
-                ],
-                "min": [
-                    "null",
-                    "2"
-                ],
-                "name": "asdfasd",
-                "paramDesc": [
-                    "adsfads",
-                    "asdf"
-                ],
-                "prodId": 796,
-                "productEP": "fadsf",
-                "supportedParametersName": [
-                  "fuck","me"
-                ],
-                "supportedValues":[
-                    ["asd","asd"],
-                    []
-                ],
+              }
+            ],
+            "types": [
+              "discrete"
+            ]
+          },
+          {
+            "description": "Set alarm",
+            "id": 133,
+            "isEvent": false,
+            "max": [
+              "23",
+              "59"
+            ],
+            "min": [
+              "0",
+              "0"
+            ],
+            "name": "Alarm",
+            "paramDesc": [
+              "Set time in hours",
+              "Set  minutes"
+            ],
+            "prodId": 125,
+            "productEP": "alarm",
+            "supportedParametersName": [
+              "Hour",
+              "Minute"
+            ],
+            "supportedValues": [
+              {
+                "id": 131,
+                "types": []
+              },
+              {
+                "id": 132,
+                "types": []
+              }
+            ],
+            "types": [
+              "int",
+              "int"
+            ]
+          },
+          {
+            "description": "set volume",
+            "id": 135,
+            "isEvent": false,
+            "max": [
+              ""
+            ],
+            "min": [
+              ""
+            ],
+            "name": "Volume",
+            "paramDesc": [
+              "Set alarm volume"
+            ],
+            "prodId": 125,
+            "productEP": "volume",
+            "supportedParametersName": [
+              "Alarm volume"
+            ],
+            "supportedValues": [
+              {
+                "id": 134,
                 "types": [
-                    "discrete",
-                    "int"
+                  "Low",
+                  "Medium",
+                  "High"
                 ]
-            }
-        ],
-        "actionState": true,
-        "description": "asdf",
-        "endPoint": "asdf",
-        "eventState": true,
-        "id": 796,
-        "name": "asdf",
-        "vendorName": "Ami Ami",
-        "vendor_id": 7
-      },
-      "serial_number": 222
-    },
-    {
-      "id": 3,
-      "customer_id": 13,
-      "protoDevice": {
-        "actionAndEventList": [
-            {
-                "description": "fasd",
-                "id": 797,
-                "isEvent": false,
-                "max": [
-                    "null",
-                    "44"
-                ],
-                "min": [
-                    "null",
-                    "2"
-                ],
-                "name": "asdfasd",
-                "paramDesc": [
-                    "adsfads",
-                    "asdf"
-                ],
-                "prodId": 796,
-                "productEP": "fadsf",
-                "supportedParametersName": [],
-                "supportedValues":[
-                    ["asd","asd"],
-                    []
-                ],
+              }
+            ],
+            "types": [
+              "discrete"
+            ]
+          },
+          {
+            "description": "Set good morning message",
+            "id": 137,
+            "isEvent": false,
+            "max": [
+              ""
+            ],
+            "min": [
+              ""
+            ],
+            "name": "Good Morning",
+            "paramDesc": [
+              "Set message of good for good morning "
+            ],
+            "prodId": 125,
+            "productEP": "message",
+            "supportedParametersName": [
+              "Message"
+            ],
+            "supportedValues": [
+              {
+                "id": 136,
+                "types": []
+              }
+            ],
+            "types": [
+              "string"
+            ]
+          },
+          {
+            "description": "Sending mail with subjected Scenario/Action/Event details",
+            "id": 140,
+            "isEvent": false,
+            "max": [
+              "max1",
+              "max2"
+            ],
+            "min": [
+              "min1",
+              "min1"
+            ],
+            "name": "Email",
+            "paramDesc": [
+              "dec1",
+              "desc2"
+            ],
+            "prodId": 125,
+            "productEP": "EmailEndPoint",
+            "supportedParametersName": [
+              "Email-Address",
+              "Message"
+            ],
+            "supportedValues": [
+              {
+                "id": 138,
                 "types": [
-                    "discrete",
-                    "int"
+                  "banani",
+                  "banoni"
                 ]
-            }
-        ],
-        "actionState": true,
-        "description": "asdf",
-        "endPoint": "asdf",
-        "eventState": true,
-        "id": 796,
-        "name": "asdf",
-        "vendorName": "Ami Ami",
-        "vendor_id": 7
-      },
-      "serial_number": 333
-    }
-  ],
-  "vendors": [
-    {
-      "id": 1,
-      "name": "Porsche"
-    },
-    {
-      "id": 2,
-      "name": "Volkswagen"
-    }
-  ],
-  "products": [
-    {
-        "actionAndEventList": [
-            {
-                "description": "Set reminder",
-                "id": 128,
-                "isEvent": true,
-                "max": [
-                    "23",
-                    "59"
-                ],
-                "min": [
-                    "0",
-                    "0"
-                ],
-                "name": "Reminder",
-                "paramDesc": [
-                    "Set remider time",
-                    "Set reminder minutes"
-                ],
-                "prodId": 125,
-                "productEP": "reminder",
-                "supportedParametersName": [
-                    "Hour",
-                    "Minute"
-                ],
-                "supportedValues": [
-                    {
-                        "id": 126,
-                        "types": []
-                    },
-                    {
-                        "id": 127,
-                        "types": []
-                    }
-                ],
+              },
+              {
+                "id": 139,
                 "types": [
-                    "int",
-                    "int"
+                  "banani",
+                  "banoni"
                 ]
-            },
-            {
-                "description": "Call back when time of day arrived",
-                "id": 130,
-                "isEvent": true,
-                "max": [
-                    ""
-                ],
-                "min": [
-                    ""
-                ],
-                "name": "Day time",
-                "paramDesc": [
-                    "Set time of day to remind"
-                ],
-                "prodId": 125,
-                "productEP": "daytime",
-                "supportedParametersName": [
-                    "Day time"
-                ],
-                "supportedValues": [
-                    {
-                        "id": 129,
-                        "types": [
-                            "Mor",
-                            "Noon",
-                            "Eve"
-                        ]
-                    }
-                ],
-                "types": [
-                    "discrete"
-                ]
-            },
-            {
-                "description": "Set alarm",
-                "id": 133,
-                "isEvent": false,
-                "max": [
-                    "23",
-                    "59"
-                ],
-                "min": [
-                    "0",
-                    "0"
-                ],
-                "name": "Alarm",
-                "paramDesc": [
-                    "Set time in hours",
-                    "Set  minutes"
-                ],
-                "prodId": 125,
-                "productEP": "alarm",
-                "supportedParametersName": [
-                    "Hour",
-                    "Minute"
-                ],
-                "supportedValues": [
-                    {
-                        "id": 131,
-                        "types": []
-                    },
-                    {
-                        "id": 132,
-                        "types": []
-                    }
-                ],
-                "types": [
-                    "int",
-                    "int"
-                ]
-            },
-            {
-                "description": "set volume",
-                "id": 135,
-                "isEvent": false,
-                "max": [
-                    ""
-                ],
-                "min": [
-                    ""
-                ],
-                "name": "Volume",
-                "paramDesc": [
-                    "Set alarm volume"
-                ],
-                "prodId": 125,
-                "productEP": "volume",
-                "supportedParametersName": [
-                    "Alarm volume"
-                ],
-                "supportedValues": [
-                    {
-                        "id": 134,
-                        "types": [
-                            "Low",
-                            "Medium",
-                            "High"
-                        ]
-                    }
-                ],
-                "types": [
-                    "discrete"
-                ]
-            },
-            {
-                "description": "Set good morning message",
-                "id": 137,
-                "isEvent": false,
-                "max": [
-                    ""
-                ],
-                "min": [
-                    ""
-                ],
-                "name": "Good Morning",
-                "paramDesc": [
-                    "Set message of good for good morning "
-                ],
-                "prodId": 125,
-                "productEP": "message",
-                "supportedParametersName": [
-                    "Message"
-                ],
-                "supportedValues": [
-                    {
-                        "id": 136,
-                        "types": []
-                    }
-                ],
-                "types": [
-                    "string"
-                ]
-            },
-            {
-                "description": "Sending mail with subjected Scenario/Action/Event details",
-                "id": 140,
-                "isEvent": false,
-                "max": [
-                    "max1",
-                    "max2"
-                ],
-                "min": [
-                    "min1",
-                    "min1"
-                ],
-                "name": "Email",
-                "paramDesc": [
-                    "dec1",
-                    "desc2"
-                ],
-                "prodId": 125,
-                "productEP": "EmailEndPoint",
-                "supportedParametersName": [
-                    "Email-Address",
-                    "Message"
-                ],
-                "supportedValues": [
-                    {
-                        "id": 138,
-                        "types": [
-                            "banani",
-                            "banoni"
-                        ]
-                    },
-                    {
-                        "id": 139,
-                        "types": [
-                            "banani",
-                            "banoni"
-                        ]
-                    }
-                ],
-                "types": [
-                    "STRING",
-                    "STRING"
-                ]
-            }
+              }
+            ],
+            "types": [
+              "STRING",
+              "STRING"
+            ]
+          }
         ],
         "actionState": true,
         "description": "Alarm clock",
@@ -400,6 +265,2058 @@
         "name": "Clock",
         "vendorName": "Mercedez",
         "vendor_id": 2
+      },
+      "serial_number": 1212
+    },
+    {
+      "customer_id": 1,
+      "id": 199,
+      "protoDevice": {
+        "actionAndEventList": [
+          {
+            "description": "Set reminder",
+            "id": 128,
+            "isEvent": true,
+            "max": [
+              "23",
+              "59"
+            ],
+            "min": [
+              "0",
+              "0"
+            ],
+            "name": "Reminder",
+            "paramDesc": [
+              "Set remider time",
+              "Set reminder minutes"
+            ],
+            "prodId": 125,
+            "productEP": "reminder",
+            "supportedParametersName": [
+              "Hour",
+              "Minute"
+            ],
+            "supportedValues": [
+              {
+                "id": 126,
+                "types": []
+              },
+              {
+                "id": 127,
+                "types": []
+              }
+            ],
+            "types": [
+              "int",
+              "int"
+            ]
+          },
+          {
+            "description": "Call back when time of day arrived",
+            "id": 130,
+            "isEvent": true,
+            "max": [
+              ""
+            ],
+            "min": [
+              ""
+            ],
+            "name": "Day time",
+            "paramDesc": [
+              "Set time of day to remind"
+            ],
+            "prodId": 125,
+            "productEP": "daytime",
+            "supportedParametersName": [
+              "Day time"
+            ],
+            "supportedValues": [
+              {
+                "id": 129,
+                "types": [
+                  "Mor",
+                  "Noon",
+                  "Eve"
+                ]
+              }
+            ],
+            "types": [
+              "discrete"
+            ]
+          },
+          {
+            "description": "Set alarm",
+            "id": 133,
+            "isEvent": false,
+            "max": [
+              "23",
+              "59"
+            ],
+            "min": [
+              "0",
+              "0"
+            ],
+            "name": "Alarm",
+            "paramDesc": [
+              "Set time in hours",
+              "Set  minutes"
+            ],
+            "prodId": 125,
+            "productEP": "alarm",
+            "supportedParametersName": [
+              "Hour",
+              "Minute"
+            ],
+            "supportedValues": [
+              {
+                "id": 131,
+                "types": []
+              },
+              {
+                "id": 132,
+                "types": []
+              }
+            ],
+            "types": [
+              "int",
+              "int"
+            ]
+          },
+          {
+            "description": "set volume",
+            "id": 135,
+            "isEvent": false,
+            "max": [
+              ""
+            ],
+            "min": [
+              ""
+            ],
+            "name": "Volume",
+            "paramDesc": [
+              "Set alarm volume"
+            ],
+            "prodId": 125,
+            "productEP": "volume",
+            "supportedParametersName": [
+              "Alarm volume"
+            ],
+            "supportedValues": [
+              {
+                "id": 134,
+                "types": [
+                  "Low",
+                  "Medium",
+                  "High"
+                ]
+              }
+            ],
+            "types": [
+              "discrete"
+            ]
+          },
+          {
+            "description": "Set good morning message",
+            "id": 137,
+            "isEvent": false,
+            "max": [
+              ""
+            ],
+            "min": [
+              ""
+            ],
+            "name": "Good Morning",
+            "paramDesc": [
+              "Set message of good for good morning "
+            ],
+            "prodId": 125,
+            "productEP": "message",
+            "supportedParametersName": [
+              "Message"
+            ],
+            "supportedValues": [
+              {
+                "id": 136,
+                "types": []
+              }
+            ],
+            "types": [
+              "string"
+            ]
+          },
+          {
+            "description": "Sending mail with subjected Scenario/Action/Event details",
+            "id": 140,
+            "isEvent": false,
+            "max": [
+              "max1",
+              "max2"
+            ],
+            "min": [
+              "min1",
+              "min1"
+            ],
+            "name": "Email",
+            "paramDesc": [
+              "dec1",
+              "desc2"
+            ],
+            "prodId": 125,
+            "productEP": "EmailEndPoint",
+            "supportedParametersName": [
+              "Email-Address",
+              "Message"
+            ],
+            "supportedValues": [
+              {
+                "id": 138,
+                "types": [
+                  "banani",
+                  "banoni"
+                ]
+              },
+              {
+                "id": 139,
+                "types": [
+                  "banani",
+                  "banoni"
+                ]
+              }
+            ],
+            "types": [
+              "STRING",
+              "STRING"
+            ]
+          }
+        ],
+        "actionState": true,
+        "description": "Alarm clock",
+        "endPoint": "clock",
+        "eventState": true,
+        "id": 125,
+        "name": "Clock",
+        "vendorName": "Mercedez",
+        "vendor_id": 2
+      },
+      "serial_number": 2323
+    },
+    {
+      "customer_id": 1,
+      "id": 201,
+      "protoDevice": {
+        "actionAndEventList": [
+          {
+            "description": "Set reminder",
+            "id": 128,
+            "isEvent": true,
+            "max": [
+              "23",
+              "59"
+            ],
+            "min": [
+              "0",
+              "0"
+            ],
+            "name": "Reminder",
+            "paramDesc": [
+              "Set remider time",
+              "Set reminder minutes"
+            ],
+            "prodId": 125,
+            "productEP": "reminder",
+            "supportedParametersName": [
+              "Hour",
+              "Minute"
+            ],
+            "supportedValues": [
+              {
+                "id": 126,
+                "types": []
+              },
+              {
+                "id": 127,
+                "types": []
+              }
+            ],
+            "types": [
+              "int",
+              "int"
+            ]
+          },
+          {
+            "description": "Call back when time of day arrived",
+            "id": 130,
+            "isEvent": true,
+            "max": [
+              ""
+            ],
+            "min": [
+              ""
+            ],
+            "name": "Day time",
+            "paramDesc": [
+              "Set time of day to remind"
+            ],
+            "prodId": 125,
+            "productEP": "daytime",
+            "supportedParametersName": [
+              "Day time"
+            ],
+            "supportedValues": [
+              {
+                "id": 129,
+                "types": [
+                  "Mor",
+                  "Noon",
+                  "Eve"
+                ]
+              }
+            ],
+            "types": [
+              "discrete"
+            ]
+          },
+          {
+            "description": "Set alarm",
+            "id": 133,
+            "isEvent": false,
+            "max": [
+              "23",
+              "59"
+            ],
+            "min": [
+              "0",
+              "0"
+            ],
+            "name": "Alarm",
+            "paramDesc": [
+              "Set time in hours",
+              "Set  minutes"
+            ],
+            "prodId": 125,
+            "productEP": "alarm",
+            "supportedParametersName": [
+              "Hour",
+              "Minute"
+            ],
+            "supportedValues": [
+              {
+                "id": 131,
+                "types": []
+              },
+              {
+                "id": 132,
+                "types": []
+              }
+            ],
+            "types": [
+              "int",
+              "int"
+            ]
+          },
+          {
+            "description": "set volume",
+            "id": 135,
+            "isEvent": false,
+            "max": [
+              ""
+            ],
+            "min": [
+              ""
+            ],
+            "name": "Volume",
+            "paramDesc": [
+              "Set alarm volume"
+            ],
+            "prodId": 125,
+            "productEP": "volume",
+            "supportedParametersName": [
+              "Alarm volume"
+            ],
+            "supportedValues": [
+              {
+                "id": 134,
+                "types": [
+                  "Low",
+                  "Medium",
+                  "High"
+                ]
+              }
+            ],
+            "types": [
+              "discrete"
+            ]
+          },
+          {
+            "description": "Set good morning message",
+            "id": 137,
+            "isEvent": false,
+            "max": [
+              ""
+            ],
+            "min": [
+              ""
+            ],
+            "name": "Good Morning",
+            "paramDesc": [
+              "Set message of good for good morning "
+            ],
+            "prodId": 125,
+            "productEP": "message",
+            "supportedParametersName": [
+              "Message"
+            ],
+            "supportedValues": [
+              {
+                "id": 136,
+                "types": []
+              }
+            ],
+            "types": [
+              "string"
+            ]
+          },
+          {
+            "description": "Sending mail with subjected Scenario/Action/Event details",
+            "id": 140,
+            "isEvent": false,
+            "max": [
+              "max1",
+              "max2"
+            ],
+            "min": [
+              "min1",
+              "min1"
+            ],
+            "name": "Email",
+            "paramDesc": [
+              "dec1",
+              "desc2"
+            ],
+            "prodId": 125,
+            "productEP": "EmailEndPoint",
+            "supportedParametersName": [
+              "Email-Address",
+              "Message"
+            ],
+            "supportedValues": [
+              {
+                "id": 138,
+                "types": [
+                  "banani",
+                  "banoni"
+                ]
+              },
+              {
+                "id": 139,
+                "types": [
+                  "banani",
+                  "banoni"
+                ]
+              }
+            ],
+            "types": [
+              "STRING",
+              "STRING"
+            ]
+          }
+        ],
+        "actionState": true,
+        "description": "Alarm clock",
+        "endPoint": "clock",
+        "eventState": true,
+        "id": 125,
+        "name": "Clock",
+        "vendorName": "Mercedez",
+        "vendor_id": 2
+      },
+      "serial_number": 2324
+    },
+    {
+      "customer_id": 1,
+      "id": 203,
+      "protoDevice": {
+        "actionAndEventList": [
+          {
+            "description": "Set reminder",
+            "id": 128,
+            "isEvent": true,
+            "max": [
+              "23",
+              "59"
+            ],
+            "min": [
+              "0",
+              "0"
+            ],
+            "name": "Reminder",
+            "paramDesc": [
+              "Set remider time",
+              "Set reminder minutes"
+            ],
+            "prodId": 125,
+            "productEP": "reminder",
+            "supportedParametersName": [
+              "Hour",
+              "Minute"
+            ],
+            "supportedValues": [
+              {
+                "id": 126,
+                "types": []
+              },
+              {
+                "id": 127,
+                "types": []
+              }
+            ],
+            "types": [
+              "int",
+              "int"
+            ]
+          },
+          {
+            "description": "Call back when time of day arrived",
+            "id": 130,
+            "isEvent": true,
+            "max": [
+              ""
+            ],
+            "min": [
+              ""
+            ],
+            "name": "Day time",
+            "paramDesc": [
+              "Set time of day to remind"
+            ],
+            "prodId": 125,
+            "productEP": "daytime",
+            "supportedParametersName": [
+              "Day time"
+            ],
+            "supportedValues": [
+              {
+                "id": 129,
+                "types": [
+                  "Mor",
+                  "Noon",
+                  "Eve"
+                ]
+              }
+            ],
+            "types": [
+              "discrete"
+            ]
+          },
+          {
+            "description": "Set alarm",
+            "id": 133,
+            "isEvent": false,
+            "max": [
+              "23",
+              "59"
+            ],
+            "min": [
+              "0",
+              "0"
+            ],
+            "name": "Alarm",
+            "paramDesc": [
+              "Set time in hours",
+              "Set  minutes"
+            ],
+            "prodId": 125,
+            "productEP": "alarm",
+            "supportedParametersName": [
+              "Hour",
+              "Minute"
+            ],
+            "supportedValues": [
+              {
+                "id": 131,
+                "types": []
+              },
+              {
+                "id": 132,
+                "types": []
+              }
+            ],
+            "types": [
+              "int",
+              "int"
+            ]
+          },
+          {
+            "description": "set volume",
+            "id": 135,
+            "isEvent": false,
+            "max": [
+              ""
+            ],
+            "min": [
+              ""
+            ],
+            "name": "Volume",
+            "paramDesc": [
+              "Set alarm volume"
+            ],
+            "prodId": 125,
+            "productEP": "volume",
+            "supportedParametersName": [
+              "Alarm volume"
+            ],
+            "supportedValues": [
+              {
+                "id": 134,
+                "types": [
+                  "Low",
+                  "Medium",
+                  "High"
+                ]
+              }
+            ],
+            "types": [
+              "discrete"
+            ]
+          },
+          {
+            "description": "Set good morning message",
+            "id": 137,
+            "isEvent": false,
+            "max": [
+              ""
+            ],
+            "min": [
+              ""
+            ],
+            "name": "Good Morning",
+            "paramDesc": [
+              "Set message of good for good morning "
+            ],
+            "prodId": 125,
+            "productEP": "message",
+            "supportedParametersName": [
+              "Message"
+            ],
+            "supportedValues": [
+              {
+                "id": 136,
+                "types": []
+              }
+            ],
+            "types": [
+              "string"
+            ]
+          },
+          {
+            "description": "Sending mail with subjected Scenario/Action/Event details",
+            "id": 140,
+            "isEvent": false,
+            "max": [
+              "max1",
+              "max2"
+            ],
+            "min": [
+              "min1",
+              "min1"
+            ],
+            "name": "Email",
+            "paramDesc": [
+              "dec1",
+              "desc2"
+            ],
+            "prodId": 125,
+            "productEP": "EmailEndPoint",
+            "supportedParametersName": [
+              "Email-Address",
+              "Message"
+            ],
+            "supportedValues": [
+              {
+                "id": 138,
+                "types": [
+                  "banani",
+                  "banoni"
+                ]
+              },
+              {
+                "id": 139,
+                "types": [
+                  "banani",
+                  "banoni"
+                ]
+              }
+            ],
+            "types": [
+              "STRING",
+              "STRING"
+            ]
+          }
+        ],
+        "actionState": true,
+        "description": "Alarm clock",
+        "endPoint": "clock",
+        "eventState": true,
+        "id": 125,
+        "name": "Clock",
+        "vendorName": "Mercedez",
+        "vendor_id": 2
+      },
+      "serial_number": 2325
+    },
+    {
+      "customer_id": 1,
+      "id": 204,
+      "protoDevice": {
+        "actionAndEventList": [
+          {
+            "description": "Set reminder",
+            "id": 128,
+            "isEvent": true,
+            "max": [
+              "23",
+              "59"
+            ],
+            "min": [
+              "0",
+              "0"
+            ],
+            "name": "Reminder",
+            "paramDesc": [
+              "Set remider time",
+              "Set reminder minutes"
+            ],
+            "prodId": 125,
+            "productEP": "reminder",
+            "supportedParametersName": [
+              "Hour",
+              "Minute"
+            ],
+            "supportedValues": [
+              {
+                "id": 126,
+                "types": []
+              },
+              {
+                "id": 127,
+                "types": []
+              }
+            ],
+            "types": [
+              "int",
+              "int"
+            ]
+          },
+          {
+            "description": "Call back when time of day arrived",
+            "id": 130,
+            "isEvent": true,
+            "max": [
+              ""
+            ],
+            "min": [
+              ""
+            ],
+            "name": "Day time",
+            "paramDesc": [
+              "Set time of day to remind"
+            ],
+            "prodId": 125,
+            "productEP": "daytime",
+            "supportedParametersName": [
+              "Day time"
+            ],
+            "supportedValues": [
+              {
+                "id": 129,
+                "types": [
+                  "Mor",
+                  "Noon",
+                  "Eve"
+                ]
+              }
+            ],
+            "types": [
+              "discrete"
+            ]
+          },
+          {
+            "description": "Set alarm",
+            "id": 133,
+            "isEvent": false,
+            "max": [
+              "23",
+              "59"
+            ],
+            "min": [
+              "0",
+              "0"
+            ],
+            "name": "Alarm",
+            "paramDesc": [
+              "Set time in hours",
+              "Set  minutes"
+            ],
+            "prodId": 125,
+            "productEP": "alarm",
+            "supportedParametersName": [
+              "Hour",
+              "Minute"
+            ],
+            "supportedValues": [
+              {
+                "id": 131,
+                "types": []
+              },
+              {
+                "id": 132,
+                "types": []
+              }
+            ],
+            "types": [
+              "int",
+              "int"
+            ]
+          },
+          {
+            "description": "set volume",
+            "id": 135,
+            "isEvent": false,
+            "max": [
+              ""
+            ],
+            "min": [
+              ""
+            ],
+            "name": "Volume",
+            "paramDesc": [
+              "Set alarm volume"
+            ],
+            "prodId": 125,
+            "productEP": "volume",
+            "supportedParametersName": [
+              "Alarm volume"
+            ],
+            "supportedValues": [
+              {
+                "id": 134,
+                "types": [
+                  "Low",
+                  "Medium",
+                  "High"
+                ]
+              }
+            ],
+            "types": [
+              "discrete"
+            ]
+          },
+          {
+            "description": "Set good morning message",
+            "id": 137,
+            "isEvent": false,
+            "max": [
+              ""
+            ],
+            "min": [
+              ""
+            ],
+            "name": "Good Morning",
+            "paramDesc": [
+              "Set message of good for good morning "
+            ],
+            "prodId": 125,
+            "productEP": "message",
+            "supportedParametersName": [
+              "Message"
+            ],
+            "supportedValues": [
+              {
+                "id": 136,
+                "types": []
+              }
+            ],
+            "types": [
+              "string"
+            ]
+          },
+          {
+            "description": "Sending mail with subjected Scenario/Action/Event details",
+            "id": 140,
+            "isEvent": false,
+            "max": [
+              "max1",
+              "max2"
+            ],
+            "min": [
+              "min1",
+              "min1"
+            ],
+            "name": "Email",
+            "paramDesc": [
+              "dec1",
+              "desc2"
+            ],
+            "prodId": 125,
+            "productEP": "EmailEndPoint",
+            "supportedParametersName": [
+              "Email-Address",
+              "Message"
+            ],
+            "supportedValues": [
+              {
+                "id": 138,
+                "types": [
+                  "banani",
+                  "banoni"
+                ]
+              },
+              {
+                "id": 139,
+                "types": [
+                  "banani",
+                  "banoni"
+                ]
+              }
+            ],
+            "types": [
+              "STRING",
+              "STRING"
+            ]
+          }
+        ],
+        "actionState": true,
+        "description": "Alarm clock",
+        "endPoint": "clock",
+        "eventState": true,
+        "id": 125,
+        "name": "Clock",
+        "vendorName": "Mercedez",
+        "vendor_id": 2
+      },
+      "serial_number": 2326
+    },
+    {
+      "customer_id": 1,
+      "id": 205,
+      "protoDevice": {
+        "actionAndEventList": [
+          {
+            "description": "Set reminder",
+            "id": 128,
+            "isEvent": true,
+            "max": [
+              "23",
+              "59"
+            ],
+            "min": [
+              "0",
+              "0"
+            ],
+            "name": "Reminder",
+            "paramDesc": [
+              "Set remider time",
+              "Set reminder minutes"
+            ],
+            "prodId": 125,
+            "productEP": "reminder",
+            "supportedParametersName": [
+              "Hour",
+              "Minute"
+            ],
+            "supportedValues": [
+              {
+                "id": 126,
+                "types": []
+              },
+              {
+                "id": 127,
+                "types": []
+              }
+            ],
+            "types": [
+              "int",
+              "int"
+            ]
+          },
+          {
+            "description": "Call back when time of day arrived",
+            "id": 130,
+            "isEvent": true,
+            "max": [
+              ""
+            ],
+            "min": [
+              ""
+            ],
+            "name": "Day time",
+            "paramDesc": [
+              "Set time of day to remind"
+            ],
+            "prodId": 125,
+            "productEP": "daytime",
+            "supportedParametersName": [
+              "Day time"
+            ],
+            "supportedValues": [
+              {
+                "id": 129,
+                "types": [
+                  "Mor",
+                  "Noon",
+                  "Eve"
+                ]
+              }
+            ],
+            "types": [
+              "discrete"
+            ]
+          },
+          {
+            "description": "Set alarm",
+            "id": 133,
+            "isEvent": false,
+            "max": [
+              "23",
+              "59"
+            ],
+            "min": [
+              "0",
+              "0"
+            ],
+            "name": "Alarm",
+            "paramDesc": [
+              "Set time in hours",
+              "Set  minutes"
+            ],
+            "prodId": 125,
+            "productEP": "alarm",
+            "supportedParametersName": [
+              "Hour",
+              "Minute"
+            ],
+            "supportedValues": [
+              {
+                "id": 131,
+                "types": []
+              },
+              {
+                "id": 132,
+                "types": []
+              }
+            ],
+            "types": [
+              "int",
+              "int"
+            ]
+          },
+          {
+            "description": "set volume",
+            "id": 135,
+            "isEvent": false,
+            "max": [
+              ""
+            ],
+            "min": [
+              ""
+            ],
+            "name": "Volume",
+            "paramDesc": [
+              "Set alarm volume"
+            ],
+            "prodId": 125,
+            "productEP": "volume",
+            "supportedParametersName": [
+              "Alarm volume"
+            ],
+            "supportedValues": [
+              {
+                "id": 134,
+                "types": [
+                  "Low",
+                  "Medium",
+                  "High"
+                ]
+              }
+            ],
+            "types": [
+              "discrete"
+            ]
+          },
+          {
+            "description": "Set good morning message",
+            "id": 137,
+            "isEvent": false,
+            "max": [
+              ""
+            ],
+            "min": [
+              ""
+            ],
+            "name": "Good Morning",
+            "paramDesc": [
+              "Set message of good for good morning "
+            ],
+            "prodId": 125,
+            "productEP": "message",
+            "supportedParametersName": [
+              "Message"
+            ],
+            "supportedValues": [
+              {
+                "id": 136,
+                "types": []
+              }
+            ],
+            "types": [
+              "string"
+            ]
+          },
+          {
+            "description": "Sending mail with subjected Scenario/Action/Event details",
+            "id": 140,
+            "isEvent": false,
+            "max": [
+              "max1",
+              "max2"
+            ],
+            "min": [
+              "min1",
+              "min1"
+            ],
+            "name": "Email",
+            "paramDesc": [
+              "dec1",
+              "desc2"
+            ],
+            "prodId": 125,
+            "productEP": "EmailEndPoint",
+            "supportedParametersName": [
+              "Email-Address",
+              "Message"
+            ],
+            "supportedValues": [
+              {
+                "id": 138,
+                "types": [
+                  "banani",
+                  "banoni"
+                ]
+              },
+              {
+                "id": 139,
+                "types": [
+                  "banani",
+                  "banoni"
+                ]
+              }
+            ],
+            "types": [
+              "STRING",
+              "STRING"
+            ]
+          }
+        ],
+        "actionState": true,
+        "description": "Alarm clock",
+        "endPoint": "clock",
+        "eventState": true,
+        "id": 125,
+        "name": "Clock",
+        "vendorName": "Mercedez",
+        "vendor_id": 2
+      },
+      "serial_number": 1414
+    },
+    {
+      "customer_id": 1,
+      "id": 401,
+      "serial_number": 0
+    },
+    {
+      "customer_id": 1,
+      "id": 612,
+      "protoDevice": {
+        "actionAndEventList": [
+          {
+            "description": "Set reminder",
+            "id": 527,
+            "isEvent": true,
+            "max": [
+              "23",
+              "59"
+            ],
+            "min": [
+              "0",
+              "0"
+            ],
+            "name": "Reminder",
+            "paramDesc": [
+              "Set remider time",
+              "Set reminder minutes"
+            ],
+            "prodId": 524,
+            "productEP": "http://localhost:8011/DeviceSimulator/webapi/Simulator",
+            "supportedParametersName": [
+              "Hour",
+              "Minute"
+            ],
+            "supportedValues": [
+              {
+                "id": 525,
+                "types": []
+              },
+              {
+                "id": 526,
+                "types": []
+              }
+            ],
+            "types": [
+              "int",
+              "int"
+            ]
+          },
+          {
+            "description": "Call back when time of day arrived",
+            "id": 529,
+            "isEvent": true,
+            "max": [
+              ""
+            ],
+            "min": [
+              ""
+            ],
+            "name": "Day time",
+            "paramDesc": [
+              "Set time of day to remind"
+            ],
+            "prodId": 524,
+            "productEP": "http://localhost:8011/DeviceSimulator/webapi/Simulator",
+            "supportedParametersName": [
+              "Day time"
+            ],
+            "supportedValues": [
+              {
+                "id": 528,
+                "types": [
+                  "Mor",
+                  "Noon",
+                  "Eve"
+                ]
+              }
+            ],
+            "types": [
+              "discrete"
+            ]
+          },
+          {
+            "description": "Set alarm",
+            "id": 532,
+            "isEvent": false,
+            "max": [
+              "23",
+              "59"
+            ],
+            "min": [
+              "0",
+              "0"
+            ],
+            "name": "Alarm",
+            "paramDesc": [
+              "Set time in hours",
+              "Set  minutes"
+            ],
+            "prodId": 524,
+            "productEP": "http://localhost:8011/DeviceSimulator/webapi/Simulator",
+            "supportedParametersName": [
+              "Hour",
+              "Minute"
+            ],
+            "supportedValues": [
+              {
+                "id": 530,
+                "types": []
+              },
+              {
+                "id": 531,
+                "types": []
+              }
+            ],
+            "types": [
+              "int",
+              "int"
+            ]
+          },
+          {
+            "description": "set volume",
+            "id": 534,
+            "isEvent": false,
+            "max": [
+              ""
+            ],
+            "min": [
+              ""
+            ],
+            "name": "Volume",
+            "paramDesc": [
+              "Set alarm volume"
+            ],
+            "prodId": 524,
+            "productEP": "http://localhost:8011/DeviceSimulator/webapi/Simulator",
+            "supportedParametersName": [
+              "Alarm volume"
+            ],
+            "supportedValues": [
+              {
+                "id": 533,
+                "types": [
+                  "Low",
+                  "Medium",
+                  "High"
+                ]
+              }
+            ],
+            "types": [
+              "discrete"
+            ]
+          },
+          {
+            "description": "Set good morning message",
+            "id": 536,
+            "isEvent": false,
+            "max": [
+              ""
+            ],
+            "min": [
+              ""
+            ],
+            "name": "Good Morning",
+            "paramDesc": [
+              "Set message of good for good morning "
+            ],
+            "prodId": 524,
+            "productEP": "http://localhost:8011/DeviceSimulator/webapi/Simulator",
+            "supportedParametersName": [
+              "Message"
+            ],
+            "supportedValues": [
+              {
+                "id": 535,
+                "types": []
+              }
+            ],
+            "types": [
+              "string"
+            ]
+          },
+          {
+            "description": "Sending mail with subjected Scenario/Action/Event details",
+            "id": 539,
+            "isEvent": false,
+            "max": [
+              "max1",
+              "max2"
+            ],
+            "min": [
+              "min1",
+              "min1"
+            ],
+            "name": "Email",
+            "paramDesc": [
+              "dec1",
+              "desc2"
+            ],
+            "prodId": 524,
+            "productEP": "EmailEndPoint",
+            "supportedParametersName": [
+              "Email-Address",
+              "Message"
+            ],
+            "supportedValues": [
+              {
+                "id": 537,
+                "types": [
+                  "banani",
+                  "banoni"
+                ]
+              },
+              {
+                "id": 538,
+                "types": [
+                  "banani",
+                  "banoni"
+                ]
+              }
+            ],
+            "types": [
+              "STRING",
+              "STRING"
+            ]
+          },
+          {
+            "description": "Sending mail with subjected Scenario/Action/Event details",
+            "id": 542,
+            "isEvent": false,
+            "max": [
+              "max1",
+              "max2"
+            ],
+            "min": [
+              "min1",
+              "min1"
+            ],
+            "name": "Email",
+            "paramDesc": [
+              "dec1",
+              "desc2"
+            ],
+            "prodId": 524,
+            "productEP": "EmailEndPoint",
+            "supportedParametersName": [
+              "Email-Address",
+              "Message"
+            ],
+            "supportedValues": [
+              {
+                "id": 540,
+                "types": [
+                  "banani",
+                  "banoni"
+                ]
+              },
+              {
+                "id": 541,
+                "types": [
+                  "banani",
+                  "banoni"
+                ]
+              }
+            ],
+            "types": [
+              "STRING",
+              "STRING"
+            ]
+          }
+        ],
+        "actionState": true,
+        "description": "Alarm clock",
+        "endPoint": "clock",
+        "eventState": true,
+        "id": 524,
+        "name": "Clock #3",
+        "vendorName": "Mercedez",
+        "vendor_id": 2
+      },
+      "serial_number": 1234
+    },
+    {
+      "customer_id": 1,
+      "id": 613,
+      "protoDevice": {
+        "actionAndEventList": [
+          {
+            "description": "Set reminder",
+            "id": 527,
+            "isEvent": true,
+            "max": [
+              "23",
+              "59"
+            ],
+            "min": [
+              "0",
+              "0"
+            ],
+            "name": "Reminder",
+            "paramDesc": [
+              "Set remider time",
+              "Set reminder minutes"
+            ],
+            "prodId": 524,
+            "productEP": "http://localhost:8011/DeviceSimulator/webapi/Simulator",
+            "supportedParametersName": [
+              "Hour",
+              "Minute"
+            ],
+            "supportedValues": [
+              {
+                "id": 525,
+                "types": []
+              },
+              {
+                "id": 526,
+                "types": []
+              }
+            ],
+            "types": [
+              "int",
+              "int"
+            ]
+          },
+          {
+            "description": "Call back when time of day arrived",
+            "id": 529,
+            "isEvent": true,
+            "max": [
+              ""
+            ],
+            "min": [
+              ""
+            ],
+            "name": "Day time",
+            "paramDesc": [
+              "Set time of day to remind"
+            ],
+            "prodId": 524,
+            "productEP": "http://localhost:8011/DeviceSimulator/webapi/Simulator",
+            "supportedParametersName": [
+              "Day time"
+            ],
+            "supportedValues": [
+              {
+                "id": 528,
+                "types": [
+                  "Mor",
+                  "Noon",
+                  "Eve"
+                ]
+              }
+            ],
+            "types": [
+              "discrete"
+            ]
+          },
+          {
+            "description": "Set alarm",
+            "id": 532,
+            "isEvent": false,
+            "max": [
+              "23",
+              "59"
+            ],
+            "min": [
+              "0",
+              "0"
+            ],
+            "name": "Alarm",
+            "paramDesc": [
+              "Set time in hours",
+              "Set  minutes"
+            ],
+            "prodId": 524,
+            "productEP": "http://localhost:8011/DeviceSimulator/webapi/Simulator",
+            "supportedParametersName": [
+              "Hour",
+              "Minute"
+            ],
+            "supportedValues": [
+              {
+                "id": 530,
+                "types": []
+              },
+              {
+                "id": 531,
+                "types": []
+              }
+            ],
+            "types": [
+              "int",
+              "int"
+            ]
+          },
+          {
+            "description": "set volume",
+            "id": 534,
+            "isEvent": false,
+            "max": [
+              ""
+            ],
+            "min": [
+              ""
+            ],
+            "name": "Volume",
+            "paramDesc": [
+              "Set alarm volume"
+            ],
+            "prodId": 524,
+            "productEP": "http://localhost:8011/DeviceSimulator/webapi/Simulator",
+            "supportedParametersName": [
+              "Alarm volume"
+            ],
+            "supportedValues": [
+              {
+                "id": 533,
+                "types": [
+                  "Low",
+                  "Medium",
+                  "High"
+                ]
+              }
+            ],
+            "types": [
+              "discrete"
+            ]
+          },
+          {
+            "description": "Set good morning message",
+            "id": 536,
+            "isEvent": false,
+            "max": [
+              ""
+            ],
+            "min": [
+              ""
+            ],
+            "name": "Good Morning",
+            "paramDesc": [
+              "Set message of good for good morning "
+            ],
+            "prodId": 524,
+            "productEP": "http://localhost:8011/DeviceSimulator/webapi/Simulator",
+            "supportedParametersName": [
+              "Message"
+            ],
+            "supportedValues": [
+              {
+                "id": 535,
+                "types": []
+              }
+            ],
+            "types": [
+              "string"
+            ]
+          },
+          {
+            "description": "Sending mail with subjected Scenario/Action/Event details",
+            "id": 539,
+            "isEvent": false,
+            "max": [
+              "max1",
+              "max2"
+            ],
+            "min": [
+              "min1",
+              "min1"
+            ],
+            "name": "Email",
+            "paramDesc": [
+              "dec1",
+              "desc2"
+            ],
+            "prodId": 524,
+            "productEP": "EmailEndPoint",
+            "supportedParametersName": [
+              "Email-Address",
+              "Message"
+            ],
+            "supportedValues": [
+              {
+                "id": 537,
+                "types": [
+                  "banani",
+                  "banoni"
+                ]
+              },
+              {
+                "id": 538,
+                "types": [
+                  "banani",
+                  "banoni"
+                ]
+              }
+            ],
+            "types": [
+              "STRING",
+              "STRING"
+            ]
+          },
+          {
+            "description": "Sending mail with subjected Scenario/Action/Event details",
+            "id": 542,
+            "isEvent": false,
+            "max": [
+              "max1",
+              "max2"
+            ],
+            "min": [
+              "min1",
+              "min1"
+            ],
+            "name": "Email",
+            "paramDesc": [
+              "dec1",
+              "desc2"
+            ],
+            "prodId": 524,
+            "productEP": "EmailEndPoint",
+            "supportedParametersName": [
+              "Email-Address",
+              "Message"
+            ],
+            "supportedValues": [
+              {
+                "id": 540,
+                "types": [
+                  "banani",
+                  "banoni"
+                ]
+              },
+              {
+                "id": 541,
+                "types": [
+                  "banani",
+                  "banoni"
+                ]
+              }
+            ],
+            "types": [
+              "STRING",
+              "STRING"
+            ]
+          }
+        ],
+        "actionState": true,
+        "description": "Alarm clock",
+        "endPoint": "clock",
+        "eventState": true,
+        "id": 524,
+        "name": "Clock #3",
+        "vendorName": "Mercedez",
+        "vendor_id": 2
+      },
+      "serial_number": 12345
+    }
+  ],
+  "vendors": [
+    {
+      "id": 2,
+      "name": "Rolex"
+    }
+  ],
+  "products": [
+    {
+      "actionAndEventList": [
+        {
+          "description": "Set reminder",
+          "id": 128,
+          "isEvent": true,
+          "max": [
+            "23",
+            "59"
+          ],
+          "min": [
+            "0",
+            "0"
+          ],
+          "name": "Reminder",
+          "paramDesc": [
+            "Set remider time",
+            "Set reminder minutes"
+          ],
+          "prodId": 125,
+          "productEP": "reminder",
+          "supportedParametersName": [
+            "Hour",
+            "Minute"
+          ],
+          "supportedValues": [
+            {
+              "id": 126,
+              "types": []
+            },
+            {
+              "id": 127,
+              "types": []
+            }
+          ],
+          "types": [
+            "int",
+            "int"
+          ]
+        },
+        {
+          "description": "Call back when time of day arrived",
+          "id": 130,
+          "isEvent": true,
+          "max": [
+            ""
+          ],
+          "min": [
+            ""
+          ],
+          "name": "Day time",
+          "paramDesc": [
+            "Set time of day to remind"
+          ],
+          "prodId": 125,
+          "productEP": "daytime",
+          "supportedParametersName": [
+            "Day time"
+          ],
+          "supportedValues": [
+            {
+              "id": 129,
+              "types": [
+                "Mor",
+                "Noon",
+                "Eve"
+              ]
+            }
+          ],
+          "types": [
+            "discrete"
+          ]
+        },
+        {
+          "description": "Set alarm",
+          "id": 133,
+          "isEvent": false,
+          "max": [
+            "23",
+            "59"
+          ],
+          "min": [
+            "0",
+            "0"
+          ],
+          "name": "Alarm",
+          "paramDesc": [
+            "Set time in hours",
+            "Set  minutes"
+          ],
+          "prodId": 125,
+          "productEP": "alarm",
+          "supportedParametersName": [
+            "Hour",
+            "Minute"
+          ],
+          "supportedValues": [
+            {
+              "id": 131,
+              "types": []
+            },
+            {
+              "id": 132,
+              "types": []
+            }
+          ],
+          "types": [
+            "int",
+            "int"
+          ]
+        },
+        {
+          "description": "set volume",
+          "id": 135,
+          "isEvent": false,
+          "max": [
+            ""
+          ],
+          "min": [
+            ""
+          ],
+          "name": "Volume",
+          "paramDesc": [
+            "Set alarm volume"
+          ],
+          "prodId": 125,
+          "productEP": "volume",
+          "supportedParametersName": [
+            "Alarm volume"
+          ],
+          "supportedValues": [
+            {
+              "id": 134,
+              "types": [
+                "Low",
+                "Medium",
+                "High"
+              ]
+            }
+          ],
+          "types": [
+            "discrete"
+          ]
+        },
+        {
+          "description": "Set good morning message",
+          "id": 137,
+          "isEvent": false,
+          "max": [
+            ""
+          ],
+          "min": [
+            ""
+          ],
+          "name": "Good Morning",
+          "paramDesc": [
+            "Set message of good for good morning "
+          ],
+          "prodId": 125,
+          "productEP": "message",
+          "supportedParametersName": [
+            "Message"
+          ],
+          "supportedValues": [
+            {
+              "id": 136,
+              "types": []
+            }
+          ],
+          "types": [
+            "string"
+          ]
+        },
+        {
+          "description": "Sending mail with subjected Scenario/Action/Event details",
+          "id": 140,
+          "isEvent": false,
+          "max": [
+            "max1",
+            "max2"
+          ],
+          "min": [
+            "min1",
+            "min1"
+          ],
+          "name": "Email",
+          "paramDesc": [
+            "dec1",
+            "desc2"
+          ],
+          "prodId": 125,
+          "productEP": "EmailEndPoint",
+          "supportedParametersName": [
+            "Email-Address",
+            "Message"
+          ],
+          "supportedValues": [
+            {
+              "id": 138,
+              "types": [
+                "banani",
+                "banoni"
+              ]
+            },
+            {
+              "id": 139,
+              "types": [
+                "banani",
+                "banoni"
+              ]
+            }
+          ],
+          "types": [
+            "STRING",
+            "STRING"
+          ]
+        }
+      ],
+      "actionState": true,
+      "description": "Alarm clock",
+      "endPoint": "clock",
+      "eventState": true,
+      "id": 125,
+      "name": "Clock",
+      "vendorName": "Mercedez",
+      "vendor_id": 2
+    }
+  ],
+  "scenarios": [
+    {
+      "name": "Set volume 3",
+      "description": "Set volume according to day time",
+      "cust_id": 1,
+      "actions": [
+        {
+          "parameters": [
+            "Low"
+          ],
+          "device_serialNum": 1212,
+          "actionDescription": {
+            "id": 135,
+            "name": "Volume",
+            "description": "set volume",
+            "prodId": 125,
+            "prodEP": "volume",
+            "isEvent": false,
+            "supportedParametersName": [
+              "Alarm volume"
+            ],
+            "types": [
+              "discrete"
+            ],
+            "supportedValues": [
+              {
+                "types": [
+                  "Low",
+                  "Medium",
+                  "High"
+                ]
+              }
+            ],
+            "paramDesc": [
+              "Set alarm volume"
+            ],
+            "min": [
+              ""
+            ],
+            "max": [
+              ""
+            ]
+          }
+        }
+      ],
+      "eventsToHappen": [],
+      "cases": {
+        "cases": [
+          {
+            "events": [
+              {
+                "parameters": [
+                  "Noon"
+                ],
+                "device_serialNum": 1212,
+                "actionDescription": {
+                  "id": 130,
+                  "name": "Day time",
+                  "description": "Call back when time of day arrived",
+                  "prodId": 125,
+                  "prodEP": "daytime",
+                  "isEvent": true,
+                  "supportedParametersName": [
+                    "Day time"
+                  ],
+                  "types": [
+                    "discrete"
+                  ],
+                  "supportedValues": [
+                    {
+                      "types": [
+                        "Mor",
+                        "Noon",
+                        "Eve"
+                      ]
+                    }
+                  ],
+                  "paramDesc": [
+                    "Set time of day to remind"
+                  ],
+                  "min": [
+                    ""
+                  ],
+                  "max": [
+                    ""
+                  ]
+                },
+                "logicOperator": "|",
+                "triggered": "False"
+              }
+            ],
+            "logicOperator": "&"
+          }
+        ],
+        "logicOperator": "|"
+      }
     }
   ]
 }
