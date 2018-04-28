@@ -68,7 +68,7 @@ public class CaseGroup implements ICase {
 
 	@Override
 	public boolean calculateCase() {
-		boolean isTrue = true;
+		boolean isTrue = false;
 		boolean caseResult;
 		Iterator<Case> itr = this.cases.iterator();
 		while(itr.hasNext())

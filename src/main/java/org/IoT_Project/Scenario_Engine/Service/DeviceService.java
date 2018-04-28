@@ -8,17 +8,26 @@ import DataBase.NDBHandler;
 public class DeviceService {
 	
 	
-	public void HandleCall(short event_id, boolean i_value) throws Exception
+	public void HandleCall(short cust_id, short serial_num, boolean value) throws Exception
 	{	
 		//
 		NDBHandler DB = NDBHandler.getInstance();
-		Scenario scenario = DB.getScenario(event_id);
-		scenario.getEventById(event_id).setTriggered(i_value);
-		
-		if(scenario.resolveScenario())
-		{
-			activateActions(scenario);
+		List<Scenario> scenarios = DB.getScenarios(cust_id);
+		for (Scenario s : scenarios) {
+			for(Event event : s.getEventsToHappen().values()) {
+				if(event.getDevice_serialNum() == serial_num) {
+					event.setTriggered(value);
+				}
+			}
 		}
+		
+		for(Scenario s: scenarios) {
+			if(s.resolveScenario())
+			{
+				activateActions(s);
+			}
+		}
+		
 	}
 	
 	private void activateActions(Scenario i_scenario) throws Exception {

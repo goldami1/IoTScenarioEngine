@@ -669,6 +669,7 @@ public class NDBHandler implements IDBHandler {
 			m_Session.save(tc);
 		}
 		
+		m_Session.save(i_action.getActionDescription());
 		/*
 		for(String param : i_action.getParameters())
 		{
