@@ -4,6 +4,7 @@ import {
 	RECEIVE_PRODUCTS,
 	ADD_PRODUCT,
 	ADD_DEVICE,
+	SIGNUP_USER,
 	ADD_SCENARIO
 } from "./types";
 import axios from "axios";
@@ -34,6 +35,7 @@ function apiRequest(config,action,type) {
 					case ADD_PRODUCT:
 					case ADD_DEVICE:
 					case ADD_SCENARIO:
+					case SIGNUP_USER:
 						dispatch(setMessage({content:" ",type:"success"})); 
 						break;		
 					default:

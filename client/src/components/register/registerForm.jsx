@@ -27,6 +27,13 @@ class RegisterForm extends Component {
 		};
 	}
 
+	componentWillReceiveProps(nextProps)
+	{
+		if(!nextProps.isLoading && this.props.isLoading && nextProps.userCreated)
+		{
+			this.props.history.push("/login");	
+		}
+	}
 	onChange = (event) => {
 		this.setState({
 			[event.target.name]: event.target.value
@@ -125,6 +132,7 @@ class RegisterForm extends Component {
 
 function mapStateToProps({ auth }) {
 	return {
+		userCreated:auth.userCreated,
 		isLoading:auth.isLoading
 	};
 }

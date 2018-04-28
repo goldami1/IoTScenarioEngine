@@ -37,22 +37,22 @@ export default (state = initialState, action = {}) => {
 			}
 			break;
 		case USER_CREATED:
-			return {
-				userCreated:true,
+			return Object.assign({}, state, {
+				userCreated: true,
 				isLoading:false
-			};
+			});
 			break;
 		case USER_CREATION_FAILED:
-			return {
-				userCreated:false,
-				isLoading:false,
-			};
+			return Object.assign({}, state, {
+				userCreated: false,
+				isLoading:false
+			});
 			break;
 		case USER_CREATION_REQUEST:
-			return {
-				userCreated:false,
-				isLoading:true,
-			};
+			return Object.assign({}, state, {
+				userCreated: false,
+				isLoading:true
+			});
 			break;
 		case SET_LOGIN_REQUEST_DONE:
 			return {
