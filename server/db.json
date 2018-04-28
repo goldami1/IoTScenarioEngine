@@ -1984,6 +1984,11 @@
         "vendor_id": 2
       },
       "serial_number": 12345
+    },
+    {
+      "customer_id": 1,
+      "serial_number": 0,
+      "id": 614
     }
   ],
   "vendors": [

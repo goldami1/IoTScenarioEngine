@@ -135,6 +135,7 @@ class DeviceForm extends Component {
 				onCancel={this.props.onCancel}
 				onOk={this.onSubmit}
 				okText="Add new device"
+				confirmLoading={this.props.isLoading}
 			>
 				<Form>
 					<FormItem

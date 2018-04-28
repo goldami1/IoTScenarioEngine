@@ -28,13 +28,17 @@ import  {
 } from "./appActions";
 
 
-export function errorOccured(error) {
+export function errorOccured() {
 	return {
-		type: DEVICE_ERROR_OCCURED,
-		error
+		type: DEVICE_ERROR_OCCURED
 	};
 }
 
+export function addDeviceRequest() {
+	return {
+		type: ADD_DEVICE
+	};
+}
 export function receiveDevices(devices) {
 	return {
 		type: RECEIVE_DEVICES,
@@ -82,7 +86,7 @@ export function fetchProducts(vendorId) {
 export function addDevice(device) {
 	return (dispatch, getState) => {
 		const { auth } = getState();
-		dispatch(postToApi(ADD_DEVICE,`${api(endpoints.device)}/${auth.id}`,{res:receiveDevices},device))
+		dispatch(postToApi(ADD_DEVICE,`${api(endpoints.device)}/${auth.id}`,{res:receiveDevices,pre:addDeviceRequest,err:errorOccured},device))
 	};
 }
 

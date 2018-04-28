@@ -15,7 +15,8 @@ const initialState = {
 	vendors: [],
 	products: [],
 	selectedDevice: {},
-	error: ""
+	isLoading:false,
+	error: false
 };
 
 export default (state = initialState, action = {}) => {
@@ -25,10 +26,14 @@ export default (state = initialState, action = {}) => {
 		case DELETE_DEVICE:
 			return state;
 		case ADD_DEVICE:
-			return state;
+			return Object.assign({}, state, {
+				isLoading:true,
+				error:false
+			});
 		case RECEIVE_DEVICES:
 			return Object.assign({}, state, {
-				devices: action.devices
+				devices: action.devices,
+				isLoading:false
 			});
 		case RECEIVE_VENDORS:
 			return Object.assign({}, state, {
@@ -40,7 +45,8 @@ export default (state = initialState, action = {}) => {
 			});
 		case DEVICE_ERROR_OCCURED:
 			return Object.assign({}, state, {
-				error: action.error
+				error: true,
+				isLoading:false
 			});
 		default:
 			return state;

@@ -1,6 +1,14 @@
 import { isEmpty , isFunction} from "lodash";
-import { SET_MESSAGE } from "./types";
+import { 
+	SET_MESSAGE,
+	RECEIVE_PRODUCTS,
+	ADD_PRODUCT,
+	ADD_DEVICE,
+	ADD_SCENARIO
+} from "./types";
 import axios from "axios";
+
+
 
 function setMessageCreator(msg) {
 	return {
@@ -22,6 +30,15 @@ function apiRequest(config,action,type) {
 				{
 					dispatch(action.res(res.data)); 
 				}
+				switch (type) {
+					case ADD_PRODUCT:
+					case ADD_DEVICE:
+					case ADD_SCENARIO:
+						dispatch(setMessage({content:" ",type:"success"})); 
+						break;		
+					default:
+						break;
+				}
 			},
 			err => {
 				if(isFunction(action.err))
@@ -35,7 +52,12 @@ function apiRequest(config,action,type) {
 					}));
 				} catch (e) {
 					console.error(`Failed to ${config.method} ${type} ${config.method == 'get' ? 'from' : 'to'} ${config.url}`);
-				}			 
+				}
+				
+				// setTimeout(() => {
+				// 	dispatch(apiRequest(config,action,type));
+				// }, 5000);
+					 
 			}
 		);
 	};

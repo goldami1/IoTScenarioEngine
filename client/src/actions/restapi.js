@@ -29,7 +29,7 @@ const API = {
     device     : `http://${API_.ip}:${API_.port}/${API_.folder}/customer/device`,
     vendors     : `http://${API_.ip}:${API_.port}/${API_.folder}/customer/vendors`,
     product    : `http://${API_.ip}:${API_.port}/${API_.folder}/vendor/product`,
-    scenario   : `http://${API_.ip}:${API_.port}/${API_.folder}/customer/scenario/`
+    scenario   : `http://${API_.ip}:${API_.port}/${API_.folder}/customer/scenario`
 }
 
 
@@ -47,7 +47,7 @@ const _API = {
     device     : `http://${_API_.ip}:${_API_.port}/${_API_.folder}/customer/device`,
     vendors     : `http://${_API_.ip}:${_API_.port}/${_API_.folder}/customer/vendors`,
     product    : `http://${_API_.ip}:${_API_.port}/${_API_.folder}/vendor/product`,
-    scenario   : `http://${_API_.ip}:${_API_.port}/${_API_.folder}/customer/scenario/`
+    scenario   : `http://${_API_.ip}:${_API_.port}/${_API_.folder}/customer/scenario`
 }
 
 export function api(endpoint) {

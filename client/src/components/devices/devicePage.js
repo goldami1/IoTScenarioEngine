@@ -24,7 +24,13 @@ class DevicesPage extends Component {
 	}
 
 	
-
+	componentWillReceiveProps(nextProps) 
+	{
+		if(this.props.isLoading && !nextProps.isLoading && !nextProps.isFailed)
+		{
+			this.setState({modalVisible:false})
+		}
+	}
 
 	onDeviceSelect = (selectedDevice) =>
 	{
@@ -61,7 +67,8 @@ class DevicesPage extends Component {
 									devices={this.props.devices}>
 								</DeviceList>
 
-								<DeviceForm 
+								<DeviceForm
+									isLoading={this.props.isLoading}
 									visible={this.state.modalVisible}
 									onCancel={this.onModalCancel}
 								/>
@@ -82,6 +89,8 @@ class DevicesPage extends Component {
  
 function mapStateToProps({ devices }) {
 	return {
+		isLoading:devices.isLoading,
+		isFailed:devices.error,
 		devices: devices.devices
 	};
 }
