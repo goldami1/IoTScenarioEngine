@@ -16,18 +16,15 @@ public class DeviceService {
 		for (Scenario s : scenarios) {
 			for(Event event : s.getEventsToHappen().values()) {
 				if(event.getDevice_serialNum() == serial_num) {
-					event.setTriggered(value);
+					Event mapped_event = s.getEventById(event.getId());
+					mapped_event.setTriggered(value);
+				}
+				if(s.resolveScenario())
+				{
+					activateActions(s);
 				}
 			}
 		}
-		
-		for(Scenario s: scenarios) {
-			if(s.resolveScenario())
-			{
-				activateActions(s);
-			}
-		}
-		
 	}
 	
 	private void activateActions(Scenario i_scenario) throws Exception {

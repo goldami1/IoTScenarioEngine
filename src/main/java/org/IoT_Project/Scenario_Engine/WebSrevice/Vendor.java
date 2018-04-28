@@ -108,7 +108,7 @@ public class Vendor{
 		}
 	}
 	
-	@Path("/{vendor_id}")
+	@Path("/product/{vendor_id}")
 	@POST
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
