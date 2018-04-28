@@ -539,7 +539,35 @@ public class NDBHandler implements IDBHandler {
 		return true;
 	}
 	
+
+	public boolean addScenario(Scenario i_Scenario) throws Exception
+	{
+		m_Session = m_sessionFactory.openSession();
+		m_Session.beginTransaction();
+		
+		m_Session.save(i_Scenario);
+
+		m_Session.save(i_Scenario.getCases());
+		for(Case c : i_Scenario.getCases().getCases())
+		{
+			m_Session.save(c);
+			for(Event ev : c.getEvents())
+			{
+				m_Session.save(ev);
+			}
+		}
+		try
+		{
+			if(m_Session.getTransaction().getStatus().equals(TransactionStatus.ACTIVE))
+			{
+			m_Session.getTransaction().commit();
+			}
+		}catch(Exception e) {throw new Exception("Can't add provided scenario!");}
+		//m_Session.close();
+		return true;
+	}
 	
+	/*
 	public boolean addScenario(Scenario i_Scenario) throws Exception
 	{
 		m_Session = m_sessionFactory.openSession();
@@ -581,7 +609,7 @@ public class NDBHandler implements IDBHandler {
 		}catch(Exception e) {throw new Exception("Can't add provided scenario!");}
 		//m_Session.close();
 		return true;
-	}
+	}*/
 
 	public void OpenSession()
 	{
@@ -598,7 +626,7 @@ public class NDBHandler implements IDBHandler {
 		
 		try
 		{
-		//m_Session = m_sessionFactory.openSession();
+		m_Session = m_sessionFactory.openSession();
 		}catch(NullPointerException e) {throw new Exception("DB Critical Error# SessionFactory isn't initialized");}
 
 		m_Session.beginTransaction();
@@ -635,6 +663,12 @@ public class NDBHandler implements IDBHandler {
 		m_Session.beginTransaction();
 		
 		m_Session.save(i_action);
+		
+		for(TypesCont tc : i_action.getActionDescription().getSupportedValues())
+		{
+			m_Session.save(tc);
+		}
+		
 		/*
 		for(String param : i_action.getParameters())
 		{
@@ -652,12 +686,19 @@ public class NDBHandler implements IDBHandler {
 	}
 
 	
-	public void addEvent(Event i_event) throws Exception
+	public short addEvent(Event i_event) throws Exception
 	{
+		short res_id=-1;
 		m_Session = m_sessionFactory.openSession();
 		m_Session.beginTransaction();
 		
 		m_Session.save(i_event);
+
+		
+		for(TypesCont tc : i_event.getActionDescription().getSupportedValues())
+		{
+			m_Session.save(tc);
+		}
 		
 		/*
 		for(String param : i_event.getParameters())
@@ -670,9 +711,11 @@ public class NDBHandler implements IDBHandler {
 			if(m_Session.getTransaction().getStatus().equals(TransactionStatus.ACTIVE))
 			{
 			m_Session.getTransaction().commit();
+			res_id=i_event.getId();
 			}
 		}catch(Exception e) {throw new Exception("Can't add provided event!");}
 		m_Session.close();
+		return res_id;
 	}
 	
 	

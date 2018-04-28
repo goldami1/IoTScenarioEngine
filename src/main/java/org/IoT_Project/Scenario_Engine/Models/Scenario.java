@@ -60,7 +60,7 @@ public class Scenario{
 	@JoinColumn(name = "cases_id")
 	@SerializedName("cases")
 	private CaseGroup cases;
-	
+		
 	public Scenario() 
 	{
 		this.id = this.cust_id = -1;
@@ -148,9 +148,12 @@ public class Scenario{
 				boolean isEventUpdated = e.getId() > 0;
 				if(!isEventUpdated)
 				{
+					e.setId((short)NDBHandler.getInstance().addEvent(e));
+					e.setUpdated(false);
 					e = new Event(e);
-					NDBHandler.getInstance().addEvent(e);
 				}
+				else
+					e.setUpdated(true);
 				this.eventsToHappen.put(e.getId(), e);
 			}
 		}
@@ -165,14 +168,14 @@ public class Scenario{
 			boolean isActionUpdated = a.getId() > 0;
 			if(!isActionUpdated)
 			{
-				if(a.actionDescription.getName() != MailAction.mailActionProto.getName())
-					a = new Action(a);
-				else
+				if(a.actionDescription.getName() == MailAction.mailActionProto.getName())
 					a = new MailAction(a);
+				
 				NDBHandler.getInstance().addAction(a);
 			}
 		}
 	}
+
 	/******************************************************************/
 
 	public boolean resolveScenario()

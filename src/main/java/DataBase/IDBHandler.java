@@ -29,7 +29,7 @@ public interface IDBHandler {
 	public void addAction(Action action) throws Exception;
 	public Customer getCustomer(String i_username, String i_password) throws Exception;
 	public Customer getCustomer(int cust_id) throws Exception;
-	public void addEvent(Event event) throws Exception;
+	public short addEvent(Event event) throws Exception;
 	public Event getEvent(int event_id) throws Exception;
 	public LinkedList<Device> getDevices(short i_UserID) throws Exception;
 	//TODO:

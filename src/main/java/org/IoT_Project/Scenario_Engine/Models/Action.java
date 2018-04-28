@@ -2,11 +2,13 @@ package org.IoT_Project.Scenario_Engine.Models;
 import java.io.BufferedReader;
 import java.io.DataOutputStream;
 import java.io.InputStreamReader;
+import java.io.UnsupportedEncodingException;
 import java.lang.reflect.AnnotatedType;
 import java.lang.reflect.Type;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.net.URLEncoder;
 import java.sql.SQLException;
 import java.util.List;
 
@@ -34,6 +36,7 @@ import org.hibernate.annotations.LazyCollection;
 import org.hibernate.annotations.LazyCollectionOption;
 
 import DataBase.DBHandler;
+import DataBase.NDBHandler;
 
 @Entity
 @Table(name = "ACTIONS")
@@ -83,17 +86,10 @@ public class Action implements IAction{
 		/*
 		 * this constructor usement is only for registering new Action object to DB.
 		 */
-		boolean isUpdated = i_action.getId() > 0;
 		DBHandler db = DBHandler.getInstance();
 		this.device_serialNum = i_action.getDevice_serialNum();
 		this.parameters = i_action.getParameters();
 		this.actionDescription = i_action.getActionDescription();
-		if(isUpdated)
-			this.id = i_action.getId();
-		else
-		{
-			this.id = db.getActionsMaxAvailableIdx();
-		}
 	}
 	/****************************************************************/
 	public int toggleAction() throws Exception
@@ -110,16 +106,17 @@ public class Action implements IAction{
 		URI.append("/");
 		URI.append(figureSpacesInName(this.actionDescription.getName()));
 		URI.append("/");
+		boolean firstEntry = true;
 		if(this.actionDescription.getIsEvent())
 		{
-			URI.append("&event_id=" + this.id);
+			URI.append("?event_id=" + this.id);
+			firstEntry = false;
 		}
 		
 		/*
 		 *  Generate the string: ?[param1_name]=[value1]&[param2_name]=[value2]...&[paramN_name]=[valueN]/
 		 */
 		int paramIndex = 0;
-		boolean firstEntry = true;
 		for(String s : this.parameters)
 		{
 			/*
@@ -127,15 +124,16 @@ public class Action implements IAction{
 			 */
 			if(firstEntry)
 			{
-				URI.append("?" + this.actionDescription.getSupportedParametersName().get(paramIndex) + "=" + s);
+				URI.append("?" + figureSpacesInName(this.actionDescription.getSupportedParametersName().get(paramIndex)) + "=" + s);
 				firstEntry = false;
 			}
 			else
-				URI.append("&" + this.actionDescription.getSupportedParametersName().get(paramIndex) + "=" + s);
+				URI.append("&" + figureSpacesInName(this.actionDescription.getSupportedParametersName().get(paramIndex)) + "=" + s);		
 		}
 		
 		String USER_AGENT = "Mozilla/5.0";
-
+		
+		
 		URL ep = new URL(URI.toString());
 		//URL ep = new URL(null, URI.toString(), new sun.net.www.protocol.https.Handler());
 		HttpURLConnection con = (HttpURLConnection)ep.openConnection();

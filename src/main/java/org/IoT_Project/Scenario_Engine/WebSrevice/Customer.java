@@ -47,114 +47,30 @@ public class Customer {
 	public Response getLogInPageCustomer() throws Exception
 	{
 		//return "Should return the login page";
-		List<String> min = new LinkedList<String>();
-		List<String> max = new LinkedList<String>();
-		min.add("1");
-		max.add("55");
-		List<String> types = new LinkedList<String>();
-		types.add("INT");
-		List<Event> events1 = new LinkedList<Event>();
-		//List<Event> events2 = new LinkedList<Event>();
-		List<Action> actions = new LinkedList<Action>();
-		List<String> params1 = new LinkedList<String>();
-		List<String> params2 = new LinkedList<String>();
-		List<String> paramsName = new LinkedList<String>();
-		params1.add("galrotenberg3@gmail.com");
-		params1.add("Scenario Engine Test mail");
-		params2.add("50");
-		paramsName.add("value");
+		org.IoT_Project.Scenario_Engine.Models.Customer simulator_customer = NDBHandler.getInstance().getCustomer(1);
+		//ActionEventProto aop = NDBHandler.getInstance().get
+		LinkedList <org.IoT_Project.Scenario_Engine.Models.Scenario> scenarios = new LinkedList<>();
+		LinkedList <Event> events = new LinkedList<>();
+		LinkedList <Action> actions = new LinkedList<>();
+		LinkedList <String> parameters = new LinkedList<>();
+		parameters.add("Eve");
+		events.add(new Event((short)-1,
+				   			(short)1414,
+				   			parameters,
+				   			null,
+				   			'|',
+				   			true
+				));
+		org.IoT_Project.Scenario_Engine.Models.Scenario scenario = new org.IoT_Project.Scenario_Engine.Models.Scenario(
+				(short)-1,
+				(short)1,
+				"Day time",
+				null,
+				events,
+				actions
+				);
 		
-		events1.add(new Event((short)-1,
-				 			(short) 123,
-				 			params1,
-				 			new ActionEventProto((short)1,
-								     "Is TV on state ON",
-								    "description of event",
-								     null,
-								     null,
-								     paramsName,
-								     null,
-								     null,
-								     null,
-								    (short)1,
-								    "http://localhost:8000",
-								    true),
-				 			'|',
-				 			false));
-		events1.add(new Event((short)-1,
-	 			(short) 123,
-	 			params2,
-	 			new ActionEventProto((short)1,
-					     "Is TV on channel X",
-					    "description of event",
-					     null,
-					     null,
-					     paramsName,
-					     null,
-					     null,
-					     null,
-					    (short)1,
-					    "http://localhost:8000",
-					    true),
-	 			'|',
-	 			false));
-		actions.add(new Action((short)-1,
-	 			(short) 123,
-	 			params1,
-	 			new ActionEventProto((short)1,
-					     "Turn TV on state X",
-					    "description of event",
-					     null,
-					     null,
-					     paramsName,
-					     null,
-					     null,
-					     null,
-					    (short)1,
-					    "http://localhost:8000",
-					    false)));
-		
-		List<Case> cases = new LinkedList<Case>();
-		CaseGroup cg = new CaseGroup(cases, '&');
-		
-		Scenario scenario = new Scenario((short)-1,
-			    (short)1,
-			    "scenario name", 
-			    "scenario description",
-			    events1,
-			    actions);
-		Action a = new Action((short)-1,
-	 			(short) 123,
-	 			params2,
-	 			new ActionEventProto((short)1,
-					     "Turn TV on state X",
-					    "description of event",
-					     null,
-					     null,
-					     paramsName,
-					     null,
-					     null,
-					     null,
-					    (short)1,
-					    "http://localhost:8011/Device_Simulator/webapi",
-					    false));
-				
-				/*new MailAction((short)-1,
-	 			(short) 123,
-	 			params1,
-	 			new ActionEventProto((short)1,
-	 				     "Turn TV on state X",
-	 				    "description of event",
-	 				     types,
-	 				     null,
-	 				     paramsName,
-	 				     min,
-	 				     max,
-	 				    (short)1,
-	 				    "http://localhost:8000",
-	 				    false));*/
-		a.toggleAction();
-
+		simulator_customer.setCustomerScenarios(scenarios);
 		return Response.status(Status.OK).entity(a).build();
 	}
 	

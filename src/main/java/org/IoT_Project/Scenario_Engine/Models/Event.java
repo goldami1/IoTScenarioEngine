@@ -7,9 +7,11 @@ import javax.persistence.AttributeOverrides;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 import com.google.gson.annotations.SerializedName;
 import DataBase.DBHandler;
+import DataBase.NDBHandler;
 
 @Entity
 @Table(name = "EVENTS")
@@ -24,6 +26,17 @@ public class Event extends Action{
 	@Column(name = "event_is_triggered")
 	@SerializedName("triggered")
 	private boolean triggered;
+	@Transient
+	private boolean isUpdated;
+	
+	public boolean isUpdated() {
+		return isUpdated;
+	}
+
+	public void setUpdated(boolean isUpdated) {
+		this.isUpdated = isUpdated;
+	}
+
 	public enum ElogicOperand
 	{
 		oper_AND('&'),
@@ -90,10 +103,11 @@ public class Event extends Action{
 		this.parameters = i_event.getParameters();
 		this.logicOperator = i_event.getLogicOperator();
 		this.triggered = false;
-		if(!isUpdated)
+		if(!this.isUpdated)
 		{
-			//this.id = NDBHandler.getInstance().getEventsMaxAvailableIdx();
-			//this.toggleEvent();
+			this.isUpdated = true;
+			this.setId(i_event.getId());
+			this.toggleEvent();
 		}
 		else
 		{
