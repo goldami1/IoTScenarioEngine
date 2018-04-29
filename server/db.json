@@ -833,6 +833,151 @@
         ],
         "logicOperator": "|"
       }
+    },
+    {
+      "name": "",
+      "cust_id": 1,
+      "description": "",
+      "actions": [
+        {
+          "device_serialNum": 1313,
+          "actionDescription": {
+            "description": "set volume",
+            "id": 135,
+            "isEvent": false,
+            "max": [
+              ""
+            ],
+            "min": [
+              ""
+            ],
+            "name": "Volume",
+            "paramDesc": [
+              "Set alarm volume"
+            ],
+            "prodId": 125,
+            "productEP": "volume",
+            "supportedParametersName": [
+              "Alarm volume"
+            ],
+            "supportedValues": [
+              {
+                "id": 134,
+                "types": [
+                  "Low",
+                  "Medium",
+                  "High"
+                ]
+              }
+            ],
+            "types": [
+              "discrete"
+            ]
+          },
+          "parameters": [
+            "High",
+            3
+          ]
+        }
+      ],
+      "cases": {
+        "cases": [
+          {
+            "logicOperator": "&",
+            "events": [
+              {
+                "device_serialNum": 1212,
+                "actionDescription": {
+                  "description": "Set reminder",
+                  "id": 128,
+                  "isEvent": true,
+                  "max": [
+                    "23",
+                    "59"
+                  ],
+                  "min": [
+                    "0",
+                    "0"
+                  ],
+                  "name": "Reminder",
+                  "paramDesc": [
+                    "Set remider time",
+                    "Set reminder minutes"
+                  ],
+                  "prodId": 125,
+                  "productEP": "reminder",
+                  "supportedParametersName": [
+                    "Hour",
+                    "Minute"
+                  ],
+                  "supportedValues": [
+                    {
+                      "id": 126,
+                      "types": []
+                    },
+                    {
+                      "id": 127,
+                      "types": []
+                    }
+                  ],
+                  "types": [
+                    "int",
+                    "int"
+                  ]
+                },
+                "parameters": [
+                  3,
+                  3
+                ],
+                "logicOperator": "|"
+              },
+              {
+                "device_serialNum": 1313,
+                "actionDescription": {
+                  "description": "Call back when time of day arrived",
+                  "id": 130,
+                  "isEvent": true,
+                  "max": [
+                    ""
+                  ],
+                  "min": [
+                    ""
+                  ],
+                  "name": "Day time",
+                  "paramDesc": [
+                    "Set time of day to remind"
+                  ],
+                  "prodId": 125,
+                  "productEP": "daytime",
+                  "supportedParametersName": [
+                    "Day time"
+                  ],
+                  "supportedValues": [
+                    {
+                      "id": 129,
+                      "types": [
+                        "Mor",
+                        "Noon",
+                        "Eve"
+                      ]
+                    }
+                  ],
+                  "types": [
+                    "discrete"
+                  ]
+                },
+                "parameters": [
+                  "Eve",
+                  3
+                ],
+                "logicOperator": "&"
+              }
+            ]
+          }
+        ],
+        "logicOperator": "|"
+      },
+      "id": 2
     }
   ]
 }

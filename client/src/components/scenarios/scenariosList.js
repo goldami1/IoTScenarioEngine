@@ -7,9 +7,7 @@ const ScenariosList = props => {
 		return (
 			<div 
 				key={scenario.id}
-				style={{
-					marginTop:"10px"
-				}}>
+			>
 				<ScenariosListItem
 					onScenarioClick={props.onScenarioClick}
 					key={scenario.id}
