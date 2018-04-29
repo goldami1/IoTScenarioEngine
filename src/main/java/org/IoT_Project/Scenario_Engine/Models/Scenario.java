@@ -88,7 +88,7 @@ public class Scenario{
 		
 		List<Case> casesFromDB = new LinkedList<Case>();
 		List<Event> caseEvents = new LinkedList<Event>();
-		boolean createCase = true;
+		boolean createCase = false;
 		for(Event e : Scenario_events)
 		{
 			/*
@@ -143,11 +143,14 @@ public class Scenario{
 		 */
 		for(Case c : this.cases.getCases())
 		{
+			int event_amount = c.getEvents().size();
 			for(Event e : c.getEvents())
 			{
 				boolean isEventUpdated = e.getId() > 0;
 				if(!isEventUpdated)
 				{
+					if(--event_amount < 1)
+						e.setLogicOperator('&');
 					e.setId((short)NDBHandler.getInstance().addEvent(e));
 					e.setUpdated(false);
 					e = new Event(e);
