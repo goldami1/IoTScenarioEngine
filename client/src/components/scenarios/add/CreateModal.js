@@ -41,6 +41,7 @@ const formItemLayout = {
 function mapDevicesToDropdown (devices,type) {
 	return _.map(devices, (device,index) =>{
 		return {
+			key:{index},
 			label:device.name,
 			value:index,
 			children :_.map(device[`${type}s`],(ae,index)=>{
@@ -205,6 +206,7 @@ class CreateModal extends Component {
 		);
 		return (
 			<Modal
+				destroyOnClose ={true}
 				visible={this.props.visible}
 				title={`Create a new ${this.props.type}`}
 				okText="Create"

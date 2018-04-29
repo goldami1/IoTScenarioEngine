@@ -49,9 +49,9 @@ var dev = {
 }
 export function deviceInputReduction(oldDevice)
 {
-	var devices = oldDevice.filter(device => !isEmpty(device.protoDevice)).map((device)=> {
+	var devices = JSON.parse(JSON.stringify(oldDevice)).filter(device => !isEmpty(device.protoDevice)).map((device)=> {
 		var newDevice = productInputReduction(device.protoDevice);
-		newDevice.original = device;
+		newDevice.serial = device.serial_number;
 		return newDevice;
 	})
 

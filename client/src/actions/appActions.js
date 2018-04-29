@@ -7,6 +7,7 @@ import {
 	SIGNUP_USER,
 	ADD_SCENARIO
 } from "./types";
+ import {DEBUG} from './restapi';
 import axios from "axios";
 
 
@@ -28,8 +29,24 @@ function apiRequest(config,action,type) {
 		return axios(config).then(
 			res => {
 				if(isFunction(action.res))
-				{
-					dispatch(action.res(res.data)); 
+				{	
+					if(config.method == 'post' && DEBUG)
+					{
+						switch (type) {
+							case ADD_PRODUCT:
+							case ADD_DEVICE:
+							case ADD_SCENARIO:
+							case SIGNUP_USER:
+								dispatch(action.res([,res.data])); 
+								break;		
+							default:
+								break;
+						}						
+					}else
+					{
+						dispatch(action.res(res.data)); 
+					}
+					
 				}
 				switch (type) {
 					case ADD_PRODUCT:

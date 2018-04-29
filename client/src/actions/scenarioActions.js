@@ -4,6 +4,7 @@ import {
 	RECEIVE_SCENARIOS,
 	ADD_SCENARIO,
 	SCENARIO_ERROR_OCCURED,
+	SCENARIO_ADD_REQUEST
 } from "./types";
 import {
 	getFromApi,
@@ -15,13 +16,17 @@ import {
 	scenarios,
 } from './restapi';
 
-export function errorOccured(error) {
+export function errorOccured() {
 	return {
-		type: SCENARIO_ERROR_OCCURED,
-		error
+		type: SCENARIO_ERROR_OCCURED
 	};
 }
 
+export function addScenarioRequest() {
+	return {
+		type: SCENARIO_ADD_REQUEST
+	};
+}
 
 export function receiveScenarios(scenarios) {
 	return {
@@ -43,7 +48,7 @@ export function fetchScenarios() {
 export function addScenario(scenario) {
 	return (dispatch, getState) => {
 		const { auth } = getState();
-		dispatch(postToApi(ADD_SCENARIO,`${api(endpoints.scenario)}/${auth.id}`,{res:receiveScenarios},scenario));
+		dispatch(postToApi(ADD_SCENARIO,`${api(endpoints.scenario)}/${auth.id}`,{res:receiveScenarios,pre:addScenarioRequest,err:errorOccured},scenario));
 	};
 }
 

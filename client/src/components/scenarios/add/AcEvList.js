@@ -49,19 +49,26 @@ const AcEvList = props => {
 	}
  
 	const aeTitle = (list,item) => (
-		<div style={{background:'inherit'}}>
-			<Avatar 
-				style={{verticalAlign: 'middle'}} 
-				src="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png" 
-			/>
-			<span 
-				style={{marginLeft: 16,verticalAlign: 'middle'}}
-			>
-				{JSON.stringify(item.content)} {list}
-			</span>
+		<div style={{background:'inherit', whiteSpace: "normal"}}>
+			{item.content.actionDescription.description} 
 		</div>
 	);
 
+	const aeDetails = (item) => {
+
+		const det =  item.content.actionDescription.supportedParametersName.map((param,index) => {
+			return (
+				<div>
+					{`${param} : ${item.content.parameters[index]}`}
+				</div>
+			);
+		})
+
+		return ( 
+			<div> {det} </div>
+			
+		)
+	}
 	return (
 		<Droppable droppableId={`${props.id}`} >
 			{(provided, snapshot) => (
@@ -93,8 +100,9 @@ const AcEvList = props => {
 											bodyStyle={{padding:15}} title={aeTitle(props.id,item)}
 											extra=  {!props.preview && dropDown(props.id,index)}
 										>
-											<Card.Meta description="This is the description"/>
+											<Card.Meta description = {aeDetails(item)}/>
 												
+
 											
 										</Card>
 									</div>

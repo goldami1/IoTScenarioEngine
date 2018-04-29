@@ -203,14 +203,12 @@ class ScenarioForm extends Component {
 	generateAeItem = (ae) =>
 	{
 		const collection = (this.state)[ae.type==1 ? "actionDevices" : "eventDevices"];
-		const original = collection[ae.device[0]].original;
+		const aeDesc = collection[ae.device[0]][ae.type==1 ? "actions" : "events"][ae.device[1]].original;
 
 		var aeContent = {
-			device_serialNum:original.serial_number,
-			actionDescription:original.protoDevice.actionAndEventList[ae.device[1]],
-			parameters:ae.props,
-
-			triggered: false
+			device_serialNum:collection[ae.device[0]].serial,
+			actionDescription:aeDesc,
+			parameters:ae.props
 		};
 		if( ae.type==0 )
 		{
@@ -222,12 +220,13 @@ class ScenarioForm extends Component {
 	addAE = (ae) => () => {
 		ae.id = `${this.state.aeCounter}`;
 		ae.content = this.generateAeItem(ae);
+
 		this.setState({
 			aeCounter:parseInt(ae.id) + 1,
 			lists: this.state.lists.map((singleAe, index) => {
 				if (index === ae.type) 
 				{
-					return [...singleAe,ae];
+					return [...singleAe,JSON.parse(JSON.stringify(ae))];
 				}
 				return singleAe;
 			})
@@ -305,7 +304,7 @@ class ScenarioForm extends Component {
 		}
 
 		scenario.cases.cases.forEach( singleCase => {
-			singleCase.events[singleCase.length - 1].logicOperator = '&';
+			singleCase.events[singleCase.events.length - 1].logicOperator = '&';
 		});
 		return scenario;
 	}
@@ -336,6 +335,7 @@ class ScenarioForm extends Component {
 				visible={this.props.visible}
 				onCancel={this.props.onCancel}
 				okText="Add Scenario"
+				confirmLoading={this.props.isLoading}
 				onOk={() =>{this.props.onOk(this.createScenario())} }
 			>
 				<InputGroup size="large" style={{ margin: "40px" }}>
@@ -353,9 +353,9 @@ class ScenarioForm extends Component {
 						<Content
 							style={{ background: "#fff", padding: "10px", overflow: "hidden" }}
 						>
-							<AcEvList style={{float:'left'}} lists={this.state.lists} id={2} aeMenu={aeMenu} preview={ !_.isEmpty(this.props.preview)}/>
-							<AcEvList style={{float:'left'}} lists={this.state.lists} id={3} aeMenu={aeMenu} preview={ !_.isEmpty(this.props.preview)}/>
-							<AcEvList style={{float:'left'}} lists={this.state.lists} id={4} aeMenu={aeMenu} preview={ !_.isEmpty(this.props.preview)}/>
+							<AcEvList style={{float:'left'}} lists={this.state.lists} id={2} key={2} aeMenu={aeMenu} preview={ !_.isEmpty(this.props.preview)}/>
+							<AcEvList style={{float:'left'}} lists={this.state.lists} id={3} key={3} aeMenu={aeMenu} preview={ !_.isEmpty(this.props.preview)}/>
+							<AcEvList style={{float:'left'}} lists={this.state.lists} id={4} key={4} aeMenu={aeMenu} preview={ !_.isEmpty(this.props.preview)}/>
 						</Content>
 						<Sider
 							width={270}

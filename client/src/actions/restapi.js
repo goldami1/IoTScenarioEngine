@@ -1,7 +1,8 @@
 import { getFromApi } from "./appActions";
 
 
- const DEBUG = true;
+//  export const DEBUG = false;
+ export const DEBUG = true;
 
 export const endpoints = {
     addCustomer : "addCustomer",
@@ -51,6 +52,6 @@ const _API = {
 }
 
 export function api(endpoint) {
-    const api = ( typeof DEBUG === 'undefined' ) ? API : _API;
+    const api = (  !DEBUG  ) ? API : _API;
     return api[endpoint];
 }

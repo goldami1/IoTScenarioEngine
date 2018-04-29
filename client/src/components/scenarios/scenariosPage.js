@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { fetchScenarios ,} from "../../actions/scenarioActions";
+import { fetchScenarios ,addScenario } from "../../actions/scenarioActions";
 import { fetchDevices ,} from "../../actions/deviceActions";
 import { Link } from "react-router-dom";
 import { withRouter } from "react-router-dom";
@@ -23,6 +23,13 @@ class ScenariosPage extends Component {
 		this.props.fetchDevices();
     }
 
+	componentWillReceiveProps(nextProps)
+	{
+		if(!nextProps.isLoading && this.props.isLoading && !nextProps.error)
+		{
+			this.onModalCancel();
+		}
+	}
 	onAddScenarioClick = () => {
 		this.setState({
 			modalVisble: true,
@@ -47,8 +54,8 @@ class ScenariosPage extends Component {
 	}
 
 	onSubmit = (scenario) => {
-		console.log(scenario);
-		this.onModalCancel();
+		console.log(JSON.stringify(scenario));
+		this.props.addScenario(scenario);
 	}
 
 	render() {
@@ -66,6 +73,7 @@ class ScenariosPage extends Component {
 				</ScenariosList>
 				
 				<ScenarioForm
+					isLoading={this.props.isLoading}
 					visible={this.state.modalVisble}
 					preview={this.state.selectedScenario}
 					onCancel={this.onModalCancel}
@@ -80,9 +88,11 @@ class ScenariosPage extends Component {
 
 function mapStateToProps({ scenarios }) {
 	return {
-		scenarios:scenarios.scenarios
+		scenarios:scenarios.scenarios,
+		isLoading:scenarios.isLoading,
+		error:scenarios.error
 	};
 }
 
-export default connect(mapStateToProps, { fetchScenarios,fetchDevices })(withRouter(ScenariosPage));
+export default connect(mapStateToProps, { fetchScenarios,fetchDevices ,addScenario})(withRouter(ScenariosPage));
 

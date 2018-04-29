@@ -15,7 +15,8 @@ export function productInputReduction(oldProduct)
 			name:ae.name,
 			description:ae.description,
 			endpoint:ae.productEP,
-			properties:[]
+			properties:[],
+			original:ae
 		}
 
 		var i = 0;

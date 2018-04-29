@@ -7,19 +7,16 @@ import {
     USER_CREATION_REQUEST
 } from "../actions/types";
 import isEmpty from "lodash/isEmpty";
-
+import {DEBUG} from '../actions/restapi';
 const initialState = {
-	// isAuthenticated: false,
-	// id:'',
-	// username:'',
-	// password:'',
-	// name:'',
-	// type:'',
-	// isLoading:false,
-	// userCreated:false,
-
-	isAuthenticated: true,
-	id:1,
+	isAuthenticated: DEBUG,
+	id:DEBUG? 1: '',
+	username:'',
+	password:'',
+	name:'',
+	type:'',
+	isLoading:false,
+	userCreated:false,
 };
 
 export default (state = initialState, action = {}) => {
