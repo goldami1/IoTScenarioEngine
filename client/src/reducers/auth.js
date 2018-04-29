@@ -9,8 +9,8 @@ import {
 import isEmpty from "lodash/isEmpty";
 import {DEBUG} from '../actions/restapi';
 const initialState = {
-	isAuthenticated: DEBUG,
-	id:DEBUG? 1: '',
+	isAuthenticated: false,
+	id:'',
 	username:'',
 	password:'',
 	name:'',
