@@ -42,7 +42,7 @@ function mapDevicesToDropdown (devices,type) {
 	return _.map(devices, (device,index) =>{
 		return {
 			key:{index},
-			label:device.name,
+			label:`${device.name} ${device.serial}`,
 			value:index,
 			children :_.map(device[`${type}s`],(ae,index)=>{
 				return {value:index,label:ae.name}

@@ -50,7 +50,12 @@ const AcEvList = props => {
  
 	const aeTitle = (list,item) => (
 		<div style={{background:'inherit', whiteSpace: "normal"}}>
-			{item.content.actionDescription.description} 
+			<div>
+				{item.content.actionDescription.description} 
+			</div>
+			<div>
+				{item.content.actionDescription.description} 
+			</div>			
 		</div>
 	);
 

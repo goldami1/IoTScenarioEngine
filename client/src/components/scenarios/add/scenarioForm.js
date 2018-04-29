@@ -354,7 +354,9 @@ class ScenarioForm extends Component {
 							style={{ background: "#fff", padding: "10px", overflow: "hidden" }}
 						>
 							<AcEvList style={{float:'left'}} lists={this.state.lists} id={2} key={2} aeMenu={aeMenu} preview={ !_.isEmpty(this.props.preview)}/>
+							<Icon type="plus"  style={{float:'left'}}/>
 							<AcEvList style={{float:'left'}} lists={this.state.lists} id={3} key={3} aeMenu={aeMenu} preview={ !_.isEmpty(this.props.preview)}/>
+							<Icon type="plus"  style={{float:'left'}}/>
 							<AcEvList style={{float:'left'}} lists={this.state.lists} id={4} key={4} aeMenu={aeMenu} preview={ !_.isEmpty(this.props.preview)}/>
 						</Content>
 						<Sider
